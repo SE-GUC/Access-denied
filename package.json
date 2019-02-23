@@ -1,23 +1,42 @@
 {
-  "name": "micro-lab",
-  "version": "1.0.0",
-  "description": "A Micro-Lab for demonstrating NodeJS and ExpressJS capabilites",
+  "name": "lirten-hub",
+  "version": "0.1.0",
+  "description": "Lirten Hub is the next step towards innovation in the freelancing field",
   "main": "index.js",
   "engines": {
-    "node": "~8.12.0"
+    "node": "^8.15.0"
   },
   "scripts": {
-    "start": "node Server.js",
-    "dev": "nodemon Server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
-  "author": "Omar I. Handouk",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SE-GUC/Access-denied.git"
+  },
+  "keywords": [
+    "MERN",
+    "Heroku",
+    "Redux",
+    "Freelancing",
+    "Consult",
+    "Hub"
+  ],
+  "author": "Ahmed El-Zamrany, Ahmed Nasr, Abdel-Rahman Ashraf, Mahmood Salah, Moaz Ashraf, Zainab Sultan, Aya Mamdoh, Carol Guirguis, Omar Handouk",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/SE-GUC/Access-denied/issues"
+  },
+  "homepage": "https://github.com/SE-GUC/Access-denied#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "http": "0.0.0",
     "method-override": "^3.0.0",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "dotenv": "^6.2.0",
+    "uuid": "^3.3.2",
+    "joi": "^14.3.1"
   },
   "devDependencies": {
     "eslint": "^5.14.1",
