@@ -7,8 +7,8 @@
     "node": "^8.15.0"
   },
   "scripts": {
-    "start": "node Server.js",
-    "dev": "nodemon Server.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
