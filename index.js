@@ -7,4 +7,6 @@ http.createServer((request, response) => {
 	response.end('Hello, World!');
 }).listen(8081);
 
+console.log('Hello, GitHub!');
+
 console.log('Application is listening at port: 8081');
