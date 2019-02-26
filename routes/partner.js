@@ -2,7 +2,7 @@ const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
 
-router.post("/api/partner/create_new_profile", (req, res) => {
+router.post("/create_new_profile", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
@@ -20,7 +20,7 @@ router.post("/api/partner/create_new_profile", (req, res) => {
         })
 })
 
-router.get("/api/partner/viewprofile", (req, res) => {
+router.get("/viewprofile", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
@@ -35,7 +35,7 @@ router.get("/api/partner/viewprofile", (req, res) => {
         })
 })
 
-router.put("/api/partner/update", (req, res) => {
+router.put("/update", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
@@ -52,7 +52,7 @@ router.put("/api/partner/update", (req, res) => {
         })
 })
 
-router.delete("/api/partner/delete", (req, res) => {
+router.delete("/delete", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
