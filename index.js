@@ -1,10 +1,12 @@
 "use strict";
+const express = require("express");
+const app = express();
+const partnerRoute = require("./routes/partner");
+const bodyParser = require("body-parser")
 
-var http = require('http');
+app.use(bodyParser.json())
+app.use("/", partnerRoute);
+app.use(express.static('public'));
 
-http.createServer((request, response) => {
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.end('Hello, World!');
-}).listen(8081);
-
-console.log('Application is listening at port: 8081');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
