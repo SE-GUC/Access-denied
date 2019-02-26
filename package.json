@@ -1,16 +1,47 @@
 {
-  "name": "Temp",
-  "version": "1.0.0",
-  "description": "",
+  "name": "lirten-hub",
+  "version": "0.1.0",
+  "description": "Lirten Hub is the next step towards innovation in the freelancing field",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "node": "^8.15.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SE-GUC/Access-denied.git"
+  },
+  "keywords": [
+    "MERN",
+    "Heroku",
+    "Redux",
+    "Freelancing",
+    "Consult",
+    "Hub"
+  ],
+  "author": "Ahmed El-Zamrany, Ahmed Nasr, Abdel-Rahman Ashraf, Mahmood Salah, Moaz Ashraf, Zainab Sultan, Aya Mamdoh, Carol Guirguis, Omar Handouk",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/SE-GUC/Access-denied/issues"
+  },
+  "homepage": "https://github.com/SE-GUC/Access-denied#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^6.2.0",
     "express": "^4.16.4",
-    "mongoose": "^5.4.15"
+    "http": "0.0.0",
+    "joi": "^14.3.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.4.15",
+    "request": "^2.88.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.14.1",
+    "eslint-config-google": "^0.12.0",
+    "nodemon": "^1.18.10"
   }
 }
