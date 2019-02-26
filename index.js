@@ -1,10 +1,14 @@
 "use strict";
+const express = require("express");
+const app = express();
+const customerRoute = require("./routes/member")
+const bodyParser = require("body-parser")
+app.use(bodyParser.json())
 
-var http = require('http');
+app.use("/", customerRoute);
 
-http.createServer((request, response) => {
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.end('Hello, World!');
-}).listen(8081);
+app.listen(3000, () => {console.log('Listening to port 3000')});
 
-console.log('Application is listening at port: 8081');
+
+
+app.use(express.static('public'));
