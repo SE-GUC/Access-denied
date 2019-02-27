@@ -1,15 +1,40 @@
-const express = require("express");
-const app = express();
 
+const express = require('express')
+const app = express()
+
+const PORT = process.env.PORT || 3000;
+
+//Require routers
+const taskRoute = require('./routes/taskRoute.js')
 const consultancyRoute = require("./routes/consultancy")
 
-app.use(express.json())
+//Setup Views Directory, TODO: Assign view engine, Let html as DEF
+app.set('views', './views')
+app.set('view engine', 'html')
 
-app.use((req, res, next) => {
-    console.log(`${new Date().toString()} => ${req.method} ${req.originalUrl}`, req.body)
+//Setup Static Directory
+app.use(express.static('./public'))
+
+//Setup Parser, Note: extended option is diabled to allow for array encoding
+app.use(express.json())
+app.use(express.urlencoded({
+    extended: false
+}))
+
+//Setup routing directories/paths
+app.use('/api/task', taskRoute)
+app.use("/api/consultancy", consultancyRoute);
+
+//404 & 500 Error handlers
+app.use((request, response, next) => {
+    console.log(`${new Date().toString()} => ${request.method} ${request.originalUrl}`, request.body)
     next()
 })
 
-app.use("/api/consultancy", consultancyRoute);
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
+app.use((error, request, response, next) => {
+    response.status(500).send("500: Internal Server Error")
+})
+
+app.listen(PORT, () => {
+    console.log("Application listening to port: " + PORT)
+})
