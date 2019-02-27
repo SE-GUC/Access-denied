@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const partnerRoute = require("./routes/partner");
 const consultancyRoute = require("./routes/consultancy")
+const coworkingspaceRoute = require("./routes/coworkingspace")
 
 app.use(express.json())
 app.use((req, res, next) => {
