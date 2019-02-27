@@ -1,4 +1,3 @@
-
 const express = require('express')
 const app = express()
 
@@ -7,6 +6,8 @@ const PORT = process.env.PORT || 3000;
 //Require routers
 const taskRoute = require('./routes/taskRoute.js')
 const consultancyRoute = require("./routes/consultancy")
+const coworkingspaceRoute = require("./routes/coworkingspace")
+const partnerRoute = require("./routes/partner");
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
@@ -24,6 +25,8 @@ app.use(express.urlencoded({
 //Setup routing directories/paths
 app.use('/api/task', taskRoute)
 app.use("/api/consultancy", consultancyRoute);
+app.use("/api/partner", partnerRoute);
+app.use("/api/coworking",coworkingspaceRoute);
 
 //404 & 500 Error handlers
 app.use((request, response, next) => {
@@ -38,3 +41,4 @@ app.use((error, request, response, next) => {
 app.listen(PORT, () => {
     console.log("Application listening to port: " + PORT)
 })
+
