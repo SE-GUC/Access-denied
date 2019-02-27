@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express')
 var app = express()
 const certificationRoute = require("./routes/certification")
@@ -12,5 +13,5 @@ app.use((req, res, next) => {
 app.use("/certification", certificationRoute);
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8081;
 app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
