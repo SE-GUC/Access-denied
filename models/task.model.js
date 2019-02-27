@@ -4,7 +4,7 @@
  * @description: This file handles the schema for the (Task Entity) it exports a usable model for further use
  */
 
-'use strict'
+"use strict";
 
 const mongoose = require('mongoose')
 
@@ -30,8 +30,13 @@ var taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    assignee: String,
-    contantEmail: String,
+    contactEmail: {
+        type: String,
+        required: true
+    },
+    assignee: {
+        type: String,
+    },
     isCompleted: {
         type: Boolean,
         default: false
@@ -39,8 +44,11 @@ var taskSchema = new mongoose.Schema({
 })
 
 var taskModel = mongoose.model('Task', taskSchema)
+
 /*
     Delete Task collection if needed, due to schema changes
 */
+
+//taskModel.collection.remove()
 
 module.exports = taskModel

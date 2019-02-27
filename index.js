@@ -1,9 +1,12 @@
-'use strict'
+"use strict";
 
 const express = require('express')
 const app = express()
 
 const PORT = process.env.PORT || 3000;
+
+//Require routers
+const taskRoute = require('./routes/taskRoute.js')
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
@@ -19,6 +22,7 @@ app.use(express.urlencoded({
 }))
 
 //Setup routing directories/paths
+app.use('/api/task', taskRoute)
 
 //404 & 500 Error handlers
 app.use((request, response, next) => {
