@@ -1,10 +1,10 @@
 "use strict";
-
-var http = require('http');
-
-http.createServer((request, response) => {
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.end('Hello, World!');
-}).listen(8081);
-
-console.log('Application is listening at port: 8081');
+const express = require('express');
+const certificationRoute = require("./routes/certification")
+const app = express();
+app.use("/certification",certificationRoute)
+app.use(express.static('public'));
+let port =3000
+app.listen(port,() => {
+	console.log('Application is listening at port: '+ port);
+});
