@@ -13,6 +13,7 @@ app.use((req, res, next) => {
 app.use(express.static('public'));
 app.use("/api/partner", partnerRoute);
 app.use("/api/consultancy", consultancyRoute);
+app.use("/api/coworking",coworkingspaceRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
