@@ -13,6 +13,12 @@ const partnerRoute = require("./routes/partner");
 app.set('views', './views')
 app.set('view engine', 'html')
 
+//Logger
+app.use((request, response, next) => {
+    console.log(`${new Date().toString()} => ${request.method} ${request.originalUrl}`, request.body)
+    next()
+})
+
 //Setup Static Directory
 app.use(express.static('./public'))
 
@@ -29,11 +35,6 @@ app.use("/api/partner", partnerRoute);
 app.use("/api/coworking",coworkingspaceRoute);
 
 //404 & 500 Error handlers
-app.use((request, response, next) => {
-    console.log(`${new Date().toString()} => ${request.method} ${request.originalUrl}`, request.body)
-    next()
-})
-
 app.use((error, request, response, next) => {
     response.status(500).send("500: Internal Server Error")
 })
