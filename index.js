@@ -1,10 +1,18 @@
 "use strict";
 
-var http = require('http');
+const express = require("express");
+const app = express();
+const EducationalOrganisationRoute = require("./routes/EducationalOrganisation")
+const bodyParser = require('body-parser');
+app.use(bodyParser.json())
 
-http.createServer((request, response) => {
-	response.writeHead(200, {'Content-Type': 'text/plain'});
-	response.end('Hello, World!');
-}).listen(8081);
+app.use((req, res, next) => {
+    console.log(`${new Date().toString()} => ${req.method} ${req.originalUrl}`, req.body)
+    next()
+})
 
-console.log('Application is listening at port: 8081');
+//app.use(EducationalOrganisationRoute);
+app.use('/api/EducationalOrganisation', EducationalOrganisationRoute);
+app.use(express.static('public'));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
