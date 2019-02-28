@@ -1,28 +1,30 @@
 
-'use strict';
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-const certificationSchema = new Schema({
-  Name_of_Certification: {
-    type: String,
-    required: true,
-    //Unique: true
-    },
-  id_of_certification: {
-    type: String,
-    required: true,
-    Unique: true},
-  Description_of_certification: {
-    type: String,
-    required: true},
-  Evaluation_slots_available: Date,
-  Fees: Number,
-  Method_of_payment: {
-    type: String,
-    required: true},
-    Evaluation_procedure: {
-        type:String,
-        required:true},
-  Deadline_for_applying: Date,
-});
-module.exports = mongoose.model('certification', certificationSchema);
+const mongoose = require('mongoose')
+const uri = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
+mongoose.connect(uri, {useNewUrlParser:true})
+
+const certificationSchema = new mongoose.Schema({
+    
+    name_of_certification: {
+        type:String
+        ,required:true
+        ,unique:true
+    }
+    ,id_of_certification:{
+        type:String 
+        ,required:true
+        ,unique:true
+    }
+    ,Evaluation_of_available : Date
+    ,Fees:Number 
+    ,Method_of_payment:String
+    ,Evaluation_procedure :{
+        type:String
+        ,required:true
+    } 
+
+   
+})
+
+module.exports = mongoose.model("Certification", certificationSchema)
+
