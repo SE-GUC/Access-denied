@@ -16,7 +16,11 @@ const MemberSchema = new mongoose.Schema ({
     password : {
         type: String,
         required: true,
+<<<<<<< HEAD
         unique: false // TODO: Change it to non unique
+=======
+        
+>>>>>>> changes in member schema
 
     }
 
