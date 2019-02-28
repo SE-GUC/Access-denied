@@ -13,5 +13,6 @@ app.use((req, res, next) => {
 app.use("/certification", certificationRoute);
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
+

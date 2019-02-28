@@ -1,6 +1,10 @@
-const certificatioModel = require('../models/certification.model')
-const express = require('express')
-const router = express.Router()
+
+"use strict";
+const certificationModel = require('../models/certification.model');
+const express = require('express');
+const router = express.Router();
+
+
 
 
 router.post("/", (req, res) => {
@@ -21,14 +25,14 @@ router.post("/", (req, res) => {
         })
 })
 
-
-
-router.get("/", (req, res) => {
+router.put('/', (req, res) => {
     if(!req.query.id_of_certification){
-        return res.status(400).send("ID of certification is mising.")
+        return res.status(400).send('id of certification is mising.')
     }
-    certificatioModel.find({
+    certificationModel.findOneAndUpdate({
         id_of_certification: req.query.id_of_certification
+    }, req.body, {
+        new: true
     })
         .then((doc) => {
             res.json(doc)
@@ -38,11 +42,30 @@ router.get("/", (req, res) => {
         })
 })
 
+router.delete('/', (req, res) => {
+    if(!req.query.id_of_certification){
+        return res.status(400).send('id is mising.')
+    }
+    certificationModel.findOneAndDelete({
 
 
 
 
+router.get("/", (req, res) => {
+    if(!req.query.id_of_certification){
+        return res.status(400).send("ID of certification is mising.")
+    }
+    certificatioModel.find({
 
+        id_of_certification: req.query.id_of_certification
+    })
+        .then((doc) => {
+            res.json(doc)
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
+})
 
 
 module.exports = router;
