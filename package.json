@@ -35,7 +35,11 @@
     "http": "0.0.0",
     "joi": "^14.3.1",
     "method-override": "^3.0.0",
+
     "mongoose": "^5.4.15",
+
+    //"mongoose": "^5.4.16",
+
     "request": "^2.88.0",
     "uuid": "^3.3.2"
   },
