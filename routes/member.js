@@ -2,7 +2,7 @@ const memberModel = require("./../models/member.Model")
 const express = require("express")
 const router = express.Router()
 
-router.post("/api/Member", (req, res) => {
+router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
@@ -20,7 +20,7 @@ router.post("/api/Member", (req, res) => {
         })
 })
 
-router.get("/api/Member", (req, res) => {
+router.get("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
@@ -35,7 +35,7 @@ router.get("/api/Member", (req, res) => {
         })
 })
 
-router.put("/api/Member", (req, res) => {
+router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
@@ -52,7 +52,7 @@ router.put("/api/Member", (req, res) => {
         })
 })
 
-router.delete("/api/Member", (req, res) => {
+router.delete("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
