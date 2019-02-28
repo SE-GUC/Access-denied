@@ -15,10 +15,14 @@ const MemberSchema = new mongoose.Schema ({
     },
     password : {
         type: String,
+<<<<<<< HEAD
         required: true,
 <<<<<<< HEAD
         unique: false // TODO: Change it to non unique
 =======
+=======
+        required: true
+>>>>>>> syntax fix
         
 >>>>>>> changes in member schema
 
