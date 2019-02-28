@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express')
 const app = express()
 
@@ -8,10 +10,19 @@ const taskRoute = require('./routes/taskRoute.js')
 const consultancyRoute = require("./routes/consultancy")
 const coworkingspaceRoute = require("./routes/coworkingspace")
 const partnerRoute = require("./routes/partner");
+const customerRoute = require("./routes/member")
+const EducationalOrganisationRoute=require("./routes/EducationalOrganisation")
+const certificationRoute = require("./routes/certification")
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
 app.set('view engine', 'html')
+
+//Logger
+app.use((request, response, next) => {
+    console.log(`${new Date().toString()} => ${request.method} ${request.originalUrl}`, request.body)
+    next()
+})
 
 //Setup Static Directory
 app.use(express.static('./public'))
@@ -27,13 +38,11 @@ app.use('/api/task', taskRoute)
 app.use("/api/consultancy", consultancyRoute);
 app.use("/api/partner", partnerRoute);
 app.use("/api/coworking",coworkingspaceRoute);
+app.use("/api/Member", customerRoute);
+app.use("/api/EducationalOrganisation",EducationalOrganisationRoute);
+app.use("/api/certification", certificationRoute);
 
 //404 & 500 Error handlers
-app.use((request, response, next) => {
-    console.log(`${new Date().toString()} => ${request.method} ${request.originalUrl}`, request.body)
-    next()
-})
-
 app.use((error, request, response, next) => {
     response.status(500).send("500: Internal Server Error")
 })
@@ -41,4 +50,3 @@ app.use((error, request, response, next) => {
 app.listen(PORT, () => {
     console.log("Application listening to port: " + PORT)
 })
-
