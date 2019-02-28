@@ -1,3 +1,5 @@
+"use strict";
+
 const express = require('express')
 const app = express()
 
@@ -8,6 +10,7 @@ const taskRoute = require('./routes/taskRoute.js')
 const consultancyRoute = require("./routes/consultancy")
 const coworkingspaceRoute = require("./routes/coworkingspace")
 const partnerRoute = require("./routes/partner");
+const customerRoute = require("./routes/member")
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
@@ -33,6 +36,7 @@ app.use('/api/task', taskRoute)
 app.use("/api/consultancy", consultancyRoute);
 app.use("/api/partner", partnerRoute);
 app.use("/api/coworking",coworkingspaceRoute);
+app.use("/", customerRoute); // TODO Add the correct route form
 
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
@@ -42,4 +46,3 @@ app.use((error, request, response, next) => {
 app.listen(PORT, () => {
     console.log("Application listening to port: " + PORT)
 })
-
