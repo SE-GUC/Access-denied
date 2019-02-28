@@ -1,10 +1,18 @@
 "use strict";
-const express = require('express');
+var express = require('express')
+var app = express()
 const certificationRoute = require("./routes/certification")
-const app = express();
-app.use("/certification",certificationRoute)
+
+app.use(express.json())
+
+app.use((req, res, next) => {
+    console.log(`${new Date().toString()} => ${req.method} ${req.originalUrl}`, req.body)
+    next()
+})
+
+app.use("/certification", certificationRoute);
 app.use(express.static('public'));
-let port =3000
-app.listen(port,() => {
-	console.log('Application is listening at port: '+ port);
-});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {console.info(`Server is running on ${PORT}`)});
+

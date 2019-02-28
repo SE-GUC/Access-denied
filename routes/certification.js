@@ -1,7 +1,12 @@
+
 "use strict";
 const certificationModel = require('../models/certification.model');
 const express = require('express');
 const router = express.Router();
+
+
+
+
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
@@ -19,6 +24,7 @@ router.post("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+
 router.put('/', (req, res) => {
     if(!req.query.id_of_certification){
         return res.status(400).send('id of certification is mising.')
@@ -41,6 +47,16 @@ router.delete('/', (req, res) => {
         return res.status(400).send('id is mising.')
     }
     certificationModel.findOneAndDelete({
+
+
+
+
+router.get("/", (req, res) => {
+    if(!req.query.id_of_certification){
+        return res.status(400).send("ID of certification is mising.")
+    }
+    certificatioModel.find({
+
         id_of_certification: req.query.id_of_certification
     })
         .then((doc) => {
@@ -50,5 +66,6 @@ router.delete('/', (req, res) => {
             res.status(500).json(err)
         })
 })
+
 
 module.exports = router;
