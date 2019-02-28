@@ -36,7 +36,7 @@ app.use('/api/task', taskRoute)
 app.use("/api/consultancy", consultancyRoute);
 app.use("/api/partner", partnerRoute);
 app.use("/api/coworking",coworkingspaceRoute);
-app.use("/", customerRoute); // TODO Add the correct route form
+app.use("/api/Member", customerRoute); // TODO Add the correct route form
 
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
