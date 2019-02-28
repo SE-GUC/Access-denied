@@ -1,4 +1,4 @@
-const memberModel = require("./../models/member.Model")
+const consultancyModel = require("../models/consultancy.model")
 const express = require("express")
 const router = express.Router()
 
@@ -6,7 +6,7 @@ router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
-    let model = new memberModel(req.body)
+    let model = new consultancyModel(req.body)
     model.save()
         .then((doc) => {
             if(!doc || doc.length ===0){
@@ -22,9 +22,9 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
-    memberModel.findOne({
+    consultancyModel.findOne({
         email: req.query.email
     })
         .then((doc) => {
@@ -35,11 +35,22 @@ router.get("/", (req, res) => {
         })
 })
 
+
+router.get("/all", (req, res) => {
+    consultancyModel.find({})
+        .then((doc) => {
+            res.json(doc)
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
+})
+
 router.put("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
-    memberModel.findOneAndUpdate({
+    consultancyModel.findOneAndUpdate({
         email: req.query.email
     }, req.body, {
         new: true
@@ -54,9 +65,9 @@ router.put("/", (req, res) => {
 
 router.delete("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
-    memberModel.findOneAndDelete({
+    consultancyModel.findOneAndDelete({
         email: req.query.email
     })
         .then((doc) => {
