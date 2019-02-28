@@ -11,6 +11,7 @@ const consultancyRoute = require("./routes/consultancy")
 const coworkingspaceRoute = require("./routes/coworkingspace")
 const partnerRoute = require("./routes/partner");
 const customerRoute = require("./routes/member")
+const EducationalOrganisationRoute=require("./routes/EducationalOrganisation")
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
@@ -37,6 +38,7 @@ app.use("/api/consultancy", consultancyRoute);
 app.use("/api/partner", partnerRoute);
 app.use("/api/coworking",coworkingspaceRoute);
 app.use("/", customerRoute); // TODO Add the correct route form
+app.use("/api/EducationalOrganisation",EducationalOrganisationRoute);
 
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
