@@ -1,12 +1,12 @@
-const partnerModel = require("../models/partner.model")
+const memberModel = require("./../models/member.Model")
 const express = require("express")
 const router = express.Router()
 
-router.post("/create_new_profile", (req, res) => {
+router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
-    let model = new partnerModel(req.body)
+    let model = new memberModel(req.body)
     model.save()
         .then((doc) => {
             if(!doc || doc.length ===0){
@@ -20,11 +20,11 @@ router.post("/create_new_profile", (req, res) => {
         })
 })
 
-router.get("/viewprofile", (req, res) => {
+router.get("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
-    partnerModel.findOne({
+    memberModel.findOne({
         email: req.query.email
     })
         .then((doc) => {
@@ -35,13 +35,13 @@ router.get("/viewprofile", (req, res) => {
         })
 })
 
-router.put("/update", (req, res) => {
+router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
-    partnerModel.findOneAndUpdate({
-        email: req.query.email},
-        req.body, {
+    memberModel.findOneAndUpdate({
+        email: req.query.email
+    }, req.body, {
         new: true
     })
         .then((doc) => {
@@ -52,11 +52,11 @@ router.put("/update", (req, res) => {
         })
 })
 
-router.delete("/delete", (req, res) => {
+router.delete("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
-    partnerModel.findOneAndDelete({
+    memberModel.findOneAndDelete({
         email: req.query.email
     })
         .then((doc) => {
