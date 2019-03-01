@@ -6,12 +6,13 @@ const app = express()
 const PORT = process.env.PORT || 3000;
 
 //Require routers
-const taskRoute = require('./routes/taskRoute.js')
+const taskRoute = require('./routes/task')
 const consultancyRoute = require("./routes/consultancy")
 const coworkingspaceRoute = require("./routes/coworkingspace")
 const partnerRoute = require("./routes/partner");
 const customerRoute = require("./routes/member")
-const EducationalOrganisationRoute=require("./routes/EducationalOrganisation")
+const EducationalOrganisationRoute = require("./routes/EducationalOrganisation")
+const certificationRoute = require("./routes/certification")
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
@@ -33,12 +34,13 @@ app.use(express.urlencoded({
 }))
 
 //Setup routing directories/paths
-app.use('/api/task', taskRoute)
-app.use("/api/consultancy", consultancyRoute);
-app.use("/api/partner", partnerRoute);
-app.use("/api/coworking",coworkingspaceRoute);
-app.use("/", customerRoute); // TODO Add the correct route form
-app.use("/api/EducationalOrganisation",EducationalOrganisationRoute);
+app.use('/api/task', taskRoute) // Tested - Passed - changed file name to match file naming agreement
+app.use("/api/consultancy", consultancyRoute); // Tested - Passed
+app.use("/api/partner", partnerRoute); // Tested - Passed - router had extra paths, EX : /api/partner/update (solved by removal)
+app.use("/api/coworking",coworkingspaceRoute); // Tested - Passed
+app.use("/api/Member", customerRoute); // Tested - Passed
+app.use("/api/EducationalOrganisation",EducationalOrganisationRoute); // Tested - Passed
+app.use("/api/certification", certificationRoute); // Tested - Passed - A lot of problems with CRUD Associated with POST & GET routes (Solved by correcting code) 
 
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
