@@ -5,7 +5,7 @@ module.exports = {
         const createSchema = {
             name: Joi.string().min(3).max(500).required(),
             email: Joi.string().email().required(),
-            password:Joi.min(6).max(30).required()
+            password:Joi.string().min(6).max(30).required()
         }
 
         return Joi.validate(request, createSchema)
@@ -15,7 +15,7 @@ module.exports = {
         const updateSchema = {
             name: Joi.string().min(3).max(500),
             email: Joi.string().email(),
-            password:Joi.min(6).max(30)
+            password:Joi.string().min(6).max(30)
         }
 
         return Joi.validate(request, updateSchema)
