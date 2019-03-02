@@ -21,7 +21,7 @@ const PartnerSchema = new mongoose.Schema({
     },
     //their partners
     other_partner:{
-        type:Number,
+        type: String,
         unique: true
     },
     //board members
