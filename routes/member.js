@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
     memberModel.findOne({
         email: req.query.email
@@ -37,7 +37,7 @@ router.get("/", (req, res) => {
 
 router.put("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
     memberModel.findOneAndUpdate({
         email: req.query.email
@@ -54,7 +54,7 @@ router.put("/", (req, res) => {
 
 router.delete("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
     memberModel.findOneAndDelete({
         email: req.query.email
