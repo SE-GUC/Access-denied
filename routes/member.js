@@ -1,11 +1,15 @@
 const memberModel = require("./../models/member.Model")
 const express = require("express")
 const router = express.Router()
+const validator = require('../validations/memberValidations.js');
+
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new memberModel(req.body)
     model.save()
         .then((doc) => {
@@ -39,6 +43,8 @@ router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is missing.")
     }
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     memberModel.findOneAndUpdate({
         email: req.query.email
     }, req.body, {
@@ -54,7 +60,7 @@ router.put("/", (req, res) => {
 
 router.delete("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is missing.")
+        return res.status(400).send("Email is mising.")
     }
     memberModel.findOneAndDelete({
         email: req.query.email
