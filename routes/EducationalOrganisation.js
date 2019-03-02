@@ -2,7 +2,7 @@
 const educationalorganisations = require("../models/EducationalOrganisation.model");
 const express = require("express");
 const router = express.Router();
-const validator = require('../validations/coworkingspaceValidations.js');
+const validator = require('../validations/EducationalOrganisationValidations.js');
 
 
 router.post("/",(req,res)=>{
