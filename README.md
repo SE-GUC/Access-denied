@@ -19,7 +19,7 @@ npm install
 ## Dependencies
 
 >```
-"body-parser": "^1.18.3",
+    "body-parser": "^1.18.3",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "http": "0.0.0",
