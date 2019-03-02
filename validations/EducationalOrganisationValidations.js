@@ -4,7 +4,7 @@ module.exports = {
     createValidation: request => {
         const createSchema = {
             name: Joi.string().min(3).max(500).required(),
-            email: Joi.String().email().required()
+            email: Joi.string().email().required()
 
         }
 
@@ -14,7 +14,7 @@ module.exports = {
     updateValidation: request => {
         const updateSchema = {
             name: Joi.string().min(3).max(500),
-            email:Joi.String().email()
+            email:Joi.string().email()
             
         }
 
