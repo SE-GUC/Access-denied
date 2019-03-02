@@ -1,11 +1,15 @@
 const consultancyModel = require("../models/consultancy.model")
 const express = require("express")
 const router = express.Router()
+const validator = require("../validations/consultancyValidations")
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
+    
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new consultancyModel(req.body)
     model.save()
         .then((doc) => {
