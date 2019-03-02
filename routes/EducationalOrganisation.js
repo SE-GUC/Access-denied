@@ -2,11 +2,15 @@
 const educationalorganisations = require("../models/EducationalOrganisation.model");
 const express = require("express");
 const router = express.Router();
+const validator = require('../validations/coworkingspaceValidations.js');
+
 
 router.post("/",(req,res)=>{
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model=new educationalorganisations(req.body)
     model.save()
     .then((doc)=>{
@@ -41,6 +45,8 @@ router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Educational Organisation email is missing.")
     }
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message})
     educationalorganisations.findOneAndUpdate({
         email: req.query.email
     }, req.body, {
