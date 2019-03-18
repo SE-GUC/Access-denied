@@ -22,7 +22,7 @@
     "Consult",
     "Hub"
   ],
-  "author": "Ahmed El-Zamarany, Ahmed Nasr, Abdel-Rahman Ashraf, Mahmood Salah, Moaz Ashraf, Zainab Sultan, Aya Mamdoh, Carol Guirguis, Omar Handouk",
+  "author": "Ahmed El-Zamrany, Ahmed Nasr, Abdel-Rahman Ashraf, Mahmood Salah, Moaz Ashraf, Zainab Sultan, Aya Mamdoh, Carol Guirguis, Omar Handouk",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/SE-GUC/Access-denied/issues"
@@ -35,7 +35,7 @@
     "http": "0.0.0",
     "joi": "^14.3.1",
     "method-override": "^3.0.0",
-    "mongoose": "^5.4.15",
+    "mongoose": "^5.4.16",
     "request": "^2.88.0",
     "uuid": "^3.3.2"
   },
