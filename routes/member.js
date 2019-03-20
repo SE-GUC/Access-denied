@@ -9,13 +9,9 @@ router.post("/", (req, res) => {
         return res.status(400).send("Body is missing")
     }
     const isValidated = validator.createValidation(req.body)
-<<<<<<< HEAD
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-=======
     if (isValidated.error) {
         return res.status(400).send({ error: isValidated.error.details[0].message })
     }
->>>>>>> 3ea74776ee1b5dd5182e38a10f48b8e5c8e6d90f
     let model = new memberModel(req.body)
     model.save()
         .then((doc) => {
