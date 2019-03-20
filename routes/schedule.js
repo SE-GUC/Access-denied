@@ -20,4 +20,17 @@ router.post('/',(req,res)=>{
         })
 })
 
+router.get("/",(req,res)=>{
+    if(!req || !req.body){
+        res.status(500).send("Body Is Missing")
+    }
+    ScheduleModel.findById(
+        req.query.id)
+        .then((doc)=>{
+            res.status(200).send(doc)
+        })
+        .catch((err)=>{
+            res.status(500).json(err)
+        })
+})
 module.exports = router;
