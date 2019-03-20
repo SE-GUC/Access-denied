@@ -35,7 +35,7 @@ router.post("/:id/addslot",(req,res)=>{
         slot.assignedTo=req.body.assignedTo
     }
     ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$push: {Saturday: slot}},
+        {$push: {[req.body.day]: slot}},
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
