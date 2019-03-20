@@ -143,9 +143,9 @@ const ScheduleSchema = new mongoose.Schema({
             required:true,
             default:true
         },
-        assignedTo:{
+        assignedTo:[{
             type:ObjectId
-        }
+        }]
 
         }
     ]
