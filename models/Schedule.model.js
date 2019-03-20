@@ -11,15 +11,15 @@ const ScheduleSchema = new mongoose.Schema({
     //A Schedule is built of 7 days, each day has a list of slots (1-hour each) 
     Saturday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -31,15 +31,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Sunday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -51,15 +51,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Monday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -71,15 +71,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Tuesday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -91,15 +91,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Wednesday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -111,15 +111,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Thursday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
@@ -131,15 +131,15 @@ const ScheduleSchema = new mongoose.Schema({
     ]),
     Friday:([
         {from:{
-            type:number,
+            type:Number,
             required:true
         },
         to:{
-            type:number,
+            type:Number,
             required:true
         },
         available:{
-            type:boolean,
+            type:Boolean,
             required:true,
             default:true
         },
