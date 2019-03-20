@@ -1,22 +1,15 @@
-const memberModel = require("./../models/member.Model")
+const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
-const validator = require('../validations/memberValidations.js');
-
+const validator = require("../validations/partnerValidations")
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
     const isValidated = validator.createValidation(req.body)
-<<<<<<< HEAD
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-=======
-    if (isValidated.error) {
-        return res.status(400).send({ error: isValidated.error.details[0].message })
-    }
->>>>>>> 3ea74776ee1b5dd5182e38a10f48b8e5c8e6d90f
-    let model = new memberModel(req.body)
+    let model = new partnerModel(req.body)
     model.save()
         .then((doc) => {
             if(!doc || doc.length ===0){
@@ -32,9 +25,9 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is missing.")
+        return res.status(400).send("Email is mising.")
     }
-    memberModel.findOne({
+    partnerModel.findOne({
         email: req.query.email
     })
         .then((doc) => {
@@ -47,13 +40,13 @@ router.get("/", (req, res) => {
 
 router.put("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is missing.")
+        return res.status(400).send("Email is mising.")
     }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    memberModel.findOneAndUpdate({
-        email: req.query.email
-    }, req.body, {
+    partnerModel.findOneAndUpdate({
+        email: req.query.email},
+        req.body, {
         new: true
     })
         .then((doc) => {
@@ -68,7 +61,7 @@ router.delete("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
-    memberModel.findOneAndDelete({
+    partnerModel.findOneAndDelete({
         email: req.query.email
     })
         .then((doc) => {

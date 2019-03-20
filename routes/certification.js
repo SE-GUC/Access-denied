@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
 router.put('/', (req, res) => {
 
     if (!req.query.id_of_certification) {
-        return res.status(400).send('id of certification is mising.')
+        return res.status(400).send('id of certification is missing.')
     }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
@@ -48,7 +48,7 @@ router.put('/', (req, res) => {
 
 router.delete('/', (req, res) => {
     if (!req.query.id_of_certification) {
-        return res.status(400).send('id is mising.')
+        return res.status(400).send('id is missing.')
     }
     certificationModel.findOneAndDelete({
 
@@ -68,7 +68,7 @@ router.delete('/', (req, res) => {
 
 router.get("/", (req, res) => {
     if (!req.query.id_of_certification) {
-        return res.status(400).send("ID of certification is mising.")
+        return res.status(400).send("ID of certification is missing.")
     }
     certificationModel.find({
 
