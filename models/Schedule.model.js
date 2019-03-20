@@ -9,7 +9,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ScheduleSchema = new mongoose.Schema({
     //A Schedule is built of 7 days, each day has a list of slots (1-hour each) 
-    Saturday:([
+    Saturday:[
         {from:{
             type:Number,
             required:true
@@ -28,8 +28,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Sunday:([
+    ],
+    Sunday:[
         {from:{
             type:Number,
             required:true
@@ -48,8 +48,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Monday:([
+    ],
+    Monday:[
         {from:{
             type:Number,
             required:true
@@ -68,8 +68,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Tuesday:([
+    ],
+    Tuesday:[
         {from:{
             type:Number,
             required:true
@@ -88,8 +88,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Wednesday:([
+    ],
+    Wednesday:[
         {from:{
             type:Number,
             required:true
@@ -108,8 +108,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Thursday:([
+    ],
+    Thursday:[
         {from:{
             type:Number,
             required:true
@@ -128,8 +128,8 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ]),
-    Friday:([
+    ],
+    Friday:[
         {from:{
             type:Number,
             required:true
@@ -148,7 +148,7 @@ const ScheduleSchema = new mongoose.Schema({
         }
 
         }
-    ])
+    ]
 });
 
 module.exports = mongoose.model("Schedule",ScheduleSchema);
