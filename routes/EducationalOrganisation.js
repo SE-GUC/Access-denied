@@ -27,7 +27,7 @@ router.post("/",(req,res)=>{
 
 
 router.get("/",(req,res)=>{
-    if(!req.query){
+    if(!req.query.email){
         return res.status(400).send("Missing")
     }
     educationalorganisations.findOne({

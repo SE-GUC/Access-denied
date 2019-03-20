@@ -1,22 +1,16 @@
-const memberModel = require("./../models/member.Model")
+const consultancyModel = require("../models/consultancy.model")
 const express = require("express")
 const router = express.Router()
-const validator = require('../validations/memberValidations.js');
-
+const validator = require("../validations/consultancyValidations")
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
+
     const isValidated = validator.createValidation(req.body)
-<<<<<<< HEAD
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-=======
-    if (isValidated.error) {
-        return res.status(400).send({ error: isValidated.error.details[0].message })
-    }
->>>>>>> 3ea74776ee1b5dd5182e38a10f48b8e5c8e6d90f
-    let model = new memberModel(req.body)
+    let model = new consultancyModel(req.body)
     model.save()
         .then((doc) => {
             if(!doc || doc.length ===0){
@@ -34,9 +28,20 @@ router.get("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is missing.")
     }
-    memberModel.findOne({
+    consultancyModel.findOne({
         email: req.query.email
     })
+        .then((doc) => {
+            res.json(doc)
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
+})
+
+
+router.get("/all", (req, res) => {
+    consultancyModel.find({})
         .then((doc) => {
             res.json(doc)
         })
@@ -51,7 +56,7 @@ router.put("/", (req, res) => {
     }
     const isValidated = validator.updateValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    memberModel.findOneAndUpdate({
+    consultancyModel.findOneAndUpdate({
         email: req.query.email
     }, req.body, {
         new: true
@@ -66,9 +71,9 @@ router.put("/", (req, res) => {
 
 router.delete("/", (req, res) => {
     if(!req.query.email){
-        return res.status(400).send("Email is mising.")
+        return res.status(400).send("Email is missing.")
     }
-    memberModel.findOneAndDelete({
+    consultancyModel.findOneAndDelete({
         email: req.query.email
     })
         .then((doc) => {
