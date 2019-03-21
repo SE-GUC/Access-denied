@@ -4,7 +4,7 @@ const uri = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?re
 mongoose.connect(uri, {
     useNewUrlParser: true
 })
-
+var ObjectId = mongoose.Schema.Types.ObjectId
 const certificationSchema = new mongoose.Schema({
 
     name_of_certification: {
@@ -23,7 +23,9 @@ const certificationSchema = new mongoose.Schema({
     Evaluation_procedure: {
         type: String,
         required: true
-    }
+    },
+    schedule:ObjectId
+
 
 
 })
