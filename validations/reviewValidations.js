@@ -3,8 +3,8 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = {
-            reviewer: Joi,
-            reviewee: Joi,
+            reviewer: Joi.required(),
+            reviewee: Joi.required(),
             review: Joi.string().min(3).max(500).required(),
             rating: Joi.number().min(1).max(5).required()
         }
