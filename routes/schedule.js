@@ -1,6 +1,7 @@
 const ScheduleModel = require('../models/schedule.model')
 const express = require("express")
 const router = express.Router();
+const validator = require("../validations/scheduleValidations")
 
 router.post('/',(req,res)=>{
     if(!req || !req.body){
@@ -24,7 +25,9 @@ router.post("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
-    
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+
     let slot = {
         from:req.body.from,
         to:req.body.to,
@@ -128,6 +131,8 @@ router.put("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let slot = {
         _id:req.query.id,
         from:req.body.from,
