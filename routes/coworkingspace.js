@@ -84,7 +84,7 @@ router.delete('/',(req,res)=>{
         })
 })
 
-router.post("/slot",(req,res)=>{
+router.post("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
@@ -103,7 +103,31 @@ router.post("/slot",(req,res)=>{
     
 })
 
-router.put("/slot",(req,res)=>{
+router.get("/schedule",(req,res)=>{
+    if(!req||!req.body){
+        return res.status(400).send("Body Is Missing");
+    }
+    let id = req.query.id
+    coworkingspaceModel.findById(id)
+    .then((doc)=>{
+        if(!doc || doc.length ===0){
+            return res.status(500).send(doc)
+        }
+        let scheduleId = doc.schedule
+        if(!req.query.slot){
+        res.redirect(307,`../schedule/${scheduleId}`)}
+        else{
+            res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.query.slot}`)
+        }
+    })
+    .catch((err)=>{
+        res.status(500).json(err)
+    })
+})
+
+
+
+router.put("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
@@ -121,7 +145,7 @@ router.put("/slot",(req,res)=>{
     })
     
 })
-router.delete("/slot",(req,res)=>{
+router.delete("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
