@@ -14,7 +14,7 @@ const customerRoute = require("./routes/member")
 const EducationalOrganisationRoute = require("./routes/EducationalOrganisation")
 const certificationRoute = require("./routes/certification")
 const scheduleRoute = require("./routes/schedule")
-
+const reviewRoute = require("./routes/review")
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json())
 app.use(express.urlencoded({
@@ -44,6 +44,7 @@ app.use("/api/Member", customerRoute); // Tested - Passed
 app.use("/api/EducationalOrganisation",EducationalOrganisationRoute); // Tested - Passed
 app.use("/api/certification", certificationRoute); // Tested - Passed - A lot of problems with CRUD Associated with POST & GET routes (Solved by correcting code) 
 app.use("/api/schedule",scheduleRoute);
+app.use("/api/review", reviewRoute);
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
     response.status(500).send("500: Internal Server Errors")
