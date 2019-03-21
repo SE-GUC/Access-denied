@@ -91,12 +91,13 @@ router.put("/:id/slot",(req,res)=>{
     }
     //Delete the old Slot
     ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$pull: {[req.body.day]: {$elemMatch:{_id:req.query.id}}}},
+        {$pull: {[req.body.day]: {'_id':req.query.id}}},
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
                 return res.status(500).json(err)
             }
+            console.log(doc)
         });
 
     ScheduleModel.findByIdAndUpdate(req.params.id,
@@ -106,7 +107,7 @@ router.put("/:id/slot",(req,res)=>{
             if(err){
                 res.status(500).json(err)
             }else{
-                
+                console.log(doc)
                 ScheduleModel.findById(req.params.id)
                     .then((doc)=>{
                         if(!doc || doc.length ===0){
@@ -125,24 +126,14 @@ router.delete("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
-    
-    let slot = {
-        from:req.body.from,
-        to:req.body.to,
-        available:req.body.available,
-
-    }
-    if(req.body.assignedTo){
-        slot.assignedTo=req.body.assignedTo
-    }
     ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$pull: {[req.body.day]: slot}},
+        {$pull: {[req.body.day]: {'_id':req.query.id}}},
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
-                res.status(500).json(err)
-            }else{
-                
+                return res.status(500).json(err)
+            }
+           else{
                 ScheduleModel.findById(req.params.id)
                     .then((doc)=>{
                         if(!doc || doc.length ===0){
