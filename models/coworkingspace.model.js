@@ -1,7 +1,7 @@
 const mongoose =require('mongoose');
 const Schema = mongoose.Schema;
 
-
+var ObjectId = mongoose.Schema.Types.ObjectId
 let CoworkingSchema = new Schema({
     name: {
         type:String,
@@ -27,7 +27,8 @@ let CoworkingSchema = new Schema({
         to:String
     },
     noOfRooms:Number,
-    description:String
+    description:String,
+    schedule:ObjectId
 
 });
 

@@ -50,12 +50,16 @@ const PartnerSchema = new mongoose.Schema({
     //*their partners?
     other_partner:{
 <<<<<<< HEAD
+<<<<<<< HEAD
         type: String,
         unique: true
 =======
         type:Number,
         unique: false
 >>>>>>> new schema
+=======
+        type:Number,
+        unique: false
     },
     //*their board members
     member :[ {
