@@ -10,6 +10,7 @@ const express = require('express')
 const router = express.Router()
 
 const Task = require('../models/task.model')
+const validator = require('../validations/taskValidations')
 
 /*
     POST/CREATE route for Task Entity
@@ -19,6 +20,9 @@ router.post('/', (request, response) => {
     if (!request.body) {
         return response.status(400).send('400: Bad Request')
     }
+
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
 
     Task.create(request.body).then((document) => {
 
@@ -92,6 +96,9 @@ router.put('/', (request, response) => {
         return response.status(400).status('400: Bad Request, no email is supplied')
     }
 
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+    
     let key = {
         'contactEmail': email
     }

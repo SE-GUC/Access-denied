@@ -2,13 +2,15 @@
 const certificationModel = require('../models/certification.model');
 const express = require('express');
 const router = express.Router();
+const validator = require('../validations/certificationValidations.js');
 
 router.post("/", (req, res) => {
 
     if (!req.body) {
         return res.status(400).send("Body is missing")
     }
-
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new certificationModel(req.body)
 
     model.save()
@@ -27,9 +29,10 @@ router.post("/", (req, res) => {
 router.put('/', (req, res) => {
 
     if (!req.query.id_of_certification) {
-        return res.status(400).send('id of certification is mising.')
+        return res.status(400).send('id of certification is missing.')
     }
-
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     certificationModel.findOneAndUpdate({
             id_of_certification: req.query.id_of_certification
         }, req.body, {
@@ -45,7 +48,7 @@ router.put('/', (req, res) => {
 
 router.delete('/', (req, res) => {
     if (!req.query.id_of_certification) {
-        return res.status(400).send('id is mising.')
+        return res.status(400).send('id is missing.')
     }
     certificationModel.findOneAndDelete({
 
@@ -65,7 +68,7 @@ router.delete('/', (req, res) => {
 
 router.get("/", (req, res) => {
     if (!req.query.id_of_certification) {
-        return res.status(400).send("ID of certification is mising.")
+        return res.status(400).send("ID of certification is missing.")
     }
     certificationModel.find({
 
