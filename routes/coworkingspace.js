@@ -4,6 +4,7 @@ express = require("express");
 const mongoose =require('mongoose');
 const coworkingspaceModel = require('../models/coworkingspace.model')
 const validator = require('../validations/coworkingspaceValidations.js');
+const scheduleModel = require('../models/schedule.model')
 
 const router = express.Router();
 
@@ -11,16 +12,26 @@ router.post('/',(req,res)=>{
     console.log(req.body);
     const isValidated = validator.createValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    let model = new coworkingspaceModel(req.body);
-    model.save()
-    .then((doc)=>{
-        if(!doc || doc.length === 0){
-            return res.status(500).send(doc);
-        }
-        res.status(201).send(doc)
-    }).catch((err)=>{
-        res.status(500).json(err)
+    let schedule = new scheduleModel();
+    schedule.save()
+        .then((doc)=>{
+            if(!doc ||doc.length ===0){
+                return res.status(500).send("Error in creating a new schedule")
+            }
+            req.body.schedule = doc._id
+            
+        let model = new coworkingspaceModel(req.body);
+        model.save()
+        .then((doc)=>{
+            if(!doc || doc.length === 0){
+                return res.status(500).send(doc);
+            }
+            res.status(201).send(doc)
+        })})
+    .catch((err)=>{
+        return res.status(500).json(err)
     })
+    
 })
 
 router.get('/',(req,res)=>{
@@ -73,6 +84,14 @@ router.delete('/',(req,res)=>{
         })
 })
 
+router.post("/createSchedule",(req,res)=>{
+    if(!req||!req.body){
+        return res.status(400).send("Body Is Missing");
+    }
+    let email = req.body.email
+    res.redirect(307,`../schedule/?entity=coworking&email=${email}`)
+    
+})
 router.get('/all',(req,res)=>{
     coworkingspaceModel.find()
         .then((doc)=>{
