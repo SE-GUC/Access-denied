@@ -7,6 +7,8 @@ const app=express();
 
 const EducationalOrganisationRoute=require("./routes/EducationalOrganisation")
 
+const EvaluationRoute=require("./routes/Evaluation")
+
 const bodyParser=require("body-parser");
 
 app.use(bodyParser.json());
@@ -17,6 +19,8 @@ app.use((req, res, next) => {
 })
 
 app.use("/api/EducationalOrganisation",EducationalOrganisationRoute);
+app.use("/api/Evaluation",EvaluationRoute)
+
 
 app.use(express.static('public'));
 
