@@ -114,13 +114,32 @@ router.put("/slot",(req,res)=>{
             return res.status(500).send(doc)
         }
         let scheduleId = doc.schedule
-        res.redirect(307,`../schedule/${scheduleId}/slot`)
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
     })
     .catch((err)=>{
         res.status(500).json(err)
     })
     
 })
+router.delete("/slot",(req,res)=>{
+    if(!req||!req.body){
+        return res.status(400).send("Body Is Missing");
+    }
+    let id = req.query.id
+    coworkingspaceModel.findById(id)
+    .then((doc)=>{
+        if(!doc || doc.length ===0){
+            return res.status(500).send(doc)
+        }
+        let scheduleId = doc.schedule
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
+    })
+    .catch((err)=>{
+        res.status(500).json(err)
+    })
+    
+})
+
 router.get('/all',(req,res)=>{
     coworkingspaceModel.find()
         .then((doc)=>{
