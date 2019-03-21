@@ -81,6 +81,7 @@ router.put("/:id/slot",(req,res)=>{
         return res.status(400).send("Body is Missing")
     }
     let slot = {
+        _id:req.query.id,
         from:req.body.from,
         to:req.body.to,
         available:req.body.available,
