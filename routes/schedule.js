@@ -39,7 +39,7 @@ router.post("/:id/slot",(req,res)=>{
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
-                res.status(500).json(err)
+                return res.status(500).json(err)
             }else{
                 
                 ScheduleModel.findById(req.params.id)
@@ -76,6 +76,54 @@ router.get("/:id",(req,res)=>{
         })
 })
 
+router.get("/:id/slot",(req,res)=>{
+    let schedule = req.params.id
+    ScheduleModel.findById(schedule)
+    .then((doc)=>{
+        if(!doc||doc.length===0){
+            return res.status(500).send(doc)
+        }
+        var slot = doc.Saturday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }
+        var slot = doc.Sunday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Monday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Tuesday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Wednesday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Thursday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Friday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }
+        return res.status(404).send("Slot not found")
+        
+    })
+})
 router.put("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
@@ -98,30 +146,32 @@ router.put("/:id/slot",(req,res)=>{
             if(err){
                 return res.status(500).json(err)
             }
-            console.log(doc)
+            else{
+                ScheduleModel.findByIdAndUpdate(req.params.id,
+                    {$push: {[req.body.day]: slot}},
+                    {safe: true, upsert: true},
+                    function(err, doc) {
+                        if(err){
+                            return res.status(500).json(err)
+                        }else{
+                            console.log(doc)
+                            ScheduleModel.findById(req.params.id)
+                                .then((doc)=>{
+                                    if(!doc || doc.length ===0){
+                                        return res.status(500).send(doc)
+                                    }
+                                    res.status(200).send(doc)
+                                })
+                                .catch((err)=>{
+                                    return res.status(500).json(err)
+                                })
+                        }
+                    }
+                );
+            }
         });
 
-    ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$push: {[req.body.day]: slot}},
-        {safe: true, upsert: true},
-        function(err, doc) {
-            if(err){
-                res.status(500).json(err)
-            }else{
-                console.log(doc)
-                ScheduleModel.findById(req.params.id)
-                    .then((doc)=>{
-                        if(!doc || doc.length ===0){
-                            return res.status(500).send(doc)
-                        }
-                        res.status(200).send(doc)
-                    })
-                    .catch((err)=>{
-                        res.status(500).json(err)
-                    })
-            }
-        }
-    );
+    
 })
 router.delete("/:id/slot",(req,res)=>{
     if(!req || !req.body){
