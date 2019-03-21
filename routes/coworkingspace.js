@@ -84,12 +84,41 @@ router.delete('/',(req,res)=>{
         })
 })
 
-router.post("/createSchedule",(req,res)=>{
+router.post("/slot",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
-    let email = req.body.email
-    res.redirect(307,`../schedule/?entity=coworking&email=${email}`)
+    let id = req.query.id
+    coworkingspaceModel.findById(id)
+    .then((doc)=>{
+        if(!doc || doc.length ===0){
+            return res.status(500).send(doc)
+        }
+        let scheduleId = doc.schedule
+        res.redirect(307,`../schedule/${scheduleId}/slot`)
+    })
+    .catch((err)=>{
+        res.status(500).json(err)
+    })
+    
+})
+
+router.put("/slot",(req,res)=>{
+    if(!req||!req.body){
+        return res.status(400).send("Body Is Missing");
+    }
+    let id = req.query.id
+    coworkingspaceModel.findById(id)
+    .then((doc)=>{
+        if(!doc || doc.length ===0){
+            return res.status(500).send(doc)
+        }
+        let scheduleId = doc.schedule
+        res.redirect(307,`../schedule/${scheduleId}/slot`)
+    })
+    .catch((err)=>{
+        res.status(500).json(err)
+    })
     
 })
 router.get('/all',(req,res)=>{
