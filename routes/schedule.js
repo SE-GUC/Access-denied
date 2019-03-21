@@ -28,7 +28,7 @@ router.post("/:id/slot",(req,res)=>{
     let slot = {
         from:req.body.from,
         to:req.body.to,
-        free:req.body.free,
+        available:req.body.available,
 
     }
     if(req.body.assignedTo){
@@ -83,7 +83,7 @@ router.put("/:id/slot",(req,res)=>{
     let slot = {
         from:req.body.from,
         to:req.body.to,
-        free:req.body.free,
+        available:req.body.available,
 
     }
     if(req.body.assignedTo){
@@ -129,7 +129,7 @@ router.delete("/:id/slot",(req,res)=>{
     let slot = {
         from:req.body.from,
         to:req.body.to,
-        free:req.body.free,
+        available:req.body.available,
 
     }
     if(req.body.assignedTo){
