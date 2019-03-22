@@ -4,22 +4,17 @@ express = require("express");
 const mongoose =require('mongoose');
 const coworkingspaceModel = require('../models/coworkingspace.model')
 const validator = require('../validations/coworkingspaceValidations.js');
-const scheduleModel = require('../models/schedule.model')
-
+const axios = require('axios')
 const router = express.Router();
 
 router.post('/',(req,res)=>{
     console.log(req.body);
     const isValidated = validator.createValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    let schedule = new scheduleModel();
-    schedule.save()
-        .then((doc)=>{
-            if(!doc ||doc.length ===0){
-                return res.status(500).send("Error in creating a new schedule")
-            }
-            req.body.schedule = doc._id
-            
+    axios.post('http://localhost:3000/api/schedule',{})
+    .then((response)=>{
+        let schedule = response.data._id
+        req.body.schedule = schedule
         let model = new coworkingspaceModel(req.body);
         model.save()
         .then((doc)=>{
@@ -27,12 +22,16 @@ router.post('/',(req,res)=>{
                 return res.status(500).send(doc);
             }
             res.status(201).send(doc)
-        })})
+        })    
+        .catch((err)=>{
+            return res.status(500).send(err)
+         })
+        })
     .catch((err)=>{
-        return res.status(500).json(err)
-    })
+        return res.status(500).send(err)
+    })  
     
-})
+});
 
 router.get('/',(req,res)=>{
     console.log(req.body);
@@ -88,6 +87,7 @@ router.post("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id) return res.status(400).send('Coowrking Space Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -107,6 +107,7 @@ router.get("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -131,6 +132,8 @@ router.put("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
+    if(!req.query.slot) return res.status(400).send('Slot Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -138,7 +141,7 @@ router.put("/schedule",(req,res)=>{
             return res.status(500).send(doc)
         }
         let scheduleId = doc.schedule
-        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.query.slot}`)
     })
     .catch((err)=>{
         res.status(500).json(err)
@@ -149,6 +152,8 @@ router.delete("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
+    if(!req.query.slot) return res.status(400).send('Slot Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -156,7 +161,7 @@ router.delete("/schedule",(req,res)=>{
             return res.status(500).send(doc)
         }
         let scheduleId = doc.schedule
-        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.query.slot}`)
     })
     .catch((err)=>{
         res.status(500).json(err)
