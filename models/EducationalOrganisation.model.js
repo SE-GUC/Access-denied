@@ -28,5 +28,6 @@ const EducationalOrganisationSchema = new mongoose.Schema({
 
 var Mymodel = mongoose.model("EducationalOrganisation", EducationalOrganisationSchema);
 
+
 module.exports = Mymodel;
 

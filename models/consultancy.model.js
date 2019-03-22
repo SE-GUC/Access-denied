@@ -23,7 +23,7 @@ const consultancySchema = new mongoose.Schema({
     },
     partners: [{
         type: mongoose.Schema.ObjectId,
-        ref: 'partners'
+        ref: 'Partners'
     }],
     boardMembers: [{ //required?
         name: String,
