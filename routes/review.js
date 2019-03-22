@@ -15,18 +15,6 @@ router.post("/", (req, res) => {
       .send({ error: isValidated.error.details[0].message });
 
   let model = new reviewModel(req.body);
-  reviewModel
-    .findOne({
-      task: req.query.task
-    })
-    .populate("reviewer", "name")
-    .populate("reviewee", "name")
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
   model
     .save()
     .then(doc => {
