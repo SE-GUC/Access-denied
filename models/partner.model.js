@@ -50,7 +50,10 @@ const PartnerSchema = new mongoose.Schema({
     //*their partners?
     other_partner:{
         type:String,
+
+        
         unique: false
+        
     },
     //*their board members
     member :[ {
