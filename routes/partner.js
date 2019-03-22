@@ -2,6 +2,8 @@ const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
 const validator = require("../validations/partnerValidations")
+const axios = require('axios');
+const reviewModel = require("../models/review.model");
 
 router.post("/", (req, res) => {
     if(!req.body){
@@ -71,5 +73,22 @@ router.delete("/", (req, res) => {
             res.status(500).json(err)
         })
 })
-
+  router.get("/getFeedback", (req, res) => {
+    if (!req.query.id) {
+      return res.status(400).send("Reviewee ID is missing.");
+    }
+    reviewModel
+      .find({
+        reviewee: req.query.id
+      })
+      .populate("reviewer", "name")
+      .populate("reviewee", "name")
+      .populate("task", "title")
+      .then(doc => {
+        res.json(doc);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
 module.exports = router;
