@@ -21,8 +21,8 @@ module.exports = {
             description: Joi.string().min(3).max(500),
             dateIssued: Joi.date(),
             assigner: Joi.string(),
-            // contactEmail: Joi.string().email(),
-            // assignee: Joi.string(),
+            contactEmail: Joi.string().email(),
+            assignee: Joi.string(),
             isCompleted: Joi.boolean()
         }
 
