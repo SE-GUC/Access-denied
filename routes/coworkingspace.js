@@ -4,7 +4,6 @@ express = require("express");
 const mongoose =require('mongoose');
 const coworkingspaceModel = require('../models/coworkingspace.model')
 const validator = require('../validations/coworkingspaceValidations.js');
-const scheduleModel = require('../models/schedule.model')
 const axios = require('axios')
 const router = express.Router();
 
