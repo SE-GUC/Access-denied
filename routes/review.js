@@ -34,7 +34,7 @@ router.get("/", (req, res) => {
     return res.status(400).send("Reviewee ID is missing.");
   }
   reviewModel
-    .findOne({
+    .find({
       reviewee: req.query.reviewee
     })
     .populate("reviewer", "name")
