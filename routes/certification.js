@@ -3,7 +3,7 @@ const certificationModel = require('../models/certification.model');
 const express = require('express');
 const router = express.Router();
 const validator = require('../validations/certificationValidations.js');
-const scheduleModel = require('../models/schedule.model')
+const axios = require('axios')
 
 router.post("/", (req, res) => {
 
@@ -90,10 +90,11 @@ router.post("/offlineEvaluation/",(req,res)=>{
     if(!req.query.id){
         return res.status(400).send("id is Missing")
     }
-    let schedule = new scheduleModel();
-    schedule.save()
-    .then((doc)=>{
-        certificationModel.findByIdAndUpdate(req.query.id,{schedule:doc._id})
+    axios.post('http://localhost:3000/api/schedule',{})
+    .then((response)=>{
+        let schedule = response.data._id
+        req.body.schedule = schedule
+        certificationModel.findByIdAndUpdate(req.query.id,{schedule:response._id})
         .then((doc)=>{
             if(!doc||doc.length===0)
             {
@@ -102,9 +103,13 @@ router.post("/offlineEvaluation/",(req,res)=>{
             res.status(201).send(doc)
             
         })
+        .catch((err)=>{
+            res.status(500).json(err)
+        })
     })
     .catch((err)=>{
-        res.status(500).send(err)
+        console.log(err)
+        res.status(500).json(err)
     })
 })
 
