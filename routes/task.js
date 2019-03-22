@@ -21,8 +21,8 @@ router.post('/', (request, response) => {
         return response.status(400).send('400: Bad Request')
     }
 
-    const isValidated = validator.createValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+    //const isValidated = validator.createValidation(req.body)
+    //if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
 
     Task.create(request.body).then((document) => {
 
@@ -54,7 +54,7 @@ router.get('/', (request, response) => {
         'contactEmail': email
     }
 
-    Task.findOne(key).then((document) => {
+    Task.findOne(key).populate('assigner').populate('assignee').then((document) => {
 
         if (!document || document.length == 0) {
             return response.status(500).json(document)
@@ -71,7 +71,7 @@ router.get('/all', (request, response) => {
 
     let key = {}
 
-    Task.find(key).then((document) => {
+    Task.find(key).populate('assigner').populate('assignee').then((document) => {
 
         if (!document || document.length == 0) {
             return response.status(500).json(document)
@@ -97,8 +97,10 @@ router.put('/', (request, response) => {
     }
 
     const isValidated = validator.updateValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-    
+    if (isValidated.error) return res.status(400).send({
+        error: isValidated.error.details[0].message
+    })
+
     let key = {
         'contactEmail': email
     }

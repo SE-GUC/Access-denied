@@ -27,7 +27,8 @@ var taskSchema = new mongoose.Schema({
         Default: Date.now
     },
     assigner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Partners',
         required: true
     },
     contactEmail: {
@@ -35,7 +36,8 @@ var taskSchema = new mongoose.Schema({
         required: true
     },
     assignee: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Members'
     },
     isCompleted: {
         type: Boolean,
@@ -49,6 +51,6 @@ var taskModel = mongoose.model('Task', taskSchema)
     Delete Task collection if needed, due to schema changes
 */
 
-//taskModel.collection.remove()
+taskModel.collection.remove()
 
 module.exports = taskModel
