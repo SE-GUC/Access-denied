@@ -26,7 +26,7 @@ const ReviewSchema = new mongoose.Schema({
   },
   task: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Tasks",
+    ref: "Task",
     required: true
   },
   reviewerModel: {
