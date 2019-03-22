@@ -188,6 +188,7 @@ router.delete("/:id/slot",(req,res)=>{
     }
     if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
     if(!req.query.id) return res.status(400).send('Slot Id Is Missing')
+    if(!req.body.day) return res.status(400).send('Day Is Missing')
     ScheduleModel.findByIdAndUpdate(req.params.id,
         {$pull: {[req.body.day]: {'_id':req.query.id}}},
         {safe: true, upsert: true},
