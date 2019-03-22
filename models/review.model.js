@@ -6,12 +6,12 @@ mongoose.connect(uri, { useNewUrlParser: true });
 const ReviewSchema = new mongoose.Schema({
   reviewer: {
     type: mongoose.Schema.Types.ObjectId,
-    refPath: "onModel",
+    refPath: "reviewerModel",
     required: true
   },
   reviewee: {
     type: mongoose.Schema.Types.ObjectId,
-    refPath: "onModel",
+    refPath: "revieweeModel",
     required: true
   },
   review: {
@@ -29,7 +29,12 @@ const ReviewSchema = new mongoose.Schema({
     ref: "Tasks",
     required: true
   },
-  onModel: {
+  reviewerModel: {
+    type: String,
+    required: true,
+    enum: ["Members", "Partners"]
+  },
+  revieweeModel: {
     type: String,
     required: true,
     enum: ["Members", "Partners"]

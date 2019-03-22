@@ -13,8 +13,9 @@ module.exports = {
         .min(1)
         .max(5)
         .required(),
-      task: Joi,
-      onModel: Joi.string()
+      task: Joi.required(),
+      reviewerModel: Joi.string().required(),
+      revieweeModel: Joi.string().required()
     };
 
     return Joi.validate(request, createSchema);
@@ -31,7 +32,8 @@ module.exports = {
         .min(1)
         .max(5),
       task: Joi,
-      onModel: Joi.string()
+      reviewerModel: Joi.string(),
+      revieweeModel: Joi.string()
     };
 
     return Joi.validate(request, updateSchema);
