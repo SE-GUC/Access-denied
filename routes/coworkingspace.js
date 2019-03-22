@@ -87,7 +87,7 @@ router.post("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
-
+    if(!req.query.id) return res.status(400).send('Coowrking Space Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -107,6 +107,7 @@ router.get("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -131,6 +132,8 @@ router.put("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
+    if(!req.query.slot) return res.status(400).send('Slot Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -138,7 +141,7 @@ router.put("/schedule",(req,res)=>{
             return res.status(500).send(doc)
         }
         let scheduleId = doc.schedule
-        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.query.slot}`)
     })
     .catch((err)=>{
         res.status(500).json(err)
@@ -149,6 +152,8 @@ router.delete("/schedule",(req,res)=>{
     if(!req||!req.body){
         return res.status(400).send("Body Is Missing");
     }
+    if(!req.query.id ) return res.status(400).send('Coworking Space Id is Missing')
+    if(!req.query.slot) return res.status(400).send('Slot Id Is Missing')
     let id = req.query.id
     coworkingspaceModel.findById(id)
     .then((doc)=>{
@@ -156,7 +161,7 @@ router.delete("/schedule",(req,res)=>{
             return res.status(500).send(doc)
         }
         let scheduleId = doc.schedule
-        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.body.slotId}`)
+        res.redirect(307,`../schedule/${scheduleId}/slot?id=${req.query.slot}`)
     })
     .catch((err)=>{
         res.status(500).json(err)
