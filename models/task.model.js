@@ -6,44 +6,46 @@
 
 "use strict";
 
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
-const URI = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
+const URI =
+  "mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true";
 
 mongoose.connect(URI, {
-    useNewUrlParser: true
-})
+  useNewUrlParser: true
+});
 
 var taskSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    description: String,
-    dateIssued: {
-        type: String,
-        Default: Date.now
-    },
-    assigner: {
-        type: String,
-        required: true
-    },
-    contactEmail: {
-        type: String,
-        required: true
-    },
-    assignee: {
-        type: String,
-    },
-    isCompleted: {
-        type: Boolean,
-        default: false
-    }
-})
+  title: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  description: String,
+  dateIssued: {
+    type: String,
+    Default: Date.now
+  },
+  assigner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Partners"
+  },
+  contactEmail: {
+    type: String,
+    required: true
+  },
+  assignee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Members"
+  },
+  isCompleted: {
+    type: Boolean,
+    default: false
+  }
+});
 
-var taskModel = mongoose.model('Task', taskSchema)
+var taskModel = mongoose.model("Task", taskSchema);
 
 /*
     Delete Task collection if needed, due to schema changes
@@ -51,4 +53,4 @@ var taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.remove()
 
-module.exports = taskModel
+module.exports = taskModel;
