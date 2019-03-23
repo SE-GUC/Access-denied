@@ -2,8 +2,9 @@ const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
 const validator = require("../validations/partnerValidations")
-const axios = require('axios');
-const reviewModel = require("../models/review.model");
+const axios =require("axios")
+const reviewModel = require("../models/review.model")
+
 
 router.post("/", (req, res) => {
     if(!req.body){
@@ -24,22 +25,7 @@ router.post("/", (req, res) => {
             res.status(500).json(err)
         })
 })
-router.get('/all', (request, response) => {
 
-    let key = {}
-
-    partnerModel.find(key).then((document) => {
-
-        if (!document || document.length == 0) {
-            return response.status(500).json(document)
-        }
-
-        response.status(200).json(document)
-
-    }).catch((error) => {
-        response.status(500).json(error)
-    })
-})
 
 router.get("/", (req, res) => {
     if(!req.query.email){
@@ -55,6 +41,8 @@ router.get("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+
+
 router.get('/all', (request, response) => {
 
     let key = {}
@@ -128,6 +116,7 @@ router.delete("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+
   router.get("/getFeedback", (req, res) => {
     if (!req.query.id) {
       return res.status(400).send("Reviewee ID is missing.");
@@ -146,4 +135,5 @@ router.delete("/", (req, res) => {
         res.status(500).json(err);
       });
   });
+
 module.exports = router;
