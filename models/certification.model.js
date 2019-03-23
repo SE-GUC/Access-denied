@@ -1,32 +1,38 @@
-const mongoose = require('mongoose')
-const uri = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
-
-mongoose.connect(uri, {
-    useNewUrlParser: true
-})
+const mongoose = require("mongoose");
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const certificationSchema = new mongoose.Schema({
-
-    name_of_certification: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    id_of_certification: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    Evaluation_of_available: Date,
-    Fees: Number,
-    Method_of_payment: String,
-    Evaluation_procedure: {
-        type: String,
-        required: true
+  name_of_certification: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  id_of_certification: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  skills: [String],
+  Evaluation_of_available: Date,
+  Fees: Number,
+  Method_of_payment: String,
+  Evaluation_procedure: {
+    type: String,
+    required: true
+  },
+  membersapplied: [
+    {
+      MEMBERS: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Members"
+      },
+      finished: Boolean
     }
+  ],
+  schedule: {
+    type: ObjectId,
+    ref: "Schedule"
+  }
+});
 
-
-})
-
-
-module.exports = mongoose.model("Certification", certificationSchema)
+module.exports = mongoose.model("Certification", certificationSchema);
