@@ -6,12 +6,14 @@
 
 "use strict";
 
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
+
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
 var taskSchema = new mongoose.Schema({
-title: {
+  title: {
+
     type: String,
     required: true,
     unique: true
@@ -33,13 +35,17 @@ title: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Members"
   },
+
+   skills : [String],
   isCompleted: {
     type: Boolean,
     default: false
   }
 });
 
+
 var taskModel = mongoose.model('Task', taskSchema)
+
 
 /*
     Delete Task collection if needed, due to schema changes
@@ -47,4 +53,4 @@ var taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.remove()
 
-module.exports = taskModel
+module.exports = taskModel;

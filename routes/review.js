@@ -1,3 +1,4 @@
+
 const reviewModel = require('../models/review.model');
 const express = require('express');
 const router = express.Router();
@@ -69,24 +70,24 @@ router.post('/', (req, res) => {
     });
 });
 
-
-
-
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   if (!req.query.reviewee) {
-    return res.status(400).send('Reviewee ID is missing.');
+    return res.status(400).send("Reviewee ID is missing.");
   }
-  reviewModel.findOne({
-    reviewee: req.query.reviewee,
-  }).populate('reviewer', 'name').populate('reviewee', 'name')
-      .then((doc) => {
-        res.json(doc);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
+  reviewModel
+    .find({
+      reviewee: req.query.reviewee
+    })
+    .populate("reviewer", "name")
+    .populate("reviewee", "name")
+    .populate("task", "title")
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
-
 
 router.get('/all', (req, res) => {
   reviewModel.find({})
@@ -130,6 +131,10 @@ router.delete('/', (req, res) => {
       .catch((err) => {
         res.status(500).json(err);
       });
-});
+  });
+
+
+
+
 
 module.exports = router;

@@ -70,6 +70,16 @@ router.get('/all', (request, response) => {
     })
 })
 
+router.get("/all", (req, res) => {
+    partnerModel.find({})
+        .then((doc) => {
+            res.json(doc)
+        })
+        .catch((err) => {
+            res.status(500).json(err)
+        })
+})
+
 router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")

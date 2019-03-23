@@ -11,11 +11,7 @@ const router = express.Router()
 
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
-
-const mongoose = require("mongoose");
-mongoose.set('useCreateIndex',true);
-mongoose.set('usefindandmodify',false);
-
+const axios = require("axios")
 
 /*
     POST/CREATE route for Task Entity
@@ -174,4 +170,35 @@ router.delete('/', (request, response) => {
     })
 })
 
+router.get('/filterTasks', (request, response) => {
+    var skills = request.query.skills
+    var q =JSON.parse(skills)
+    if (! q) {
+        return response.status(400).status('400: Bad Request')
+    }
+    var splitted = q.skills.split(",")
+    var  tasks=[]
+    axios.get("http://localhost:3000/api/task/all")
+    .then(alltasks =>{
+    splitted.forEach(function(element) {
+        alltasks.data.forEach(function(element2) {
+               element2.skills.forEach(function(skill){
+                   let j =tasks.find(function(ele){
+                        return element2==ele
+                   })
+                   if(element==skill && j==null){
+                    // response.json(element2.data)
+                    tasks.push(element2)
+                   }
+               })
+               
+               })})
+               response.json(tasks) 
+            })
+            .catch((error) => {
+                response.status(500).json(error)
+            })
+       
+    
+})
 module.exports = router;
