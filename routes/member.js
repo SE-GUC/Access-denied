@@ -41,14 +41,20 @@ router.get("/tasks",(req,res)=>{
         }
       }).then(response =>{
         var memberModel=response.data[0].membersapplied
-        memberModel.forEach(function(value) {
-            if(value._id == objid) {
+        // res.json(memberModel)
+       let j = memberModel.find(function(value) {
+           return value.MEMBERS == objid })
+           
+            if(j==null) {
+                //res.send("already applied")
                 memberModel.push({
                     MEMBERS:objid,
                     finished : "false"})
+                    
             }
-        })
         
+        
+        //   res.json(memberModel)
         console.log(response.data)
        console.log(memberModel.tostring)
        //update certifcate array
