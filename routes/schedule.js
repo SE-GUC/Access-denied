@@ -1,4 +1,4 @@
-const ScheduleModel = require("../models/schedule.model");
+const ScheduleModel = require("../models/Schedule.model");
 const express = require("express");
 const router = express.Router();
 const validator = require("../validations/scheduleValidations");
