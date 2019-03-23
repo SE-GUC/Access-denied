@@ -76,7 +76,7 @@ router.get("/", (req, res) => {
     certificationModel.find({
 
             id_of_certification: req.query.id_of_certification
-        })
+        }).populate('schedule')
         .then((doc) => {
             res.json(doc)
         })
@@ -94,9 +94,10 @@ router.post("/offlineEvaluation/",(req,res)=>{
     }
     axios.post(`${baseURL}/api/schedule`,{})
     .then((response)=>{
+        console.log(response.data._id)
         let schedule = response.data._id
         req.body.schedule = schedule
-        certificationModel.findByIdAndUpdate(req.query.id,{schedule:response._id})
+        certificationModel.findByIdAndUpdate(req.query.id,{schedule:response.data._id})
         .then((doc)=>{
             if(!doc||doc.length===0)
             {

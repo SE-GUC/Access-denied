@@ -33,7 +33,7 @@ finished : Boolean
 }],
 schedule:{
     type:ObjectId,
-    ref:'Schedules'
+    ref:'Schedule'
 }
 });
 
