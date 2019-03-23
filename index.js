@@ -3,6 +3,18 @@
 const express = require('express')
 const app = express()
 const PORT = process.env.PORT || 3000;
+// DB Config
+const uri =
+  "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true";
+
+// Connect to mongo
+const mongoose=require("mongoose")
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
 
 
 //Require routers
@@ -39,7 +51,7 @@ app.use(express.static('./public'))
 
 //Setup routing directories/paths
 app.use('/api/task', taskRoute) // Tested - Passed - changed file name to match file naming agreement
-app.use("/api/consultancy", consultancyRoute); // Tested - Passed
+app.use("/api/consultancy",consultancyRoute); // Tested - Passed
 app.use("/api/partner", partnerRoute); // Tested - Passed - router had extra paths, EX : /api/partner/update (solved by removal)
 app.use("/api/coworking",coworkingspaceRoute); // Tested - Passed
 app.use("/api/Member", customerRoute); // Tested - Passed
