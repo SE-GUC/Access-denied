@@ -43,7 +43,9 @@ var baseURL = process.env.BASEURL || "http://localhost:3000"
         console.log(response.data)
        console.log(memberModel.tostring)
        //update certifcate array
-       axios.put(`${baseURL}/api/certification`,{
+
+       axios.put(`${baseURL}/api/certification?id_of_certification=`+req.query.id,{
+
         "membersapplied":memberModel
         })
         .then(function(response){
