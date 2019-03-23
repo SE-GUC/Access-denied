@@ -3,25 +3,8 @@ const express = require("express")
 const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
-var request = require('request')
 const axios = require('axios');
-router.get("/tasks",(req,res)=>{
-      console.log("in tasks")
-      var propertiesObject = { email :'hi@com' }
-    request({url:'http://localhost:3000/api/partner', qs:propertiesObject}, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            var data = JSON.parse(body)
-            console.log(data.email) // Print the google web page.
-            res.send(body)
-            return
-         }
-         res.send(error.statusCode)
-    })
-    
-    
-    console.log('finish')
-    })
-   
+
    
    
  router.get("/cert",(req,res)=>{
@@ -74,14 +57,7 @@ router.get("/tasks",(req,res)=>{
      .catch(error => {
         console.log(error);
       })
-
-
-
-
-
-
-
-      //
+       
         })
      .catch(error => {
         console.log(error);
@@ -89,39 +65,9 @@ router.get("/tasks",(req,res)=>{
 
 
     })
-    
   
-      
-      
-
-
-
-    router.get("/ax",(req,res)=>{
-
-
-        axios.get('http://localhost:3000/api/partner/all')
-  .then(response =>{
-      var obj = response.data
-      obj.forEach(element => {
-         console.log(element.email) 
-      });
-   console.log(response.data)
-   res.send(response.data)
-   
-  })
-  .catch(error => {
-    console.log(error);
-  })
-      
-      })
-
-
-
-
-
-
-
 router.post("/", (req, res) => {
+    console.log("ok")
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
@@ -135,8 +81,7 @@ router.post("/", (req, res) => {
             if(!doc || doc.length ===0){
                 return res.status(500).send(doc)
             }
-
-            res.status(201).send(doc)
+          res.status(201).send(doc)
         })
         .catch((err) => {
             res.status(500).json(err)
@@ -157,6 +102,23 @@ router.get("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+router.get('/all', (request, response) => {
+
+    let key = {}
+
+    memberModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
+
 
 router.put("/", (req, res) => {
     if(!req.query.email){
@@ -192,4 +154,71 @@ router.delete("/", (req, res) => {
         })
 })
 
+//user stories
+router.get("/tasksAvilable", (req, res) => {
+
+           axios.get("http://localhost:3000/api/Member", {
+            params: {
+              email: req.query.email
+            }})
+            . then(member => {
+                let id = member.data._id
+               let Certification= member.data.Certification
+                let save =[]
+               Certification.forEach(function(element) {
+                save = element.skills +","+save                  });               
+                  let m= {
+               skills : save
+               } 
+                    axios.get('http://localhost:3000/api/task/filterTasks',{
+                        params: {
+                            skills:m
+                          }})
+                        
+                       
+                      .then(m =>
+                        {
+                            let k ={
+                                id: id,
+                                m : m.data
+                            }
+                            
+                            res.json(k)
+                        }
+
+                      )
+
+       })
+
+    })
+    router.get('/applyonTask', (request, response) => { 
+        let email =request.query.email
+        let taskemail =request.query.contactEmail
+        axios.get("http://localhost:3000/api/Member/tasksAvilable", {
+            params: {
+              email: email
+            }})
+            .then(tasks=>{
+                axios.get("http://localhost:3000/api/task", {
+                    params: {
+                        contactEmail: taskemail
+                      }})
+                      .then(thetask=>{
+                        //   response.json(tasks.data.id)
+                        tasks.data.m.forEach(function(atask){
+                            if(atask.title==thetask.data.title){
+                                axios.put("http://localhost:3000/api/task?contactEmail="+taskemail, {
+                                    assignee: tasks.data.id
+                                    }).then(p=>{
+                                           response.json(p.data)
+                                                         })
+                               
+                            }
+                      })
+               
+                    })
+
+                })
+            })
+    
 module.exports = router;

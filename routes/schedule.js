@@ -1,12 +1,12 @@
 const ScheduleModel = require('../models/schedule.model')
 const express = require("express")
 const router = express.Router();
+const validator = require("../validations/scheduleValidations")
 
 router.post('/',(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
-    //Add validation here
     let model =new ScheduleModel(req.body);
     model.save()
         .then((doc)=>{
@@ -24,11 +24,14 @@ router.post("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
-    
+    if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
+    const isValidated = validator.createValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+
     let slot = {
         from:req.body.from,
         to:req.body.to,
-        free:req.body.free,
+        available:req.body.available,
 
     }
     if(req.body.assignedTo){
@@ -39,7 +42,7 @@ router.post("/:id/slot",(req,res)=>{
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
-                res.status(500).json(err)
+                return res.status(500).json(err)
             }else{
                 
                 ScheduleModel.findById(req.params.id)
@@ -60,7 +63,7 @@ router.post("/:id/slot",(req,res)=>{
 
 
 router.get("/:id",(req,res)=>{
-    if(!req || !req.body){
+    if(!req || !req.body || !req.params.id){
         res.status(400).send("Body Is Missing")
     }
     ScheduleModel.findById(
@@ -76,14 +79,69 @@ router.get("/:id",(req,res)=>{
         })
 })
 
+router.get("/:id/slot",(req,res)=>{
+    if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
+    if(!req.query.id) return res.status(400).send('Slot Id Is Missing')
+    let schedule = req.params.id
+    ScheduleModel.findById(schedule)
+    .then((doc)=>{
+        if(!doc||doc.length===0){
+            return res.status(500).send(doc)
+        }
+        var slot = doc.Saturday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }
+        var slot = doc.Sunday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Monday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Tuesday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Wednesday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Thursday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }var slot = doc.Friday.find((slot)=>{
+            return slot._id==req.query.id
+        })
+        if(!(!slot || slot.length ===0)){
+            return res.status(200).send(slot)
+        }
+        return res.status(404).send("Slot not found")
+        
+    })
+})
 router.put("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
+    if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
+    if(!req.query.id) return res.status(400).send('Slot Id Is Missing')
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let slot = {
+        _id:req.query.id,
         from:req.body.from,
         to:req.body.to,
-        free:req.body.free,
+        available:req.body.available,
 
     }
     if(req.body.assignedTo){
@@ -91,58 +149,54 @@ router.put("/:id/slot",(req,res)=>{
     }
     //Delete the old Slot
     ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$pull: {[req.body.day]: {$elemMatch:{_id:req.query.id}}}},
+        {$pull: {[req.body.day]: {'_id':req.query.id}}},
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
                 return res.status(500).json(err)
             }
+            else{
+                ScheduleModel.findByIdAndUpdate(req.params.id,
+                    {$push: {[req.body.day]: slot}},
+                    {safe: true, upsert: true},
+                    function(err, doc) {
+                        if(err){
+                            return res.status(500).json(err)
+                        }else{
+                            console.log(doc)
+                            ScheduleModel.findById(req.params.id)
+                                .then((doc)=>{
+                                    if(!doc || doc.length ===0){
+                                        return res.status(500).send(doc)
+                                    }
+                                    res.status(200).send(doc)
+                                })
+                                .catch((err)=>{
+                                    return res.status(500).json(err)
+                                })
+                        }
+                    }
+                );
+            }
         });
 
-    ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$push: {[req.body.day]: slot}},
-        {safe: true, upsert: true},
-        function(err, doc) {
-            if(err){
-                res.status(500).json(err)
-            }else{
-                
-                ScheduleModel.findById(req.params.id)
-                    .then((doc)=>{
-                        if(!doc || doc.length ===0){
-                            return res.status(500).send(doc)
-                        }
-                        res.status(200).send(doc)
-                    })
-                    .catch((err)=>{
-                        res.status(500).json(err)
-                    })
-            }
-        }
-    );
+    
 })
 router.delete("/:id/slot",(req,res)=>{
     if(!req || !req.body){
         return res.status(400).send("Body is Missing")
     }
-    
-    let slot = {
-        from:req.body.from,
-        to:req.body.to,
-        free:req.body.free,
-
-    }
-    if(req.body.assignedTo){
-        slot.assignedTo=req.body.assignedTo
-    }
+    if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
+    if(!req.query.id) return res.status(400).send('Slot Id Is Missing')
+    if(!req.body.day) return res.status(400).send('Day Is Missing')
     ScheduleModel.findByIdAndUpdate(req.params.id,
-        {$pull: {[req.body.day]: slot}},
+        {$pull: {[req.body.day]: {'_id':req.query.id}}},
         {safe: true, upsert: true},
         function(err, doc) {
             if(err){
-                res.status(500).json(err)
-            }else{
-                
+                return res.status(500).json(err)
+            }
+           else{
                 ScheduleModel.findById(req.params.id)
                     .then((doc)=>{
                         if(!doc || doc.length ===0){
@@ -163,6 +217,7 @@ router.delete("/:id",(req,res)=>{
     if(!req || !req.body){
         res.status(400).send("Body Is Missing")
     }
+    if(!req.params.id ) return res.status(400).send('Schedule Id is Missing')
     ScheduleModel.findByIdAndDelete(req.params.id)
     .then((doc)=>{
         if(!doc || doc.length===0){
