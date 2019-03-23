@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
   // 1- name of company,
@@ -11,7 +13,7 @@ const PartnerSchema = new mongoose.Schema({
   //2- contact info,
   email: {
     type: String,
-    required: true,
+    required: false,
     unique: true
   },
   Telephone_number: {
@@ -43,15 +45,14 @@ const PartnerSchema = new mongoose.Schema({
   //*their filed of work
   field_of_work: {
     type: String,
-    required: true
-   
+    required: true,
+    unique: false
   },
   //*their partners?
   other_partner: {
-    type: String
-    
+    type: String,
 
-    
+    unique: false
   },
   //*their board members
   member: [

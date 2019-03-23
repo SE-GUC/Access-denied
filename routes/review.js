@@ -87,46 +87,19 @@ router.delete("/", (req, res) => {
         })
 })
 
-
-// router.post('/feedback',(req,res) => {
-//     let requestAssigner = request.body.reviewer
-//     let requestAssignee = request.body.reviewee
-
-//     axios.get('http://localhost:3000/api/task/check',{
-//         params:{
-//             assigner:requestAssigner,
-//             assignee:requestAssignee
-//         }
-        
-
-//     }).then((doc) => {
-//         const isValidated = validator.createValidation(req.body)
-//         if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-//         let model = new reviewModel(req.body)
-//         model.save()
-//         if(!doc || doc.length ===0){
-//             return res.status(500).send(doc)
-//         }
-
-//         res.status(201).send(doc)
-//     })
-//     .catch((err) => {
-//         res.status(500).json(err)
-//     })
-
-// })
-router.post('/feedback', (request, response) => {
+router.post('/partnerReview', (request, response) => {
     let requestAssigner= request.body.reviewer
     let requestAssignee= request.body.reviewee
-    axios.get('http://localhost:3000/api/task/check',{
+    let post=false
+    axios.get('http://localhost:3000/api/task/Done',{
       params:{
         assigner:requestAssigner,
         assignee:requestAssignee
       }
      })
       .then( (doc) => {
-     if(doc.data == null){
-       response.json(doc.data);
+     if(!doc || doc.data.length===0){
+         console.log("null")
        return response.status(500).send(doc);
      }
      const isValidated = validator.createValidation(request.body);
@@ -143,7 +116,7 @@ router.post('/feedback', (request, response) => {
            });
       })
       .catch((err) => {
-       // response.status(500).json(err);
+       response.status(500).json(err);
      
    });
  });

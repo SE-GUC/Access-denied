@@ -2,6 +2,9 @@ const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
 const validator = require("../validations/partnerValidations")
+const axios =require("axios")
+  
+
 
 router.post("/", (req, res) => {
     if(!req.body){
@@ -71,5 +74,7 @@ router.delete("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+
+
 
 module.exports = router;
