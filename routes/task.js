@@ -11,7 +11,7 @@ const router = express.Router()
 
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
-
+const axios = require("axios")
 /*
     POST/CREATE route for Task Entity
 */
@@ -96,8 +96,8 @@ router.put('/', (request, response) => {
         return response.status(400).status('400: Bad Request, no email is supplied')
     }
 
-    const isValidated = validator.updateValidation(request.body)
-    if (isValidated.error) return response.status(400).send({ error: isValidated.error.details[0].message })
+    // const isValidated = validator.updateValidation(request.body)
+    // if (isValidated.error) return response.status(400).send({ error: isValidated.error.details[0].message })
     
     let key = {
         'contactEmail': email
@@ -145,4 +145,44 @@ router.delete('/', (request, response) => {
     })
 })
 
+router.get('/filterTasks', (request, response) => {
+    var skills = request.query.skills
+    var q =JSON.parse(skills)
+    if (! q) {
+        return response.status(400).status('400: Bad Request')
+    }
+    var splitted = q.skills.split(",")
+    var  tasks=[]
+    axios.get("http://localhost:3000/api/task/all")
+    .then(alltasks =>{
+    splitted.forEach(function(element) {
+        alltasks.data.forEach(function(element2) {
+               element2.skills.forEach(function(skill){
+                   let j =tasks.find(function(ele){
+                        return element2==ele
+                   })
+                   if(element==skill && j==null){
+                    tasks.push(element2)
+                   }
+               })
+               
+               })})
+               response.json(tasks) 
+            })
+       
+   
+    // Task.find(element).then((document) => {
+    //     response.json(document)
+
+    //     if (!document || document.length == 0) {
+    //         return response.status(500).json(document)
+    //     }
+
+    //     tasks = tasks +document
+
+    // }).catch((error) => {
+    //     response.status(500).json(error)
+    // })}); 
+    
+})
 module.exports = router;

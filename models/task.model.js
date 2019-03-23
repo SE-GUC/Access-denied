@@ -9,11 +9,6 @@
 const mongoose = require('mongoose')
 
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
-const URI = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
-
-mongoose.connect(URI, {
-    useNewUrlParser: true
-})
 
 var taskSchema = new mongoose.Schema({
     title: {
@@ -37,6 +32,7 @@ var taskSchema = new mongoose.Schema({
     assignee: {
         type: String,
     },
+    skills : [String],
     isCompleted: {
         type: Boolean,
         default: false
