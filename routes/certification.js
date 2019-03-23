@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const validator = require('../validations/certificationValidations.js');
 const axios = require('axios')
+var baseURL = process.env.BASEURL || "http://localhost:3000"
 
 router.post("/", (req, res) => {
 
@@ -26,18 +27,34 @@ router.post("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+router.get('/all', (_request, response) => {
 
+    let key = {}
+
+    certificationModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
 router.put('/', (req, res) => {
 
     if (!req.query.id_of_certification) {
         return res.status(400).send('id of certification is missing.')
     }
-    const isValidated = validator.updateValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+   const isValidated = validator.updateValidation(req.body)
+   if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     certificationModel.findOneAndUpdate({
             id_of_certification: req.query.id_of_certification
         }, req.body, {
-            new: true
+            new: true,
+            useFindAndModify: false
         })
         .then((doc) => {
             res.json(doc)
@@ -90,7 +107,7 @@ router.post("/offlineEvaluation/",(req,res)=>{
     if(!req.query.id){
         return res.status(400).send("Certificate id is Missing")
     }
-    axios.post('http://localhost:3000/api/schedule',{})
+    axios.post(`${baseURL}/api/schedule`,{})
     .then((response)=>{
         let schedule = response.data._id
         req.body.schedule = schedule

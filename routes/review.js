@@ -1,16 +1,16 @@
 
-
-const reviewModel = require("../models/review.model")
-const express = require("express")
-const router = express.Router()
-const validator = require("../validations/reviewValidations")
+const reviewModel = require("../models/review.model");
+const express = require("express");
+const router = express.Router();
+const axios = require("axios");
+const validator = require("../validations/reviewValidations");
+var baseURL = process.env.BASEURL || "http://localhost:3000";
 const axios =require("axios")
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
-
     const isValidated = validator.createValidation(req.body)
     if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new reviewModel(req.body)
@@ -27,20 +27,77 @@ router.post("/", (req, res) => {
         })
 })
 
+router.post("/memberReview", (request, response) => {
+  let requestAssigner = request.body.reviewee;
+  let requestAssignee = request.body.reviewer;
+  axios
+    .get(`${baseURL}/api/task/Done`, {
+      params: {
+        assigner: requestAssigner,
+        assignee: requestAssignee
+      }
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        console.log("null");
+        return response.status(500).send(doc);
+      }
+      const isValidated = validator.createValidation(request.body);
+      if (isValidated.error)
+        return response
+          .status(400)
+          .send({ error: isValidated.error.details[0].message });
+      const model = new reviewModel(request.body);
+      model
+        .save()
+        .then(document => {
+          if (!document || document.length === 0) {
+            return response.status(500).send(document);
+          }
+          response.status(201).send(document);
+        })
+        .catch(err => {
+          response.status(500).json(err);
+        });
+    })
+    .catch(err => {
+      response.status(500).json(err);
+    });
+});
+
 router.get("/", (req, res) => {
-    if(!req.query.reviewee){
-        return res.status(400).send("Reviewee ID is missing.")
-    }
-    reviewModel.findOne({
-        reviewee: req.query.reviewee
-    }).populate('reviewer','name').populate('reviewee','name')
-        .then((doc) => {
-            res.json(doc)
-        })
-        .catch((err) => {
-            res.status(500).json(err)
-        })
-})
+  if (!req.query.reviewee) {
+    return res.status(400).send("Reviewee ID is missing.");
+  }
+  reviewModel
+    .find({
+      reviewee: req.query.reviewee
+    })
+    .populate("reviewer", "name")
+    .populate("reviewee", "name")
+    .populate("task", "title")
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+// router.get("/", (req, res) => {
+//     if(!req.query.reviewee){
+//         return res.status(400).send("Reviewee ID is missing.")
+//     }
+//     reviewModel.findOne({
+//         reviewee: req.query.reviewee
+//     }).populate('reviewer','name').populate('reviewee','name')
+//         .then((doc) => {
+//             res.json(doc)
+//         })
+//         .catch((err) => {
+//             res.status(500).json(err)
+//         })
+// })
 
 
 router.get("/all", (req, res) => {

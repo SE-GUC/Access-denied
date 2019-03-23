@@ -7,7 +7,8 @@ module.exports = {
             email: Joi.string().email().required(),
             field_of_work: Joi.string().min(3).max(500).required(),
             other_partner: Joi.string().min(3).max(500),
-            location: Joi.string().min(3).max(500).required()
+            location: Joi.string().min(3).max(500).required(),
+            Telephone_number : Joi.Number().min(3).max(500)
         }
 
         return Joi.validate(request, createSchema)

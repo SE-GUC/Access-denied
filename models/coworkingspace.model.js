@@ -28,7 +28,10 @@ let CoworkingSchema = new Schema({
     },
     noOfRooms:Number,
     description:String,
-    schedule:ObjectId
+    schedule:{
+        type:ObjectId,
+        ref:'Schedules'
+    }
 
 });
 

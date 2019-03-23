@@ -6,6 +6,7 @@ const coworkingspaceModel = require("../models/coworkingspace.model");
 const validator = require("../validations/coworkingspaceValidations.js");
 const axios = require("axios");
 const router = express.Router();
+var baseURL = process.env.BASEURL || "http://localhost:3000";
 
 router.post("/", (req, res) => {
   console.log(req.body);
@@ -15,7 +16,7 @@ router.post("/", (req, res) => {
       .status(400)
       .send({ error: isValidated.error.details[0].message });
   axios
-    .post("http://localhost:3000/api/schedule", {})
+    .post(`${baseURL}/api/schedule`, {})
     .then(response => {
       let schedule = response.data._id;
       req.body.schedule = schedule;

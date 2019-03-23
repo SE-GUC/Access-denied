@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const ReviewSchema = new mongoose.Schema({
@@ -38,5 +39,7 @@ const ReviewSchema = new mongoose.Schema({
   }
 });
 
-ReviewSchema.index({ reviewer: 1, reviewee: 1, task: 1 }, { unique: true });
+
+
+// ReviewSchema.index({ reviewer: 1, reviewee: 1, task: 1 }, { unique: true });
 module.exports = mongoose.model("Reviews", ReviewSchema);
