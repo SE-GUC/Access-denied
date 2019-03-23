@@ -6,40 +6,42 @@
 
 "use strict";
 
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
 var taskSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    description: String,
-    dateIssued: {
-        type: String,
-        Default: Date.now
-    },
-    assigner: {
-        type: String,
-        required: true
-    },
-    contactEmail: {
-        type: String,
-        required: true
-    },
-    assignee: {
-        type: String,
-    },
-    skills : [String],
-    isCompleted: {
-        type: Boolean,
-        default: false
-    }
-})
+  title: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  description: String,
+  dateIssued: {
+    type: String,
+    Default: Date.now
+  },
+  assigner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Partners"
+  },
+  contactEmail: {
+    type: String,
+    required: true
+  },
+  assignee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Members"
+  },
+   skills : [String],
+  isCompleted: {
+    type: Boolean,
+    default: false
+  }
+});
 
-var taskModel = mongoose.model('Task', taskSchema)
+var taskModel = mongoose.model("Task", taskSchema);
+
 
 /*
     Delete Task collection if needed, due to schema changes
@@ -47,4 +49,4 @@ var taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.remove()
 
-module.exports = taskModel
+module.exports = taskModel;
