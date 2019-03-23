@@ -40,11 +40,11 @@ router.post("/", (req, res) => {
 
 router.get("/", (req, res) => {
   console.log(req.body);
-  if (!req.body.email) return res.status(400).send("Email is missing.");
+  if (!req.query.email) return res.status(400).send("Email is missing.");
   coworkingspaceModel
     .findOne({
-      email: req.body.email
-    })
+      email: req.query.email
+    }).populate('schedule')
     .then(doc => {
       res.json(doc);
     })

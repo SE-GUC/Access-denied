@@ -27,7 +27,22 @@ router.post("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+router.get('/all', (_request, response) => {
 
+    let key = {}
+
+    certificationModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
 router.put('/', (req, res) => {
 
     if (!req.query.id_of_certification) {
@@ -76,7 +91,7 @@ router.get("/", (req, res) => {
     certificationModel.find({
 
             id_of_certification: req.query.id_of_certification
-        })
+        }).populate('schedule')
         .then((doc) => {
             res.json(doc)
         })
@@ -94,9 +109,10 @@ router.post("/offlineEvaluation/",(req,res)=>{
     }
     axios.post(`${baseURL}/api/schedule`,{})
     .then((response)=>{
+        console.log(response.data._id)
         let schedule = response.data._id
         req.body.schedule = schedule
-        certificationModel.findByIdAndUpdate(req.query.id,{schedule:response._id})
+        certificationModel.findByIdAndUpdate(req.query.id,{schedule:response.data._id})
         .then((doc)=>{
             if(!doc||doc.length===0)
             {
