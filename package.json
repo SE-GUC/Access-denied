@@ -36,12 +36,13 @@
     "http": "0.0.0",
     "joi": "^14.3.1",
     "method-override": "^3.0.0",
-    "mongoose": "^5.4.16",
+    "mongoose": "^5.4.19",
+    "node": "^11.12.0",
     "request": "^2.88.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "eslint": "^5.14.1",
+    "eslint": "^5.15.3",
     "eslint-config-google": "^0.12.0",
     "nodemon": "^1.18.10"
   }

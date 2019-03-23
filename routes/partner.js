@@ -2,13 +2,15 @@ const partnerModel = require("../models/partner.model")
 const express = require("express")
 const router = express.Router()
 const validator = require("../validations/partnerValidations")
+const axios = require('axios');
+const reviewModel = require("../models/review.model");
 
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
-    const isValidated = validator.createValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+   const isValidated = validator.createValidation(req.body)
+   if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new partnerModel(req.body)
     model.save()
         .then((doc) => {
@@ -70,15 +72,7 @@ router.get('/all', (request, response) => {
     })
 })
 
-router.get("/all", (req, res) => {
-    partnerModel.find({})
-        .then((doc) => {
-            res.json(doc)
-        })
-        .catch((err) => {
-            res.status(500).json(err)
-        })
-})
+
 
 router.put("/", (req, res) => {
     if(!req.query.email){
@@ -99,6 +93,7 @@ router.put("/", (req, res) => {
         })
 })
 
+
 router.put("/review", (req, res) => {
     if(!req.query.email && !req.query.name){
         return res.status(400).send("Email is mising.")
@@ -116,6 +111,7 @@ router.put("/review", (req, res) => {
         .catch((err) => {
             res.status(500).json(err)
         })
+
 })
 
 router.delete("/", (req, res) => {
@@ -132,5 +128,22 @@ router.delete("/", (req, res) => {
             res.status(500).json(err)
         })
 })
-
+  router.get("/getFeedback", (req, res) => {
+    if (!req.query.id) {
+      return res.status(400).send("Reviewee ID is missing.");
+    }
+    reviewModel
+      .find({
+        reviewee: req.query.id
+      })
+      .populate("reviewer", "name")
+      .populate("reviewee", "name")
+      .populate("task", "title")
+      .then(doc => {
+        res.json(doc);
+      })
+      .catch(err => {
+        res.status(500).json(err);
+      });
+  });
 module.exports = router;

@@ -15,6 +15,7 @@ const MemberSchema = new mongoose.Schema({
         required: true,
         unique: false // TODO: Change it to non unique
 
+
     },
     Certification : [
         {
@@ -26,6 +27,7 @@ const MemberSchema = new mongoose.Schema({
             
         }
     ]
+
 
 })
 module.exports = mongoose.model("Members", MemberSchema)
