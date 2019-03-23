@@ -30,7 +30,7 @@ let CoworkingSchema = new Schema({
     description:String,
     schedule:{
         type:ObjectId,
-        ref:'Schedules'
+        ref:'Schedule'
     }
 
 });

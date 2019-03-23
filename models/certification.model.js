@@ -32,7 +32,7 @@ const certificationSchema = new mongoose.Schema({
   ],
   schedule: {
     type: ObjectId,
-    ref: "Schedules"
+    ref: "Schedule"
   }
 });
 
