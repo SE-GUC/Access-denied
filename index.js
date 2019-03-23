@@ -1,12 +1,12 @@
 "use strict";
-
+const mongoose = require("mongoose")
 const express = require("express");
-const mongoose = require("mongoose");
 const app = express();
 
 // DB Config
 const uri =
   "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true";
+
 
 // Connect to mongo
 mongoose

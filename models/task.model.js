@@ -33,6 +33,7 @@ var taskSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Members"
   },
+   skills : [String],
   isCompleted: {
     type: Boolean,
     default: false
@@ -40,6 +41,7 @@ var taskSchema = new mongoose.Schema({
 });
 
 var taskModel = mongoose.model("Task", taskSchema);
+
 
 /*
     Delete Task collection if needed, due to schema changes
