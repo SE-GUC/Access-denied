@@ -11,7 +11,7 @@ const PartnerSchema = new mongoose.Schema({
   //2- contact info,
   email: {
     type: String,
-    required: false,
+    required: true,
     unique: true
   },
   Telephone_number: {
@@ -43,14 +43,15 @@ const PartnerSchema = new mongoose.Schema({
   //*their filed of work
   field_of_work: {
     type: String,
-    required: true,
-    unique: false
+    required: true
+   
   },
   //*their partners?
   other_partner: {
-    type: String,
+    type: String
+    
 
-    unique: false
+    
   },
   //*their board members
   member: [

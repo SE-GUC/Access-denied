@@ -145,4 +145,24 @@ router.delete('/', (request, response) => {
     })
 })
 
+router.get('/check',(request,response) =>{
+    let assigner=request.query.assigner
+    let assignee=request.query.assignee
+
+    if(!assignee || !assigner){
+        return response.status(400).status('missing assigner or missing assignee')
+    }
+    
+    let key = {
+        'assigner':assigner,
+        'assignee':assignee,
+        'isCompleted':true
+    }
+    Task.findOne(key).then((document) => {
+        response.status(200).json(document)
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
+
 module.exports = router;
