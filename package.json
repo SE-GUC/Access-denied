@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "Lirten Hub is the next step towards innovation in the freelancing field",
   "main": "index.js",
-  "engines": {
-    "node": "^8.15.0"
-  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
