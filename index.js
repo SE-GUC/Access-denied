@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const express = require("express");
 const app = express();
 
+
 // DB Config
 const uri =
   "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true";
@@ -15,6 +16,14 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch(err => console.log(err));
 
+
+// Connect to mongo
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
 const PORT = process.env.PORT || 3000;
 
 //Require routers

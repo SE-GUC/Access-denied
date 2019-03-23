@@ -1,7 +1,5 @@
 
-
 const mongoose = require("mongoose");
-
 
 
 const EducationalOrganisationSchema = new mongoose.Schema({

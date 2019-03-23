@@ -1,9 +1,71 @@
 const memberModel = require("./../models/member.Model")
 const express = require("express")
 const router = express.Router()
-const validator = require('../validations/memberValidations.js');
-const axios = require("axios")
+const validator = require('../validations/memberValidations.js')
+const app = express()
+const axios = require('axios');
 
+   
+   
+ router.get("/cert",(req,res)=>{
+     
+     console.log(req.query.email)
+     axios.get("http://localhost:3000/api/Member",{
+        params: {
+            email:req.query.email,
+        }
+      }).then(response =>{
+        objid = response.data._id
+        console.log(response.data._id)
+       //get certifcate array 
+       axios.get("http://localhost:3000/api/certification",{
+        params: {
+            id_of_certification:req.query.id,
+        }
+      }).then(response =>{
+        var memberModel=response.data[0].membersapplied
+        // res.json(memberModel)
+       let j = memberModel.find(function(value) {
+           return value.MEMBERS == objid })
+           
+            if(j==null) {
+                //res.send("already applied")
+                memberModel.push({
+                    MEMBERS:objid,
+                    finished : "false"})
+                    
+            }
+        
+        
+        //   res.json(memberModel)
+        console.log(response.data)
+       console.log(memberModel.tostring)
+       //update certifcate array
+       axios.put("http://localhost:3000/api/certification?id_of_certification=5001",{
+        "membersapplied":memberModel
+        })
+        .then(function(response){
+            console.log('saved successfully')
+            console.log(response.data)
+            res.send(response.data)
+    })
+
+
+
+    
+        })
+     .catch(error => {
+        console.log(error);
+      })
+       
+        })
+     .catch(error => {
+        console.log(error);
+      })
+
+
+    })
+  
 router.post("/", (req, res) => {
     console.log("ok")
     if(!req.body){
@@ -93,16 +155,6 @@ router.delete("/", (req, res) => {
 })
 
 //user stories
-router.get("/all", (req, res) => {
-    memberModel.find({})
-        .then((doc) => {
-            res.json(doc)
-        })
-        .catch((err) => {
-            res.status(500).json(err)
-        })
-})
-
 router.get("/tasksAvilable", (req, res) => {
 
            axios.get("http://localhost:3000/api/Member", {
