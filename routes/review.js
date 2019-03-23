@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
 router.post('/memberReview', (request, response) => {
   let requestAssigner= request.body.reviewee
   let requestAssignee= request.body.reviewer
-  axios.get('http://localhost:3000/api/task/Done',{
+  axios.get(`${baseURL}/api/task/Done`,{
     params:{
       assigner:requestAssigner,
       assignee:requestAssignee
