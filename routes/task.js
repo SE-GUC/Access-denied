@@ -12,6 +12,9 @@ const router = express.Router()
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require("axios")
+const mongoose=require("mongoose");
+mongoose.set('useCreateIndex',true);
+mongoose.set('usefindandmodify',false);
 
 /*
     POST/CREATE route for Task Entity
