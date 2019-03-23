@@ -4,13 +4,15 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios');
+var baseURL = process.env.BASEURL || "http://localhost:3000"
+
 
    
    
  router.get("/cert",(req,res)=>{
      
      console.log(req.query.email)
-     axios.get("http://localhost:3000/api/Member",{
+     axios.get(`${baseURL}/api/Member`,{
         params: {
             email:req.query.email,
         }
@@ -18,7 +20,7 @@ const axios = require('axios');
         objid = response.data._id
         console.log(response.data._id)
        //get certifcate array 
-       axios.get("http://localhost:3000/api/certification",{
+       axios.get(`${baseURL}/api/certification`,{
         params: {
             id_of_certification:req.query.id,
         }
@@ -41,7 +43,7 @@ const axios = require('axios');
         console.log(response.data)
        console.log(memberModel.tostring)
        //update certifcate array
-       axios.put("http://localhost:3000/api/certification?id_of_certification=5001",{
+       axios.put(`${baseURL}/api/certification?id_of_certification=5001`,{
         "membersapplied":memberModel
         })
         .then(function(response){
@@ -158,7 +160,7 @@ router.delete("/", (req, res) => {
 
 router.get("/tasksAvilable", (req, res) => {
 
-           axios.get("http://localhost:3000/api/Member", {
+           axios.get(`${baseURL}/api/Member`, {
             params: {
               email: req.query.email
             }})
@@ -171,7 +173,7 @@ router.get("/tasksAvilable", (req, res) => {
                   let m= {
                skills : save
                } 
-                    axios.get('http://localhost:3000/api/task/filterTasks',{
+                    axios.get(`${baseURL}/api/task/filterTasks`,{
                         params: {
                             skills:m
                           }})
@@ -195,12 +197,12 @@ router.get("/tasksAvilable", (req, res) => {
     router.get('/applyonTask', (request, response) => { 
         let email =request.query.email
         let taskemail =request.query.contactEmail
-        axios.get("http://localhost:3000/api/Member/tasksAvilable", {
+        axios.get(`${baseURL}/api/Member/tasksAvilable`, {
             params: {
               email: email
             }})
             .then(tasks=>{
-                axios.get("http://localhost:3000/api/task", {
+                axios.get(`${baseURL}/api/task`, {
                     params: {
                         contactEmail: taskemail
                       }})
@@ -208,7 +210,7 @@ router.get("/tasksAvilable", (req, res) => {
                         //   response.json(tasks.data.id)
                         tasks.data.m.forEach(function(atask){
                             if(atask.title==thetask.data.title){
-                                axios.put("http://localhost:3000/api/task?contactEmail="+taskemail, {
+                                axios.put(`${baseURL}/api/task?contactEmail=`+taskemail, {
                                     assignee: tasks.data.id
                                     }).then(p=>{
                                            response.json(p.data)

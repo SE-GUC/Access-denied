@@ -181,7 +181,7 @@ router.get('/filterTasks', (request, response) => {
     }
     var splitted = q.skills.split(",")
     var  tasks=[]
-    axios.get("http://localhost:3000/api/task/all")
+    axios.get(`${baseURL}/api/task/all`)
     .then(alltasks =>{
     splitted.forEach(function(element) {
         alltasks.data.forEach(function(element2) {

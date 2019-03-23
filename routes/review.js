@@ -1,9 +1,9 @@
-
 const reviewModel = require('../models/review.model');
 const express = require('express');
 const router = express.Router();
 const axios=require("axios")
 const validator = require('../validations/reviewValidations');
+var baseURL = process.env.BASEURL || "http://localhost:3000"
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
 router.post('/memberReview', (request, response) => {
   let requestAssigner= request.body.reviewee
   let requestAssignee= request.body.reviewer
-  axios.get('http://localhost:3000/api/task/Done',{
+  axios.get(`${baseURL}/api/task/Done`,{
     params:{
       assigner:requestAssigner,
       assignee:requestAssignee

@@ -31,7 +31,10 @@ membersapplied: [
 },
 finished : Boolean
 }],
-    schedule:ObjectId
+schedule:{
+    type:ObjectId,
+    ref:'Schedules'
+}
 });
 
 
