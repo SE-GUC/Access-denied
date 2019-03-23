@@ -8,11 +8,7 @@
 
 const mongoose = require("mongoose");
 
-<<<<<<< HEAD
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
-=======
-
->>>>>>> 20bd7caced2821a6828e2c7d1825d3f3c2de57c1
 
 var taskSchema = new mongoose.Schema({
   title: {
