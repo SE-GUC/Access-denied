@@ -12,9 +12,11 @@ const router = express.Router()
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require("axios")
+
 const mongoose=require("mongoose");
 mongoose.set('useCreateIndex',true);
 mongoose.set('usefindandmodify',false);
+
 
 /*
     POST/CREATE route for Task Entity
@@ -72,6 +74,7 @@ router.get('/', (request, response) => {
     })
 })
 
+
 router.get('/Done', (request, response) => {
 
     let assigner= request.query.assigner
@@ -94,6 +97,7 @@ router.get('/Done', (request, response) => {
         response.status(500).json(error)
     })
 })
+
 router.get('/all', (request, response) => {
 
     let key = {}
@@ -181,7 +185,11 @@ router.get('/filterTasks', (request, response) => {
     }
     var splitted = q.skills.split(",")
     var  tasks=[]
-    axios.get(`${baseURL}/api/task/all`)
+
+    axios.get("http://localhost:3000/api/task/all")
+
+//    axios.get(`${baseURL}/api/task/all`)
+
     .then(alltasks =>{
     splitted.forEach(function(element) {
         alltasks.data.forEach(function(element2) {
@@ -204,4 +212,29 @@ router.get('/filterTasks', (request, response) => {
        
     
 })
+
+
+router.get('/Done', (request, response) => {
+
+    let assigner= request.query.assigner
+    let assignee= request.query.assignee
+
+    if (!assigner || !assignee) {
+        return response.status(400).status('No assigner or assignee supplied')
+    }
+
+    let key = {
+        'assigner': assigner,
+        'assignee': assignee,
+        'isCompleted': true
+        
+    }
+
+    Task.find(key).then((document) => {
+        response.status(200).json(document)
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
+
 module.exports = router;

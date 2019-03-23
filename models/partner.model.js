@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+
+
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
   // 1- name of company,
