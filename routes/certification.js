@@ -26,7 +26,22 @@ router.post("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+router.get('/all', (_request, response) => {
 
+    let key = {}
+
+    certificationModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
 router.put('/', (req, res) => {
 
     if (!req.query.id_of_certification) {

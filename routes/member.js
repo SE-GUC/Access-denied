@@ -41,7 +41,7 @@ const axios = require('axios');
         console.log(response.data)
        console.log(memberModel.tostring)
        //update certifcate array
-       axios.put("http://localhost:3000/api/certification?id_of_certification=5001",{
+       axios.put("http://localhost:3000/api/certification?id_of_certification="+req.query.id,{
         "membersapplied":memberModel
         })
         .then(function(response){
