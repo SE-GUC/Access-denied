@@ -12,7 +12,9 @@ const router = express.Router()
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require("axios")
-var baseURL = process.env.BASEURL || "http://localhost:3000"
+const mongoose=require("mongoose");
+mongoose.set('useCreateIndex',true);
+mongoose.set('usefindandmodify',false);
 
 /*
     POST/CREATE route for Task Entity
