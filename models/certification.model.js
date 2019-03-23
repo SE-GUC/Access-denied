@@ -24,8 +24,7 @@ const certificationSchema = new mongoose.Schema({
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Members",
-        required: true
+        ref: "Members"
       },
       finished: Boolean
     }

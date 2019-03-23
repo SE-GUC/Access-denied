@@ -8,13 +8,10 @@
 
 const mongoose = require("mongoose");
 
-
-
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
 var taskSchema = new mongoose.Schema({
   title: {
-
     type: String,
     required: true,
     unique: true
@@ -37,16 +34,14 @@ var taskSchema = new mongoose.Schema({
     ref: "Members"
   },
 
-   skills : [String],
+  skills: [String],
   isCompleted: {
     type: Boolean,
     default: false
   }
 });
 
-
-var taskModel = mongoose.model('Task', taskSchema)
-
+var taskModel = mongoose.model("Task", taskSchema);
 
 /*
     Delete Task collection if needed, due to schema changes
