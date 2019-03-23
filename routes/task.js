@@ -21,13 +21,8 @@ router.post('/', (request, response) => {
         return response.status(400).send('400: Bad Request')
     }
 
-<<<<<<< HEAD
-    //const isValidated = validator.createValidation(req.body)
-    //if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
-=======
     const isValidated = validator.createValidation(request.body)
     if (isValidated.error) return response.status(400).send({ error: isValidated.error.details[0].message })
->>>>>>> dev
 
     Task.create(request.body).then((document) => {
 
@@ -101,17 +96,9 @@ router.put('/', (request, response) => {
         return response.status(400).status('400: Bad Request, no email is supplied')
     }
 
-<<<<<<< HEAD
-    const isValidated = validator.updateValidation(req.body)
-    if (isValidated.error) return res.status(400).send({
-        error: isValidated.error.details[0].message
-    })
-
-=======
     const isValidated = validator.updateValidation(request.body)
     if (isValidated.error) return response.status(400).send({ error: isValidated.error.details[0].message })
     
->>>>>>> dev
     let key = {
         'contactEmail': email
     }
