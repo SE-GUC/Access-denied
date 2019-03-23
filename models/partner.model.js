@@ -1,5 +1,3 @@
-
-
 const mongoose = require("mongoose");
 
 
@@ -37,9 +35,7 @@ const PartnerSchema = new mongoose.Schema({
   },
   //*number of employees
   number_of_employees: {
-    type: Number,
-    required: false,
-    unique: false
+    type: Number
   },
 
   //*their past projects ?
@@ -47,17 +43,14 @@ const PartnerSchema = new mongoose.Schema({
   //*their filed of work
   field_of_work: {
     type: String,
-    required: true,
-    unique: false
+    required: true
   },
   //*their partners?
-  other_partner: {
-    type: String,
-
-    unique: false
+  other_partners: {
+    type: String
   },
   //*their board members
-  member: [
+  members: [
     {
       name: String,
       age: Number,
