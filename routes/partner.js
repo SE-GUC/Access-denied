@@ -52,8 +52,8 @@ router.put("/", (req, res) => {
     if(!req.query.email){
         return res.status(400).send("Email is mising.")
     }
-    // const isValidated = validator.updateValidation(req.body)
-    // if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+    const isValidated = validator.updateValidation(req.body)
+    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     partnerModel.findOneAndUpdate({
         email: req.query.email},
         req.body, {
