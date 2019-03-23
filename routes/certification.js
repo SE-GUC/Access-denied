@@ -31,12 +31,13 @@ router.put('/', (req, res) => {
     if (!req.query.id_of_certification) {
         return res.status(400).send('id of certification is missing.')
     }
-    const isValidated = validator.updateValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+   const isValidated = validator.updateValidation(req.body)
+   if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     certificationModel.findOneAndUpdate({
             id_of_certification: req.query.id_of_certification
         }, req.body, {
-            new: true
+            new: true,
+            useFindAndModify: false
         })
         .then((doc) => {
             res.json(doc)

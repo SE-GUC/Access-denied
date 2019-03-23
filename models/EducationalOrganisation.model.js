@@ -1,8 +1,5 @@
 
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true"
-
-mongoose.connect(uri,{useNewUrlParser:true})
 
 const EducationalOrganisationSchema = new mongoose.Schema({
    name:{

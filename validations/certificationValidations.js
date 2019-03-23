@@ -7,7 +7,8 @@ module.exports = {
             id_of_certification: Joi.string().min(3).max(100).required(),
             Evaluation_of_available: Joi.date().required(),
             Fees:Joi.number().required(),
-            Evaluation_procedure: Joi.string().required()
+            Evaluation_procedure: Joi.string().required(),
+            membersapplied:Joi.array().required()
         }
 
         return Joi.validate(request, createSchema)
@@ -19,7 +20,8 @@ module.exports = {
             id_of_certification: Joi.string().min(3).max(100),
             Evaluation_of_available: Joi.date(),
             Fees:Joi.number(),
-            Evaluation_procedure: Joi.string()
+            Evaluation_procedure: Joi.string(),
+            membersapplied:Joi.array().required()
         }
 
         return Joi.validate(request, updateSchema)

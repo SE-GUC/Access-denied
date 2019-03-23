@@ -1,7 +1,118 @@
 const memberModel = require("./../models/member.Model")
 const express = require("express")
 const router = express.Router()
-const validator = require('../validations/memberValidations.js');
+const validator = require('../validations/memberValidations.js')
+const app = express()
+var request = require('request')
+const axios = require('axios');
+router.get("/tasks",(req,res)=>{
+      console.log("in tasks")
+      var propertiesObject = { email :'hi@com' }
+    request({url:'http://localhost:3000/api/partner', qs:propertiesObject}, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+            var data = JSON.parse(body)
+            console.log(data.email) // Print the google web page.
+            res.send(body)
+            return
+         }
+         res.send(error.statusCode)
+    })
+    
+    
+    console.log('finish')
+    })
+   
+   
+   
+ router.get("/cert",(req,res)=>{
+     
+     console.log(req.query.email)
+     axios.get("http://localhost:3000/api/Member",{
+        params: {
+            email:req.query.email,
+        }
+      }).then(response =>{
+        objid = response.data._id
+        console.log(response.data._id)
+       //get certifcate array 
+       axios.get("http://localhost:3000/api/certification",{
+        params: {
+            id_of_certification:req.query.id,
+        }
+      }).then(response =>{
+        var memberModel=response.data[0].membersapplied
+        memberModel.forEach(function(value) {
+            if(value._id == objid) {
+                memberModel.push({
+                    MEMBERS:objid,
+                    finished : "false"})
+            }
+        })
+        
+        console.log(response.data)
+       console.log(memberModel.tostring)
+       //update certifcate array
+       axios.put("http://localhost:3000/api/certification?id_of_certification=5001",{
+        "membersapplied":memberModel
+        })
+        .then(function(response){
+            console.log('saved successfully')
+            console.log(response.data)
+            res.send(response.data)
+    })
+
+
+
+    
+        })
+     .catch(error => {
+        console.log(error);
+      })
+
+
+
+
+
+
+
+      //
+        })
+     .catch(error => {
+        console.log(error);
+      })
+
+
+    })
+    
+  
+      
+      
+
+
+
+    router.get("/ax",(req,res)=>{
+
+
+        axios.get('http://localhost:3000/api/partner/all')
+  .then(response =>{
+      var obj = response.data
+      obj.forEach(element => {
+         console.log(element.email) 
+      });
+   console.log(response.data)
+   res.send(response.data)
+   
+  })
+  .catch(error => {
+    console.log(error);
+  })
+      
+      })
+
+
+
+
+
 
 
 router.post("/", (req, res) => {

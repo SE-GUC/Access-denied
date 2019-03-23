@@ -7,8 +7,8 @@ router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
-    const isValidated = validator.createValidation(req.body)
-    if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
+   const isValidated = validator.createValidation(req.body)
+   if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
     let model = new partnerModel(req.body)
     model.save()
         .then((doc) => {
@@ -55,6 +55,17 @@ router.put("/", (req, res) => {
         .catch((err) => {
             res.status(500).json(err)
         })
+})
+
+router.get('/all', (req, res) => {
+    partnerModel.find({},function(err,parts){
+        if(err){
+            res.send('smoething wrong')
+            next()
+        }
+        res.json(parts)
+    })
+    
 })
 
 router.delete("/", (req, res) => {
