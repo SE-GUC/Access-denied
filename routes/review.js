@@ -27,47 +27,58 @@ router.post('/', (req, res) => {
 });
 
 
- router.post('/memberReview', (request, response) => {
-   let requestAssigner= request.body.reviewee
-   let requestAssignee= request.body.reviewer
-   let posted=false
-   axios.get('http://localhost:3000/api/task/Done',{
-     params:{
-       assigner:requestAssigner,
-       assignee:requestAssignee
-     }
+
+
+router.post('/memberReview', (request, response) => {
+  let requestAssigner= request.body.reviewee
+  let requestAssignee= request.body.reviewer
+  axios.get('http://localhost:3000/api/task/Done',{
+    params:{
+      assigner:requestAssigner,
+      assignee:requestAssignee
+    }
+   })
+    .then( (doc) => {
+   if(!doc || doc.data.length===0){
+       console.log("null")
+     return response.status(500).send(doc);
+   }
+   const isValidated = validator.createValidation(request.body);
+   if (isValidated.error) return response.status(400).send({error: isValidated.error.details[0].message});
+     const model = new reviewModel(request.body);
+     model.save()
+         .then((document) => {
+           if (!document || document.length ===0) {
+             return response.status(500).send(document);
+           }
+           response.status(201).send(document);
+         }).catch((err) => {
+           response.status(500).json(err);
+         });
     })
-     .then( (doc) => {
-    if(!doc || doc.data.length === 0){
-      console.log("null");
-     return response.status(500).send(doc.data);
-    }else{
-    doc.data.forEach(function(returnedTask){
-      if(request.body.task == returnedTask._id){
-        const isValidated = validator.createValidation(request.body);
-        if (isValidated.error) return response.status(400).send({error: isValidated.error.details[0].message});
-          const model = new reviewModel(request.body);
-          model.save()
-              .then((document) => {
-                if (!document || document.length ===0) {
-                  response.status(500).send(document);
-                }
-               posted=true;
-               return response.status(201).send(document);
-              }).catch((err) => {
-                response.status(500).json(err);
-              });
-         }
-        })
-        
-        if(posted==false){
-        response.status(500).send(document);
-       }
-}
-    }) 
     .catch((err) => {
-      response.status(500).json(err);
-    });
+     response.status(500).json(err);
+   
+ });
+});
+
+router.get("/", (req, res) => {
+ if (!req.query.reviewee) {
+   return res.status(400).send("Reviewee ID is missing.");
+ }
+ reviewModel
+   .find({
+     reviewee: req.query.reviewee
+   })
+   .populate("reviewer", "name")
+   .populate("reviewee", "name")
+   .populate("task", "title")
+   .then(doc => {
+     res.json(doc);
+   })
+   .catch(err => {
+     res.status(500).json(err);
+   });
 });
 
 router.get("/", (req, res) => {

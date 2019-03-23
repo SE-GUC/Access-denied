@@ -102,7 +102,7 @@ router.get("/", (req, res) => {
             res.status(500).json(err)
         })
 })
-router.get('/all', (request, response) => {
+router.get('/all', (_request, response) => {
 
     let key = {}
 
@@ -155,6 +155,7 @@ router.delete("/", (req, res) => {
 })
 
 //user stories
+
 router.get("/tasksAvilable", (req, res) => {
 
            axios.get("http://localhost:3000/api/Member", {
