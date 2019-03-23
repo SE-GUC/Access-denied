@@ -3,8 +3,9 @@ const express = require("express")
 const router = express.Router()
 const validator = require('../validations/memberValidations.js');
 const axios = require("axios")
-//basic CRUD op
+
 router.post("/", (req, res) => {
+    console.log("ok")
     if(!req.body){
         return res.status(400).send("Body is missing")
     }
@@ -18,8 +19,7 @@ router.post("/", (req, res) => {
             if(!doc || doc.length ===0){
                 return res.status(500).send(doc)
             }
-
-            res.status(201).send(doc)
+          res.status(201).send(doc)
         })
         .catch((err) => {
             res.status(500).json(err)
@@ -40,6 +40,23 @@ router.get("/", (req, res) => {
             res.status(500).json(err)
         })
 })
+router.get('/all', (request, response) => {
+
+    let key = {}
+
+    memberModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
+
 
 router.put("/", (req, res) => {
     if(!req.query.email){
@@ -152,6 +169,4 @@ router.get("/tasksAvilable", (req, res) => {
                 })
             })
     
-
-
 module.exports = router;

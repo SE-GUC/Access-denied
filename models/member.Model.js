@@ -1,12 +1,11 @@
 const mongoose = require("mongoose")
+
 const MemberSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-
-
-    email: {
+   email: {
         type: String,
         required: true,
         unique: true

@@ -12,6 +12,7 @@ const router = express.Router()
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require("axios")
+
 /*
     POST/CREATE route for Task Entity
 */
@@ -36,6 +37,7 @@ router.post('/', (request, response) => {
         response.status(500).json(error)
     })
 })
+
 
 /*
     GET/READ route for Task Entity
@@ -67,6 +69,28 @@ router.get('/', (request, response) => {
     })
 })
 
+router.get('/Done', (request, response) => {
+
+    let assigner= request.query.assigner
+    let assignee= request.query.assignee
+
+    if (!assigner || !assignee) {
+        return response.status(400).status('No assigner or assignee supplied')
+    }
+
+    let key = {
+        'assigner': assigner,
+        'assignee': assignee,
+        'isCompleted': true
+        
+    }
+
+    Task.find(key).then((document) => {
+        response.status(200).json(document)
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})
 router.get('/all', (request, response) => {
 
     let key = {}
@@ -83,6 +107,7 @@ router.get('/all', (request, response) => {
         response.status(500).json(error)
     })
 })
+
 
 /*
     PUT/UPDATE route for Task Entity

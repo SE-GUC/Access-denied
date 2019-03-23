@@ -7,7 +7,6 @@ const app = express();
 const uri =
   "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true";
 
-
 // Connect to mongo
 mongoose
   .connect(uri, {
@@ -54,6 +53,7 @@ app.use((request, response, next) => {
 app.use(express.static("./public"));
 
 //Setup routing directories/paths
+
 app.use("/api/task", taskRoute); // Tested - Passed - changed file name to match file naming agreement
 app.use("/api/consultancy", consultancyRoute); // Tested - Passed
 app.use("/api/partner", partnerRoute); // Tested - Passed - router had extra paths, EX : /api/partner/update (solved by removal)
