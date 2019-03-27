@@ -35,6 +35,7 @@ const searchNames = list => {
 };
 
 router.get("/", (req, res) => {
+  let resolved = false;
   if (!req.query.keyword) {
     return res.status(400).send("Query is Missing");
   }
@@ -42,7 +43,10 @@ router.get("/", (req, res) => {
   let result = [];
   searchNames([req.query.keyword])
     .then(doc => {
-      if (splitted.length < 2) return res.status(200).send(doc.flat(Infinity));
+      if (splitted.length < 2) {
+        resolved = true;
+        return res.status(200).send(doc.flat(Infinity));
+      }
       result = doc;
       return searchNames(splitted);
     })
@@ -50,8 +54,10 @@ router.get("/", (req, res) => {
       if (!docs) {
         return res.status(400).send("Bad Request");
       }
-      result = result.concat(docs);
-      res.status(200).send(result.flat(Infinity));
+      if (!resolved) {
+        result = result.concat(docs);
+        res.status(200).send(result.flat(Infinity));
+      }
     })
     .catch(err => res.status(500).json(err));
 });
