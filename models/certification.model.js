@@ -24,6 +24,14 @@ const certificationSchema = new mongoose.Schema({
       },
       finished: Boolean
     }
+  ],
+  membersacceptedt:[
+    {
+      MEMBERS: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Members"
+      }
+    }
   ]
  
 });
