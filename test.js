@@ -1,3 +1,4 @@
+const coworkingTests = require('./tests/coworkingTest')
 var baseURL =  "http://localhost:3000"
 const axios = require('axios');
 var fetch = require('node-fetch')

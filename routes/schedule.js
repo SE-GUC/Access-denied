@@ -64,7 +64,7 @@ router.post("/:id/slot", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  if (!req || !req.body || !req.params.id) {
+  if (!req || !req.params.id) {
     res.status(400).send("Body Is Missing");
   }
   ScheduleModel.findById(req.params.id)

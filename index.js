@@ -20,6 +20,7 @@ const certificationRoute = require("./routes/certification");
 const scheduleRoute = require("./routes/schedule");
 const reviewRoute = require("./routes/review");
 const EvaluationRoute = require("./routes/Evaluation");
+const searchRoute = require("./routes/search");
 
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json());
@@ -57,6 +58,7 @@ app.use("/api/certification", certificationRoute); // Tested - Passed - A lot of
 app.use("/api/schedule", scheduleRoute);
 app.use("/api/review", reviewRoute);
 app.use("/api/Evaluation", EvaluationRoute);
+app.use("/search", searchRoute);
 
 //404 & 500 Error handlers
 app.use((error, request, response, next) => {
@@ -70,9 +72,8 @@ mongoose
   })
   .then(() => {
     console.log("Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log("Application listening to port: " + PORT);
+    });
   })
   .catch(err => console.log(err));
-
-app.listen(PORT, () => {
-  console.log("Application listening to port: " + PORT);
-});
