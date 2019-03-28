@@ -179,7 +179,7 @@ router.delete("/", (request, response) => {
       response.status(500).json(error);
     });
 });
-
+//TODO: is completed
 router.get("/filterTasks", (request, response) => {
   var skills = request.query.skills;
   var q = JSON.parse(skills);
