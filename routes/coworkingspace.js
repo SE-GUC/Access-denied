@@ -1,69 +1,71 @@
-"use strict";
-const certificationModel = require("../models/certification.model");
-const express = require("express");
-const router = express.Router();
-const validator = require("../validations/certificationValidations.js");
+require("dotenv").config();
+bodyParser = require("body-parser");
+express = require("express");
+const mongoose = require("mongoose");
+const coworkingspaceModel = require("../models/coworkingspace.model");
+const validator = require("../validations/coworkingspaceValidations.js");
 const axios = require("axios");
+const router = express.Router();
 var baseURL = process.env.BASEURL || "http://localhost:3000";
 
 router.post("/", (req, res) => {
-  if (!req.body) {
-    return res.status(400).send("Body is missing");
-  }
+  console.log(req.body);
   const isValidated = validator.createValidation(req.body);
   if (isValidated.error)
     return res
       .status(400)
       .send({ error: isValidated.error.details[0].message });
-  let model = new certificationModel(req.body);
-
-  model
-    .save()
+  axios
+    .post(`${baseURL}/api/schedule`, {})
+    .then(response => {
+      let schedule = response.data._id;
+      req.body.schedule = schedule;
+      let model = new coworkingspaceModel(req.body);
+      return model.save();
+    })
     .then(doc => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc);
       }
+      res.status(201).send(doc);
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
+});
 
-      res.status(200).send(doc);
+router.get("/", (req, res) => {
+  if (!req.query.email) return res.status(400).send("Email is missing.");
+  coworkingspaceModel
+    .findOne({
+      email: req.query.email
+    })
+    .populate("schedule")
+    .then(doc => {
+      res.json(doc);
     })
     .catch(err => {
       res.status(500).json(err);
     });
 });
-router.get("/all", (_request, response) => {
-  let key = {};
 
-  certificationModel
-    .find(key)
-    .then(document => {
-      if (!document || document.length == 0) {
-        return response.status(500).json(document);
-      }
-
-      response.status(200).json(document);
-    })
-    .catch(error => {
-      response.status(500).json(error);
-    });
-});
 router.put("/", (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send("id of certification is missing.");
+  if (!req.query.email) {
+    return res.status(400).send("Email is missing.");
   }
   const isValidated = validator.updateValidation(req.body);
   if (isValidated.error)
     return res
       .status(400)
       .send({ error: isValidated.error.details[0].message });
-  certificationModel
+  coworkingspaceModel
     .findOneAndUpdate(
       {
-        id_of_certification: req.query.id_of_certification
+        email: req.query.email
       },
       req.body,
       {
-        new: true,
-        useFindAndModify: false
+        new: true
       }
     )
     .then(doc => {
@@ -75,63 +77,17 @@ router.put("/", (req, res) => {
 });
 
 router.delete("/", (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send("id is missing.");
+  if (!req.query.email) {
+    return res.status(400).send("Email is missing.");
   }
-  certificationModel
+  coworkingspaceModel
     .findOneAndDelete({
-      id_of_certification: req.query.id_of_certification
+      email: req.query.email
     })
     .then(doc => {
       res.json(doc);
     })
     .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-router.get("/", (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send("ID of certification is missing.");
-  }
-  certificationModel
-    .find({
-      id_of_certification: req.query.id_of_certification
-    })
-    .populate("schedule")
-    .then(doc => {
-      res.json(doc);
-    })
-    .catch(err => {
-      res.status(500).json(err);
-    });
-});
-
-router.post("/offlineEvaluation/", (req, res) => {
-  if (!req || !req.body) {
-    return res.status(400).send("Body is Missing");
-  }
-  if (!req.query.id) {
-    return res.status(400).send("Certificate id is Missing");
-  }
-  axios
-    .post(`${baseURL}/api/schedule`, {})
-    .then(response => {
-      console.log(response.data._id);
-      let schedule = response.data._id;
-      req.body.schedule = schedule;
-      return certificationModel.findByIdAndUpdate(req.query.id, {
-        schedule: response.data._id
-      });
-    })
-    .then(doc => {
-      if (!doc || doc.length === 0) {
-        return res.status(500).send(doc);
-      }
-      res.status(201).send(doc);
-    })
-    .catch(err => {
-      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -140,9 +96,10 @@ router.post("/schedule", (req, res) => {
   if (!req || !req.body) {
     return res.status(400).send("Body Is Missing");
   }
-  if (!req.query.id) return res.status(400).send("Certificate Id Is Missing");
+  if (!req.query.id)
+    return res.status(400).send("Coowrking Space Id Is Missing");
   let id = req.query.id;
-  certificationModel
+  coworkingspaceModel
     .findById(id)
     .then(doc => {
       if (!doc || doc.length === 0) {
@@ -160,9 +117,10 @@ router.get("/schedule", (req, res) => {
   if (!req || !req.body) {
     return res.status(400).send("Body Is Missing");
   }
-  if (!req.query.id) return res.status(400).send("Certificate Id Is Missing");
+  if (!req.query.id)
+    return res.status(400).send("Coworking Space Id is Missing");
   let id = req.query.id;
-  certificationModel
+  coworkingspaceModel
     .findById(id)
     .then(doc => {
       if (!doc || doc.length === 0) {
@@ -187,10 +145,11 @@ router.put("/schedule", (req, res) => {
   if (!req || !req.body) {
     return res.status(400).send("Body Is Missing");
   }
-  if (!req.query.id) return res.status(400).send("Certificate Id Is Missing");
+  if (!req.query.id)
+    return res.status(400).send("Coworking Space Id is Missing");
   if (!req.query.slot) return res.status(400).send("Slot Id Is Missing");
   let id = req.query.id;
-  certificationModel
+  coworkingspaceModel
     .findById(id)
     .then(doc => {
       if (!doc || doc.length === 0) {
@@ -207,10 +166,11 @@ router.delete("/schedule", (req, res) => {
   if (!req || !req.body) {
     return res.status(400).send("Body Is Missing");
   }
-  if (!req.query.id) return res.status(400).send("Certificate Id Is Missing");
+  if (!req.query.id)
+    return res.status(400).send("Coworking Space Id is Missing");
   if (!req.query.slot) return res.status(400).send("Slot Id Is Missing");
   let id = req.query.id;
-  certificationModel
+  coworkingspaceModel
     .findById(id)
     .then(doc => {
       if (!doc || doc.length === 0) {
@@ -223,4 +183,16 @@ router.delete("/schedule", (req, res) => {
       res.status(500).json(err);
     });
 });
+
+router.get("/all", (req, res) => {
+  coworkingspaceModel
+    .find()
+    .then(doc => {
+      res.json(doc);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;
