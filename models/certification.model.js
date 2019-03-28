@@ -7,11 +7,6 @@ const certificationSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  id_of_certification: {
-    type: String,
-    required: true,
-    unique: true
-  },
   skills: [String],
   Evaluation_of_available: Date,
   Fees: Number,
