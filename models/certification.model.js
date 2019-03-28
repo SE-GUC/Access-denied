@@ -12,8 +12,9 @@ const certificationSchema = new mongoose.Schema({
   Fees: Number,
   Method_of_payment: String,
   Evaluation_procedure: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    refPath: 'evaluationModel'
   },
   membersapplied: [
     {
@@ -23,11 +24,9 @@ const certificationSchema = new mongoose.Schema({
       },
       finished: Boolean
     }
-  ],
-  schedule: {
-    type: ObjectId,
-    ref: "Schedule"
-  }
+  ]
+ 
 });
+ 
 
 module.exports = mongoose.model("Certification", certificationSchema);
