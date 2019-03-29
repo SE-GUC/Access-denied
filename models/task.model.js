@@ -4,11 +4,11 @@
  * @description: This file handles the schema for the (Task Entity) it exports a usable model for further use
  */
 
-"use strict";
+'use strict'
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
 var taskSchema = new mongoose.Schema({
   owner: {
@@ -58,8 +58,8 @@ var taskSchema = new mongoose.Schema({
 //delete mongoose.connection.models['Tasks']
 //delete mongoose.connection.models['Task']
 
-var taskModel = mongoose.model("Task", taskSchema);
+var taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.drop()
 
-module.exports = taskModel;
+module.exports = taskModel

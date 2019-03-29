@@ -1,6 +1,4 @@
-const mongoose = require("mongoose");
-
-
+const mongoose = require('mongoose')
 
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
@@ -66,7 +64,7 @@ const PartnerSchema = new mongoose.Schema({
       email: String
     }
   ]
-});
+})
 //adding a form to suggest any feedback.
 
-module.exports = mongoose.model("Partners", PartnerSchema);
+module.exports = mongoose.model('Partners', PartnerSchema)

@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -20,9 +20,9 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skillset: Joi.array().items(Joi.string())
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -44,8 +44,8 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skillset: Joi.array().items(Joi.string())
-    };
+    }
 
-    return Joi.validate(request, updateSchema);
+    return Joi.validate(request, updateSchema)
   }
-};
+}

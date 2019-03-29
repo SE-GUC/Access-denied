@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -16,9 +16,9 @@ module.exports = {
       task: Joi.required(),
       reviewerModel: Joi.string().required(),
       revieweeModel: Joi.string().required()
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -34,10 +34,8 @@ module.exports = {
       task: Joi,
       reviewerModel: Joi.string(),
       revieweeModel: Joi.string()
-    };
+    }
 
-    return Joi.validate(request, updateSchema);
+    return Joi.validate(request, updateSchema)
   }
-
-};
-
+}

@@ -4,19 +4,21 @@
  * @description: This file handles all CRUD operations related to the Task Entity, it uses a simplfied schema (Non-Final) to project action to a cloud based MongoDB using the Mongoose ODM. The file exports a router for all the action to a default route '/', but all the CRUD route are actually posted to '/api/task/' route
  */
 
-"use strict";
+'use strict'
 
-const express = require("express");
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const Task = require("../models/task.model");
-const validator = require("../validations/taskValidations");
-const axios = require("axios");
+const Task = require('../models/task.model')
+const validator = require('../validations/taskValidations')
+const axios = require('axios')
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-mongoose.set("useCreateIndex", true);
-mongoose.set("usefindandmodify", false);
+mongoose.set('useCreateIndex', true)
+mongoose.set('usefindandmodify', false)
+
+const baseURL = process.env.BASEURL || 'localhost:3000'
 
 /*
     POST/CREATE route for Task Entity
@@ -26,33 +28,31 @@ mongoose.set("usefindandmodify", false);
  * @description Create a new document in Tasks Collection
  * @returns Success/Error JSON
  */
-router.post("/", (request, response) => {
+router.post('/', (request, response) => {
   if (!request.body) {
-    return response.status(400).send("400: Bad Request");
+    return response.status(400).send('400: Bad Request')
   }
 
-  const isValidated = validator.createValidation(request.body);
+  const isValidated = validator.createValidation(request.body)
 
   if (isValidated.error) {
-    return response
-      .status(400)
-      .send({
-        error: isValidated.error.details[0].message
-      });
+    return response.status(400).send({
+      error: isValidated.error.details[0].message
+    })
   }
 
   Task.create(request.body)
     .then(document => {
-      if (!document || document.length == 0) {
-        return response.status(500).json(document);
+      if (!document || document.length === 0) {
+        return response.status(500).json(document)
       }
 
-      response.status(201).json(document);
+      response.status(201).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
 /*
     GET/READ route for Task Entity
@@ -65,48 +65,47 @@ router.post("/", (request, response) => {
  * @requires _id
  */
 
-router.get("/", (request, response) => {
-
-  let documentID = request.query.id;
+router.get('/', (request, response) => {
+  let documentID = request.query.id
 
   if (!documentID) {
     return response
       .status(400)
-      .status("400: Bad Request, no document ID is supplied");
+      .status('400: Bad Request, no document ID is supplied')
   }
 
   let key = {
-    '_id': documentID
-  };
+    _id: documentID
+  }
 
   Task.findOne(key)
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document);
+        return response.status(500).json(document)
       }
 
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
-router.get("/all", (request, response) => {
-  let key = {};
+router.get('/all', (request, response) => {
+  let key = {}
 
   Task.find(key)
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document);
+        return response.status(500).json(document)
       }
 
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
 /*
     PUT/UPDATE route for Task Entity
@@ -117,45 +116,43 @@ router.get("/all", (request, response) => {
  * @requires _id
  */
 
-router.put("/", (request, response) => {
-  let documentID = request.query.id;
+router.put('/', (request, response) => {
+  let documentID = request.query.id
 
   if (!documentID) {
     return response
       .status(400)
-      .status("400: Bad Request, no document ID is supplied");
+      .status('400: Bad Request, no document ID is supplied')
   }
 
-  const isValidated = validator.updateValidation(request.body);
+  const isValidated = validator.updateValidation(request.body)
 
   if (isValidated.error) {
-    return response
-      .status(400)
-      .send({
-        error: isValidated.error.details[0].message
-      });
+    return response.status(400).send({
+      error: isValidated.error.details[0].message
+    })
   }
 
   let key = {
-    '_id': documentID
-  };
+    _id: documentID
+  }
 
-  let updatedDocument = request.body;
+  let updatedDocument = request.body
 
   Task.findOneAndUpdate(key, updatedDocument, {
-      new: true
-    })
+    new: true
+  })
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document);
+        return response.status(500).json(document)
       }
 
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
 /**
  * @description Delete a document from Database
@@ -163,32 +160,31 @@ router.put("/", (request, response) => {
  * @returns Success/Error JSON
  */
 
-router.delete("/", (request, response) => {
-
-  let documentID = request.query.id;
+router.delete('/', (request, response) => {
+  let documentID = request.query.id
 
   if (!documentID) {
     return response
       .status(400)
-      .status("400: Bad Request, no document ID is supplied");
+      .status('400: Bad Request, no document ID is supplied')
   }
 
   let key = {
-    '_id': documentID
-  };
+    _id: documentID
+  }
 
   Task.findOneAndDelete(key)
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document);
+        return response.status(500).json(document)
       }
 
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
 /**
  * @description Filter Tasks
@@ -196,38 +192,38 @@ router.delete("/", (request, response) => {
  * @returns Filtered Document
  */
 
-router.get("/filterTasks", (request, response) => {
-  var skills = request.query.skills;
-  var q = JSON.parse(skills);
+router.get('/filterTasks', (request, response) => {
+  var skills = request.query.skills
+  var q = JSON.parse(skills)
   if (!q) {
-    return response.status(400).status("400: Bad Request");
+    return response.status(400).status('400: Bad Request')
   }
-  var splitted = q.skills.split(",");
-  var tasks = [];
+  var splitted = q.skills.split(',')
+  var tasks = []
 
   axios
     .get(`${baseURL}/api/task/all`)
 
     .then(alltasks => {
-      splitted.forEach(function (element) {
-        alltasks.data.forEach(function (element2) {
-          element2.skills.forEach(function (skill) {
-            let j = tasks.find(function (ele) {
-              return element2 == ele;
-            });
+      splitted.forEach(function(element) {
+        alltasks.data.forEach(function(element2) {
+          element2.skills.forEach(function(skill) {
+            let j = tasks.find(function(ele) {
+              return element2 == ele
+            })
             if (element == skill && j == null) {
               // response.json(element2.data)
-              tasks.push(element2);
+              tasks.push(element2)
             }
-          });
-        });
-      });
-      response.json(tasks);
+          })
+        })
+      })
+      response.json(tasks)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
-});
+      response.status(500).json(error)
+    })
+})
 
 /**
  * @description Update Task Status to be done
@@ -235,37 +231,38 @@ router.get("/filterTasks", (request, response) => {
  * @returns Updated Document
  */
 
-router.put("/:id/done", (request, response) => {
-
-  let documentID = request.params.id;
+router.put('/:id/done', (request, response) => {
+  let documentID = request.params.id
 
   if (!documentID) {
     return response
       .status(400)
-      .status("400: Bad Request, no document ID is supplied");
+      .status('400: Bad Request, no document ID is supplied')
   }
 
   let key = {
-    '_id': documentID
-  };
+    _id: documentID
+  }
 
-  Task.findOneAndUpdate(key, {
-      'isComplete': true
-    }, {
+  Task.findOneAndUpdate(
+    key,
+    {
+      isComplete: true
+    },
+    {
       new: true
-    })
+    }
+  )
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document);
+        return response.status(500).json(document)
       }
 
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.status(500).json(error);
-    });
+      response.status(500).json(error)
+    })
+})
 
-
-});
-
-module.exports = router;
+module.exports = router
