@@ -5,7 +5,7 @@ const app = express()
 
 // Database Configuration...
 const uri =
-    'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
+  'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
 
 const PORT = process.env.PORT || 3000
 
@@ -25,9 +25,9 @@ const searchRoute = require('./routes/search')
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json())
 app.use(
-    express.urlencoded({
-        extended: false,
-    })
+  express.urlencoded({
+    extended: false
+  })
 )
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
@@ -36,11 +36,11 @@ app.set('view engine', 'html')
 
 //Logger
 app.use((request, response, next) => {
-    console.log(
-        `${new Date().toString()} => ${request.method} ${request.originalUrl}`,
-        request.body
-    )
-    next()
+  console.log(
+    `${new Date().toString()} => ${request.method} ${request.originalUrl}`,
+    request.body
+  )
+  next()
 })
 
 //Setup Static Directory
@@ -60,20 +60,20 @@ app.use('/api/review', reviewRoute)
 app.use('/api/Evaluation', EvaluationRoute)
 app.use('/search', searchRoute)
 
-//404 & 500 Error handlers
+// 404 & 500 Error handlers
 app.use((error, request, response, next) => {
-    response.status(500).send('500: Internal Server Errors')
+  response.status(500).send('500: Internal Server Error')
 })
 
 // Connect to mongo
 mongoose
-    .connect(uri, {
-        useNewUrlParser: true,
+  .connect(uri, {
+    useNewUrlParser: true
+  })
+  .then(() => {
+    console.log('Connected to MongoDB')
+    app.listen(PORT, () => {
+      console.log('Application listening to port: ' + PORT)
     })
-    .then(() => {
-        console.log('Connected to MongoDB')
-        app.listen(PORT, () => {
-            console.log('Application listening to port: ' + PORT)
-        })
-    })
-    .catch(err => console.log(err))
+  })
+  .catch(err => console.log(err))
