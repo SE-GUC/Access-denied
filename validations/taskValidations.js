@@ -3,19 +3,23 @@ const Joi = require("joi");
 module.exports = {
   createValidation: request => {
     const createSchema = {
-      title: Joi.string()
-        .min(3)
-        .max(500)
-        .required(),
+      owner: Joi.string(),
+      assignee: Joi.string(),
+      consultancy: Joi.string(),
       description: Joi.string()
         .min(3)
         .max(500),
-      dateIssued: Joi.date(),
-      assigner: Joi.string().required(),
-      contactEmail: Joi.string().email(),
-      assignee: Joi.string(),
-      skills: Joi,
-      isCompleted: Joi.boolean()
+      extraNotes: Joi.string()
+        .min(3)
+        .max(500),
+      isCompleted: Joi.boolean(),
+      date: Joi.date(),
+      effortLevel: Joi.number(),
+      commitmentLevel: Joi.number(),
+      experienceLevel: Joi.number(),
+      timeRequired: Joi.number(),
+      monetaryComp: Joi.number(),
+      skillset: Joi.array().items(Joi.string())
     };
 
     return Joi.validate(request, createSchema);
@@ -23,18 +27,23 @@ module.exports = {
 
   updateValidation: request => {
     const updateSchema = {
-      title: Joi.string()
-        .min(3)
-        .max(500),
+      owner: Joi.string(),
+      assignee: Joi.string(),
+      consultancy: Joi.string(),
       description: Joi.string()
         .min(3)
         .max(500),
-      dateIssued: Joi.date(),
-      assigner: Joi.string(),
-      contactEmail: Joi.string().email(),
-      assignee: Joi.string(),
-      skills: Joi,
-      isCompleted: Joi.boolean()
+      extraNotes: Joi.string()
+        .min(3)
+        .max(500),
+      isCompleted: Joi.boolean(),
+      date: Joi.date(),
+      effortLevel: Joi.number(),
+      commitmentLevel: Joi.number(),
+      experienceLevel: Joi.number(),
+      timeRequired: Joi.number(),
+      monetaryComp: Joi.number(),
+      skillset: Joi.array().items(Joi.string())
     };
 
     return Joi.validate(request, updateSchema);
