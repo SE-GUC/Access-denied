@@ -9,7 +9,6 @@ const router = express.Router();
 var baseURL = process.env.BASEURL || "http://localhost:3000";
 
 router.post("/", (req, res) => {
-  console.log(req.body);
   const isValidated = validator.createValidation(req.body);
   if (isValidated.error)
     return res
@@ -30,7 +29,7 @@ router.post("/", (req, res) => {
       res.status(201).send(doc);
     })
     .catch(err => {
-      return res.status(500).send(err);
+      return res.status(500).json(err);
     });
 });
 
