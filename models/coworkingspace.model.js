@@ -1,38 +1,37 @@
-const mongoose =require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 var ObjectId = mongoose.Schema.Types.ObjectId
 let CoworkingSchema = new Schema({
     name: {
-        type:String,
-        required:true
-    },   
-    address:{
-        city:String,
-        area:String,
-        street:String,
+        type: String,
+        required: true,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true
+    address: {
+        city: String,
+        area: String,
+        street: String,
     },
-    phoneNumber:{
-        type:String,
-        required:true,
-        unique:true
+    email: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    workingHours:{
-        from:String,
-        to:String
+    phoneNumber: {
+        type: String,
+        required: true,
+        unique: true,
     },
-    noOfRooms:Number,
-    description:String,
-    schedule:{
-        type:ObjectId,
-        ref:'Schedule'
-    }
+    workingHours: {
+        from: String,
+        to: String,
+    },
+    noOfRooms: Number,
+    description: String,
+    schedule: {
+        type: ObjectId,
+        ref: 'Schedule',
+    },
+})
 
-});
-
-module.exports= mongoose.model('CoworkingSpace',CoworkingSchema);
+module.exports = mongoose.model('CoworkingSpace', CoworkingSchema)
