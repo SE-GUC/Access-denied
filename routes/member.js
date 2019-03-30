@@ -98,6 +98,7 @@ router.get('/', (req, res) => {
     .findOne({
       email: req.query.email
     })
+    .select('-password')
     .then(doc => {
       res.json(doc)
     })
@@ -110,6 +111,7 @@ router.get('/all', (_request, response) => {
 
   memberModel
     .find(key)
+    .select('-password')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -229,6 +231,32 @@ router.get('/applyonTask', (request, response) => {
             }
           })
         })
+    })
+})
+
+router.post('/adddate', (req, res) => {
+  if (!req.query.email) return res.status(400).send('Email is missing')
+  if (!req.body.date) return res.status(400).send('Date is missing')
+  memberModel
+    .findOneAndUpdate(
+      {
+        email: req.query.email
+      },
+      {
+        $push: { calendar: req.body.date }
+      },
+      {
+        new: true,
+        safe: true,
+        upsert: true
+      }
+    )
+    .then(doc => {
+      if (!doc || doc.length === 0) return res.status(500).send('Error')
+      res.json(doc)
+    })
+    .catch(err => {
+      return res.status(500).json(err)
     })
 })
 
