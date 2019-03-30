@@ -4,51 +4,62 @@
  * @description: This file handles the schema for the (Task Entity) it exports a usable model for further use
  */
 
-"use strict";
+'use strict'
 
 const mongoose = require('mongoose')
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
-const URI = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
-
-mongoose.connect(URI, {
-    useNewUrlParser: true
-})
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
 var taskSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    description: String,
-    dateIssued: {
-        type: String,
-        Default: Date.now
-    },
-    assigner: {
-        type: String,
-        required: true
-    },
-    contactEmail: {
-        type: String,
-        required: true
-    },
-    assignee: {
-        type: String,
-    },
-    isCompleted: {
-        type: Boolean,
-        default: false
-    }
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Partners'
+  },
+  assignee: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Members'
+  },
+  consultancy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ConsultancyAgencies'
+  },
+  description: {
+    type: String
+  },
+  extraNotes: {
+    type: String
+  },
+  isComplete: {
+    type: Boolean,
+    default: false
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  },
+  effortLevel: {
+    type: Number
+  },
+  commitmentLevel: {
+    type: Number
+  },
+  experienceLevel: {
+    type: Number
+  },
+  timeRequired: {
+    type: Number
+  },
+  monetaryComp: {
+    type: Number
+  },
+  skillset: [String]
 })
+
+//delete mongoose.connection.models['Tasks']
+//delete mongoose.connection.models['Task']
 
 var taskModel = mongoose.model('Task', taskSchema)
 
-/*
-    Delete Task collection if needed, due to schema changes
-*/
-
-//taskModel.collection.remove()
+//taskModel.collection.drop()
 
 module.exports = taskModel
