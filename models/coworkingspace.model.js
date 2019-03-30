@@ -8,9 +8,9 @@ let CoworkingSchema = new Schema({
     required: true
   },
   address: {
-    city: String,
-    area: String,
-    street: String
+    city: { type: String, required: true },
+    area: { type: String, required: true },
+    street: { type: String, required: true }
   },
   email: {
     type: String,

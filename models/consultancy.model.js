@@ -16,8 +16,9 @@ const consultancySchema = new mongoose.Schema({
     unique: true
   },
   address: {
-    type: String,
-    required: true
+    city: { type: String, required: true },
+    area: { type: String, required: true },
+    street: { type: String, required: true }
   },
   partners: [
     {

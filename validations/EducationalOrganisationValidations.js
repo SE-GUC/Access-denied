@@ -7,7 +7,7 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-      address: Joi.string(),
+      address: Joi,
       email: Joi.string()
         .email()
         .required(),
@@ -30,7 +30,7 @@ module.exports = {
       name: Joi.string()
         .min(3)
         .max(500),
-      address: Joi.string(),
+      address: Joi,
       email: Joi.string().email(),
       contactInformation: Joi.string(),
       vision: Joi.string(),
