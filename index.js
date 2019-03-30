@@ -2,10 +2,10 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
+require('dotenv').config();
 
 // Database Configuration...
-const uri =
-  'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
+const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3000
 
