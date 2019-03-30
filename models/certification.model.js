@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -21,11 +20,10 @@ const certificationSchema = new mongoose.Schema({
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Members"
-      },
-      finished: Boolean
+      }
     }
   ],
-  membersacceptedt:[
+  membersaccepted:[
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
