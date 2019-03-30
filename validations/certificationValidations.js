@@ -3,7 +3,7 @@ const Joi = require('joi')
 module.exports = {
   createValidation: request => {
     const createSchema = {
-      name_of_certification: Joi.string()
+      name: Joi.string()
         .min(3)
         .max(500)
         .required(),
@@ -25,7 +25,7 @@ module.exports = {
 
   updateValidation: request => {
     const updateSchema = {
-      name_of_certification: Joi.string()
+      name: Joi.string()
         .min(3)
         .max(500),
       id_of_certification: Joi.string()
