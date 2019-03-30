@@ -8,7 +8,6 @@ const certificationSchema = new mongoose.Schema({
     unique: true
   },
   skills: [String],
-  Evaluation_of_available: Date,
   Fees: Number,
   Method_of_payment: String,
   Evaluation_procedure: {
@@ -20,7 +19,7 @@ const certificationSchema = new mongoose.Schema({
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Members"
+        refPath: 'Members'
       }
     }
   ],
@@ -28,12 +27,24 @@ const certificationSchema = new mongoose.Schema({
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Members"
+        ref: 'Members'
       }
     }
-  ]
+  ],
+
+  eduorganization: {
+    type : mongoose.Schema.Types.ObjectId,
+    refPath: 'EducationalOrganisation'
+  } 
+  
  
 });
  
+//delete mongoose.connection.models['Certification']
+//delete mongoose.connection.collections['Certification']
 
-module.exports = mongoose.model("Certification", certificationSchema);
+const myModel = mongoose.model("Certification", certificationSchema);
+
+//myModel.collection.drop()
+
+module.exports = myModel
