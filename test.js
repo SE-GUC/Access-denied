@@ -1,4 +1,8 @@
-const coworkingTests = require('./tests/coworkingTest')
+/**
+ * @jest-environment node
+ */
+const coworkingTests = require("./tests/coworkingTest");
+const consultacyTests = require("./tests/consultancyTest");
 var baseURL =  "http://localhost:3000"
 const axios = require('axios');
 var fetch = require('node-fetch')
@@ -62,13 +66,13 @@ test('get all members', async () => {
              expect(response.password).toEqual('test'); 
                      
 });
-// test('object assignment', () => {
-//     const data = {one: 1};
-//     data['two'] = 2;
-//     expect(data.one).toEqual(1);
-//     expect(data.two).toEqual(2);
+test('object assignment', () => {
+    const data = {one: 1};
+    data['two'] = 2;
+    expect(data.one).toEqual(1);
+    expect(data.two).toEqual(2);
 
-// });
+});
 
 // test('Number of books should be 11', async () => {
 //     expect.assertions(1)
