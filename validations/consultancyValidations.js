@@ -28,7 +28,7 @@ module.exports = {
         .max(500),
       email: Joi.string().email(),
       phoneNumber: Joi.string(),
-      address: Joi.string(),
+      address: Joi,
       partners: Joi,
       boardMembers: Joi,
       events: Joi,

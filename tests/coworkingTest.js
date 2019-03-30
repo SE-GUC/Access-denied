@@ -10,7 +10,8 @@ const body = {
   email: testingEmail,
   phoneNumber: '010101010101010',
   description: 'Jesting',
-  noOfRooms: 10
+  noOfRooms: 10,
+  address: { city: 'jestsd', street: 'jestsae', area: 'jest' }
 }
 
 const createTest = test('Creates a new Co-working Space', async () => {
