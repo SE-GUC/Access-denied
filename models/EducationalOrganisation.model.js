@@ -5,7 +5,11 @@ const EducationalOrganisationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  address: String,
+  address: {
+    city: String,
+    area: String,
+    street: String
+  },
   email: {
     type: String,
     required: true,
@@ -14,7 +18,12 @@ const EducationalOrganisationSchema = new mongoose.Schema({
   contactInformation: String,
   vision: String,
   mission: String,
-  partners: [String],
+  partners: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Partners'
+    }
+  ],
   information: String,
   course: [String],
   certificate: [String],

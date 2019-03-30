@@ -11,7 +11,7 @@ module.exports = {
         .email()
         .required(),
       phoneNumber: Joi.string().required(),
-      address: Joi.string().required(),
+      address: Joi.required(),
       partners: Joi,
       boardMembers: Joi,
       events: Joi,
