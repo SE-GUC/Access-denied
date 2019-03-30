@@ -13,13 +13,13 @@ const certificationSchema = new mongoose.Schema({
   Evaluation_procedure: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    refPath: 'evaluationModel'
+    ref: 'evaluationModel'
   },
   membersapplied: [
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: 'Members'
+        ref: 'Members'
       }
     }
   ],
@@ -34,7 +34,7 @@ const certificationSchema = new mongoose.Schema({
 
   eduorganization: {
     type : mongoose.Schema.Types.ObjectId,
-    refPath: 'EducationalOrganisation'
+    ref: 'EducationalOrganisation'
   } 
   
  
