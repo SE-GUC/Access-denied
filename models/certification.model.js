@@ -1,13 +1,8 @@
 const mongoose = require("mongoose");
-var ObjectId = mongoose.Schema.Types.ObjectId;
+     
 
 const certificationSchema = new mongoose.Schema({
-  name_of_certification: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  id_of_certification: {
+  name: {
     type: String,
     required: true,
     unique: true
@@ -17,22 +12,28 @@ const certificationSchema = new mongoose.Schema({
   Fees: Number,
   Method_of_payment: String,
   Evaluation_procedure: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    refPath: 'evaluationModel'
   },
   membersapplied: [
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Members"
-      },
-      finished: Boolean
+      }
     }
   ],
-  schedule: {
-    type: ObjectId,
-    ref: "Schedule"
-  }
+  membersaccepted  :[
+    {
+      MEMBERS: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Members"
+      }
+    }
+  ]
+ 
 });
+ 
 
 module.exports = mongoose.model("Certification", certificationSchema);

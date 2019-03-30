@@ -6,6 +6,51 @@ const axios =require("axios")
 const reviewModel = require("../models/review.model")
 
 
+router.post('/partnerReview', (request, response) => {
+    let requestAssigner= request.body.reviewer
+    let requestAssignee= request.body.reviewee
+    let taskid=request.body.task
+    axios.get('http://localhost:3000/api/task/Done',{
+      params:{
+
+        assigner:requestAssigner,
+        assignee:requestAssignee,
+        task:taskid
+
+      }
+     })
+      .then( (doc) => {
+     if(!doc || doc.data.length===0){
+         console.log("null")
+       return response.status(500).send(doc);
+     }else{ 
+        if(!request.body){
+            console.log("mafesh body")
+            return response.status(400).send("Body is missing")
+        }
+        console.log("reqbody is :"+request.body)
+    
+        const isValidated = reviewvalidator.createValidation(request.body)
+        if (isValidated.error) return response.status(400).send({ error: isValidated.error.details[0].message })
+        let model = new reviewModel(request.body)
+        console.log("20")
+        model.save()
+            .then((doc) => {
+                if(!doc || doc.length ===0){
+                    return response.status(500).send(doc)
+                }
+    
+                response.status(201).send(doc)
+            })
+            .catch((err) => {
+                response.status(500).json(err)
+            })
+     }
+    })
+})
+
+
+
 router.post("/", (req, res) => {
     if(!req.body){
         return res.status(400).send("Body is missing")

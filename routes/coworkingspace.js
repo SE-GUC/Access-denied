@@ -21,17 +21,13 @@ router.post("/", (req, res) => {
       let schedule = response.data._id;
       req.body.schedule = schedule;
       let model = new coworkingspaceModel(req.body);
-      model
-        .save()
-        .then(doc => {
-          if (!doc || doc.length === 0) {
-            return res.status(500).send(doc);
-          }
-          res.status(201).send(doc);
-        })
-        .catch(err => {
-          return res.status(500).send(err);
-        });
+      return model.save();
+    })
+    .then(doc => {
+      if (!doc || doc.length === 0) {
+        return res.status(500).send(doc);
+      }
+      res.status(201).send(doc);
     })
     .catch(err => {
       return res.status(500).send(err);
@@ -39,12 +35,12 @@ router.post("/", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  console.log(req.body);
   if (!req.query.email) return res.status(400).send("Email is missing.");
   coworkingspaceModel
     .findOne({
       email: req.query.email
-    }).populate('schedule')
+    })
+    .populate("schedule")
     .then(doc => {
       res.json(doc);
     })
