@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
     })
     .populate('reviewer', 'name')
     .populate('reviewee', 'name')
-    .populate('task', 'title')
+    .populate('task', 'name')
     .then(doc => {
       res.json(doc)
     })

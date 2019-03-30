@@ -1,7 +1,7 @@
-const consultancyModel = require('../models/consultancy.model')
+const applicationModel = require('../models/application.model')
 const express = require('express')
 const router = express.Router()
-const validator = require('../validations/consultancyValidations')
+const validator = require('../validations/applicationValidations')
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -11,7 +11,7 @@ router.post('/', (req, res) => {
   const isValidated = validator.createValidation(req.body)
   if (isValidated.error)
     return res.status(400).send({ error: isValidated.error.details[0].message })
-  let model = new consultancyModel(req.body)
+  const model = new applicationModel(req.body)
   model
     .save()
     .then(doc => {
@@ -27,24 +27,13 @@ router.post('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
-  consultancyModel
-    .findOne({
-      email: req.query.email
-    })
-    .then(doc => {
-      res.json(doc)
-    })
-    .catch(err => {
-      res.status(500).json(err)
-    })
-})
-
-router.get('/all', (req, res) => {
-  consultancyModel
-    .find({})
+  applicationModel
+    .findById(req.query.id)
+    .populate('applier', 'name')
+    .populate('task', 'name')
     .then(doc => {
       res.json(doc)
     })
@@ -54,22 +43,16 @@ router.get('/all', (req, res) => {
 })
 
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
     return res.status(400).send({ error: isValidated.error.details[0].message })
-  consultancyModel
-    .findOneAndUpdate(
-      {
-        email: req.query.email
-      },
-      req.body,
-      {
-        new: true
-      }
-    )
+  applicationModel
+    .findByIdAndUpdate(req.query.id, req.body, {
+      new: true
+    })
     .then(doc => {
       res.json(doc)
     })
@@ -79,23 +62,17 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
-  consultancyModel
-    .findOneAndDelete({
-      email: req.query.email
-    })
+  applicationModel
+    .findByIdAndDelete(req.query.id)
     .then(doc => {
       res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
     })
-})
-
-router.post('/applyontask', (req, res) => {
-  if (!req.query.plan) return res.status(400).send('Plan is missing.')
 })
 
 module.exports = router
