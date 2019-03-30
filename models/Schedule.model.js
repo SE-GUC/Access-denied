@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
   //  useNewUrlParser: true
 //})
 
-var ObjectId = mongoose.Schema.Types.ObjectId;
+let ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ScheduleSchema = new mongoose.Schema({
   //A Schedule is built of 7 days, each day has a list of slots (1-hour each)

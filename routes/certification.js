@@ -44,7 +44,7 @@ router.get('/all', (_request, response) => {
       response.status(500).json(error)
     })
 })
-/*router.get('/all', (request, response) => {
+router.get('/all', (request, response) => {
 
     let key = {}
     //let model = new certificationModel(req.body)
@@ -61,7 +61,7 @@ router.get('/all', (_request, response) => {
     }).catch((error) => {
         response.status(500).json(error)
     })
-})*/
+})
 
 router.put('/', (req, res) => {
   if (!req.query.id_of_certification) {

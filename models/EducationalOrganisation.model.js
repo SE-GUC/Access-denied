@@ -1,14 +1,6 @@
+const mongoose = require('mongoose')
 
-
-
-
-
-const mongoose = require('mongoose');
-//const uri = "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true"
-
-//mongoose.connect(uri,{useNewUrlParser:true})
-
-var ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const EducationalOrganisationSchema = new mongoose.Schema({
    name:{
@@ -49,11 +41,6 @@ const EducationalOrganisationSchema = new mongoose.Schema({
     })
 
 var Mymodel = mongoose.model("EducationalOrganisation", EducationalOrganisationSchema);
+//Mymodel.collection.drop();
 
-
-var Mymodel = mongoose.model(
-  'EducationalOrganisation',
-  EducationalOrganisationSchema
-)
-
-module.exports = Mymodel
+module.exports = Mymodel;

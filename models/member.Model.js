@@ -1,22 +1,4 @@
-const mongoose = require("mongoose")
-/*const uri = "mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true"
-mongoose.connect(uri, {useNewUrlParser:true})*/
-
-const MemberSchema = new mongoose.Schema ({
-    name :{
-        type: String,
-        required: true
-    },
-
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password : {
-        type: String,
-        required: true,
-        unique: false // TODO: Change it to non unique
+const mongoose = require('mongoose')
 
 const MemberSchema = new mongoose.Schema({
   name: {
@@ -30,17 +12,12 @@ const MemberSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    unique: false // TODO: Change it to non unique
+    required: true
   },
   certification: [
     {
-      name_of_certification: String,
-      skills: [String],
-      name_of_certification_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Certification'
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Certification'
     }
   ]
 })

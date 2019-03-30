@@ -23,17 +23,16 @@ router.post('/', (req, res) => {
 
   let model = new evaluations(req.body)
 
-//READ
-router.get("/",(req,res)=>{
-    if(!req.query){
-        return res.status(400).send("Missing")
-    }
-    evaluations.findOne({
-     _id:req.query.id})
-     .populate('EducationalOrganisation')
-     .populate('certificate')
-    .then((doc)=>{
-        res.json(doc)
+  model
+    .save()
+    .then(doc => {
+      if (!doc || doc.length === 0) {
+        return res.status(500).send(doc)
+      }
+      res.status(201).send(doc) // TODO
+    })
+    .catch(err => {
+      res.status(500).json(err)
     })
 })
 
@@ -44,8 +43,8 @@ router.get('/', (req, res) => {
   }
   evaluations
     .findOne({
-      evaluationCode: req.query.evaluationCode
-    })
+      _id: req.query.id
+    }).populate("certificate")
     .then(doc => {
       res.json(doc)
     })
@@ -54,11 +53,10 @@ router.get('/', (req, res) => {
     })
 })
 
-<<<<<<< Updated upstream
 // UPDATE
 router.put('/', (req, res) => {
-  if (!req.query.evaluationCode) {
-    return res.status(400).send('evaluation code missing.')
+  if (!req.query.id) {
+    return res.status(400).send('evaluation id missing.')
   }
   const isValidated = validator.updateValidation(req.body)
 
@@ -71,7 +69,7 @@ router.put('/', (req, res) => {
   evaluations
     .findOneAndUpdate(
       {
-        evaluationCode: req.query.evaluationCode
+        _id: req.query.id
       },
       req.body,
       {
@@ -84,42 +82,16 @@ router.put('/', (req, res) => {
     .catch(err => {
       res.status(500).json(err)
     })
-=======
-//UPDATE
-router.put("/", (req, res) => {
-    if (!req.query.id) {
-        return res.status(400).send('Evaluation ID is missing.')
-      }
-      const isValidated = validator.updateValidation(req.body)
-      if (isValidated.error)
-        return res.status(400).send({ error: isValidated.error.details[0].message })
-      evaluations
-        .findOneAndUpdate(
-          {
-            _id: req.query.id
-          },
-          req.body,
-          {
-            new: true
-          }
-        )
-        .then(doc => {
-          res.json(doc)
-        })
-        .catch((err) => {
-            res.status(500).json(err)
-        })
->>>>>>> Stashed changes
 })
 
 // DELETE
 router.delete('/', (req, res) => {
-  if (!req.query.evaluationCode) {
-    return res.status(400).send('evaluation code is missing')
+  if (!req.query.id) {
+    return res.status(400).send('evaluation id is missing')
   }
   evaluations
     .findOneAndDelete({
-      evaluationCode: req.query.evaluationCode
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)
@@ -134,7 +106,6 @@ router.delete('/', (req, res) => {
 router.put('/book/offline', (request, res) => {
   let scheduleID = request.query.scheduleID
 
-<<<<<<< Updated upstream
   console.log(baseURL + '/' + scheduleID + '/slot')
 
   axios({
@@ -154,23 +125,6 @@ router.put('/book/offline', (request, res) => {
     .catch(error => {
       console.log(error)
     })
-=======
-//DELETE
-router.delete("/", (req, res) => {
-    if (!req.query.id) {
-        return res.status(400).send('evaluation ID is missing.')
-      }
-      evaluations
-        .findOneAndDelete({
-          _id: req.query.id
-        })
-        .then(doc => {
-          res.json(doc)
-        })
-        .catch(err => {
-          res.status(500).json(err)
-        })
->>>>>>> Stashed changes
 })
 
 module.exports = router

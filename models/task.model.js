@@ -63,7 +63,7 @@ var taskSchema = new mongoose.Schema({
 //delete mongoose.connection.models['Tasks']
 //delete mongoose.connection.models['Task']
 
-var taskModel = mongoose.model('Task', taskSchema)
+let taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.drop()
 
