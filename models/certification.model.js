@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-var ObjectId = mongoose.Schema.Types.ObjectId
+let ObjectId = mongoose.Schema.Types.ObjectId
 
 const certificationSchema = new mongoose.Schema({
   name: {

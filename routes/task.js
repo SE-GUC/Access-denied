@@ -193,13 +193,13 @@ router.delete('/', (request, response) => {
  */
 
 router.get('/filterTasks', (request, response) => {
-  var skills = request.query.skills
-  var q = JSON.parse(skills)
+  let skills = request.query.skills
+  let q = JSON.parse(skills)
   if (!q) {
     return response.status(400).status('400: Bad Request')
   }
-  var splitted = q.skills.split(',')
-  var tasks = []
+  let splitted = q.skills.split(',')
+  let tasks = []
 
   axios
     .get(`${baseURL}/api/task/all`)

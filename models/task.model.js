@@ -10,7 +10,7 @@ const mongoose = require('mongoose')
 
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
 
-var taskSchema = new mongoose.Schema({
+let taskSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Partners'
@@ -58,7 +58,7 @@ var taskSchema = new mongoose.Schema({
 //delete mongoose.connection.models['Tasks']
 //delete mongoose.connection.models['Task']
 
-var taskModel = mongoose.model('Task', taskSchema)
+let taskModel = mongoose.model('Task', taskSchema)
 
 //taskModel.collection.drop()
 
