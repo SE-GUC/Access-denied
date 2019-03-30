@@ -1,5 +1,7 @@
-const mongoose = require('mongoose')
-
+const mongoose = require("mongoose")
+/*const uri = "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true"
+mongoose.connect(uri, {useNewUrlParser:true})
+*/
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
   // 1- name of company,

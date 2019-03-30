@@ -8,7 +8,12 @@
 
 const mongoose = require('mongoose')
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
+/*const URI = 'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
+
+mongoose.connect(URI, {
+    useNewUrlParser: true
+})*/
 
 var taskSchema = new mongoose.Schema({
   owner: {

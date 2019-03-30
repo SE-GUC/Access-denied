@@ -44,6 +44,25 @@ router.get('/all', (_request, response) => {
       response.status(500).json(error)
     })
 })
+/*router.get('/all', (request, response) => {
+
+    let key = {}
+    //let model = new certificationModel(req.body)
+    //model.save()
+
+    certificationModel.find(key).then((document) => {
+
+        if (!document || document.length == 0) {
+            return response.status(500).json(document)
+        }
+
+        response.status(200).json(document)
+
+    }).catch((error) => {
+        response.status(500).json(error)
+    })
+})*/
+
 router.put('/', (req, res) => {
   if (!req.query.id_of_certification) {
     return res.status(400).send('id of certification is missing.')

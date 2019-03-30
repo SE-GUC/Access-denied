@@ -1,51 +1,43 @@
-const mongoose = require('mongoose')
 
+const mongoose = require('mongoose');
+//const uri = "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true"
+
+//mongoose.connect(uri,{useNewUrlParser:true})
+var ObjectId = mongoose.Schema.Types.ObjectId;
 const EvaluationSchema = new mongoose.Schema({
-  // code of evaluation
-  evaluationCode: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  // name of certification that is offered once the evaluation is passed successfully
-  certificationName: {
-    type: String,
-    required: true
-  },
-  // code of certification that is offered once the evaluation is passed successfully
-  certificationCode: {
-    type: String,
-    required: true
-  },
+   styleOfEvaluation:{
+       //MCQ, code,etc
+       type:String,
+       required:true
+   },
 
-  styleOfEvaluation: {
-    // MCQ, code,etc
-    type: String,
-    required: true
-  },
+   link:{
+       type:String}, //link to evaluation
 
-  link: {
-    type: String,
-    required: true
-  }, // link to evaluation
+   dateOfEvaluation:Date, 
 
-  dateOfEvaluation: Date,
+   durationOfExamInHours:Number, //duration of evaluation
 
-  durationOfExamInHours: Number, // duration of evaluation
+   certificate:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Certification'
+ }, //reference to certification
 
-  // name of educational organisation that offers this evaluation
-  nameOfEducationalOrganisationOfferingIt: {
-    type: String,
-    required: true
-  },
 
-  // emailC of educational organisation offereing the evaluation
-  emailCOfEducationalOrganisationOfferingIt: {
-    type: String,
-    required: true
-  }
-})
+ EducationalOrganisation:{
 
-var Mymodel = mongoose.model('Evaluation', EvaluationSchema)
-// Mymodel.collection.drop();
-module.exports = Mymodel
+     type:mongoose.Schema.Types.ObjectId,
+     ref: 'EducationalOrganisation'
+ },
+
+ schedule:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'Schedule'
+}
+
+ })
+
+var Mymodel = mongoose.model("Evaluation", EvaluationSchema);
+//Mymodel.collection.drop();
+module.exports = Mymodel;
+

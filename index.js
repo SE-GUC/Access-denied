@@ -2,6 +2,19 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
+const PORT = process.env.PORT || 3000;
+const mongoose = require("mongoose")
+
+const uri =
+"mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true";
+
+// Connect to mongo
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(err));
 
 // Database Configuration...
 const uri =
@@ -33,6 +46,7 @@ app.use(
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
 app.set('views', './views')
 app.set('view engine', 'html')
+
 
 //Logger
 app.use((request, response, next) => {

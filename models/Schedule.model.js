@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
+//const uri = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
 
-var ObjectId = mongoose.Schema.Types.ObjectId
+//mongoose.connect(uri, {
+  //  useNewUrlParser: true
+//})
+
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const ScheduleSchema = new mongoose.Schema({
   //A Schedule is built of 7 days, each day has a list of slots (1-hour each)

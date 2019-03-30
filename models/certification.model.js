@@ -1,4 +1,9 @@
 const mongoose = require('mongoose')
+//const uri = 'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
+
+/*mongoose.connect(uri, {
+    useNewUrlParser: true
+})*/
 var ObjectId = mongoose.Schema.Types.ObjectId
 
 const certificationSchema = new mongoose.Schema({

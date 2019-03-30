@@ -1,24 +1,15 @@
 const Joi = require('joi')
 
 module.exports = {
-  createValidation: request => {
-    const createSchema = {
-      evaluationCode: Joi.string()
-        .min(3)
-        .max(500)
-        .required(),
-      certificationName: Joi.string()
-        .min(3)
-        .max(100)
-        .required(),
-      certificationCode: Joi.string().required(),
-      styleOfEvaluation: Joi.string().required(),
-      link: Joi.string().required(),
-      nameOfEducationalOrganisationOfferingIt: Joi.string().required(),
-      emailCOfEducationalOrganisationOfferingIt: Joi.string().required(),
-      dateOfEvaluation: Joi.date(),
-      durationOfExamInHours: Joi.number()
-    }
+    createValidation: request => {
+        const createSchema = {
+            
+            certificate: Joi,
+            styleOfEvaluation:Joi.string().required(),
+            link: Joi.string().required(),
+            EducationalOrganisation: Joi,
+             dateOfEvaluation:Joi.date(),
+             durationOfExamInHours:Joi.number()
 
     return Joi.validate(request, createSchema)
   },
@@ -40,6 +31,23 @@ module.exports = {
       emailCOfEducationalOrganisationOfferingIt: Joi.string()
     }
 
-    return Joi.validate(request, updateSchema)
-  }
+        }
+
+        return Joi.validate(request, createSchema)
+    },
+
+    updateValidation: request => {
+        const updateSchema = {
+            certificate: Joi,
+            styleOfEvaluation:Joi.string().required(),
+            link: Joi.string().required(),
+            EducationalOrganisation: Joi,
+             dateOfEvaluation:Joi.date(),
+             durationOfExamInHours:Joi.number()
+            
+             
+        }
+
+        return Joi.validate(request, updateSchema)
+    }, 
 }

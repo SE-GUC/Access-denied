@@ -100,31 +100,9 @@ router.get('/all', (req, res) => {
     })
 })
 
-router.get('/:id/slot', (req, res) => {
-  if (!req.params.id) return res.status(400).send('Schedule Id is Missing')
-  if (!req.query.id) return res.status(400).send('Slot Id Is Missing')
-  let schedule = req.params.id
-  ScheduleModel.findById(schedule).then(doc => {
-    if (!doc || doc.length === 0) {
-      return res.status(500).send(doc)
-    }
-    var slot = doc.Saturday.find(slot => {
-      return slot._id == req.query.id
-    })
-    if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
-    }
-    var slot = doc.Sunday.find(slot => {
-      return slot._id == req.query.id
-    })
-    if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
-    }
-    var slot = doc.Monday.find(slot => {
-      return slot._id == req.query.id
-    })
-    if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+router.delete("/:id/slot",(req,res)=>{
+    if(!req || !req.body){
+        return res.status(400).send("Body is Missing")
     }
     var slot = doc.Tuesday.find(slot => {
       return slot._id == req.query.id
