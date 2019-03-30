@@ -32,6 +32,7 @@ router.get('/', (req, res) => {
     .findOne({
       email: req.query.email
     })
+    .populate('certificate')
     .then(doc => {
       res.json(doc)
     })

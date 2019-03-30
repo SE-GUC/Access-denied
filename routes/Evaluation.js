@@ -43,8 +43,9 @@ router.get('/', (req, res) => {
   }
   evaluations
     .findOne({
-      evaluationCode: req.query.evaluationCode
+      _id: req.query.id
     })
+    .populate('certificate')
     .then(doc => {
       res.json(doc)
     })
@@ -55,8 +56,8 @@ router.get('/', (req, res) => {
 
 // UPDATE
 router.put('/', (req, res) => {
-  if (!req.query.evaluationCode) {
-    return res.status(400).send('evaluation code missing.')
+  if (!req.query.id) {
+    return res.status(400).send('evaluation id missing.')
   }
   const isValidated = validator.updateValidation(req.body)
 
@@ -69,7 +70,7 @@ router.put('/', (req, res) => {
   evaluations
     .findOneAndUpdate(
       {
-        evaluationCode: req.query.evaluationCode
+        _id: req.query.id
       },
       req.body,
       {
@@ -86,12 +87,12 @@ router.put('/', (req, res) => {
 
 // DELETE
 router.delete('/', (req, res) => {
-  if (!req.query.evaluationCode) {
-    return res.status(400).send('evaluation code is missing')
+  if (!req.query.id) {
+    return res.status(400).send('evaluation id is missing')
   }
   evaluations
     .findOneAndDelete({
-      evaluationCode: req.query.evaluationCode
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)

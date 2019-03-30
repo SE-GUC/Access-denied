@@ -1,39 +1,52 @@
 const mongoose = require('mongoose')
 
+const ObjectId = mongoose.Schema.Types.ObjectId
+
 const EducationalOrganisationSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
+
   address: {
     city: String,
     area: String,
     street: String
   },
+
   email: {
     type: String,
     required: true,
     unique: true
   },
+
   contactInformation: String,
+
   vision: String,
+
   mission: String,
-  partners: [
+
+  partners: [String],
+
+  information: String,
+
+  course: [String],
+
+  certificate: [
     {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Partners'
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Certification'
     }
   ],
-  information: String,
-  course: [String],
-  certificate: [String],
   trainer: [String],
+
   trainingProgram: [String]
 })
 
-let Mymodel = mongoose.model(
+var Mymodel = mongoose.model(
   'EducationalOrganisation',
   EducationalOrganisationSchema
 )
+//Mymodel.collection.drop();
 
 module.exports = Mymodel
