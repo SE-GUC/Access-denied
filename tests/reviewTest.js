@@ -2,7 +2,7 @@ const review = require('../routes/review')
 const axios = require('axios')
 const _ = require('lodash')
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 let reviewreply = ''
 
 const addTest = test('Creates a new review', async () => {

@@ -108,43 +108,43 @@ router.get('/:id/slot', (req, res) => {
     if (!doc || doc.length === 0) {
       return res.status(500).send(doc)
     }
-    var slot = doc.Saturday.find(slot => {
+    let slot = doc.Saturday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Sunday.find(slot => {
+    let slot = doc.Sunday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Monday.find(slot => {
+    let slot = doc.Monday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Tuesday.find(slot => {
+    let slot = doc.Tuesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Wednesday.find(slot => {
+    let slot = doc.Wednesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Thursday.find(slot => {
+    let slot = doc.Thursday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Friday.find(slot => {
+    let slot = doc.Friday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {

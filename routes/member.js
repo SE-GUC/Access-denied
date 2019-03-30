@@ -4,7 +4,7 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
   console.log(req.query.email)
@@ -25,7 +25,7 @@ router.get('/cert', (req, res) => {
           }
         })
         .then(response => {
-          var memberModel = response.data[0].membersapplied
+          let memberModel = response.data[0].membersapplied
           // res.json(memberModel)
           let j = memberModel.find(function(value) {
             return value.MEMBERS == objid

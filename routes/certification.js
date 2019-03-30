@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   if (!req.body) {

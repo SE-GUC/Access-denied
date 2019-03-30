@@ -22,7 +22,7 @@ const EducationalOrganisationSchema = new mongoose.Schema({
   trainingProgram: [String]
 })
 
-var Mymodel = mongoose.model(
+let Mymodel = mongoose.model(
   'EducationalOrganisation',
   EducationalOrganisationSchema
 )

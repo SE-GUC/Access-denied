@@ -2,7 +2,7 @@ const consultancy = require('../routes/consultancy')
 const axios = require('axios')
 const _ = require('lodash')
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 const addTest = test('Creates a new Consultancy', async () => {
   const body = {

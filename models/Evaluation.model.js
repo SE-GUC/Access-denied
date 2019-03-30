@@ -46,6 +46,6 @@ const EvaluationSchema = new mongoose.Schema({
   }
 })
 
-var Mymodel = mongoose.model('Evaluation', EvaluationSchema)
+let Mymodel = mongoose.model('Evaluation', EvaluationSchema)
 // Mymodel.collection.drop();
 module.exports = Mymodel
