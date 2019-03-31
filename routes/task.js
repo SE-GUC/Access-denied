@@ -33,13 +33,13 @@ router.post('/', (request, response) => {
     return response.status(400).send('400: Bad Request')
   }
 
-  const isValidated = validator.createValidation(request.body)
+  // const isValidated = validator.createValidation(request.body)
 
-  if (isValidated.error) {
-    return response.status(400).send({
-      error: isValidated.error.details[0].message
-    })
-  }
+  // if (isValidated.error) {
+  //   return response.status(400).send({
+  //     error: isValidated.error.details[0].message
+  //   })
+  // }
 
   Task.create(request.body)
     .then(document => {
@@ -243,7 +243,7 @@ router.get('/filterTasks', (request, response) => {
       return response.json(result)
     })
     .catch(error => {
-      return response.send(error)
+      return response.send(error.response.data)
     })
 })
 

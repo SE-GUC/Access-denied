@@ -111,7 +111,9 @@ router.get('/', (req, res) => {
   }
   certificationModel
     .find({
+
       name: req.query.name
+
     })
     .populate('schedule')
     .then(doc => {

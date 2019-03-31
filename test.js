@@ -2,6 +2,7 @@
 
  * @jest-environment node
  */
+const TaskSearch = require('./tests/TaskSearch')
 const coworkingTests = require('./tests/coworkingTest')
 const consultacyTests = require('./tests/consultancyTest')
 const reviewTests = require('./tests/reviewTest')
@@ -13,3 +14,5 @@ const reviewPartnerTests = require('./tests/reviewPartnerTest')
 const taskTests = require('./tests/taskTest')
 const evaluationTests = require('./tests/evaluationTest')
 const memberTests = require('./tests/memberTest')
+const PartnerTests = require('./tests/PartnerTest')
+
