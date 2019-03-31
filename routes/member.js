@@ -4,6 +4,7 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
+const _ = require('lodash')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
@@ -68,7 +69,6 @@ router.get('/cert', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  console.log('ok')
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
@@ -83,7 +83,18 @@ router.post('/', (req, res) => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(201).send(doc)
+      res
+        .status(201)
+        .send(
+          _.pick(doc, [
+            '_id',
+            'name',
+            'email',
+            'calendar',
+            'certification',
+            '__v'
+          ])
+        )
     })
     .catch(err => {
       res.status(500).json(err)
