@@ -18,27 +18,40 @@ const testMemberApply = test('Member apply on atask', async () => {
       {
         skills: ['python', 'java']
       }
-    ]
-  }
-  let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
-  let responsemember = await axios.post(`${baseURL}/api/Member`, memberdocument)
-  let taskid = responsetask.data._id
-  let memberemail = responsemember.data.email
-  let memberid = responsemember.data._id
-  const document = {
-    id: taskid,
-    email: memberemail,
-    details: 'helllllo from other siiiiide'
-  }
-  let com = await axios.post(`${baseURL}/api/Member/applyonTask`, document)
-  let response = com.data
-  expect(response.task).toEqual(taskid)
-  expect(response.applier).toEqual(memberid)
-  expect(response.applierModel).toEqual('Members')
-  await axios.delete(`${baseURL}/api/task` + `?id=${taskid}`)
-  await axios.delete(`${baseURL}/api/Member` + `?email=${memberemail}`)
-  await axios.delete(`${baseURL}/api/application` + `?id=${response._id}`)
-})
+      const memberdocument = 
+        {
+            name: "testz",
+            email : "gz@50.com",
+            password:"whkacbak;lcbna;o",
+            certification : [
+                {
+                    skills: [
+                        "python",
+                        "java"
+                    ]
+        }]
+    }
+    let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
+    let responsemember = await axios.post(`${baseURL}/api/Member`, memberdocument)
+    let taskid =responsetask.data._id
+    let memberemail = responsemember.data.email
+    let memberid =  responsemember.data._id
+    const document ={
+        id: taskid,
+              email: memberemail,
+              details:"helllllo from other siiiiide"
+    }
+    let com = await axios.post(`${baseURL}/api/Member/applyonTask`, document)
+    let response=com.data
+                 expect(response.task).toEqual(taskid);
+                 expect(response.applier).toEqual(memberid);
+                 expect(response.applierModel).toEqual("Members"); 
+                  await axios.delete(`${baseURL}/api/task`+ `?id=${taskid}`)
+                  await axios.delete(`${baseURL}/api/Member`+ `?email=${memberemail}`)
+                  await axios.delete(`${baseURL}/api/application`+ `?id=${response._id}`)
+
+    
+    });
 const testSearchTags = test('searching with keywords', async () => {
   const taskdocument = {
     name: 'z2.Test123',
