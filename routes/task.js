@@ -106,6 +106,28 @@ router.get('/all', (request, response) => {
       response.status(500).json(error)
     })
 })
+router.get("/isTaskDone", (request, response) => {
+  let reqowner = request.query.owner;
+  let reqassignee = request.query.assignee;
+  let reqid = request.query.taskID;
+  if (!reqowner || !reqassignee || !reqid) {
+    return response.send();
+  }
+  let key = {
+    owner: reqowner,
+    assignee: reqassignee,
+    _id: reqid,
+    isComplete: true
+  };
+  Task.findOne(key)
+    .then(document => {
+      response.status(200).json(document);
+    })
+    .catch(error => {
+      response.send();
+    });
+});
+
 
 /*
     PUT/UPDATE route for Task Entity
