@@ -1,4 +1,5 @@
 /**
+
  * @jest-environment node
  */
 const coworkingTests = require('./tests/coworkingTest')
@@ -6,4 +7,7 @@ const consultacyTests = require('./tests/consultancyTest')
 const reviewTests = require('./tests/reviewTest')
 const scheduleTests = require('./tests/scheduleTest')
 const certificationTests = require('./tests/certificationTest')
-const partnertests = require('./tests/partnerTest')
+const partnerfeedbackTests = require('./tests/partnerFeedbackTest')
+ const educationalOrganisationTests=require('./tests/educationalOrganisationTest')
+ const reviewPartnerTests=require('./tests/reviewPartnerTest')
+

@@ -29,6 +29,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
+    "clean-cache": "^1.0.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "http": "0.0.0",
@@ -38,6 +39,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^5.4.20",
     "node": "^11.12.0",
+    "node-fetch": "^2.3.0",
     "nodejs": "0.0.0",
     "request": "^2.88.0",
     "test": "^0.6.0",

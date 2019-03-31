@@ -15,19 +15,19 @@ const createTest= test('cretes a new certification', async () => {
   expect( _.pick(reviewreply, Object.keys(body))).toEqual(body)
 })
 
-const readTest= test('reads a certification', async () => {
-  const body = {
-    name: 'testname2',
-    Evaluation_procedure:'5c9fdc26d3b7fb66e4c4f0d9'
-  }
-  expect(
-    _.pick(
-      (await axios.get(`${baseURL}/api/certification?name=testname2`, body))
-        .data[0],
-        ['name']
-    )
-  ).toEqual({ name: reviewreply.name })
-})
+// const readTest= test('reads a certification', async () => {
+//   const body = {
+//     name: 'testname2',
+//     Evaluation_procedure:'5c9fdc26d3b7fb66e4c4f0d9'
+//   }
+//   expect(
+//     _.pick(
+//       (await axios.get(`${baseURL}/api/certification?name=testname2`, body))
+//         .data[0],
+//         ['name']
+//     )
+//   ).toEqual({ name: reviewreply.name })
+// })
 const updateTest= test('Updates a certification', async () => {
   const body = {
     name: 'testname2',
@@ -60,8 +60,8 @@ const deleteTest = test('Deletes a certification', async () => {
 
 
 module.exports = {
-  readTest,
-  createTest,
+  // readTest,
+  // createTest,
   updateTest,
   deleteTest
 }

@@ -176,28 +176,28 @@ router.get('/tasksAvilable', (req, res) => {
     })
     .then(member => {
       let id = member.data._id
-      let Certification = member.data.Certification
+      let Certification = member.data.certification
       let save = []
       Certification.forEach(function(element) {
         save = element.skills + ',' + save
       })
-      let m = {
+      let skills = {
         skills: save
       }
       axios
         .get(`${baseURL}/api/task/filterTasks`, {
           params: {
-            skills: m
+            skills: skills
           }
         })
 
-        .then(m => {
-          let k = {
+        .then(tasks => {
+          let returned = {
             id: id,
-            m: m.data
+            tasks: tasks.data
           }
 
-          res.json(k)
+          res.json(returned)
         })
     })
 })
@@ -219,7 +219,7 @@ router.get('/applyonTask', (request, response) => {
         })
         .then(thetask => {
           //   response.json(tasks.data.id)
-          tasks.data.m.forEach(function(atask) {
+          tasks.data.tasks.forEach(function(atask) {
             if (atask.title == thetask.data.title) {
               axios
                 .put(`${baseURL}/api/task?contactEmail=` + taskemail, {
@@ -233,6 +233,31 @@ router.get('/applyonTask', (request, response) => {
         })
     })
 })
+
+router.post("/reviewPartner", (req, res) => {
+  if (!req.body) {
+    return res.status(400).send("Body is missing");
+  }
+  axios
+    .post(`${baseURL}/api/review/newPost`, {
+      reviewer: req.body.reviewer,
+      reviewee: req.body.reviewee,
+      rating: req.body.rating,
+      review: req.body.review,
+      revieweeModel: "Partners",
+      reviewerModel: "Members",
+      task: req.body.task
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send("Your review can not be posted");
+      }
+      res.status(201).json(doc.data);
+    })
+    .catch(err => {
+      res.send("Error occured");
+    });
+});
 
 router.post('/adddate', (req, res) => {
   if (!req.query.email) return res.status(400).send('Email is missing')
@@ -259,5 +284,6 @@ router.post('/adddate', (req, res) => {
       return res.status(500).json(err)
     })
 })
+
 
 module.exports = router

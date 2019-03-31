@@ -11,13 +11,10 @@ const PartnerSchema = new mongoose.Schema({
   //2- contact info,
   email: {
     type: String,
-    required: false,
     unique: true
   },
   Telephone_number: {
-    type: Number,
-    required: false,
-    unique: false
+    type: Number
   },
   //other contact links (social media)
   other: [
