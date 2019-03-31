@@ -1,7 +1,5 @@
-const mongoose = require("mongoose")
-/*const uri = "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true"
-mongoose.connect(uri, {useNewUrlParser:true})
-*/
+const mongoose = require('mongoose')
+
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
   // 1- name of company,
@@ -13,25 +11,23 @@ const PartnerSchema = new mongoose.Schema({
   //2- contact info,
   email: {
     type: String,
-    required: false,
     unique: true
   },
   Telephone_number: {
-    type: Number,
-    required: false,
-    unique: false
+    type: Number
   },
   //other contact links (social media)
   other: [
     {
-      name: String
+      name: String,
+      link: String
     }
   ],
   //*location
-  location: {
-    type: String,
-    required: true,
-    unique: true
+  address: {
+    city: String,
+    area: String,
+    street: String
   },
   //*number of employees
   number_of_employees: {
@@ -61,9 +57,14 @@ const PartnerSchema = new mongoose.Schema({
   //*events organized by the organization?
   events: [
     {
-      name: String,
-      location: String,
-      email: String
+      //needs to be an entity or not?
+      date: Date,
+      description: String,
+      address: {
+        city: String,
+        area: String,
+        street: String
+      }
     }
   ]
 })

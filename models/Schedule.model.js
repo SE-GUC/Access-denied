@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
-//const uri = 'mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true'
 
-//mongoose.connect(uri, {
-  //  useNewUrlParser: true
-//})
-
-let ObjectId = mongoose.Schema.Types.ObjectId;
+let ObjectId = mongoose.Schema.Types.ObjectId
 
 const ScheduleSchema = new mongoose.Schema({
   //A Schedule is built of 7 days, each day has a list of slots (1-hour each)
@@ -26,7 +21,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -48,7 +44,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -70,7 +67,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -92,7 +90,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -114,7 +113,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -136,7 +136,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }
@@ -158,7 +159,8 @@ const ScheduleSchema = new mongoose.Schema({
       },
       assignedTo: [
         {
-          type: ObjectId
+          type: ObjectId,
+          ref: 'Members'
         }
       ]
     }

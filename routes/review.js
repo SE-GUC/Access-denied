@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const validator = require('../validations/reviewValidations')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -27,7 +27,42 @@ router.post('/', (req, res) => {
       res.status(500).json(err)
     })
 })
-
+router.post('/newPost', (req, res) => {
+  const isValidated = validator.createValidation(req.body)
+  if (isValidated.error) {
+    return res.send()
+  }
+  let requestAssigner = req.body.reviewee
+  let requestAssignee = req.body.reviewer
+  let id = req.body.task
+  axios
+    .get(`${baseURL}/api/task/isTaskDone`, {
+      params: {
+        owner: requestAssigner,
+        assignee: requestAssignee,
+        taskID: id
+      }
+    })
+    .then(doc => {
+      var checker = doc.data.length === 0
+      if (checker) {
+        return res.send()
+      } else {
+        const model = new reviewModel(req.body)
+        model
+          .save()
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            return res.send()
+          })
+      }
+    })
+    .catch(err => {
+      return res.send()
+    })
+})
 router.get('/', (req, res) => {
   if (!req.query.reviewee) {
     return res.status(400).send('Reviewee ID is missing.')
@@ -38,7 +73,7 @@ router.get('/', (req, res) => {
     })
     .populate('reviewer', 'name')
     .populate('reviewee', 'name')
-    .populate('task', 'title')
+    .populate('task', 'name')
     .then(doc => {
       res.json(doc)
     })
@@ -99,50 +134,12 @@ router.delete('/', (req, res) => {
     })
 })
 
-router.post('/memberReview', (request, response) => {
-  let requestAssigner = request.body.reviewee
-  let requestAssignee = request.body.reviewer
-  axios
-    .get(`${baseURL}/api/task/Done`, {
-      params: {
-        assigner: requestAssigner,
-        assignee: requestAssignee
-      }
-    })
-    .then(doc => {
-      if (!doc || doc.data.length === 0) {
-        console.log('null')
-        return response.status(500).send(doc)
-      }
-      const isValidated = validator.createValidation(request.body)
-      if (isValidated.error)
-        return response
-          .status(400)
-          .send({ error: isValidated.error.details[0].message })
-      const model = new reviewModel(request.body)
-      model
-        .save()
-        .then(document => {
-          if (!document || document.length === 0) {
-            return response.status(500).send(document)
-          }
-          response.status(201).send(document)
-        })
-        .catch(err => {
-          response.status(500).json(err)
-        })
-    })
-    .catch(err => {
-      response.status(500).json(err)
-    })
-})
-
 router.post('/partnerReview', (request, response) => {
   let requestAssigner = request.body.reviewer
   let requestAssignee = request.body.reviewee
   let post = false
   axios
-    .get('http://localhost:3000/api/task/Done', {
+    .get(`${baseURL}/api/task/Done`, {
       params: {
         assigner: requestAssigner,
         assignee: requestAssignee

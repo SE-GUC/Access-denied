@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
+const axios = require('axios')
 
 Object.defineProperty(Array.prototype, 'flat', {
   value: function(depth = 1) {
@@ -34,6 +36,22 @@ const searchNames = list => {
   )
 }
 
+function searcht(tags, alltasks) {
+  let tasks = []
+  tags.forEach(function(tag) {
+    alltasks.forEach(function(task) {
+      task.Keywords.forEach(function(key) {
+        let j = tasks.find(function(ele) {
+          return task == ele
+        })
+        if (tag == key && j == null) {
+          tasks.push(task)
+        }
+      })
+    })
+  })
+  return tasks
+}
 router.get('/', (req, res) => {
   let resolved = false
   if (!req.query.keyword) {
@@ -60,6 +78,44 @@ router.get('/', (req, res) => {
       }
     })
     .catch(err => res.status(500).json(err))
+})
+router.get('/sk', (req, res) => {
+  //how the array of skills will come , may need to stringfy the array
+  let skills = req.query.skills
+  if (!skills) {
+    return res.status(400).status('400: no skills is provided')
+  }
+  axios
+    .get(`${baseURL}/api/task/filterTasks`, {
+      params: {
+        skills: skills
+      }
+    })
+    .then(response => {
+      return res.send(response.data)
+    })
+    .catch(err => {
+      return res.status(500).send(err)
+    })
+})
+
+router.get('/filteredby', (req, res) => {
+  //will get the tags like normal array
+  let q = req.query.tags
+  let tags = JSON.parse(q)
+  if (!tags) {
+    return res.status(400).status('400: no criteria has been specified')
+  }
+  axios
+    .get(`${baseURL}/api/task/all`)
+
+    .then(alltasks => {
+      let result = searcht(tags, alltasks.data)
+      return res.json(result)
+    })
+    .catch(error => {
+      return res.send(error)
+    })
 })
 
 module.exports = router

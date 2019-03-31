@@ -31,12 +31,30 @@ router.get('/', (req, res) => {
   educationalorganisations
     .findOne({
       email: req.query.email
-    }).populate('certificate')
+    })
+    .populate('certificate')
     .then(doc => {
       res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
+    })
+})
+
+router.get('/all', (request, response) => {
+  let key = {}
+
+  educationalorganisations
+    .find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return response.status(500).json(document)
+      }
+
+      response.status(200).json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
     })
 })
 

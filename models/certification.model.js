@@ -1,10 +1,4 @@
 const mongoose = require('mongoose')
-//const uri = 'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
-
-/*mongoose.connect(uri, {
-    useNewUrlParser: true
-})*/
-let ObjectId = mongoose.Schema.Types.ObjectId
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -12,32 +6,40 @@ const certificationSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  id_of_certification: {
-    type: String,
-    required: true,
-    unique: true
-  },
   skills: [String],
-  Evaluation_of_available: Date,
   Fees: Number,
   Method_of_payment: String,
   Evaluation_procedure: {
-    type: String,
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'evaluationModel'
   },
   membersapplied: [
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Members'
-      },
-      finished: Boolean
+      }
     }
   ],
-  schedule: {
-    type: ObjectId,
-    ref: 'Schedule'
+  membersaccepted: [
+    {
+      MEMBERS: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Members'
+      }
+    }
+  ],
+
+  eduorganization: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EducationalOrganisation'
   }
 })
 
-module.exports = mongoose.model('Certification', certificationSchema)
+//delete mongoose.connection.models['Certification']
+//delete mongoose.connection.collections['Certification']
+
+const myModel = mongoose.model('Certification', certificationSchema)
+
+module.exports = myModel

@@ -2,14 +2,14 @@ const consultancy = require('../routes/consultancy')
 const axios = require('axios')
 const _ = require('lodash')
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 const addTest = test('Creates a new Consultancy', async () => {
   const body = {
     name: 'fdssfdt',
     email: 'lkkj@test.j2s',
     phoneNumber: '123123',
-    address: 'jestsd'
+    address: { city: 'jestsd', street: 'jestsae', area: 'jest' }
   }
   expect(
     _.pick(
@@ -24,7 +24,7 @@ const readTest = test('Reads a new Consultancy', async () => {
     name: 'fdssfdt',
     email: 'lkkj@test.j2s',
     phoneNumber: '123123',
-    address: 'jestsd'
+    address: { city: 'jestsd', street: 'jestsae', area: 'jest' }
   }
   expect(
     _.pick(
@@ -39,7 +39,7 @@ const updateTest = test('Updates a new Consultancy', async () => {
     name: 'fdssfdt',
     email: 'lkkj@test.j2s',
     phoneNumber: '123122',
-    address: 'jestsd'
+    address: { city: 'jestsd', street: 'jestsae', area: 'jest' }
   }
   expect(
     _.pick(
@@ -55,7 +55,7 @@ const deleteTest = test('Deletes a new Consultancy', async () => {
     name: 'fdssfdt',
     email: 'lkkj@test.j2s',
     phoneNumber: '123122',
-    address: 'jestsd'
+    address: { city: 'jestsd', street: 'jestsae', area: 'jest' }
   }
   expect(
     _.pick(

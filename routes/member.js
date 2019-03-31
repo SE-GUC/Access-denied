@@ -4,7 +4,8 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+const _ = require('lodash')
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
   console.log(req.query.email)
@@ -25,7 +26,7 @@ router.get('/cert', (req, res) => {
           }
         })
         .then(response => {
-          var memberModel = response.data[0].membersapplied
+          let memberModel = response.data[0].membersapplied
           // res.json(memberModel)
           let j = memberModel.find(function(value) {
             return value.MEMBERS == objid
@@ -68,7 +69,6 @@ router.get('/cert', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  console.log('ok')
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
@@ -83,7 +83,18 @@ router.post('/', (req, res) => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(201).send(doc)
+      res
+        .status(201)
+        .send(
+          _.pick(doc, [
+            '_id',
+            'name',
+            'email',
+            'calendar',
+            'certification',
+            '__v'
+          ])
+        )
     })
     .catch(err => {
       res.status(500).json(err)
@@ -98,6 +109,7 @@ router.get('/', (req, res) => {
     .findOne({
       email: req.query.email
     })
+    .select('-password')
     .then(doc => {
       res.json(doc)
     })
@@ -110,6 +122,7 @@ router.get('/all', (_request, response) => {
 
   memberModel
     .find(key)
+    .select('-password')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -174,28 +187,28 @@ router.get('/tasksAvilable', (req, res) => {
     })
     .then(member => {
       let id = member.data._id
-      let Certification = member.data.Certification
+      let Certification = member.data.certification
       let save = []
       Certification.forEach(function(element) {
         save = element.skills + ',' + save
       })
-      let m = {
+      let skills = {
         skills: save
       }
       axios
         .get(`${baseURL}/api/task/filterTasks`, {
           params: {
-            skills: m
+            skills: skills
           }
         })
 
-        .then(m => {
-          let k = {
+        .then(tasks => {
+          let returned = {
             id: id,
-            m: m.data
+            tasks: tasks.data
           }
 
-          res.json(k)
+          res.json(returned)
         })
     })
 })
@@ -217,7 +230,7 @@ router.get('/applyonTask', (request, response) => {
         })
         .then(thetask => {
           //   response.json(tasks.data.id)
-          tasks.data.m.forEach(function(atask) {
+          tasks.data.tasks.forEach(function(atask) {
             if (atask.title == thetask.data.title) {
               axios
                 .put(`${baseURL}/api/task?contactEmail=` + taskemail, {
@@ -229,6 +242,57 @@ router.get('/applyonTask', (request, response) => {
             }
           })
         })
+    })
+})
+
+router.post('/reviewPartner', (req, res) => {
+  if (!req.body) {
+    return res.status(400).send('Body is missing')
+  }
+  axios
+    .post(`${baseURL}/api/review/newPost`, {
+      reviewer: req.body.reviewer,
+      reviewee: req.body.reviewee,
+      rating: req.body.rating,
+      review: req.body.review,
+      revieweeModel: 'Partners',
+      reviewerModel: 'Members',
+      task: req.body.task
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send('Your review can not be posted')
+      }
+      res.status(201).json(doc.data)
+    })
+    .catch(err => {
+      res.send('Error occured')
+    })
+})
+
+router.post('/adddate', (req, res) => {
+  if (!req.query.email) return res.status(400).send('Email is missing')
+  if (!req.body.date) return res.status(400).send('Date is missing')
+  memberModel
+    .findOneAndUpdate(
+      {
+        email: req.query.email
+      },
+      {
+        $push: { calendar: req.body.date }
+      },
+      {
+        new: true,
+        safe: true,
+        upsert: true
+      }
+    )
+    .then(doc => {
+      if (!doc || doc.length === 0) return res.status(500).send('Error')
+      res.json(doc)
+    })
+    .catch(err => {
+      return res.status(500).json(err)
     })
 })
 

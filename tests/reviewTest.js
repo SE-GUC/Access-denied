@@ -2,7 +2,7 @@ const review = require('../routes/review')
 const axios = require('axios')
 const _ = require('lodash')
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 let reviewreply = ''
 
 const addTest = test('Creates a new review', async () => {
@@ -11,7 +11,7 @@ const addTest = test('Creates a new review', async () => {
     reviewee: '5c9560186044620bf8a81093',
     review: 'test',
     rating: 3,
-    task: '5c9563076044620bf8a81095',
+    task: '5c9563076044620bf8a81097',
     reviewerModel: 'Members',
     revieweeModel: 'Partners'
   }
@@ -25,7 +25,7 @@ const readTest = test('Reads a new review', async () => {
     reviewee: '5c9560186044620bf8a81093',
     review: 'test',
     rating: 3,
-    task: '5c9563076044620bf8a81095',
+    task: '5c9563076044620bf8a81097',
     reviewerModel: 'Members',
     revieweeModel: 'Partners'
   }
@@ -45,7 +45,7 @@ const updateTest = test('Updates a new review', async () => {
     reviewee: '5c9560186044620bf8a81093',
     review: 'testupdate',
     rating: 3,
-    task: '5c9563076044620bf8a81095',
+    task: '5c9563076044620bf8a81097',
     reviewerModel: 'Members',
     revieweeModel: 'Partners'
   }
@@ -64,7 +64,7 @@ const deleteTest = test('Deletes a new review', async () => {
     reviewee: '5c9560186044620bf8a81093',
     review: 'testupdate',
     rating: 3,
-    task: '5c9563076044620bf8a81095',
+    task: '5c9563076044620bf8a81097',
     reviewerModel: 'Members',
     revieweeModel: 'Partners'
   }

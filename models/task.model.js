@@ -8,14 +8,21 @@
 
 const mongoose = require('mongoose')
 
-// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment 
-/*const URI = 'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
-
-mongoose.connect(URI, {
-    useNewUrlParser: true
-})*/
-
+// IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
+function tags(s) {
+  s.push('OwnerName=' + this.owner)
+  s.push('effortLevel=' + this.effortLevel)
+  s.push('commitmentLevel=' + this.commitmentLevel)
+  s.push('experienceLevel=' + this.experienceLevel)
+  s.push('timeRequired=' + this.timeRequired)
+  s.push('monetaryComp=' + this.monetaryComp)
+  s.push('skills=' + this.skills)
+  return s
+}
 var taskSchema = new mongoose.Schema({
+  name: {
+    type: String
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Partners'
@@ -57,7 +64,11 @@ var taskSchema = new mongoose.Schema({
   monetaryComp: {
     type: Number
   },
-  skillset: [String]
+  skills: [String],
+  Keywords: {
+    type: [String],
+    get: tags
+  }
 })
 
 //delete mongoose.connection.models['Tasks']

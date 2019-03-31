@@ -44,7 +44,8 @@ router.get('/', (req, res) => {
   evaluations
     .findOne({
       _id: req.query.id
-    }).populate("certificate")
+    })
+    .populate('certificate')
     .then(doc => {
       res.json(doc)
     })

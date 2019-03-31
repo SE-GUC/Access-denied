@@ -1,6 +1,4 @@
-const mongoose = require("mongoose")
-//const uri = "mongodb+srv://MubbyGN:nwoFDbE9QE6z0iEE@se-qt9vz.mongodb.net/test?retryWrites=true"
-//mongoose.connect(uri, {useNewUrlParser:true})
+const mongoose = require('mongoose')
 
 const consultancySchema = new mongoose.Schema({
   name: {
@@ -18,8 +16,9 @@ const consultancySchema = new mongoose.Schema({
     unique: true
   },
   address: {
-    type: String,
-    required: true
+    city: { type: String, required: true },
+    area: { type: String, required: true },
+    street: { type: String, required: true }
   },
   partners: [
     {
