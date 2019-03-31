@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const MemberSchema = new mongoose.Schema({
   name: {
@@ -12,18 +12,18 @@ const MemberSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    unique: false // TODO: Change it to non unique
+    required: true
   },
   certification: [
     {
       name_of_certification: String,
       skills: [String],
-      name_of_certification_id: {
+      ref_of_certification: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Certification"
+        ref: 'Certification'
       }
     }
-  ]
-});
-module.exports = mongoose.model("Members", MemberSchema);
+  ],
+  calendar: [Date]
+})
+module.exports = mongoose.model('Members', MemberSchema)

@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -14,10 +14,7 @@ module.exports = {
         .min(3)
         .max(500),
       other: Joi,
-      location: Joi.string()
-        .min(3)
-        .max(500)
-        .required(),
+      address: Joi.required(),
       number_of_employees: Joi.number(),
       field_of_work: Joi.string()
         .min(3)
@@ -28,9 +25,9 @@ module.exports = {
         .max(500),
       members: Joi,
       events: Joi
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -43,9 +40,7 @@ module.exports = {
         .min(3)
         .max(500),
       other: Joi,
-      location: Joi.string()
-        .min(3)
-        .max(500),
+      address: Joi,
       number_of_employees: Joi.number(),
       field_of_work: Joi.string()
         .min(3)
@@ -55,8 +50,8 @@ module.exports = {
         .max(500),
       members: Joi,
       events: Joi
-    };
+    }
 
-    return Joi.validate(request, updateSchema);
+    return Joi.validate(request, updateSchema)
   }
-};
+}

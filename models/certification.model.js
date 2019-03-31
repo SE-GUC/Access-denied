@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-     
+const mongoose = require('mongoose')
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -13,17 +12,17 @@ const certificationSchema = new mongoose.Schema({
   Evaluation_procedure: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    refPath: 'evaluationModel'
+    ref: 'evaluationModel'
   },
   membersapplied: [
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        refPath: 'Members'
+        ref: 'Members'
       }
     }
   ],
-  membersaccepted  :[
+  membersaccepted: [
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,17 +32,15 @@ const certificationSchema = new mongoose.Schema({
   ],
 
   eduorganization: {
-    type : mongoose.Schema.Types.ObjectId,
-    refPath: 'EducationalOrganisation'
-  } 
-  
- 
-});
- 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'EducationalOrganisation'
+  }
+})
+
 //delete mongoose.connection.models['Certification']
 //delete mongoose.connection.collections['Certification']
 
-const myModel = mongoose.model("Certification", certificationSchema);
+const myModel = mongoose.model('Certification', certificationSchema)
 
 //myModel.collection.drop()
 
