@@ -18,7 +18,7 @@ const mongoose = require('mongoose')
 mongoose.set('useCreateIndex', true)
 mongoose.set('usefindandmodify', false)
 
-const baseURL = process.env.BASEURL || 'localhost:3000'
+const baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 /*
     POST/CREATE route for Task Entity
@@ -83,8 +83,8 @@ router.get('/', (request, response) => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
-
       response.status(200).json(document)
+      
     })
     .catch(error => {
       response.status(500).json(error)
@@ -208,12 +208,28 @@ router.delete('/', (request, response) => {
     })
 })
 
+
+const search =function search(skills,alltasks){
+  let tasks = []
+  skills.forEach(function(element) {
+    alltasks.data.forEach(function(element2) {
+      element2.skills.forEach(function(skill) {
+        let j = tasks.find(function(ele) {
+          return element2 == ele
+        })
+        if (element == skill && j == null && element2.isComplete == false) {
+          tasks.push(element2)
+        }
+      })
+    })
+  })
+  return tasks
+}
 /**
  * @description Filter Tasks
  * @requires skills
  * @returns Filtered Document
  */
-
 router.get('/filterTasks', (request, response) => {
   let skills = request.query.skills
   let q = JSON.parse(skills)
@@ -221,29 +237,16 @@ router.get('/filterTasks', (request, response) => {
     return response.status(400).status('400: Bad Request')
   }
   let splitted = q.skills.split(',')
-  let tasks = []
 
   axios
     .get(`${baseURL}/api/task/all`)
 
     .then(alltasks => {
-      splitted.forEach(function(element) {
-        alltasks.data.forEach(function(element2) {
-          element2.skills.forEach(function(skill) {
-            let j = tasks.find(function(ele) {
-              return element2 == ele
-            })
-            if (element == skill && j == null) {
-              // response.json(element2.data)
-              tasks.push(element2)
-            }
-          })
-        })
-      })
-      response.json(tasks)
+      let result = search(splitted,alltasks)
+     return response.json(result)
     })
     .catch(error => {
-      response.status(500).json(error)
+      return response.send(error)
     })
 })
 
@@ -287,4 +290,6 @@ router.put('/:id/done', (request, response) => {
     })
 })
 
-module.exports = router
+module.exports = {"router": router,
+                  "searchTasksBySkills":search}
+

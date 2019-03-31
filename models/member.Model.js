@@ -16,9 +16,12 @@ const MemberSchema = new mongoose.Schema({
   },
   certification: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Certification'
-    }
+      name_of_certification: String,
+      skills: [String],
+      ref_of_certification: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Certification'
+      }}
   ],
   calendar:[Date]
 })

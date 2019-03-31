@@ -138,7 +138,7 @@ router.post('/partnerReview', (request, response) => {
   let requestAssignee = request.body.reviewee
   let post = false
   axios
-    .get('http://localhost:3000/api/task/Done', {
+    .get(`${baseURL}/api/task/Done`, {
       params: {
         assigner: requestAssigner,
         assignee: requestAssignee

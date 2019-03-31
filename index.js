@@ -49,7 +49,7 @@ app.use(express.static('./public'))
 
 //Setup routing directories/paths
 
-app.use('/api/task', taskRoute) // Tested - Passed - changed file name to match file naming agreement
+app.use('/api/task', taskRoute.router) // Tested - Passed - changed file name to match file naming agreement
 app.use('/api/consultancy', consultancyRoute) // Tested - Passed
 app.use('/api/partner', partnerRoute) // Tested - Passed - router had extra paths, EX : /api/partner/update (solved by removal)
 app.use('/api/coworking', coworkingspaceRoute) // Tested - Passed
