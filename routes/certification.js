@@ -38,7 +38,7 @@ router.get('/all', (_request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -56,7 +56,7 @@ router.get('/all', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -111,9 +111,7 @@ router.get('/', (req, res) => {
   }
   certificationModel
     .find({
-
       name: req.query.name
-
     })
     .populate('schedule')
     .then(doc => {

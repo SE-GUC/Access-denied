@@ -14,14 +14,11 @@ router.post('/', (req, res) => {
   //   console.log("why")
   //   return res.status(400).send(isValidated.error)}
 
-
-
   let model = new partnerModel(req.body)
-  
+
   return model
     .save()
     .then(doc => {
-
       if (!doc || doc.length === 0) {
         return res.status(503).send(doc)
       }
@@ -61,7 +58,7 @@ router.get('/all', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
