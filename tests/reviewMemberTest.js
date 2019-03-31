@@ -1,56 +1,100 @@
-var fetch = require('node-fetch')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
-let reply = ''
-const funcs = {
-  postPartnerReviewsMember: async () => {
-    let response = await fetch(`${baseURL}/api/partner/partnerReview`, {
-      method: 'POST',
-      body: JSON.stringify({
-        task: '5ca002ae15f5040438cf1fa9',
-        reviewer: '5c9494d3f0c6c02014be6b5f',
-        reviewee: '5c7581a12357f33970c4d757',
-        review: 'xxxxx',
-        rating: 2
-      }),
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin'
-    })
-    let data = await response.json()
-    reply = data
-    return data
-  },
-  deletePartnerReviewsMember: async () => {
-    let response = await fetch(`${baseURL}/api/review?id=${reply._id}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'same-origin'
-    })
-    let data = await response.json()
-    return data
+
+const axios = require('axios')
+const _ = require('lodash')
+
+
+const a = {
+    createPartner: async (data) => {
+      return axios.post("http://localhost:3000/api/partner/", data)
+    },
+    createMember: async (data) => {
+      return axios.post("http://localhost:3000/api/member/", data)
+    },
+    createReview: async (data) => {
+      return axios.post("http://localhost:3000/api/partner/partnerReview", data)
+    },
+    createtask: async (data) => {
+        return axios.post("http://localhost:3000/api/task/", data)
+    },
+    deletePartner: async (email) => {
+      return axios.delete(`http://localhost:3000/api/partner?email=${email}`)
+    },
+    deleteMember: async (email) => {
+        return axios.delete(`http://localhost:3000/api/member?email=${email}`)
+    },
+    deleteTask: async (id) => {
+        return axios.delete(`http://localhost:3000/api/task?id=${id}`)
+    },
+    deleteReview: async (id) => {
+      return axios.delete(`http://localhost:3000/api/review?id=${id}`)
   }
-}
 
-const postTest = test('post partner reviews member', async () => {
-  const response = await funcs.postPartnerReviewsMember()
-  console.log(response)
-  expect(response.reviewee).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewer).toEqual('5c9494d3f0c6c02014be6b5f') &&
-    expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
-})
-const deleteTest = test('delete partner reviews member', async () => {
-  const response = await funcs.deletePartnerReviewsMember()
-  console.log(reply._id)
-  console.log(response)
-  expect(response.reviewee).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewer).toEqual('5c9494d3f0c6c02014be6b5f') &&
-    expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
-})
+  }
+  
 
-module.exports = {
-  postTest,
-  deleteTest
-}
+  const partnerCreateReview = test('partner give feedback', async () => {
+    //create partner to get his id
+    const data1 = {
+        name:"testname1",
+        field_of_work:"testfieldofwork1",
+        email:"emailtest@test1",
+        address:"test1"
+      
+    }
+    const createdPartner = await a.createPartner(data1)
+  
+    const createdPartnerData = createdPartner.data
+    const partnerId = createdPartnerData['_id']
+    console.log("moaz"+partnerId)
+    //create member to git his id
+    const data2 = {
+        name:"testname1",
+        email:"email@test1",
+        password:"passwordtest1"
+      
+    }
+    const createdMember = await a.createMember(data2)
+  
+    const createdMemberData = createdMember.data
+    const memberId = createdMemberData['_id']
+
+    //create task 
+    const data3 = {
+        name:"newtest2",
+        owner:partnerId,
+        assignee:memberId,
+        isComplete:true
+      
+    }
+    const createdTask = await a.createtask(data3)
+  
+    const createdTaskData = createdTask.data
+    const taskId = createdTaskData['_id']
+    console.log("da el id task"+taskId)
+    //create review
+    const body = {
+      reviewer:partnerId,
+      reviewee:memberId,
+      task:taskId,
+      review:"nice",
+      rating:"4",
+      reviewerModel:"Partners",
+      revieweeModel:"Members"
+    }
+    const createdReview= await a.createReview(data3)
+  
+    const createdReviewData = createdReview.data
+    const reviewId = createdReviewData['_id']
+    console.log("da el rev id"+reviewId)
+    expect.assertions(1)
+    expect(createdReviewData).toMatchObject(body)
+
+    a.deletePartner("emailtest@test1")
+    a.deleteMember("email@test1")
+    a.deleteTask(taskId)
+    a.deleteReview(reviewId)
+  })
+
+  module.exports = {
+    partnerCreateReview
+  }

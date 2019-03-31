@@ -10,7 +10,7 @@ module.exports = {
       email: Joi.string()
         .email()
         .required(),
-      Telephone_number: Joi.Number()
+      Telephone_number: Joi.number()
         .min(3)
         .max(500),
       other: Joi,

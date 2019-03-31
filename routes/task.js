@@ -126,6 +126,29 @@ router.get('/isTaskDone', (request, response) => {
       response.send()
     })
 })
+router.get('/Done', (request, response) => {
+  let reqowner = request.query.owner
+  let reqassignee = request.query.assignee
+  let reqid = request.query.task
+  console.log("de el haga kolha"+reqowner,reqassignee,reqid)
+  if (!reqowner || !reqassignee || !reqid) {
+    return response.send()
+  }
+  let key = {
+    owner: reqowner,
+    assignee: reqassignee,
+    _id: reqid,
+    isComplete: true
+  }
+  Task.findOne(key)
+    .then(document => {
+      response.status(200).json(document)
+    })
+    .catch(error => {
+      response.send()
+    })
+   
+})
 
 /*
     PUT/UPDATE route for Task Entity
