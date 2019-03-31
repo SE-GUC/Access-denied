@@ -36,7 +36,7 @@ const searchNames = list => {
   )
 }
 
-function searcht(tags,alltasks){
+function searcht(tags, alltasks) {
   let tasks = []
   tags.forEach(function(tag) {
     alltasks.forEach(function(task) {
@@ -44,7 +44,7 @@ function searcht(tags,alltasks){
         let j = tasks.find(function(ele) {
           return task == ele
         })
-        if (tag == key && j == null ) {
+        if (tag == key && j == null) {
           tasks.push(task)
         }
       })
@@ -79,43 +79,43 @@ router.get('/', (req, res) => {
     })
     .catch(err => res.status(500).json(err))
 })
-router.get('/sk', (req, res)=> { //how the array of skills will come , may need to stringfy the array
+router.get('/sk', (req, res) => {
+  //how the array of skills will come , may need to stringfy the array
   let skills = req.query.skills
-if(!skills){
-  return res.status(400).status('400: no skills is provided')
-}
+  if (!skills) {
+    return res.status(400).status('400: no skills is provided')
+  }
   axios
     .get(`${baseURL}/api/task/filterTasks`, {
       params: {
-        "skills": skills
+        skills: skills
       }
     })
-    .then(response=>{
+    .then(response => {
       return res.send(response.data)
     })
-    .catch(err=>{
+    .catch(err => {
       return res.status(500).send(err)
     })
-    
 })
 
-router.get('/filteredby', (req, res)=> { //will get the tags like normal array
+router.get('/filteredby', (req, res) => {
+  //will get the tags like normal array
   let q = req.query.tags
   let tags = JSON.parse(q)
-if(!tags){
-  return res.status(400).status('400: no criteria has been specified')
-}
-axios
-  .get(`${baseURL}/api/task/all`)
+  if (!tags) {
+    return res.status(400).status('400: no criteria has been specified')
+  }
+  axios
+    .get(`${baseURL}/api/task/all`)
 
-  .then(alltasks => {
-    let result = searcht(tags,alltasks.data)
-   return res.json(result)
-  })
-  .catch(error => {
-    return res.send(error)
-  })
+    .then(alltasks => {
+      let result = searcht(tags, alltasks.data)
+      return res.json(result)
+    })
+    .catch(error => {
+      return res.send(error)
+    })
 })
-
 
 module.exports = router

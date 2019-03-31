@@ -14,8 +14,7 @@ module.exports = {
         .min(3)
         .max(500),
       other: Joi,
-      address: Joi
-        .required(),
+      address: Joi.required(),
       number_of_employees: Joi.number(),
       field_of_work: Joi.string()
         .min(3)

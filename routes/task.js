@@ -84,7 +84,6 @@ router.get('/', (request, response) => {
         return response.status(500).json(document)
       }
       response.status(200).json(document)
-      
     })
     .catch(error => {
       response.status(500).json(error)
@@ -106,28 +105,27 @@ router.get('/all', (request, response) => {
       response.status(500).json(error)
     })
 })
-router.get("/isTaskDone", (request, response) => {
-  let reqowner = request.query.owner;
-  let reqassignee = request.query.assignee;
-  let reqid = request.query.taskID;
+router.get('/isTaskDone', (request, response) => {
+  let reqowner = request.query.owner
+  let reqassignee = request.query.assignee
+  let reqid = request.query.taskID
   if (!reqowner || !reqassignee || !reqid) {
-    return response.send();
+    return response.send()
   }
   let key = {
     owner: reqowner,
     assignee: reqassignee,
     _id: reqid,
     isComplete: true
-  };
+  }
   Task.findOne(key)
     .then(document => {
-      response.status(200).json(document);
+      response.status(200).json(document)
     })
     .catch(error => {
-      response.send();
-    });
-});
-
+      response.send()
+    })
+})
 
 /*
     PUT/UPDATE route for Task Entity
@@ -135,7 +133,7 @@ router.get("/isTaskDone", (request, response) => {
 
 /**
  * @description Update Document in Database
- * @requires _id
+ * @requires id
  */
 
 router.put('/', (request, response) => {
@@ -208,8 +206,7 @@ router.delete('/', (request, response) => {
     })
 })
 
-
-const search =function search(skills,alltasks){
+const search = function search(skills, alltasks) {
   let tasks = []
   skills.forEach(function(element) {
     alltasks.data.forEach(function(element2) {
@@ -242,8 +239,8 @@ router.get('/filterTasks', (request, response) => {
     .get(`${baseURL}/api/task/all`)
 
     .then(alltasks => {
-      let result = search(splitted,alltasks)
-     return response.json(result)
+      let result = search(splitted, alltasks)
+      return response.json(result)
     })
     .catch(error => {
       return response.send(error)
@@ -290,6 +287,7 @@ router.put('/:id/done', (request, response) => {
     })
 })
 
-module.exports = {"router": router,
-                  "searchTasksBySkills":search}
-
+module.exports = {
+  router: router,
+  searchTasksBySkills: search
+}

@@ -44,7 +44,8 @@ router.get('/', (req, res) => {
 router.get('/all', (request, response) => {
   let key = {}
 
-  educationalorganisations.find(key)
+  educationalorganisations
+    .find(key)
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
