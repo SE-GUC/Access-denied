@@ -45,21 +45,21 @@ router.get('/all', (_request, response) => {
     })
 })
 router.get('/all', (request, response) => {
+  let key = {}
+  //let model = new certificationModel(req.body)
+  //model.save()
 
-    let key = {}
-    //let model = new certificationModel(req.body)
-    //model.save()
+  certificationModel
+    .find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return response.status(500).json(document)
+      }
 
-    certificationModel.find(key).then((document) => {
-
-        if (!document || document.length == 0) {
-            return response.status(500).json(document)
-        }
-
-        response.status(200).json(document)
-
-    }).catch((error) => {
-        response.status(500).json(error)
+      response.status(200).json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
     })
 })
 

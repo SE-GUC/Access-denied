@@ -33,8 +33,8 @@ app.use(
 )
 
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
-app.set('views', './views')
-app.set('view engine', 'html')
+// app.set('views', './views')
+// app.set('view engine', 'html')
 
 //Logger
 app.use((request, response, next) => {
@@ -46,7 +46,7 @@ app.use((request, response, next) => {
 })
 
 //Setup Static Directory
-app.use(express.static('./public'))
+// app.use(express.static('./public'))
 
 //Setup routing directories/paths
 
@@ -63,7 +63,7 @@ app.use('/api/Evaluation', EvaluationRoute)
 app.use('/api/application', applicationRoute)
 app.use('/search', searchRoute)
 
-// 404 & 500 Error handlers
+// 404 & 500 Error handlers  //Todo: handle errors in a different way
 app.use((error, request, response, next) => {
   response.status(500).send('500: Internal Server Error')
 })
