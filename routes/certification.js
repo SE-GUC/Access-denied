@@ -74,7 +74,6 @@ router.put('/', (req, res) => {
     .findOneAndUpdate(
       {
         name: req.query.name
-
       },
       req.body,
       {
@@ -97,7 +96,6 @@ router.delete('/', (req, res) => {
   certificationModel
     .findOneAndDelete({
       name: req.query.name
-
     })
     .then(doc => {
       res.json(doc)
@@ -113,9 +111,7 @@ router.get('/', (req, res) => {
   }
   certificationModel
     .find({
-
       name: req.query.name
-
     })
     .populate('schedule')
     .then(doc => {

@@ -54,12 +54,12 @@ function searcht(tags, alltasks) {
 }
 router.get('/', (req, res) => {
   let resolved = false
-  if (!req.query.keyword) {
+  if (!req.query.q) {
     return res.status(400).send('Query is Missing')
   }
-  let splitted = req.query.keyword.split(' ')
+  let splitted = req.query.q.split(' ')
   let result = []
-  searchNames([req.query.keyword])
+  searchNames([req.query.q])
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true

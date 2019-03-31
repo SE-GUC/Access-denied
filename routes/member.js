@@ -8,8 +8,8 @@ const _ = require('lodash')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
-  if (!req.query.email || !req.query.id){
-    res.send('email or id of cert is missing') 
+  if (!req.query.email || !req.query.id) {
+    res.send('email or id of cert is missing')
   }
   console.log(req.query.email)
   axios
@@ -22,71 +22,69 @@ router.get('/cert', (req, res) => {
       objid = response.data._id
       console.log(response.data._id)
       console.log(response.data.certification)
-      //if already taken 
+      //if already taken
       let T = response.data.certification.find(function(value) {
         return value.ref_of_certification == req.query.id
       })
-     
-      if (T){
-      var str = JSON.stringify(T.ref_of_certification)
-      console.log(str+'='+req.query.id)
-     res.send("already taken !")
-      }else{
-      //get certifcate array
-      axios
-        .get(`${baseURL}/api/certification`, {
-          params: {
-            id_of_certification: req.query.id
-          }
-        })
-        .then(response => {
-          let memberModel = response.data[0].membersapplied
-          let membermodelacc= response.data[0].membersaccepted
-          let allmembers=memberModel.concat(membermodelacc)
-          // res.json(memberModel)
-          console.log('mmbers----------->'+JSON.stringify(allmembers))
-          let j = allmembers.find(function(value) {
-            return value.MEMBERS == objid
+
+      if (T) {
+        var str = JSON.stringify(T.ref_of_certification)
+        console.log(str + '=' + req.query.id)
+        res.send('already taken !')
+      } else {
+        //get certifcate array
+        axios
+          .get(`${baseURL}/api/certification`, {
+            params: {
+              id_of_certification: req.query.id
+            }
           })
-          console.log('value of j'+JSON.stringify(j))
-          if (j == null) {
-            //res.send("already applied")
-            memberModel.push({
-              MEMBERS: objid,
+          .then(response => {
+            let memberModel = response.data[0].membersapplied
+            let membermodelacc = response.data[0].membersaccepted
+            let allmembers = memberModel.concat(membermodelacc)
+            // res.json(memberModel)
+            console.log('mmbers----------->' + JSON.stringify(allmembers))
+            let j = allmembers.find(function(value) {
+              return value.MEMBERS == objid
             })
-            axios
-            .put(
-              `${baseURL}/api/certification?id_of_certification=` +
-                req.query.id,
-              {
-                membersapplied: memberModel
-              }
-            )
-            .then(function(response) {
-              console.log('saved successfully')
-              console.log(response.data)
-              res.send(response.data)
-            })
-          }else{
-            res.send('already applied for certifacte !')
-            const f = 'true';
-          }
+            console.log('value of j' + JSON.stringify(j))
+            if (j == null) {
+              //res.send("already applied")
+              memberModel.push({
+                MEMBERS: objid
+              })
+              axios
+                .put(
+                  `${baseURL}/api/certification?id_of_certification=` +
+                    req.query.id,
+                  {
+                    membersapplied: memberModel
+                  }
+                )
+                .then(function(response) {
+                  console.log('saved successfully')
+                  console.log(response.data)
+                  res.send(response.data)
+                })
+            } else {
+              res.send('already applied for certifacte !')
+              const f = 'true'
+            }
 
-          //   res.json(memberModel)
-          console.log(response.data)
-          console.log(memberModel.tostring)
-          //update certifcate array
-
-          
-        })
-        .catch(error => {
-          console.log(error)
-        })   }
+            //   res.json(memberModel)
+            console.log(response.data)
+            console.log(memberModel.tostring)
+            //update certifcate array
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     })
     .catch(error => {
       console.log(error)
     })
-  
 })
 
 router.post('/', (req, res) => {
