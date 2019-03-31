@@ -22,7 +22,6 @@ const searchNames = list => {
   models.push(mongoose.models.Task)
   models.push(mongoose.models.Members)
   regex = list.map(e => new RegExp(e, 'i'))
-  console.log(regex)
   return Promise.all(
     models.map(model =>
       model
@@ -63,7 +62,7 @@ router.get('/', (req, res) => {
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true
-        return res.status(200).send(doc.flat(Infinity))
+        return res.json(doc.flat(Infinity))
       }
       result = doc
       return searchNames(splitted)
@@ -74,7 +73,7 @@ router.get('/', (req, res) => {
       }
       if (!resolved) {
         result = result.concat(docs)
-        res.status(200).send(result.flat(Infinity))
+        res.json(result.flat(Infinity))
       }
     })
     .catch(err => res.status(500).json(err))

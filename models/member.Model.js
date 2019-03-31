@@ -35,7 +35,6 @@ MemberSchema.pre('save', function(next) {
   bcrypt.hash(user.password, 2, function(err, hash) {
     if (err) return next(err)
     user.password = hash
-    console.log(user)
     next()
   })
 })

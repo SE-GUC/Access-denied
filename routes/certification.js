@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
         return res.status(500).send(doc)
       }
 
-      res.status(200).send(doc)
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
@@ -132,7 +132,6 @@ router.post('/offlineEvaluation/', (req, res) => {
   axios
     .post(`${baseURL}/api/schedule`, {})
     .then(response => {
-      console.log(response.data._id)
       let schedule = response.data._id
       req.body.schedule = schedule
       return certificationModel.findByIdAndUpdate(req.query.id, {
