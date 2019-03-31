@@ -15,4 +15,4 @@ const taskTests = require('./tests/taskTest')
 const evaluationTests = require('./tests/evaluationTest')
 const memberTests = require('./tests/memberTest')
 const PartnerTests = require('./tests/PartnerTest')
-
+const applicationTests = require('./tests/applicationTest')
