@@ -59,7 +59,7 @@ const deleteFeedbackTest = test('delete feedback', async () => {
 })
 
 module.exports = {
-  deleteFeedbackTest,
+  postFeedbackTest,
   viewFeedbackTest,
-  postFeedbackTest
+  deleteFeedbackTest
 }

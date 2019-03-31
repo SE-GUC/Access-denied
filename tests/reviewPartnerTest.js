@@ -36,15 +36,12 @@ const funcs = {
 
 const postTest = test('post member reviews partner', async () => {
   const response = await funcs.postMemberReviewsPartner()
-  console.log(response)
   expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
     expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
     expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
 })
 const deleteTest = test('delete member reviews partner', async () => {
   const response = await funcs.deleteMemberReviewsPartner()
-  console.log(reply._id)
-  console.log(response)
   expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
     expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
     expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
