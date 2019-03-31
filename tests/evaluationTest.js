@@ -121,7 +121,7 @@ const funcs = {
   module.exports={
     postTest,
     readTest,
-    deleteTest,
     updateTest,
+    deleteTest,
     postMissing
     }

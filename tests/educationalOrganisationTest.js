@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
-
+const edumodel = require('../models/EducationalOrganisation.model')
 
 const funcs = {
 
@@ -117,16 +117,18 @@ const readTest = test('get Educational Organisation ', async () => {
   expect(response.email).toEqual('ct@gmail.com')
 })
 
-const deleteTest = test('delete Educational Organisation ', async () => {
-  const response = await funcs.deleteEducationalOrganisation()
-  expect(response.email).toEqual('ct@gmail.com')
-})
 const updateTest=test("update Educational Organisation ", async () => {
   const response = await funcs.updateEducationalOrganisation();
   console.log(response);
   expect(response.name).toEqual("newname")&&
   expect(response.email).toEqual("ct@gmail.com");
 });
+
+const deleteTest = test('delete Educational Organisation ', async () => {
+  const response = await funcs.deleteEducationalOrganisation()
+  expect(response.email).toEqual('ct@gmail.com')
+})
+
 
  
   //post an entity missing required info, expect an error 
