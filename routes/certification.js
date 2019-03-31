@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
-let baseURL = process.env.BASEURL || 'http://localhost:3000'
+var baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -45,8 +45,8 @@ router.get('/all', (_request, response) => {
     })
 })
 router.put('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('id of certification is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name of certification is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -54,7 +54,7 @@ router.put('/', (req, res) => {
   certificationModel
     .findOneAndUpdate(
       {
-        id_of_certification: req.query.id_of_certification
+        name: req.query.name
       },
       req.body,
       {
@@ -71,12 +71,12 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('id is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name is missing.')
   }
   certificationModel
     .findOneAndDelete({
-      id_of_certification: req.query.id_of_certification
+      name: req.query.name
     })
     .then(doc => {
       res.json(doc)
@@ -87,12 +87,12 @@ router.delete('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('ID of certification is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name of certification is missing.')
   }
   certificationModel
     .find({
-      id_of_certification: req.query.id_of_certification
+      name: req.query.name
     })
     .populate('schedule')
     .then(doc => {
