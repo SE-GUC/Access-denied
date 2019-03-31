@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose')
+const bcrypt = require('bcryptjs')
 const MemberSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -12,18 +12,39 @@ const MemberSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
-    unique: false // TODO: Change it to non unique
+    required: true
   },
   certification: [
     {
       name_of_certification: String,
       skills: [String],
-      name_of_certification_id: {
+      ref_of_certification: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Certification"
+        ref: 'Certification'
       }
     }
-  ]
-});
-module.exports = mongoose.model("Members", MemberSchema);
+  ],
+  calendar: [Date]
+})
+
+MemberSchema.pre('save', function(next) {
+  let user = this
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next()
+
+  bcrypt.hash(user.password, 2, function(err, hash) {
+    if (err) return next(err)
+    user.password = hash
+    next()
+  })
+})
+
+MemberSchema.methods.comparePassword = function(candidatePassword, cb) {
+  bcrypt
+    .compare(candidatePassword, this.password)
+    .then(isMatch => {
+      cb(null, isMatch)
+    })
+    .catch(err => cb(err))
+}
+module.exports = mongoose.model('Members', MemberSchema)
