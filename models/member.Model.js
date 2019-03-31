@@ -29,19 +29,15 @@ const MemberSchema = new mongoose.Schema({
 
 MemberSchema.pre('save', function(next) {
   let user = this
-
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) return next()
 
-  bcrypt
-    .hash(user.password, 2)
-    .then(hash => {
-      user.password = hash
-    })
-    .catch(err => {
-      return next(err)
-    })
-  next()
+  bcrypt.hash(user.password, 2, function(err, hash) {
+    if (err) return next(err)
+    user.password = hash
+    console.log(user)
+    next()
+  })
 })
 
 MemberSchema.methods.comparePassword = function(candidatePassword, cb) {
