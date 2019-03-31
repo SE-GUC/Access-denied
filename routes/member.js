@@ -86,14 +86,7 @@ router.post('/', (req, res) => {
       res
         .status(201)
         .send(
-          _.pick(doc, [
-            '_id',
-            'name',
-            'email',
-            'calendar',
-            'certification',
-            '__v'
-          ])
+          _.pick(doc, ['_id', 'name', 'email', 'calendar', 'certification'])
         )
     })
     .catch(err => {
