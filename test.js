@@ -10,5 +10,4 @@ const certificationTests = require('./tests/certificationTest')
 const partnerfeedbackTests = require('./tests/partnerFeedbackTest')
 const educationalOrganisationTests = require('./tests/educationalOrganisationTest')
 const reviewPartnerTests = require('./tests/reviewPartnerTest')
-
 const taskTests = require('./tests/taskTest')
