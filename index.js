@@ -8,7 +8,6 @@ require('dotenv').config()
 const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3000
-
 //Require routers
 const taskRoute = require('./routes/task')
 const consultancyRoute = require('./routes/consultancy')

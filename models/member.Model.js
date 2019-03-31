@@ -25,4 +25,7 @@ const MemberSchema = new mongoose.Schema({
   ],
   calendar:[Date]
 })
-module.exports = mongoose.model('Members', MemberSchema)
+//delete mongoose.connection.models['Members']
+//delete mongoose.connection.collections['Members']
+const myModel =module.exports = mongoose.model('Members', MemberSchema)
+//myModel.collection.drop()

@@ -54,7 +54,7 @@ router.put('/', (req, res) => {
   certificationModel
     .findOneAndUpdate(
       {
-        id_of_certification: req.query.id_of_certification
+        _id: req.query.id_of_certification
       },
       req.body,
       {
@@ -76,7 +76,7 @@ router.delete('/', (req, res) => {
   }
   certificationModel
     .findOneAndDelete({
-      id_of_certification: req.query.id_of_certification
+      _id: req.query.id_of_certification
     })
     .then(doc => {
       res.json(doc)
@@ -92,7 +92,7 @@ router.get('/', (req, res) => {
   }
   certificationModel
     .find({
-      id_of_certification: req.query.id_of_certification
+      _id: req.query.id_of_certification
     })
     .populate('schedule')
     .then(doc => {
