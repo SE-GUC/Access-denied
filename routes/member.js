@@ -130,7 +130,7 @@ router.get('/all', (_request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -181,9 +181,10 @@ router.delete('/', (req, res) => {
 //user stories
 
 router.get('/tasksAvilable', (req, res) => {
-    memberModel.findOne({
-        email: req.query.email
-      })
+  memberModel
+    .findOne({
+      email: req.query.email
+    })
     .then(member => {
       let Certification = member.certification
       let save = []
@@ -205,14 +206,13 @@ router.get('/tasksAvilable', (req, res) => {
         })
     })
     .catch(err => {
-        res.status(500).send(err.response.data)
-      })
-
+      res.status(500).send(err.response.data)
+    })
 })
 router.post('/applyonTask', (req, res) => {
   let email = req.body.email
   let taskId = req.body.id
-  if(!email || !taskId){
+  if (!email || !taskId) {
     return res.status(400).send('Bad Request')
   }
   axios
@@ -222,41 +222,39 @@ router.post('/applyonTask', (req, res) => {
       }
     })
     .then(tasks => {
+      let t = tasks.data.find(function(ele) {
+        return taskId == ele._id
+      })
+      if ((t = !null)) {
+        return memberModel
+          .findOne({
+            email: email
+          })
+          .then(member => {
+            let memberId = member._id
+            return axios
+              .post(`${baseURL}/api/application`, {
+                task: taskId,
+                applier: memberId,
+                details: req.body.details,
+                applierModel: 'Members'
+              })
+              .then(response => {
+                let doc = response.data
+                if (!doc || doc.length === 0) return res.status(500).send(doc)
+                return res.send(doc)
+              })
+              .catch(err => {
+                console.log(err.response.data)
 
-      let t=  tasks.data.find(function(ele) {
-            return taskId == ele._id})
-        if(t=!null){
-
-                     return memberModel.findOne({
-                            email: email
-                        })
-                    .then(member => {
-                        let memberId = member._id
-                                 return axios
-                                .post(`${baseURL}/api/application`, {
-                                task: taskId,
-                                applier: memberId,
-                                details: req.body.details,
-                                applierModel: 'Members'
-                                })
-                                .then(response => {
-                                let doc = response.data
-                                if (!doc || doc.length === 0) return res.status(500).send(doc)
-                                return res.send(doc)
-                                })
-                                .catch(err => {
-                                    console.log(err.response.data)
-
-                                    return res.send(err.response.data)
-                                    })
-
-                    })
-                     
-        }})
-        .catch(err => {
-
-            res.status(500).send(err.response.data)
-            })
+                return res.send(err.response.data)
+              })
+          })
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err.response.data)
+    })
 })
 
 router.post('/reviewPartner', (req, res) => {

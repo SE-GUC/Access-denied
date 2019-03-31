@@ -83,7 +83,7 @@ router.get('/', (request, response) => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -99,7 +99,7 @@ router.get('/all', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -120,7 +120,7 @@ router.get('/isTaskDone', (request, response) => {
   }
   Task.findOne(key)
     .then(document => {
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.send()
@@ -167,7 +167,7 @@ router.put('/', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -199,7 +199,7 @@ router.delete('/', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -280,7 +280,7 @@ router.put('/:id/done', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
