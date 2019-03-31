@@ -25,7 +25,8 @@ const postTask = test('POST /api/task', async () => {
   }
 
   let response = await axios.post(apiRoute, document)
-
+  let docID = response.data._id
+  await axios.delete(apiRoute + `?id=${docID}`)
   expect(_.pick(response.data, Object.keys(document))).toEqual(document)
 })
 
@@ -48,7 +49,7 @@ const getTask = test('GET /api/task', async () => {
   let docID = response.data._id
 
   response = await axios.get(apiRoute + `?id=${docID}`)
-
+  await axios.delete(apiRoute + `?id=${docID}`)
   expect(_.pick(response.data, Object.keys(document))).toEqual(document)
 })
 
@@ -75,6 +76,7 @@ const putTask = test('PUT /api/task', async () => {
   }
 
   response = await axios.put(apiRoute + `?id=${docID}`, updatedDocument)
+  await axios.delete(apiRoute + `?id=${docID}`)
 
   expect(_.pick(response.data, Object.keys(updatedDocument))).toEqual(
     updatedDocument
