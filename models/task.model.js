@@ -9,6 +9,7 @@
 const mongoose = require('mongoose')
 
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
+
 function tags (s) {
   if(this.owner)
   s.push('OwnerName='+this.owner)
@@ -24,9 +25,10 @@ function tags (s) {
    s.push('monetaryComp=' + this.monetaryComp) 
    if(this.skills.length>0)
    s.push('skills=' + this.skills) 
+
   return s
 }
-var taskSchema = new mongoose.Schema({
+let taskSchema = new mongoose.Schema({
   name: {
     type: String
   },
@@ -73,8 +75,8 @@ var taskSchema = new mongoose.Schema({
   },
   skills: [String],
   Keywords: {
-    type:[String],
-    get :tags
+    type: [String],
+    get: tags
   }
 })
 

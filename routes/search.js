@@ -22,7 +22,6 @@ const searchNames = list => {
   models.push(mongoose.models.Task)
   models.push(mongoose.models.Members)
   regex = list.map(e => new RegExp(e, 'i'))
-  console.log(regex)
   return Promise.all(
     models.map(model =>
       model
@@ -36,7 +35,7 @@ const searchNames = list => {
   )
 }
 
-function searcht(tags,alltasks){
+function searcht(tags, alltasks) {
   let tasks = []
   tags.forEach(function(tag) {
     alltasks.forEach(function(task) {
@@ -44,7 +43,7 @@ function searcht(tags,alltasks){
         let j = tasks.find(function(ele) {
           return task == ele
         })
-        if (tag == key && j == null ) {
+        if (tag == key && j == null) {
           tasks.push(task)
         }
       })
@@ -54,16 +53,16 @@ function searcht(tags,alltasks){
 }
 router.get('/', (req, res) => {
   let resolved = false
-  if (!req.query.keyword) {
+  if (!req.query.q) {
     return res.status(400).send('Query is Missing')
   }
-  let splitted = req.query.keyword.split(' ')
+  let splitted = req.query.q.split(' ')
   let result = []
-  searchNames([req.query.keyword])
+  searchNames([req.query.q])
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true
-        return res.status(200).send(doc.flat(Infinity))
+        return res.json(doc.flat(Infinity))
       }
       result = doc
       return searchNames(splitted)
@@ -74,36 +73,38 @@ router.get('/', (req, res) => {
       }
       if (!resolved) {
         result = result.concat(docs)
-        res.status(200).send(result.flat(Infinity))
+        res.json(result.flat(Infinity))
       }
     })
     .catch(err => res.status(500).json(err))
 })
-router.get('/sk', (req, res)=> { //how the array of skills will come , may need to stringfy the array
+router.get('/sk', (req, res) => {
+  //how the array of skills will come , may need to stringfy the array
   let skills = req.query.skills
-if(!skills){
-  return res.status(400).status('400: no skills is provided')
-}
+  if (!skills) {
+    return res.status(400).status('400: no skills is provided')
+  }
   axios
     .get(`${baseURL}/api/task/filterTasks`, {
       params: {
-        "skills": skills
+        skills: skills
       }
     })
-    .then(response=>{
+    .then(response => {
       return res.send(response.data)
     })
+
     .catch(error=>{
       return res.status(500).send(error.response.data)
+
     })
-    
 })
 
-router.get('/filteredby', (req, res)=> { //will get the tags like normal array
+router.get('/filteredby', (req, res) => {
+  //will get the tags like normal array
   let q = req.query.tags
 
   let tags = JSON.parse(q)
-  console.log(tags  )
 
 if(!tags){
   return res.status(400).status('400: no criteria has been specified')
@@ -117,10 +118,9 @@ axios
    return res.json(result)
   })
   .catch(error => {
-    console.log(error)
     return res.send(error.response.data)
   })
-})
 
+})
 
 module.exports = router

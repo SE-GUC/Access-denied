@@ -1,13 +1,13 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
     const createSchema = {
-      name : Joi.string()
+      name: Joi.string()
         .min(3)
         .max(500)
         .required(),
-    
+
       Evaluation_procedure: Joi.string().required(),
       skills: Joi,
       Fees: Joi.number(),
@@ -15,15 +15,14 @@ module.exports = {
       membersapplied: Joi,
       membersaccepted: Joi,
       eduorganization: Joi.string()
-      
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
     const updateSchema = {
-      name : Joi.string()
+      name: Joi.string()
         .min(3)
         .max(500),
       Evaluation_procedure: Joi.string(),
@@ -33,8 +32,8 @@ module.exports = {
       membersapplied: Joi,
       membersaccepted: Joi,
       eduorganization: Joi.string()
-    };
+    }
 
-    return Joi.validate(request, updateSchema);
+    return Joi.validate(request, updateSchema)
   }
-};
+}

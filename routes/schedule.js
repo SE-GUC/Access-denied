@@ -60,7 +60,7 @@ router.post('/:id/slot', (req, res) => {
             if (!doc || doc.length === 0) {
               return res.status(500).send(doc)
             }
-            res.status(200).send(doc)
+            res.json(doc)
           })
           .catch(err => {
             res.status(500).json(err)
@@ -79,7 +79,7 @@ router.get('/:id', (req, res) => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(200).send(doc)
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
@@ -93,7 +93,7 @@ router.get('/all', (req, res) => {
         return res.status(500).json(document)
       }
 
-      res.status(200).json(document)
+      res.json(document)
     })
     .catch(error => {
       res.status(500).json(error)
@@ -105,7 +105,7 @@ router.get('/:id/slot', (req, res) => {
   if (!req.query.id) return res.status(400).send('Slot Id Is Missing')
   let schedule = req.params.id
   ScheduleModel.findById(schedule).then(doc => {
-    let slot =''
+    let slot = ''
     if (!doc || doc.length === 0) {
       return res.status(500).send(doc)
     }
@@ -113,43 +113,43 @@ router.get('/:id/slot', (req, res) => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Sunday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Monday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Tuesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Wednesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Thursday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     slot = doc.Friday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
-      return res.status(200).send(slot)
+      return res.json(slot)
     }
     return res.status(404).send('Slot not found')
   })
@@ -207,13 +207,12 @@ router.put('/:id/slot', (req, res) => {
             if (err) {
               return res.status(500).json(err)
             } else {
-              console.log(doc)
               ScheduleModel.findById(req.params.id)
                 .then(doc => {
                   if (!doc || doc.length === 0) {
                     return res.status(500).send(doc)
                   }
-                  res.status(200).send(doc)
+                  res.json(doc)
                 })
                 .catch(err => {
                   return res.status(500).json(err)
@@ -254,7 +253,7 @@ router.delete('/:id/slot', (req, res) => {
             if (!doc || doc.length === 0) {
               return res.status(500).send(doc)
             }
-            res.status(200).send(doc)
+            res.json(doc)
           })
           .catch(err => {
             res.status(500).json(err)
@@ -274,7 +273,7 @@ router.delete('/:id', (req, res) => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(200).send(doc)
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)

@@ -20,7 +20,7 @@ const PartnerSchema = new mongoose.Schema({
   other: [
     {
       name: String,
-      link:String
+      link: String
     }
   ],
   //*location
@@ -66,7 +66,7 @@ const PartnerSchema = new mongoose.Schema({
         street: String
       }
     }
-  ],
+  ]
 })
 //adding a form to suggest any feedback.
 // const var1 = mongoose.model('Partners', PartnerSchema)

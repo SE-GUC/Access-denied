@@ -4,10 +4,13 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
+const _ = require('lodash')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
-  console.log(req.query.email)
+  if (!req.query.email || !req.query.id) {
+    res.send('email or id of cert is missing')
+  }
   axios
     .get(`${baseURL}/api/Member`, {
       params: {
@@ -16,51 +19,58 @@ router.get('/cert', (req, res) => {
     })
     .then(response => {
       objid = response.data._id
-      console.log(response.data._id)
-      //get certifcate array
-      axios
-        .get(`${baseURL}/api/certification`, {
-          params: {
-            id_of_certification: req.query.id
-          }
-        })
-        .then(response => {
-          let memberModel = response.data[0].membersapplied
-          // res.json(memberModel)
-          let j = memberModel.find(function(value) {
-            return value.MEMBERS == objid
+      //if already taken
+      let T = response.data.certification.find(function(value) {
+        return value.ref_of_certification == req.query.id
+      })
+
+      if (T) {
+        let str = JSON.stringify(T.ref_of_certification)
+        res.send('already taken !')
+      } else {
+        //get certifcate array
+        axios
+          .get(`${baseURL}/api/certification`, {
+            params: {
+              id_of_certification: req.query.id
+            }
           })
-
-          if (j == null) {
-            //res.send("already applied")
-            memberModel.push({
-              MEMBERS: objid,
-              finished: 'false'
+          .then(response => {
+            let memberModel = response.data[0].membersapplied
+            let membermodelacc = response.data[0].membersaccepted
+            let allmembers = memberModel.concat(membermodelacc)
+            // res.json(memberModel)
+            let j = allmembers.find(function(value) {
+              return value.MEMBERS == objid
             })
-          }
+            if (j == null) {
+              //res.send("already applied")
+              memberModel.push({
+                MEMBERS: objid
+              })
+              axios
+                .put(
+                  `${baseURL}/api/certification?id_of_certification=` +
+                    req.query.id,
+                  {
+                    membersapplied: memberModel
+                  }
+                )
+                .then(function(response) {
+                  res.send(response.data)
+                })
+            } else {
+              res.send('already applied for certifacte !')
+              const f = 'true'
+            }
 
-          //   res.json(memberModel)
-          console.log(response.data)
-          console.log(memberModel.tostring)
-          //update certifcate array
-
-          axios
-            .put(
-              `${baseURL}/api/certification?id_of_certification=` +
-                req.query.id,
-              {
-                membersapplied: memberModel
-              }
-            )
-            .then(function(response) {
-              console.log('saved successfully')
-              console.log(response.data)
-              res.send(response.data)
-            })
-        })
-        .catch(error => {
-          console.log(error)
-        })
+            //   res.json(memberModel)
+            //update certifcate array
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     })
     .catch(error => {
       console.log(error)
@@ -68,7 +78,6 @@ router.get('/cert', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-  console.log('ok')
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
@@ -83,7 +92,11 @@ router.post('/', (req, res) => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(201).send(doc)
+      res
+        .status(201)
+        .send(
+          _.pick(doc, ['_id', 'name', 'email', 'calendar', 'certification'])
+        )
     })
     .catch(err => {
       res.status(500).json(err)
@@ -246,9 +259,9 @@ router.post('/applyonTask', (req, res) => {
             })
 })
 
-router.post("/reviewPartner", (req, res) => {
+router.post('/reviewPartner', (req, res) => {
   if (!req.body) {
-    return res.status(400).send("Body is missing");
+    return res.status(400).send('Body is missing')
   }
   axios
     .post(`${baseURL}/api/review/newPost`, {
@@ -256,20 +269,20 @@ router.post("/reviewPartner", (req, res) => {
       reviewee: req.body.reviewee,
       rating: req.body.rating,
       review: req.body.review,
-      revieweeModel: "Partners",
-      reviewerModel: "Members",
+      revieweeModel: 'Partners',
+      reviewerModel: 'Members',
       task: req.body.task
     })
     .then(doc => {
       if (!doc || doc.data.length === 0) {
-        return res.send("Your review can not be posted");
+        return res.send('Your review can not be posted')
       }
-      res.status(201).json(doc.data);
+      res.status(201).json(doc.data)
     })
     .catch(err => {
-      res.send("Error occured");
-    });
-});
+      res.send('Error occured')
+    })
+})
 
 router.post('/adddate', (req, res) => {
   if (!req.query.email) return res.status(400).send('Email is missing')
@@ -296,6 +309,5 @@ router.post('/adddate', (req, res) => {
       return res.status(500).json(err)
     })
 })
-
 
 module.exports = router

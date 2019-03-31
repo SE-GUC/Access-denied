@@ -107,8 +107,6 @@ router.delete('/', (req, res) => {
 router.put('/book/offline', (request, res) => {
   let scheduleID = request.query.scheduleID
 
-  console.log(baseURL + '/' + scheduleID + '/slot')
-
   axios({
     method: 'post',
     url: baseURL + '/api/schedule/' + scheduleID + '/slot',
@@ -121,7 +119,7 @@ router.put('/book/offline', (request, res) => {
     }
   })
     .then(doc => {
-      res.status(200).send(doc.data)
+      res.json(doc.data)
     })
     .catch(error => {
       console.log(error)
