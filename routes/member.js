@@ -11,7 +11,6 @@ router.get('/cert', (req, res) => {
   if (!req.query.email || !req.query.id) {
     res.send('email or id of cert is missing')
   }
-  console.log(req.query.email)
   axios
     .get(`${baseURL}/api/Member`, {
       params: {
@@ -20,8 +19,6 @@ router.get('/cert', (req, res) => {
     })
     .then(response => {
       objid = response.data._id
-      console.log(response.data._id)
-      console.log(response.data.certification)
       //if already taken
       let T = response.data.certification.find(function(value) {
         return value.ref_of_certification == req.query.id
@@ -29,7 +26,6 @@ router.get('/cert', (req, res) => {
 
       if (T) {
         let str = JSON.stringify(T.ref_of_certification)
-        console.log(str + '=' + req.query.id)
         res.send('already taken !')
       } else {
         //get certifcate array
@@ -44,11 +40,9 @@ router.get('/cert', (req, res) => {
             let membermodelacc = response.data[0].membersaccepted
             let allmembers = memberModel.concat(membermodelacc)
             // res.json(memberModel)
-            console.log('mmbers----------->' + JSON.stringify(allmembers))
             let j = allmembers.find(function(value) {
               return value.MEMBERS == objid
             })
-            console.log('value of j' + JSON.stringify(j))
             if (j == null) {
               //res.send("already applied")
               memberModel.push({
@@ -63,8 +57,6 @@ router.get('/cert', (req, res) => {
                   }
                 )
                 .then(function(response) {
-                  console.log('saved successfully')
-                  console.log(response.data)
                   res.send(response.data)
                 })
             } else {
@@ -73,8 +65,6 @@ router.get('/cert', (req, res) => {
             }
 
             //   res.json(memberModel)
-            console.log(response.data)
-            console.log(memberModel.tostring)
             //update certifcate array
           })
           .catch(error => {
