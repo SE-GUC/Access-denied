@@ -5,7 +5,7 @@
 
 const task = require('../routes/task')
 const axios = require('axios')
-const _ = require('loadsh')
+const _ = require('lodash')
 
 const baseURL = process.env.BASEURL || 'http://localhost:3000'
 const apiRoute = `${baseURL}/api/task`
