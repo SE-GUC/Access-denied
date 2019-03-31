@@ -22,7 +22,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -45,7 +45,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -68,7 +68,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -91,7 +91,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -114,7 +114,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -137,7 +137,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }
@@ -160,7 +160,7 @@ const ScheduleSchema = new mongoose.Schema({
       assignedTo: [
         {
           type: ObjectId,
-          ref:'Members'
+          ref: 'Members'
         }
       ]
     }

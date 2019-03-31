@@ -27,14 +27,14 @@ router.post('/', (req, res) => {
       res.status(500).json(err)
     })
 })
-router.post("/newPost", (req, res) => {
-  const isValidated = validator.createValidation(req.body);
+router.post('/newPost', (req, res) => {
+  const isValidated = validator.createValidation(req.body)
   if (isValidated.error) {
-    return res.send();
+    return res.send()
   }
-  let requestAssigner = req.body.reviewee;
-  let requestAssignee = req.body.reviewer;
-  let id = req.body.task;
+  let requestAssigner = req.body.reviewee
+  let requestAssignee = req.body.reviewer
+  let id = req.body.task
   axios
     .get(`${baseURL}/api/task/isTaskDone`, {
       params: {
@@ -44,24 +44,25 @@ router.post("/newPost", (req, res) => {
       }
     })
     .then(doc => {
-      var checker = (doc.data.length === 0)
+      var checker = doc.data.length === 0
       if (checker) {
-        return res.send();
+        return res.send()
       } else {
-        const model = new reviewModel(req.body);
-        model.save()
-         .then((doc) => {
-        res.status(201).send(doc);
-        })
-        .catch( (err) => {
-          return res.send();
-        });  
+        const model = new reviewModel(req.body)
+        model
+          .save()
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            return res.send()
+          })
       }
     })
     .catch(err => {
-       return res.send();
-    });
-});
+      return res.send()
+    })
+})
 router.get('/', (req, res) => {
   if (!req.query.reviewee) {
     return res.status(400).send('Reviewee ID is missing.')

@@ -9,14 +9,14 @@
 const mongoose = require('mongoose')
 
 // IMPORTANT TODO: Hide ENV variables in dotENV file, and setup env vars at deployment
-function tags (s) {
-  s.push('OwnerName='+this.owner)
-   s.push('effortLevel='+this.effortLevel)
-   s.push('commitmentLevel=' + this.commitmentLevel) 
-   s.push('experienceLevel=' + this.experienceLevel) 
-   s.push('timeRequired=' + this.timeRequired) 
-   s.push('monetaryComp=' + this.monetaryComp) 
-   s.push('skills=' + this.skills) 
+function tags(s) {
+  s.push('OwnerName=' + this.owner)
+  s.push('effortLevel=' + this.effortLevel)
+  s.push('commitmentLevel=' + this.commitmentLevel)
+  s.push('experienceLevel=' + this.experienceLevel)
+  s.push('timeRequired=' + this.timeRequired)
+  s.push('monetaryComp=' + this.monetaryComp)
+  s.push('skills=' + this.skills)
   return s
 }
 var taskSchema = new mongoose.Schema({
@@ -66,8 +66,8 @@ var taskSchema = new mongoose.Schema({
   },
   skills: [String],
   Keywords: {
-    type:[String],
-    get :tags
+    type: [String],
+    get: tags
   }
 })
 
