@@ -1,9 +1,11 @@
-// /**
-//  * @jest-environment node
-//  */
+/**
+
+ * @jest-environment node
+ */
 // const coworkingTests = require('./tests/coworkingTest')
 // const consultacyTests = require('./tests/consultancyTest')
 // const reviewTests = require('./tests/reviewTest')
+// const scheduleTests = require('./tests/scheduleTest')
 // var baseURL =  "http://localhost:3000"
 // const axios = require('axios');
 // var fetch = require('node-fetch')

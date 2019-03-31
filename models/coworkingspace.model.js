@@ -1,16 +1,16 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-var ObjectId = mongoose.Schema.Types.ObjectId
+let ObjectId = mongoose.Schema.Types.ObjectId
 let CoworkingSchema = new Schema({
   name: {
     type: String,
     required: true
   },
   address: {
-    city: String,
-    area: String,
-    street: String
+    city: { type: String, required: true },
+    area: { type: String, required: true },
+    street: { type: String, required: true }
   },
   email: {
     type: String,

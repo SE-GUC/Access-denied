@@ -6,7 +6,7 @@ const coworkingspaceModel = require('../models/coworkingspace.model')
 const validator = require('../validations/coworkingspaceValidations.js')
 const axios = require('axios')
 const router = express.Router()
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   const isValidated = validator.createValidation(req.body)

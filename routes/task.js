@@ -186,38 +186,42 @@ router.delete('/', (request, response) => {
     })
 })
 
+
+const search =function search(skills,alltasks){
+  let tasks = []
+  skills.forEach(function(element) {
+    alltasks.data.forEach(function(element2) {
+      element2.skills.forEach(function(skill) {
+        let j = tasks.find(function(ele) {
+          return element2 == ele
+        })
+        if (element == skill && j == null && element2.isComplete == false) {
+          tasks.push(element2)
+        }
+      })
+    })
+  })
+  return tasks
+}
 /**
  * @description Filter Tasks
  * @requires skills
  * @returns Filtered Document
  */
-
 router.get('/filterTasks', (request, response) => {
-  var skills = request.query.skills
-  var q = JSON.parse(skills)
-
+  let skills = request.query.skills
+  let q = JSON.parse(skills)
   if (!q) {
     return response.status(400).status('400: Bad Request')
   }
-  var splitted = q.skills.split(',')
-  var tasks = []
+  let splitted = q.skills.split(',')
+
   axios
     .get(`${baseURL}/api/task/all`)
 
     .then(alltasks => {
-      splitted.forEach(function(element) {
-        alltasks.data.forEach(function(element2) {
-          element2.skills.forEach(function(skill) {
-            let j = tasks.find(function(ele) {
-              return element2 == ele
-            })
-            if (element == skill && j == null && element2.isComplete == false) {
-              tasks.push(element2)
-            }
-          })
-        })
-      })
-     return response.json(tasks)
+      let result = search(splitted,alltasks)
+     return response.json(result)
     })
     .catch(error => {
       return response.send(error)
@@ -264,4 +268,6 @@ router.put('/:id/done', (request, response) => {
     })
 })
 
-module.exports = router
+module.exports = {"router": router,
+                  "searchTasksBySkills":search}
+

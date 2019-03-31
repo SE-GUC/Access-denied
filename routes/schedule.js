@@ -105,46 +105,47 @@ router.get('/:id/slot', (req, res) => {
   if (!req.query.id) return res.status(400).send('Slot Id Is Missing')
   let schedule = req.params.id
   ScheduleModel.findById(schedule).then(doc => {
+    let slot =''
     if (!doc || doc.length === 0) {
       return res.status(500).send(doc)
     }
-    var slot = doc.Saturday.find(slot => {
+    slot = doc.Saturday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Sunday.find(slot => {
+    slot = doc.Sunday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Monday.find(slot => {
+    slot = doc.Monday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Tuesday.find(slot => {
+    slot = doc.Tuesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Wednesday.find(slot => {
+    slot = doc.Wednesday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Thursday.find(slot => {
+    slot = doc.Thursday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
       return res.status(200).send(slot)
     }
-    var slot = doc.Friday.find(slot => {
+    slot = doc.Friday.find(slot => {
       return slot._id == req.query.id
     })
     if (!(!slot || slot.length === 0)) {
@@ -230,12 +231,12 @@ router.delete('/:id/slot', (req, res) => {
   }
   if (!req.params.id) return res.status(400).send('Schedule Id is Missing')
   if (!req.query.id) return res.status(400).send('Slot Id Is Missing')
-  if (!req.body.day) return res.status(400).send('Day Is Missing')
+  if (!req.query.day) return res.status(400).send('Day Is Missing')
   ScheduleModel.findByIdAndUpdate(
     req.params.id,
     {
       $pull: {
-        [req.body.day]: {
+        [req.query.day]: {
           _id: req.query.id
         }
       }

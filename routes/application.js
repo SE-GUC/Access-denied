@@ -1,23 +1,25 @@
-const educationalorganisations = require('../models/EducationalOrganisation.model')
+const applicationModel = require('../models/application.model')
 const express = require('express')
 const router = express.Router()
-const validator = require('../validations/EducationalOrganisationValidations.js')
+const validator = require('../validations/applicationValidations')
 
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
+
   const isValidated = validator.createValidation(req.body)
   if (isValidated.error)
     return res.status(400).send({ error: isValidated.error.details[0].message })
-  let model = new educationalorganisations(req.body)
+  const model = new applicationModel(req.body)
   model
     .save()
     .then(doc => {
-      if (!doc || doc.length == 0) {
+      if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
-      res.status(201).send(doc) //TODO
+
+      res.status(201).send(doc)
     })
     .catch(err => {
       res.status(500).json(err)
@@ -25,14 +27,13 @@ router.post('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Missing')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
-  educationalorganisations
-    .findOne({
-      email: req.query.email
-    })
-    .populate('certificate')
+  applicationModel
+    .findById(req.query.id)
+    .populate('applier', 'name')
+    .populate('task', 'name')
     .then(doc => {
       res.json(doc)
     })
@@ -42,22 +43,16 @@ router.get('/', (req, res) => {
 })
 
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Educational Organisation email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
     return res.status(400).send({ error: isValidated.error.details[0].message })
-  educationalorganisations
-    .findOneAndUpdate(
-      {
-        email: req.query.email
-      },
-      req.body,
-      {
-        new: true
-      }
-    )
+  applicationModel
+    .findByIdAndUpdate(req.query.id, req.body, {
+      new: true
+    })
     .then(doc => {
       res.json(doc)
     })
@@ -67,13 +62,11 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Educational Organisation email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Application ID is missing.')
   }
-  educationalorganisations
-    .findOneAndDelete({
-      email: req.query.email
-    })
+  applicationModel
+    .findByIdAndDelete(req.query.id)
     .then(doc => {
       res.json(doc)
     })
