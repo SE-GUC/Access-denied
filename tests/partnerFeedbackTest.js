@@ -40,10 +40,24 @@ const viewFeedbackTest= test('view feedback', async () => {
           ['review']
       )).toEqual({review: reviewreply.review})
 })
-
+const deleteFeedbackTest= test('delete feedback', async () => {
+  const body = {
+    reviewer: '5c951a6acef4f345903ba59e',
+    reviewee: '5c9519e7cef4f345903ba59d',
+    review: 'test',
+    rating: 3,
+    task: '5ca0011e0eb0f426b03291ac',
+    reviewerModel: 'Members',
+    revieweeModel: 'Partners'
+  }
+  reviewreply=(await axios.delete(`${baseURL}/api/review?id=${reviewreply._id}`, body)).data
+  expect( _.pick(reviewreply, Object.keys(body)))
+      .toEqual(body)
+})
 
 
 module.exports = {
+  deleteFeedbackTest,
     viewFeedbackTest,
     postFeedbackTest
 }
