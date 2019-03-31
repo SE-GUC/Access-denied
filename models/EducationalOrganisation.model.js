@@ -1,6 +1,4 @@
-
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose')
 
 const EducationalOrganisationSchema = new mongoose.Schema({
   name: {
@@ -22,11 +20,11 @@ const EducationalOrganisationSchema = new mongoose.Schema({
   certificate: [String],
   trainer: [String],
   trainingProgram: [String]
-});
+})
 
 var Mymodel = mongoose.model(
-  "EducationalOrganisation",
+  'EducationalOrganisation',
   EducationalOrganisationSchema
-);
+)
 
-module.exports = Mymodel;
+module.exports = Mymodel

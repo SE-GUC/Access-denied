@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -18,9 +18,9 @@ module.exports = {
       emailCOfEducationalOrganisationOfferingIt: Joi.string().required(),
       dateOfEvaluation: Joi.date(),
       durationOfExamInHours: Joi.number()
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -38,8 +38,8 @@ module.exports = {
       durationOfExamInHours: Joi.number(),
       nameOfEducationalOrganisationOfferingIt: Joi.string(),
       emailCOfEducationalOrganisationOfferingIt: Joi.string()
-    };
+    }
 
-    return Joi.validate(request, updateSchema);
+    return Joi.validate(request, updateSchema)
   }
-};
+}

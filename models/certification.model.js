@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-var ObjectId = mongoose.Schema.Types.ObjectId;
+const mongoose = require('mongoose')
+var ObjectId = mongoose.Schema.Types.ObjectId
 
 const certificationSchema = new mongoose.Schema({
   name: {
@@ -24,15 +24,15 @@ const certificationSchema = new mongoose.Schema({
     {
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Members"
+        ref: 'Members'
       },
       finished: Boolean
     }
   ],
   schedule: {
     type: ObjectId,
-    ref: "Schedule"
+    ref: 'Schedule'
   }
-});
+})
 
-module.exports = mongoose.model("Certification", certificationSchema);
+module.exports = mongoose.model('Certification', certificationSchema)
