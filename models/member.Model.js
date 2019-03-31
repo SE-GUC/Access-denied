@@ -27,7 +27,6 @@ const MemberSchema = new mongoose.Schema({
   calendar: [Date]
 })
 
-
 MemberSchema.pre('save', function(next) {
   let user = this
   // only hash the password if it has been modified (or is new)
@@ -50,4 +49,3 @@ MemberSchema.methods.comparePassword = function(candidatePassword, cb) {
     .catch(err => cb(err))
 }
 module.exports = mongoose.model('Members', MemberSchema)
-
