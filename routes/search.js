@@ -94,9 +94,8 @@ router.get('/sk', (req, res) => {
       return res.send(response.data)
     })
 
-    .catch(error=>{
+    .catch(error => {
       return res.status(500).send(error.response.data)
-
     })
 })
 
@@ -106,21 +105,20 @@ router.get('/filteredby', (req, res) => {
 
   let tags = JSON.parse(q)
 
-if(!tags){
-  return res.status(400).status('400: no criteria has been specified')
-}
+  if (!tags) {
+    return res.status(400).status('400: no criteria has been specified')
+  }
 
-axios
-  .get(`${baseURL}/api/task/all`)
+  axios
+    .get(`${baseURL}/api/task/all`)
 
-  .then(alltasks => {
-    let result = searcht(tags,alltasks.data)
-   return res.json(result)
-  })
-  .catch(error => {
-    return res.send(error.response.data)
-  })
-
+    .then(alltasks => {
+      let result = searcht(tags, alltasks.data)
+      return res.json(result)
+    })
+    .catch(error => {
+      return res.send(error.response.data)
+    })
 })
 
 module.exports = router
