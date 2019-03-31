@@ -1,16 +1,22 @@
-const axios = require('axios');
-let fetch = require('node-fetch')
- const testMemberApply =test('Member apply on atask', async () => {
-    const taskdocument = {
-        name: 'z.Test123',
-        description: 'This is z.Test123 Description',
-        extraNotes: 'This is z.Test123 Extra Notes',
-        effortLevel: 995,
-        monetaryComp: 93,
-        skills: [
-            "python",
-            "java"
-        ]
+let baseURL = process.env.BASEURL || `http://localhost:3000`
+const axios = require('axios')
+const fetch = require('node-fetch')
+const testMemberApply = test('Member apply on atask', async () => {
+  const taskdocument = {
+    name: 'z.Test123',
+    description: 'This is z.Test123 Description',
+    extraNotes: 'This is z.Test123 Extra Notes',
+    effortLevel: 995,
+    monetaryComp: 93,
+    skills: ['python', 'java']
+  }
+  const memberdocument = {
+    name: 'testz',
+    email: 'gz@50.com',
+    password: 'whkacbak;lcbna;o',
+    certification: [
+      {
+        skills: ['python', 'java']
       }
       const memberdocument = 
         {
