@@ -29,9 +29,7 @@ const postFeedbackTest = test('post feedback', async () => {
   }
   reviewreply = (await axios.post(`${baseURL}/api/review`, body)).data
   let docID = task.data._id
-  let deleteresponse = await axios.delete(
-    `${baseURL}/api/task` + `?id=${docID}`
-  )
+  let deleteresponse = await axios.delete(`${baseURL}/api/task?id=${docID}`)
   expect(_.pick(reviewreply, Object.keys(body))).toEqual(body)
 })
 
