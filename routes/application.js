@@ -75,4 +75,20 @@ router.delete('/', (req, res) => {
     })
 })
 
+router.get('/all', (request, response) => {
+  let key = {}
+
+  applicationModel
+    .find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return response.status(500).json(document)
+      }
+
+      response.status(200).json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
+    })
+})
 module.exports = router

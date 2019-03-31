@@ -168,15 +168,11 @@ router.delete('/', (req, res) => {
 //user stories
 
 router.get('/tasksAvilable', (req, res) => {
-  axios
-    .get(`${baseURL}/api/Member`, {
-      params: {
+    memberModel.findOne({
         email: req.query.email
-      }
-    })
+      })
     .then(member => {
-      let id = member.data._id
-      let Certification = member.data.certification
+      let Certification = member.certification
       let save = []
       Certification.forEach(function(element) {
         save = element.skills + ',' + save
@@ -184,7 +180,7 @@ router.get('/tasksAvilable', (req, res) => {
       let skills = {
         skills: save
       }
-      axios
+      return axios
         .get(`${baseURL}/api/task/filterTasks`, {
           params: {
             skills: skills
@@ -192,18 +188,20 @@ router.get('/tasksAvilable', (req, res) => {
         })
 
         .then(tasks => {
-          let returned = {
-            id: id,
-            tasks: tasks.data
-          }
-
-          res.json(returned)
+          res.json(tasks.data)
         })
     })
+    .catch(err => {
+        res.status(500).send(err.response.data)
+      })
+
 })
-router.get('/applyonTask', (request, response) => {
-  let email = request.query.email
-  let taskemail = request.query.contactEmail
+router.post('/applyonTask', (req, res) => {
+  let email = req.body.email
+  let taskId = req.body.id
+  if(!email || !taskId){
+    return res.status(400).send('Bad Request')
+  }
   axios
     .get(`${baseURL}/api/Member/tasksAvilable`, {
       params: {
@@ -211,27 +209,41 @@ router.get('/applyonTask', (request, response) => {
       }
     })
     .then(tasks => {
-      axios
-        .get(`${baseURL}/api/task`, {
-          params: {
-            contactEmail: taskemail
-          }
-        })
-        .then(thetask => {
-          //   response.json(tasks.data.id)
-          tasks.data.tasks.forEach(function(atask) {
-            if (atask.title == thetask.data.title) {
-              axios
-                .put(`${baseURL}/api/task?contactEmail=` + taskemail, {
-                  assignee: tasks.data.id
-                })
-                .then(p => {
-                  response.json(p.data)
-                })
-            }
-          })
-        })
-    })
+
+      let t=  tasks.data.find(function(ele) {
+            return taskId == ele._id})
+        if(t=!null){
+
+                     return memberModel.findOne({
+                            email: email
+                        })
+                    .then(member => {
+                        let memberId = member._id
+                                 return axios
+                                .post(`${baseURL}/api/application`, {
+                                task: taskId,
+                                applier: memberId,
+                                details: req.body.details,
+                                applierModel: 'Members'
+                                })
+                                .then(response => {
+                                let doc = response.data
+                                if (!doc || doc.length === 0) return res.status(500).send(doc)
+                                return res.send(doc)
+                                })
+                                .catch(err => {
+                                    console.log(err.response.data)
+
+                                    return res.send(err.response.data)
+                                    })
+
+                    })
+                     
+        }})
+        .catch(err => {
+
+            res.status(500).send(err.response.data)
+            })
 })
 
 router.post("/reviewPartner", (req, res) => {

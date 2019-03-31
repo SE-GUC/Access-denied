@@ -92,7 +92,7 @@ router.get('/', (req, res) => {
   }
   certificationModel
     .find({
-      id_of_certification: req.query.id_of_certification
+      _id: req.query.id_of_certification
     })
     .populate('schedule')
     .then(doc => {
