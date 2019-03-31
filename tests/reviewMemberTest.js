@@ -2,13 +2,13 @@ var fetch = require('node-fetch')
 var baseURL = process.env.BASEURL || 'http://localhost:3000'
 let reply = ''
 const funcs = {
-  postMemberReviewsPartner: async () => {
-    let response = await fetch(`${baseURL}/api/Member/reviewPartner`, {
+  postPartnerReviewsMember: async () => {
+    let response = await fetch(`${baseURL}/api/partner/partnerReview`, {
       method: 'POST',
       body: JSON.stringify({
         task: '5ca002ae15f5040438cf1fa9',
-        reviewee: '5c9494d3f0c6c02014be6b5f',
-        reviewer: '5c7581a12357f33970c4d757',
+        reviewer: '5c9494d3f0c6c02014be6b5f',
+        reviewee: '5c7581a12357f33970c4d757',
         review: 'xxxxx',
         rating: 2
       }),
@@ -21,7 +21,7 @@ const funcs = {
     reply = data
     return data
   },
-  deleteMemberReviewsPartner: async () => {
+  deletePartnerReviewsMember: async () => {
     let response = await fetch(`${baseURL}/api/review?id=${reply._id}`, {
       method: 'DELETE',
       headers: {
@@ -34,19 +34,19 @@ const funcs = {
   }
 }
 
-const postTest = test('post member reviews partner', async () => {
-  const response = await funcs.postMemberReviewsPartner()
+const postTest = test('post partner reviews member', async () => {
+  const response = await funcs.postPartnerReviewsMember()
   console.log(response)
-  expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
+  expect(response.reviewee).toEqual('5c7581a12357f33970c4d757') &&
+    expect(response.reviewer).toEqual('5c9494d3f0c6c02014be6b5f') &&
     expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
 })
-const deleteTest = test('delete member reviews partner', async () => {
-  const response = await funcs.deleteMemberReviewsPartner()
+const deleteTest = test('delete partner reviews member', async () => {
+  const response = await funcs.deletePartnerReviewsMember()
   console.log(reply._id)
   console.log(response)
-  expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
+  expect(response.reviewee).toEqual('5c7581a12357f33970c4d757') &&
+    expect(response.reviewer).toEqual('5c9494d3f0c6c02014be6b5f') &&
     expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
 })
 
