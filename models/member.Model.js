@@ -21,8 +21,9 @@ const MemberSchema = new mongoose.Schema({
       ref_of_certification: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Certification'
-      }}
+      }
+    }
   ],
-  calendar:[Date]
+  calendar: [Date]
 })
 module.exports = mongoose.model('Members', MemberSchema)

@@ -105,7 +105,7 @@ router.get('/:id/slot', (req, res) => {
   if (!req.query.id) return res.status(400).send('Slot Id Is Missing')
   let schedule = req.params.id
   ScheduleModel.findById(schedule).then(doc => {
-    let slot =''
+    let slot = ''
     if (!doc || doc.length === 0) {
       return res.status(500).send(doc)
     }
