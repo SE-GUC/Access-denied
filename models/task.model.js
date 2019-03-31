@@ -19,7 +19,7 @@ function tags(s) {
   s.push('skills=' + this.skills)
   return s
 }
-var taskSchema = new mongoose.Schema({
+let taskSchema = new mongoose.Schema({
   name: {
     type: String
   },

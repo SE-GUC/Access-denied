@@ -3,7 +3,7 @@ const axios = require('axios')
 const _ = require('lodash')
 
 const testreviewee = '5c9519e7cef4f345903ba59d'
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 let reviewreply = ''
 let task = ''
 const postFeedbackTest = test('post feedback', async () => {

@@ -1,5 +1,5 @@
-var fetch = require('node-fetch')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+const fetch = require('node-fetch')
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 const axios = require('axios')
 let reply = ''
 const funcs = {

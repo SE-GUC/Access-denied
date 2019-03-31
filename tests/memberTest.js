@@ -2,7 +2,7 @@ const member = require('../routes/member')
 const axios = require('axios')
 const _ = require('lodash')
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 const posttest = test('create new Member', async () => {
   const body = {
