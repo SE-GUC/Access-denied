@@ -1,44 +1,51 @@
-let baseURL = process.env.BASEURL || `http://localhost:3000`
-const axios = require('axios')
-var fetch = require('node-fetch')
-const testMemberApply = test('Member apply on atask', async () => {
-  const taskdocument = {
-    name: 'z.Test123',
-    description: 'This is z.Test123 Description',
-    extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
-    monetaryComp: 93,
-    skills: ['python', 'java']
-  }
-  const memberdocument = {
-    name: 'testz',
-    email: 'gz@50.com',
-    password: 'whkacbak;lcbna;o',
-    certification: [
-      {
-        skills: ['python', 'java']
+const axios = require('axios');
+let fetch = require('node-fetch')
+ const testMemberApply =test('Member apply on atask', async () => {
+    const taskdocument = {
+        name: 'z.Test123',
+        description: 'This is z.Test123 Description',
+        extraNotes: 'This is z.Test123 Extra Notes',
+        effortLevel: 995,
+        monetaryComp: 93,
+        skills: [
+            "python",
+            "java"
+        ]
       }
-    ]
-  }
-  let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
-  let responsemember = await axios.post(`${baseURL}/api/Member`, memberdocument)
-  let taskid = responsetask.data._id
-  let memberemail = responsemember.data.email
-  let memberid = responsemember.data._id
-  const document = {
-    id: taskid,
-    email: memberemail,
-    details: 'helllllo from other siiiiide'
-  }
-  let com = await axios.post(`${baseURL}/api/Member/applyonTask`, document)
-  let response = com.data
-  expect(response.task).toEqual(taskid)
-  expect(response.applier).toEqual(memberid)
-  expect(response.applierModel).toEqual('Members')
-  await axios.delete(`${baseURL}/api/task` + `?id=${taskid}`)
-  await axios.delete(`${baseURL}/api/Member` + `?email=${memberemail}`)
-  await axios.delete(`${baseURL}/api/application` + `?id=${response._id}`)
-})
+      const memberdocument = 
+        {
+            name: "testz",
+            email : "gz@50.com",
+            password:"whkacbak;lcbna;o",
+            certification : [
+                {
+                    skills: [
+                        "python",
+                        "java"
+                    ]
+        }]
+    }
+    let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
+    let responsemember = await axios.post(`${baseURL}/api/Member`, memberdocument)
+    let taskid =responsetask.data._id
+    let memberemail = responsemember.data.email
+    let memberid =  responsemember.data._id
+    const document ={
+        id: taskid,
+              email: memberemail,
+              details:"helllllo from other siiiiide"
+    }
+    let com = await axios.post(`${baseURL}/api/Member/applyonTask`, document)
+    let response=com.data
+                 expect(response.task).toEqual(taskid);
+                 expect(response.applier).toEqual(memberid);
+                 expect(response.applierModel).toEqual("Members"); 
+                  await axios.delete(`${baseURL}/api/task`+ `?id=${taskid}`)
+                  await axios.delete(`${baseURL}/api/Member`+ `?email=${memberemail}`)
+                  await axios.delete(`${baseURL}/api/application`+ `?id=${response._id}`)
+
+    
+    });
 const testSearchTags = test('searching with keywords', async () => {
   const taskdocument = {
     name: 'z2.Test123',
