@@ -37,10 +37,10 @@ const ReviewSchema = new mongoose.Schema({
     enum: ['Members', 'Partners']
   }
 })
-delete mongoose.connection.models['review']
-delete mongoose.connection.collections['review']
-const myModel = mongoose.model("review", ReviewSchema);
-myModel.collection.drop()
+// delete mongoose.connection.models['review']
+// delete mongoose.connection.collections['review']
+// const myModel = mongoose.model("review", ReviewSchema);
+// myModel.collection.drop()
 
 // ReviewSchema.index({ reviewer: 1, reviewee: 1, task: 1 }, { unique: true });
 module.exports = mongoose.model('Reviews', ReviewSchema)
