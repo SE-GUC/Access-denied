@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
-let baseURL = process.env.BASEURL || 'http://localhost:3000'
+var baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -86,9 +86,9 @@ router.delete("/", (req, res) => {
     })
 })
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
   if (!req.query.name) {
-    return res.status(400).send("ID of certification is missing.");
+    return res.status(400).send('name of certification is missing.')
   }
   certificationModel
     .find({

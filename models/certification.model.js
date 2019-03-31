@@ -42,6 +42,4 @@ const certificationSchema = new mongoose.Schema({
 
 const myModel = mongoose.model('Certification', certificationSchema)
 
-//myModel.collection.drop()
-
 module.exports = myModel
