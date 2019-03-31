@@ -234,6 +234,31 @@ router.get('/applyonTask', (request, response) => {
     })
 })
 
+router.post("/reviewPartner", (req, res) => {
+  if (!req.body) {
+    return res.status(400).send("Body is missing");
+  }
+  axios
+    .post(`${baseURL}/api/review/newPost`, {
+      reviewer: req.body.reviewer,
+      reviewee: req.body.reviewee,
+      rating: req.body.rating,
+      review: req.body.review,
+      revieweeModel: "Partners",
+      reviewerModel: "Members",
+      task: req.body.task
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send("Your review can not be posted");
+      }
+      res.status(201).json(doc.data);
+    })
+    .catch(err => {
+      res.send("Error occured");
+    });
+});
+
 router.post('/adddate', (req, res) => {
   if (!req.query.email) return res.status(400).send('Email is missing')
   if (!req.body.date) return res.status(400).send('Date is missing')
@@ -259,5 +284,6 @@ router.post('/adddate', (req, res) => {
       return res.status(500).json(err)
     })
 })
+
 
 module.exports = router

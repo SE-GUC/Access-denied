@@ -12,7 +12,7 @@ module.exports = {
       extraNotes: Joi.string()
         .min(3)
         .max(500),
-      isCompleted: Joi.boolean(),
+      isComplete: Joi.boolean(),
       date: Joi.date(),
       effortLevel: Joi.number(),
       commitmentLevel: Joi.number(),
