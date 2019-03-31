@@ -1,6 +1,6 @@
 let baseURL = process.env.BASEURL || `http://localhost:3000`
 const axios = require('axios')
-var fetch = require('node-fetch')
+const fetch = require('node-fetch')
 const testMemberApply = test('Member apply on atask', async () => {
   const taskdocument = {
     name: 'z.Test123',
