@@ -1,4 +1,3 @@
-let baseURL = process.env.BASEURL || `http://localhost:3000`
 const axios = require('axios');
 let fetch = require('node-fetch')
  const testMemberApply =test('Member apply on atask', async () => {
@@ -47,50 +46,48 @@ let fetch = require('node-fetch')
 
     
     });
-    const testSearchTags =test('searching with keywords', async () => {
-        const taskdocument = {
-            name: 'z2.Test123',
-            description: 'This is z.Test123 Description',
-            extraNotes: 'This is z.Test123 Extra Notes',
-            effortLevel: 995,
-            monetaryComp: 93,
-            Keywords: ["k1"]
-          }
-          let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
-          let searching = await axios.get(`${baseURL}/search/filteredby`+`?tags=["k1"]`)
-          let response=searching.data
-          let taskId =responsetask.data._id
-          let t=  response.find(function(ele) {
-            return ele._id==taskId})
-        // console.log(t)
-          expect(t).not.toBe(null)
-          await axios.delete(`${baseURL}/api/task`+ `?id=${taskId}`)
-        })
+const testSearchTags = test('searching with keywords', async () => {
+  const taskdocument = {
+    name: 'z2.Test123',
+    description: 'This is z.Test123 Description',
+    extraNotes: 'This is z.Test123 Extra Notes',
+    effortLevel: 995,
+    monetaryComp: 93,
+    Keywords: ['k1']
+  }
+  let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
+  let searching = await axios.get(
+    `${baseURL}/search/filteredby` + `?tags=["k1"]`
+  )
+  let response = searching.data
+  let taskId = responsetask.data._id
+  let t = response.find(function(ele) {
+    return ele._id == taskId
+  })
+  expect(t).not.toBe(null)
+  await axios.delete(`${baseURL}/api/task` + `?id=${taskId}`)
+})
 
- const testSearchSkills =test('searching for some skills', async () => {
-            const taskdocument = {
-                name: 'z2.Test123',
-                description: 'This is z.Test123 Description',
-                extraNotes: 'This is z.Test123 Extra Notes',
-                effortLevel: 995,
-                monetaryComp: 93,
-                skills: ["k1"]
-              }
-              let jason =JSON.stringify ({skills:taskdocument.skills[0]})
-              
-              let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
-              let searching = await axios.get(`${baseURL}/search//sk`+`?skills=`+jason)
-              let response=searching.data
-              let taskId =responsetask.data._id
-              let t=  response.find(function(ele) {
-                return ele._id==taskId})
-            console.log(t)
-              expect(t).not.toBe(null)
-              await axios.delete(`${baseURL}/api/task`+ `?id=${taskId}`)
-            })
+const testSearchSkills = test('searching for some skills', async () => {
+  const taskdocument = {
+    name: 'z2.Test123',
+    description: 'This is z.Test123 Description',
+    extraNotes: 'This is z.Test123 Extra Notes',
+    effortLevel: 995,
+    monetaryComp: 93,
+    skills: ['k1']
+  }
+  let jason = JSON.stringify({ skills: taskdocument.skills[0] })
 
- module.exports = {testMemberApply,
-    testSearchSkills ,testSearchTags
+  let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
+  let searching = await axios.get(`${baseURL}/search//sk` + `?skills=` + jason)
+  let response = searching.data
+  let taskId = responsetask.data._id
+  let t = response.find(function(ele) {
+    return ele._id == taskId
+  })
+  expect(t).not.toBe(null)
+  await axios.delete(`${baseURL}/api/task` + `?id=${taskId}`)
+})
 
- }
-
+module.exports = { testMemberApply, testSearchSkills, testSearchTags }
