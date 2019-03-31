@@ -28,7 +28,7 @@ router.get('/cert', (req, res) => {
       })
 
       if (T) {
-        var str = JSON.stringify(T.ref_of_certification)
+        let str = JSON.stringify(T.ref_of_certification)
         console.log(str + '=' + req.query.id)
         res.send('already taken !')
       } else {

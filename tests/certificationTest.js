@@ -4,7 +4,7 @@ const _ = require('lodash')
 
 let reviewreply = ''
 
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 const createTest = test('cretes a new certification', async () => {
   const body = {
