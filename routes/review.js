@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const validator = require('../validations/reviewValidations')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -72,7 +72,7 @@ router.get('/', (req, res) => {
     })
     .populate('reviewer', 'name')
     .populate('reviewee', 'name')
-    .populate('task', 'title')
+    .populate('task', 'name')
     .then(doc => {
       res.json(doc)
     })

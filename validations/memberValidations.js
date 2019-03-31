@@ -14,7 +14,8 @@ module.exports = {
         .min(6)
         .max(30)
         .required(),
-      certification: Joi
+      certification: Joi,
+      calendar: Joi.array()
     }
 
     return Joi.validate(request, createSchema)
@@ -29,7 +30,8 @@ module.exports = {
       password: Joi.string()
         .min(6)
         .max(30),
-      certification: Joi
+      certification: Joi,
+      calendar: Joi.array()
     }
 
     return Joi.validate(request, updateSchema)

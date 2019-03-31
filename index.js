@@ -2,10 +2,10 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
+require('dotenv').config()
 
 // Database Configuration...
-const uri =
-  'mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true'
+const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3000
 
@@ -20,6 +20,7 @@ const certificationRoute = require('./routes/certification')
 const scheduleRoute = require('./routes/schedule')
 const reviewRoute = require('./routes/review')
 const EvaluationRoute = require('./routes/Evaluation')
+const applicationRoute = require('./routes/application')
 const searchRoute = require('./routes/search')
 
 //Setup Parser, Note: extended option is diabled to allow for array encoding
@@ -58,6 +59,7 @@ app.use('/api/certification', certificationRoute) // Tested - Passed - A lot of 
 app.use('/api/schedule', scheduleRoute)
 app.use('/api/review', reviewRoute)
 app.use('/api/Evaluation', EvaluationRoute)
+app.use('/api/application', applicationRoute)
 app.use('/search', searchRoute)
 
 // 404 & 500 Error handlers

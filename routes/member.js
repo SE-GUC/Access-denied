@@ -4,7 +4,7 @@ const router = express.Router()
 const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
-var baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
   console.log(req.query.email)
@@ -25,7 +25,7 @@ router.get('/cert', (req, res) => {
           }
         })
         .then(response => {
-          var memberModel = response.data[0].membersapplied
+          let memberModel = response.data[0].membersapplied
           // res.json(memberModel)
           let j = memberModel.find(function(value) {
             return value.MEMBERS == objid
@@ -98,6 +98,7 @@ router.get('/', (req, res) => {
     .findOne({
       email: req.query.email
     })
+    .select('-password')
     .then(doc => {
       res.json(doc)
     })
@@ -110,6 +111,7 @@ router.get('/all', (_request, response) => {
 
   memberModel
     .find(key)
+    .select('-password')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -256,5 +258,32 @@ router.post("/reviewPartner", (req, res) => {
       res.send("Error occured");
     });
 });
+
+router.post('/adddate', (req, res) => {
+  if (!req.query.email) return res.status(400).send('Email is missing')
+  if (!req.body.date) return res.status(400).send('Date is missing')
+  memberModel
+    .findOneAndUpdate(
+      {
+        email: req.query.email
+      },
+      {
+        $push: { calendar: req.body.date }
+      },
+      {
+        new: true,
+        safe: true,
+        upsert: true
+      }
+    )
+    .then(doc => {
+      if (!doc || doc.length === 0) return res.status(500).send('Error')
+      res.json(doc)
+    })
+    .catch(err => {
+      return res.status(500).json(err)
+    })
+})
+
 
 module.exports = router

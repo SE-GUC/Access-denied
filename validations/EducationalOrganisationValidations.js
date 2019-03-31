@@ -7,19 +7,19 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-      address: Joi.string(),
       email: Joi.string()
         .email()
         .required(),
+      address: Joi,
       contactInformation: Joi.string(),
       vision: Joi.string(),
       mission: Joi.string(),
-      partners: Joi,
+      partners: Joi.array(),
       information: Joi.string(),
-      course: Joi,
+      course: Joi.array(),
       certificate: Joi,
-      trainer: Joi,
-      trainingProgram: Joi
+      trainer: Joi.array(),
+      trainingProgram: Joi.array()
     }
 
     return Joi.validate(request, createSchema)
@@ -29,18 +29,21 @@ module.exports = {
     const updateSchema = {
       name: Joi.string()
         .min(3)
-        .max(500),
-      address: Joi.string(),
-      email: Joi.string().email(),
+        .max(500)
+        .required(),
+      email: Joi.string()
+        .email()
+        .required(),
+      address: Joi,
       contactInformation: Joi.string(),
       vision: Joi.string(),
       mission: Joi.string(),
-      partners: Joi,
+      partners: Joi.array(),
       information: Joi.string(),
-      course: Joi,
+      course: Joi.array(),
       certificate: Joi,
-      trainer: Joi,
-      trainingProgram: Joi
+      trainer: Joi.array(),
+      trainingProgram: Joi.array()
     }
 
     return Joi.validate(request, updateSchema)
