@@ -4,7 +4,9 @@ const express = require('express')
 const app = express()
 require('dotenv').config();
 
+
 // Database Configuration...
+
 const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3000
