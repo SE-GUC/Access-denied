@@ -12,3 +12,5 @@ const educationalOrganisationTests = require('./tests/educationalOrganisationTes
 const reviewPartnerTests = require('./tests/reviewPartnerTest')
 const taskTests = require('./tests/taskTest')
 const evaluationTests = require('./tests/evaluationTest')
+const memberTests = require('./tests/memberTest')
+
