@@ -46,7 +46,6 @@ app.use((request, response, next) => {
 
 //Setup Static Directory
 // app.use(express.static('./public'))
-
 //Setup routing directories/paths
 
 app.use('/api/task', taskRoute.router) // Tested - Passed - changed file name to match file naming agreement
