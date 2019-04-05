@@ -1,13 +1,9 @@
 import React from 'react';
-import { appendFileSync } from 'fs';
  import './App.css';
 class Searchbar extends React.Component{
      render(){
          return(
-            <div class="searchnav">
-          
-            <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous"></link>
-            <i class="fas fa-cloud"></i>
+            <div className="searchnav">
             <input type="text"  id='se' placeholder="Search.."
              onKeyPress={event => {
               if (event.key === 'Enter') {
