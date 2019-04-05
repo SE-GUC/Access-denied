@@ -24,7 +24,7 @@ const MemberSchema = new mongoose.Schema({
       }
     }
   ],
-  calendar: [Date]
+  calendar: [{ Date: Date, Event: String }]
 })
 
 MemberSchema.pre('save', function(next) {
