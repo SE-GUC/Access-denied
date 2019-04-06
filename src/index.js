@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import LogIn from './LogIn';
+import LogIn from './Screens/LogIn';
 
 import * as serviceWorker from './serviceWorker';
 
