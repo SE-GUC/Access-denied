@@ -16,18 +16,14 @@ const certificationSchema = new mongoose.Schema({
   },
   membersapplied: [
     {
-      MEMBERS: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Members'
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
     }
   ],
   membersaccepted: [
     {
-      MEMBERS: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Members'
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
     }
   ],
 
@@ -41,7 +37,5 @@ const certificationSchema = new mongoose.Schema({
 //delete mongoose.connection.collections['Certification']
 
 const myModel = mongoose.model('Certification', certificationSchema)
-
-//myModel.collection.drop()
 
 module.exports = myModel

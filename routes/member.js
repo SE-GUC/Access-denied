@@ -8,7 +8,9 @@ const _ = require('lodash')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 router.get('/cert', (req, res) => {
-  console.log(req.query.email)
+  if (!req.query.email || !req.query.id) {
+    res.send('email or id of cert is missing')
+  }
   axios
     .get(`${baseURL}/api/Member`, {
       params: {
@@ -17,51 +19,58 @@ router.get('/cert', (req, res) => {
     })
     .then(response => {
       objid = response.data._id
-      console.log(response.data._id)
-      //get certifcate array
-      axios
-        .get(`${baseURL}/api/certification`, {
-          params: {
-            id_of_certification: req.query.id
-          }
-        })
-        .then(response => {
-          let memberModel = response.data[0].membersapplied
-          // res.json(memberModel)
-          let j = memberModel.find(function(value) {
-            return value.MEMBERS == objid
+      //if already taken
+      let T = response.data.certification.find(function(value) {
+        return value.ref_of_certification == req.query.id
+      })
+
+      if (T) {
+        let str = JSON.stringify(T.ref_of_certification)
+        res.send('already taken !')
+      } else {
+        //get certifcate array
+        axios
+          .get(`${baseURL}/api/certification`, {
+            params: {
+              id_of_certification: req.query.id
+            }
           })
-
-          if (j == null) {
-            //res.send("already applied")
-            memberModel.push({
-              MEMBERS: objid,
-              finished: 'false'
+          .then(response => {
+            let memberModel = response.data[0].membersapplied
+            let membermodelacc = response.data[0].membersaccepted
+            let allmembers = memberModel.concat(membermodelacc)
+            // res.json(memberModel)
+            let j = allmembers.find(function(value) {
+              return value.MEMBERS == objid
             })
-          }
+            if (j == null) {
+              //res.send("already applied")
+              memberModel.push({
+                MEMBERS: objid
+              })
+              axios
+                .put(
+                  `${baseURL}/api/certification?id_of_certification=` +
+                    req.query.id,
+                  {
+                    membersapplied: memberModel
+                  }
+                )
+                .then(function(response) {
+                  res.send(response.data)
+                })
+            } else {
+              res.send('already applied for certifacte !')
+              const f = 'true'
+            }
 
-          //   res.json(memberModel)
-          console.log(response.data)
-          console.log(memberModel.tostring)
-          //update certifcate array
-
-          axios
-            .put(
-              `${baseURL}/api/certification?id_of_certification=` +
-                req.query.id,
-              {
-                membersapplied: memberModel
-              }
-            )
-            .then(function(response) {
-              console.log('saved successfully')
-              console.log(response.data)
-              res.send(response.data)
-            })
-        })
-        .catch(error => {
-          console.log(error)
-        })
+            //   res.json(memberModel)
+            //update certifcate array
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     })
     .catch(error => {
       console.log(error)
@@ -86,14 +95,7 @@ router.post('/', (req, res) => {
       res
         .status(201)
         .send(
-          _.pick(doc, [
-            '_id',
-            'name',
-            'email',
-            'calendar',
-            'certification',
-            '__v'
-          ])
+          _.pick(doc, ['_id', 'name', 'email', 'calendar', 'certification'])
         )
     })
     .catch(err => {
@@ -128,7 +130,7 @@ router.get('/all', (_request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -179,15 +181,12 @@ router.delete('/', (req, res) => {
 //user stories
 
 router.get('/tasksAvilable', (req, res) => {
-  axios
-    .get(`${baseURL}/api/Member`, {
-      params: {
-        email: req.query.email
-      }
+  memberModel
+    .findOne({
+      email: req.query.email
     })
     .then(member => {
-      let id = member.data._id
-      let Certification = member.data.certification
+      let Certification = member.certification
       let save = []
       Certification.forEach(function(element) {
         save = element.skills + ',' + save
@@ -195,7 +194,7 @@ router.get('/tasksAvilable', (req, res) => {
       let skills = {
         skills: save
       }
-      axios
+      return axios
         .get(`${baseURL}/api/task/filterTasks`, {
           params: {
             skills: skills
@@ -203,18 +202,19 @@ router.get('/tasksAvilable', (req, res) => {
         })
 
         .then(tasks => {
-          let returned = {
-            id: id,
-            tasks: tasks.data
-          }
-
-          res.json(returned)
+          res.json(tasks.data)
         })
     })
+    .catch(err => {
+      res.status(500).send(err.response.data)
+    })
 })
-router.get('/applyonTask', (request, response) => {
-  let email = request.query.email
-  let taskemail = request.query.contactEmail
+router.post('/applyonTask', (req, res) => {
+  let email = req.body.email
+  let taskId = req.body.id
+  if (!email || !taskId) {
+    return res.status(400).send('Bad Request')
+  }
   axios
     .get(`${baseURL}/api/Member/tasksAvilable`, {
       params: {
@@ -222,26 +222,38 @@ router.get('/applyonTask', (request, response) => {
       }
     })
     .then(tasks => {
-      axios
-        .get(`${baseURL}/api/task`, {
-          params: {
-            contactEmail: taskemail
-          }
-        })
-        .then(thetask => {
-          //   response.json(tasks.data.id)
-          tasks.data.tasks.forEach(function(atask) {
-            if (atask.title == thetask.data.title) {
-              axios
-                .put(`${baseURL}/api/task?contactEmail=` + taskemail, {
-                  assignee: tasks.data.id
-                })
-                .then(p => {
-                  response.json(p.data)
-                })
-            }
+      let t = tasks.data.find(function(ele) {
+        return taskId == ele._id
+      })
+      if ((t = !null)) {
+        return memberModel
+          .findOne({
+            email: email
           })
-        })
+          .then(member => {
+            let memberId = member._id
+            return axios
+              .post(`${baseURL}/api/application`, {
+                task: taskId,
+                applier: memberId,
+                details: req.body.details,
+                applierModel: 'Members'
+              })
+              .then(response => {
+                let doc = response.data
+                if (!doc || doc.length === 0) return res.status(500).send(doc)
+                return res.send(doc)
+              })
+              .catch(err => {
+                console.log(err.response.data)
+
+                return res.send(err.response.data)
+              })
+          })
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err.response.data)
     })
 })
 

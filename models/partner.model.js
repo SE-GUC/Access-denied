@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-
+// delete mongoose.connection.models['Partners']
 const PartnerSchema = new mongoose.Schema({
   //*basic business information :
   // 1- name of company,
@@ -69,5 +69,7 @@ const PartnerSchema = new mongoose.Schema({
   ]
 })
 //adding a form to suggest any feedback.
-
+// const var1 = mongoose.model('Partners', PartnerSchema)
+// delete mongoose.connection.models['Partners']
+// var1.collection.drop()
 module.exports = mongoose.model('Partners', PartnerSchema)

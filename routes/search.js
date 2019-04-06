@@ -22,7 +22,6 @@ const searchNames = list => {
   models.push(mongoose.models.Task)
   models.push(mongoose.models.Members)
   regex = list.map(e => new RegExp(e, 'i'))
-  console.log(regex)
   return Promise.all(
     models.map(model =>
       model
@@ -54,16 +53,16 @@ function searcht(tags, alltasks) {
 }
 router.get('/', (req, res) => {
   let resolved = false
-  if (!req.query.keyword) {
+  if (!req.query.q) {
     return res.status(400).send('Query is Missing')
   }
-  let splitted = req.query.keyword.split(' ')
+  let splitted = req.query.q.split(' ')
   let result = []
-  searchNames([req.query.keyword])
+  searchNames([req.query.q])
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true
-        return res.status(200).send(doc.flat(Infinity))
+        return res.json(doc.flat(Infinity))
       }
       result = doc
       return searchNames(splitted)
@@ -74,7 +73,7 @@ router.get('/', (req, res) => {
       }
       if (!resolved) {
         result = result.concat(docs)
-        res.status(200).send(result.flat(Infinity))
+        res.json(result.flat(Infinity))
       }
     })
     .catch(err => res.status(500).json(err))
@@ -94,18 +93,22 @@ router.get('/sk', (req, res) => {
     .then(response => {
       return res.send(response.data)
     })
-    .catch(err => {
-      return res.status(500).send(err)
+
+    .catch(error => {
+      return res.status(500).send(error.response.data)
     })
 })
 
 router.get('/filteredby', (req, res) => {
   //will get the tags like normal array
   let q = req.query.tags
+
   let tags = JSON.parse(q)
+
   if (!tags) {
     return res.status(400).status('400: no criteria has been specified')
   }
+
   axios
     .get(`${baseURL}/api/task/all`)
 
@@ -114,7 +117,7 @@ router.get('/filteredby', (req, res) => {
       return res.json(result)
     })
     .catch(error => {
-      return res.send(error)
+      return res.send(error.response.data)
     })
 })
 

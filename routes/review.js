@@ -44,7 +44,7 @@ router.post('/newPost', (req, res) => {
       }
     })
     .then(doc => {
-      var checker = doc.data.length === 0
+      let checker = doc.data.length === 0
       if (checker) {
         return res.send()
       } else {

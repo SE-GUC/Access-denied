@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
         return res.status(500).send(doc)
       }
 
-      res.status(200).send(doc)
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
@@ -38,15 +38,34 @@ router.get('/all', (_request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
     })
 })
+router.get('/all', (request, response) => {
+  let key = {}
+  //let model = new certificationModel(req.body)
+  //model.save()
+
+  certificationModel
+    .find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return response.status(500).json(document)
+      }
+
+      response.json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
+    })
+})
+
 router.put('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('id of certification is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name of certification is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -54,7 +73,7 @@ router.put('/', (req, res) => {
   certificationModel
     .findOneAndUpdate(
       {
-        id_of_certification: req.query.id_of_certification
+        name: req.query.name
       },
       req.body,
       {
@@ -71,12 +90,12 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('id is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name is missing.')
   }
   certificationModel
     .findOneAndDelete({
-      id_of_certification: req.query.id_of_certification
+      name: req.query.name
     })
     .then(doc => {
       res.json(doc)
@@ -87,12 +106,12 @@ router.delete('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.id_of_certification) {
-    return res.status(400).send('ID of certification is missing.')
+  if (!req.query.name) {
+    return res.status(400).send('name of certification is missing.')
   }
   certificationModel
     .find({
-      id_of_certification: req.query.id_of_certification
+      name: req.query.name
     })
     .populate('schedule')
     .then(doc => {
@@ -113,7 +132,6 @@ router.post('/offlineEvaluation/', (req, res) => {
   axios
     .post(`${baseURL}/api/schedule`, {})
     .then(response => {
-      console.log(response.data._id)
       let schedule = response.data._id
       req.body.schedule = schedule
       return certificationModel.findByIdAndUpdate(req.query.id, {
@@ -211,6 +229,33 @@ router.delete('/schedule', (req, res) => {
       }
       let scheduleId = doc.schedule
       res.redirect(307, `../schedule/${scheduleId}/slot?id=${req.query.slot}`)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
+
+router.post('/apply', (req, res) => {
+  if (!req || !req.body.name || !req.body.id) {
+    return res.status(400).send('Body is Missing')
+  }
+
+  certificationModel
+    .findOneAndUpdate(
+      { name: req.body.name },
+      {
+        $push: {
+          membersapplied: req.body.id
+        }
+      },
+      {
+        safe: true,
+        upsert: true,
+        new: true
+      }
+    )
+    .then(doc => {
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)

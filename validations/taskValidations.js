@@ -21,7 +21,7 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi.array().items(Joi.string())
+      Keywords: Joi
     }
 
     return Joi.validate(request, createSchema)
@@ -47,7 +47,7 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi.array()
+      Keywords: Joi
     }
 
     return Joi.validate(request, updateSchema)

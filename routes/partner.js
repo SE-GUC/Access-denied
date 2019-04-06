@@ -9,21 +9,26 @@ router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
-  const isValidated = validator.createValidation(req.body)
-  if (isValidated.error)
-    return res.status(400).send({ error: isValidated.error.details[0].message })
+  // const isValidated = validator.createValidation(req.body)
+  // if (isValidated.error){
+  //   console.log("why")
+  //   return res.status(400).send(isValidated.error)}
+
   let model = new partnerModel(req.body)
-  model
+
+  return model
     .save()
     .then(doc => {
       if (!doc || doc.length === 0) {
-        return res.status(500).send(doc)
+        return res.status(503).send(doc)
       }
 
-      res.status(201).send(doc)
+      return res.status(201).send(doc)
     })
     .catch(err => {
-      res.status(500).json(err)
+      console.log(err)
+
+      return res.status(501).send(err)
     })
 })
 
@@ -53,7 +58,7 @@ router.get('/all', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
@@ -64,9 +69,9 @@ router.put('/', (req, res) => {
   if (!req.query.email) {
     return res.status(400).send('Email is mising.')
   }
-  const isValidated = validator.updateValidation(req.body)
-  if (isValidated.error)
-    return res.status(400).send({ error: isValidated.error.details[0].message })
+  // const isValidated = validator.updateValidation(req.body)
+  // if (isValidated.error)
+  //   return res.status(400).send({ error: isValidated.error.details[0].message })
   partnerModel
     .findOneAndUpdate(
       {
@@ -106,7 +111,7 @@ router.put('/review', (req, res) => {
       res.json(doc)
     })
     .catch(err => {
-      res.status(500).json(err)
+      res.status(501).send(err)
     })
 })
 
