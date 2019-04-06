@@ -18,19 +18,6 @@ class Searchbar extends React.Component{
             
           </div>
          
-        <form>
-          <div>
-            <input type="checkbox" id="subscribeNews" name="subscribe" value="newsletter"/>
-            <label htmlFor="subscribeNews">Subscribe to newsletter?</label>
-          </div>
-          <div>
-          <form> 
-  <input type="button" value="Start machine"/>
-</form>
-<p>The machine is stopped.</p>
-      
-          </div>
-        </form>
            </div>
          )
      }
