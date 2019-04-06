@@ -4,6 +4,8 @@ import awardrate from "../Images/awardrate.jpg";
 import "./Certificate.css";
 import "bootstrap/dist/css/bootstrap.css";
 import Snackbar from "../Components/snackbar";
+import qs from "query-string";
+import { Redirect } from "react-router";
 class Certificate extends Component {
   state = {
     certificate: {},
@@ -18,7 +20,9 @@ class Certificate extends Component {
   };
   componentDidMount() {
     this.checkapplied();
-    fetch(`/api/certification?name=${this.props.name}`)
+    let name = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
+      .name;
+    fetch(`/api/certification?name=${name}`)
       .then(response => response.json())
       .then(data => {
         this.setState({ certificate: data[0] });
@@ -43,7 +47,10 @@ class Certificate extends Component {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name: this.props.name, id: this.props.id })
+        body: JSON.stringify({
+          name: this.state.certificate.name,
+          id: this.props.id
+        })
       })
         .then(res => res.json())
         .then(data => console.log(data))
@@ -74,15 +81,17 @@ class Certificate extends Component {
     }
   }
   checkapplied() {
-    if (this.state.certificate.membersapplied && !this.state.applied) {
-      if (this.state.certificate.membersapplied.indexOf(this.props.id) >= 0) {
-        this.setState({
-          applied: true,
-          button: {
-            btnclass: "btn btn-success btn-lg",
-            text: "Applied"
-          }
-        });
+    if (this.state.certificate) {
+      if (this.state.certificate.membersapplied && !this.state.applied) {
+        if (this.state.certificate.membersapplied.indexOf(this.props.id) >= 0) {
+          this.setState({
+            applied: true,
+            button: {
+              btnclass: "btn btn-success btn-lg",
+              text: "Applied"
+            }
+          });
+        }
       }
     }
   }
@@ -91,13 +100,15 @@ class Certificate extends Component {
     return !this.state.loaded ? (
       <div class="d-flex justify-content-center">
         <div
-          class="spinner-border text-success"
+          className="spinner-border text-success"
           style={{ width: "10rem", height: "10rem", "margin-top": "17%" }}
           role="status"
         >
           <span class="sr-only">Loading...</span>
         </div>
       </div>
+    ) : !this.state.certificate ? (
+      <Redirect to="/" />
     ) : (
       <div>
         <Snackbar
