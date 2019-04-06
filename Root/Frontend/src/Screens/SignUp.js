@@ -140,4 +140,4 @@ since not all types of profiles need to provide the same info
   }
 }
 
-export default App;
+export default SignUp;
