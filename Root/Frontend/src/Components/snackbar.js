@@ -103,11 +103,7 @@ class CustomizedSnackbars extends React.Component {
   };
 
   handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.props.open = false;
+    this.setState({ open: false });
   };
 
   render() {
@@ -122,6 +118,7 @@ class CustomizedSnackbars extends React.Component {
           }}
           open={this.props.open}
           autoHideDuration={6000}
+          onClose={this.handleClose}
         >
           {this.props.type === "success" ? (
             <MySnackbarContentWrapper
