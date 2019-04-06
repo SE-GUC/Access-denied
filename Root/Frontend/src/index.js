@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import SearchPage from './Screens/SearchPage';
-import LogIn from './Screens/LogIn';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import SearchPage from "./Screens/SearchPage";
+import LogIn from "./Screens/LogIn";
+import * as serviceWorker from "./serviceWorker";
 // ReactDOM.render(<SearchPage />, document.getElementById('root'));
 //  ReactDOM.render(<LogIn/>, document.getElementById('root'));
 
