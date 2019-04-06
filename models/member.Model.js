@@ -24,7 +24,9 @@ const MemberSchema = new mongoose.Schema({
       }
     }
   ],
-  calendar: [{ Date: Date, Event: String }]
+  calendar: [{ Date: Date, Event: String }],
+  memberSince:{type:Date,default:Date.now},
+  expiryDate:Date
 })
 
 MemberSchema.pre('save', function(next) {
