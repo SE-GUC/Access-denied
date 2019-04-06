@@ -1,25 +1,9 @@
+const mongoose = require('mongoose')
+//const uri = "mongodb+srv://MubbyGN:Mk4NAfw7XjkH0Dcb@se-qt9vz.mongodb.net/test?retryWrites=true"
 
-const mongoose = require('mongoose');
-
-
+//mongoose.connect(uri,{useNewUrlParser:true})
+let ObjectId = mongoose.Schema.Types.ObjectId
 const EvaluationSchema = new mongoose.Schema({
-  //code of evaluation
-  evaluationCode: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  //name of certification that is offered once the evaluation is passed successfully
-  certificationName: {
-    type: String,
-    required: true
-  },
-  //code of certification that is offered once the evaluation is passed successfully
-  certificationCode: {
-    type: String,
-    required: true
-  },
-
   styleOfEvaluation: {
     //MCQ, code,etc
     type: String,
@@ -27,27 +11,17 @@ const EvaluationSchema = new mongoose.Schema({
   },
 
   link: {
-    type: String,
-    required: true
+    type: String
   }, //link to evaluation
 
-  dateOfEvaluation: Date,
+  duration: Number, //duration of evaluation
 
-  durationOfExamInHours: Number, //duration of evaluation
+  certificate: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Certification'
+  } //reference to certification
+})
 
-  //name of educational organisation that offers this evaluation
-  nameOfEducationalOrganisationOfferingIt: {
-    type: String,
-    required: true
-  },
-
-  //emailC of educational organisation offereing the evaluation
-  emailCOfEducationalOrganisationOfferingIt: {
-    type: String,
-    required: true
-  }
-});
-
-var Mymodel = mongoose.model("Evaluation", EvaluationSchema);
+let Mymodel = mongoose.model('Evaluation', EvaluationSchema)
 //Mymodel.collection.drop();
-module.exports = Mymodel;
+module.exports = Mymodel
