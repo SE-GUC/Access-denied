@@ -37,6 +37,7 @@ router.get('/all', (_request, response) => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
+<<<<<<< HEAD
 
       response.json(document)
     })
@@ -49,6 +50,20 @@ router.get('/all', (request, response) => {
   //let model = new certificationModel(req.body)
   //model.save()
 
+=======
+
+      response.json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
+    })
+})
+router.get('/all', (request, response) => {
+  let key = {}
+  //let model = new certificationModel(req.body)
+  //model.save()
+
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
   certificationModel
     .find(key)
     .then(document => {
@@ -120,6 +135,26 @@ router.get('/', (req, res) => {
     .catch(err => {
       res.status(500).json(err)
     })
+<<<<<<< HEAD
+})
+
+router.post('/offlineEvaluation/', (req, res) => {
+  if (!req || !req.body) {
+    return res.status(400).send('Body is Missing')
+  }
+  if (!req.query.id) {
+    return res.status(400).send('Certificate id is Missing')
+  }
+  axios
+    .post(`${baseURL}/api/schedule`, {})
+    .then(response => {
+      let schedule = response.data._id
+      req.body.schedule = schedule
+      return certificationModel.findByIdAndUpdate(req.query.id, {
+        schedule: response.data._id
+      })
+    })
+=======
 })
 
 router.post('/offlineEvaluation/', (req, res) => {
@@ -158,6 +193,35 @@ router.post('/schedule', (req, res) => {
   let id = req.query.id
   certificationModel
     .findById(id)
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
+    .then(doc => {
+      if (!doc || doc.length === 0) {
+        return res.status(500).send(doc)
+      }
+<<<<<<< HEAD
+      res.status(201).send(doc)
+    })
+    .catch(err => {
+      console.log(err)
+=======
+      let scheduleId = doc.schedule
+      res.redirect(307, `../schedule/${scheduleId}/slot`)
+    })
+    .catch(err => {
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
+      res.status(500).json(err)
+    })
+})
+
+<<<<<<< HEAD
+router.post('/schedule', (req, res) => {
+  if (!req || !req.body) {
+    return res.status(400).send('Body Is Missing')
+  }
+  if (!req.query.id) return res.status(400).send('Certificate Id Is Missing')
+  let id = req.query.id
+  certificationModel
+    .findById(id)
     .then(doc => {
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
@@ -170,6 +234,8 @@ router.post('/schedule', (req, res) => {
     })
 })
 
+=======
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
 router.get('/schedule', (req, res) => {
   if (!req || !req.body) {
     return res.status(400).send('Body Is Missing')
@@ -233,5 +299,35 @@ router.delete('/schedule', (req, res) => {
     .catch(err => {
       res.status(500).json(err)
     })
+<<<<<<< HEAD
+=======
+})
+
+router.post('/apply', (req, res) => {
+  if (!req || !req.body.name || !req.body.id) {
+    return res.status(400).send('Body is Missing')
+  }
+
+  certificationModel
+    .findOneAndUpdate(
+      { name: req.body.name },
+      {
+        $push: {
+          membersapplied: req.body.id
+        }
+      },
+      {
+        safe: true,
+        upsert: true,
+        new: true
+      }
+    )
+    .then(doc => {
+      res.json(doc)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
 })
 module.exports = router

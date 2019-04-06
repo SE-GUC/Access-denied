@@ -16,6 +16,7 @@ const certificationSchema = new mongoose.Schema({
   },
   membersapplied: [
     {
+<<<<<<< HEAD
       MEMBERS: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Members'
@@ -30,6 +31,18 @@ const certificationSchema = new mongoose.Schema({
       }
     }
   ],
+=======
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
+    }
+  ],
+  membersaccepted: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
+    }
+  ],
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
 
   eduorganization: {
     type: mongoose.Schema.Types.ObjectId,

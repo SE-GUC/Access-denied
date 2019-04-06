@@ -24,7 +24,11 @@ const MemberSchema = new mongoose.Schema({
       }
     }
   ],
+<<<<<<< HEAD
   calendar: [Date]
+=======
+  calendar: [{ Date: Date, Event: String }]
+>>>>>>> 5229d307d733dcf0ec618672f8af49049539c6eb
 })
 
 MemberSchema.pre('save', function(next) {
