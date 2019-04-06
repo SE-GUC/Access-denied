@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
-let baseURL = process.env.BASEURL || "http://localhost:5000";
 
 class EducationalForm extends React.Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 //import "./App.css";
-import Select from "react-dropdown-select";
+//import Select from "react-dropdown-select";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import EducationalForm from "../Components/EducationalForm";

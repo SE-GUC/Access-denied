@@ -4,8 +4,9 @@ import "./index.css";
 import SearchPage from "./Screens/SearchPage";
 import LogIn from "./Screens/LogIn";
 import * as serviceWorker from "./serviceWorker";
+import SignUp from "./Screens/SignUp";
 // ReactDOM.render(<SearchPage />, document.getElementById('root'));
-//  ReactDOM.render(<LogIn/>, document.getElementById('root'));
+ReactDOM.render(<SignUp />, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
