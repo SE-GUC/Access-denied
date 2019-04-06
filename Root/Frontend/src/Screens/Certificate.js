@@ -3,13 +3,18 @@ import bg from "../Images/bloom-wfh-1630_1-2.jpg";
 import awardrate from "../Images/awardrate.jpg";
 import "./Certificate.css";
 import "bootstrap/dist/css/bootstrap.css";
-
+import Snackbar from "../Components/snackbar";
 class Certificate extends Component {
   state = {
     certificate: {},
     button: { btnclass: "btn btn-info btn-lg", text: "Apply Now" },
     applied: false,
-    loaded: false
+    loaded: false,
+    snackbar: {
+      open: false,
+      text: "",
+      type: ""
+    }
   };
   componentDidMount() {
     this.checkapplied();
@@ -25,7 +30,13 @@ class Certificate extends Component {
       this.state.certificate.membersapplied.indexOf(this.props.id) >= 0 ||
       this.state.applied
     ) {
-      alert("You already applied to this Certificate");
+      this.setState({
+        snackbar: {
+          open: true,
+          text: `You already applied to ${this.state.certificate.name}`,
+          type: "warning"
+        }
+      });
     } else {
       fetch("/api/certification/apply", {
         method: "POST",
@@ -37,9 +48,13 @@ class Certificate extends Component {
         .then(res => res.json())
         .then(data => console.log(data))
         .catch(err => console.log(err));
-
       this.setState({
         applied: true,
+        snackbar: {
+          open: true,
+          text: `Succesfully Applied to ${this.state.certificate.name}`,
+          type: "success"
+        },
         button: {
           btnclass: "btn btn-success btn-lg",
           text: "Applied"
@@ -85,6 +100,11 @@ class Certificate extends Component {
       </div>
     ) : (
       <div>
+        <Snackbar
+          open={this.state.snackbar.open}
+          type={this.state.snackbar.type}
+          message={this.state.snackbar.text}
+        />
         <div className="card">
           <img className="card-img" src={bg} alt="Card" />
           <div className="card-img-overlay">
