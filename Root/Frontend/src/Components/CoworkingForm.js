@@ -18,12 +18,10 @@ class CoworkingForm extends React.Component {
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-
-    console.log(this.state.target + "hi");
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.city);
+    alert("submitted: " + this.state.name);
     event.preventDefault();
   }
 
@@ -89,6 +87,7 @@ class CoworkingForm extends React.Component {
             onChange={this.handleChange}
           />
         </label>
+        <br />
         <input type="submit" value="Submit" />
       </form>
     );

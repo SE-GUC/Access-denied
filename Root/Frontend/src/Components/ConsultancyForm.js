@@ -23,7 +23,7 @@ class ConsultancyForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.city);
+    alert("submitted: " + this.state.name);
     event.preventDefault();
   }
 
@@ -79,6 +79,7 @@ class ConsultancyForm extends React.Component {
             onChange={this.handleChange}
           />
         </label>
+        <br />
         <input type="submit" value="Submit" />
       </form>
     );

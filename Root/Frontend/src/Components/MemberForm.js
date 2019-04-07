@@ -14,12 +14,10 @@ class MemberForm extends React.Component {
 
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
-
-    console.log(this.state.target + "hi");
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.name + "   " + this.state.name.value);
+    alert("submitted: " + this.state.name);
     event.preventDefault();
   }
 

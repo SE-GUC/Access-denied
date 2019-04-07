@@ -37,14 +37,7 @@ class EducationalForm extends React.Component {
   }
 
   handleSubmit(event) {
-    /*alert(
-      "submitted!: " +
-        this.state.city.value +
-        " " +
-        this.state.name.value +
-        " " +
-        this.state.name
-    );*/
+    alert("submitted!: " + this.state.name);
 
     event.preventDefault();
   }
