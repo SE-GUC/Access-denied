@@ -118,7 +118,7 @@ class NavBar extends Component {
     if (event.key === "Enter") {
       let currentState = this.state;
       currentState.redirect = true;
-      currentState.redirectTarget = `/search?q=${this.state.searchText}`;
+      currentState.redirectTarget = `/search`;
       this.setState(currentState);
     } else {
       let currentState = this.state;
