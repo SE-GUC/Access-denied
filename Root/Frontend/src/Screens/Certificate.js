@@ -3,7 +3,36 @@ import bg from "../Images/bloom-wfh-1630_1-2.jpg";
 import awardrate from "../Images/awardrate.jpg";
 import "./Certificate.css";
 import "bootstrap/dist/css/bootstrap.css";
+import {
+  /*eslint-disable */
+  Hero,
+  CallToAction,
+  ScrollDownIndicator,
+  Checklist,
+  Section
+  /*eslint-enable */
+} from "react-landing-page";
 import Snackbar from "../Components/snackbar";
+import qs from "query-string";
+import { Redirect } from "react-router";
+
+const featherCheckmark = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="green"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22 4 12 14.01 9 11.01" />
+  </svg>
+);
+
 class Certificate extends Component {
   state = {
     certificate: {},
@@ -18,7 +47,9 @@ class Certificate extends Component {
   };
   componentDidMount() {
     this.checkapplied();
-    fetch(`/api/certification?name=${this.props.name}`)
+    let name = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
+      .name;
+    fetch(`/api/certification?name=${name}`)
       .then(response => response.json())
       .then(data => {
         this.setState({ certificate: data[0] });
@@ -43,7 +74,10 @@ class Certificate extends Component {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name: this.props.name, id: this.props.id })
+        body: JSON.stringify({
+          name: this.state.certificate.name,
+          id: this.props.id
+        })
       })
         .then(res => res.json())
         .then(data => console.log(data))
@@ -62,27 +96,26 @@ class Certificate extends Component {
       });
     }
   }
-  skillsmap() {
-    let skills = this.state.certificate.skills;
-    if (skills) {
-      let skillsmap = skills.map(skill => (
-        <li style={{ "font-size": "18px" }} key={skill}>
-          {skill}
-        </li>
-      ));
-      return skillsmap;
-    }
+  skillscap() {
+    let skills = [];
+    this.state.certificate.skills.map(skill =>
+      skills.push(skill.charAt(0).toUpperCase() + skill.slice(1))
+    );
+    return skills;
   }
+
   checkapplied() {
-    if (this.state.certificate.membersapplied && !this.state.applied) {
-      if (this.state.certificate.membersapplied.indexOf(this.props.id) >= 0) {
-        this.setState({
-          applied: true,
-          button: {
-            btnclass: "btn btn-success btn-lg",
-            text: "Applied"
-          }
-        });
+    if (this.state.certificate) {
+      if (this.state.certificate.membersapplied && !this.state.applied) {
+        if (this.state.certificate.membersapplied.indexOf(this.props.id) >= 0) {
+          this.setState({
+            applied: true,
+            button: {
+              btnclass: "btn btn-success btn-lg",
+              text: "Applied"
+            }
+          });
+        }
       }
     }
   }
@@ -91,13 +124,15 @@ class Certificate extends Component {
     return !this.state.loaded ? (
       <div class="d-flex justify-content-center">
         <div
-          class="spinner-border text-success"
+          className="spinner-border text-success"
           style={{ width: "10rem", height: "10rem", "margin-top": "17%" }}
           role="status"
         >
           <span class="sr-only">Loading...</span>
         </div>
       </div>
+    ) : !this.state.certificate ? (
+      <Redirect to="/" />
     ) : (
       <div>
         <Snackbar
@@ -109,7 +144,10 @@ class Certificate extends Component {
           <img className="card-img" src={bg} alt="Card" />
           <div className="card-img-overlay">
             <div className="bgtext">
-              <p className="card-text">{this.state.certificate.name}</p>
+              <p className="card-text">
+                {this.state.certificate.name.charAt(0).toUpperCase() +
+                  this.state.certificate.name.slice(1)}
+              </p>
               <p className="card-text">
                 Get this certificate to start earning more
               </p>
@@ -129,7 +167,10 @@ class Certificate extends Component {
         <div style={{ width: "30%", "margin-left": "33%" }}>
           <p className="textafter bold">Show Employers you got these skills:</p>
           <ul className="list-unstyled" style={{ "margin-left": "11%" }}>
-            <ul>{this.skillsmap()}</ul>
+            <Checklist
+              children={this.skillscap()}
+              checkmark={featherCheckmark}
+            />
           </ul>
         </div>
         <hr style={{ "margin-top": "5%" }} />
