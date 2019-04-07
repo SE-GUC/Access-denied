@@ -35,7 +35,7 @@ class Home extends Component {
           <Section heading="Lirten Hub" subhead="Your way to Success" />
           <span>
             <CallToAction href="/signup" mt={3}>
-              Get Started
+              Signup
             </CallToAction>
             <CallToAction href="/login" mt={3}>
               Login
