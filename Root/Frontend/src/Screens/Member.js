@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import "./App.css";
+import qs from "query-string";
+import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "./images/profile.jpg";
-import profileBG from "./images/profile-header.png";
+import profile from "../Images/profile.jpg";
+import profileBG from "../Images/profile-header.png";
 import moment from "moment";
 
 // Setup the localizer by providing the moment (or globalize) Object
@@ -28,11 +29,14 @@ class Member extends Component {
   }
 
   componentDidMount() {
-    fetch(`/api/member?email=${this.state.email}`)
+    let email = qs.parse(this.props.location.search, {
+      ignoreQueryPrefix: true
+    }).email;
+    fetch(`/api/member?email=${email}`)
       .then(res => res.json())
       .then(res => {
         this.setState({
-          email: this.state.email,
+          email: email,
           name: res.name,
           certification: res.certification.map(cert => (
             <li className="list-group-item">{cert.name_of_certification}</li>
@@ -54,6 +58,13 @@ class Member extends Component {
   }
 
   render() {
+    const certificatePart = (
+      <ul className="list-group" style={{ width: "30%" }}>
+        {" "}
+        <li className="list-group-item disabled">Certificates</li>
+        {this.state.certification}
+      </ul>
+    );
     return (
       <div>
         <div className="d-flex flex-row">
@@ -89,9 +100,10 @@ class Member extends Component {
         </div>
         <div className="d-flex flex-row">
           <ul className="list-group" style={{ width: "30%" }}>
-            {" "}
-            <li className="list-group-item disabled">Certificates</li>
-            {this.state.certification}
+            <li className="list-group-item list-group-item-action">
+              Certificates
+            </li>
+            <li className="list-group-item list-group-item-action">Events</li>
           </ul>
           <div className="flex-grow-1" style={{ height: "10%", width: "50%" }}>
             <div>
