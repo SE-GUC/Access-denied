@@ -12,9 +12,6 @@ import moment from "moment";
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
-let allViews = Object.keys(BigCalendar.Views).map(k => BigCalendar.Views[k]);
-console.log(allViews);
-
 class Member extends Component {
   constructor(props) {
     super(props);
@@ -24,47 +21,118 @@ class Member extends Component {
       certification: null,
       calendar: null,
       memberSince: null,
-      expiryDate: null
+      expiryDate: null,
+      reviews: null,
+      tasks: null,
+      events: null,
+      activeId: "4",
+      displayed: null
     };
   }
 
   componentDidMount() {
+    let id = "";
     let email = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).email;
     fetch(`/api/member?email=${email}`)
       .then(res => res.json())
       .then(res => {
-        this.setState({
-          email: email,
-          name: res.name,
-          certification: res.certification.map(cert => (
-            <li className="list-group-item">{cert.name_of_certification}</li>
-          )),
-          calendar: res.calendar.map(oldevent => {
-            return {
-              title: oldevent.Event,
-              start: new Date(oldevent.Date),
-              end: new Date(oldevent.Date)
-            };
-          }),
-          memberSince: new Date(res.memberSince).toDateString(),
-          expiryDate: new Date(res.expiryDate).toDateString()
+        let currentState = this.state;
+        currentState.email = email;
+        currentState.name = res.name;
+        currentState.certification = res.certification.map(cert => (
+          <li className="list-group-item">
+            {" "}
+            <a href={`/certificate?name=${cert.name_of_certification}`}>
+              {cert.name_of_certification}
+            </a>
+          </li>
+        ));
+        currentState.calendar = res.calendar.map(oldevent => {
+          return {
+            title: oldevent.Event,
+            start: new Date(oldevent.Date),
+            end: new Date(oldevent.Date)
+          };
         });
+        currentState.memberSince = new Date(res.memberSince).toDateString();
+        currentState.expiryDate = new Date(res.expiryDate).toDateString();
+        this.setState(currentState);
+        id = res._id;
+        return fetch(`/api/review?reviewee=${id}`);
+      })
+      .then(res => res.json())
+      .then(res => {
+        let currentState = this.state;
+        currentState.reviews = res.map(review => (
+          <div className="list-group-item card w-25">
+            <div className="card-body">
+              <h4 className="card-title">
+                {(function() {
+                  let rating = "";
+                  let count = 5 - review.rating;
+                  for (let i = 0; i < review.rating; i++) rating += "★";
+                  for (let i = 0; i < count; i++) rating += "☆";
+                  return rating;
+                })()}
+              </h4>
+              <h6 className="card-subtitle mb-2 text-muted">
+                "{review.review}"
+              </h6>
+              <div className="card-text">
+                <h6>From: {review.reviewer.name}</h6>
+                For:{" "}
+                <a href={`/task?id=${review.task._id}`}>{review.task.name}</a>
+              </div>
+            </div>
+          </div>
+        ));
+        this.setState(currentState);
+        return fetch(`/api/task/member?id=${id}`);
+      })
+      .then(res => res.json())
+      .then(res => {
+        let currentState = this.state;
+        res.sort((a, b) => {
+          if (a.isComplete) {
+            if (b.isComplete) return 0;
+            else return 1;
+          } else {
+            if (b.isComplete) return -1;
+            else return 0;
+          }
+        });
+        currentState.tasks = res.map(task => (
+          <div className="list-group-item card w-50">
+            <div className="card-body">
+              <a
+                className="card-title font-weight-bold"
+                href={`/task?id=${task._id}`}
+              >
+                {task.name}
+              </a>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {task.isComplete ? "Done" : "In Progress"}
+              </h6>
+              <div className="card-text">
+                <h6>From: {task.owner.name}</h6>
+                Date: <h6>{new Date(task.date).toDateString()} </h6>
+              </div>
+            </div>
+          </div>
+        ));
       })
       .catch(err => {
         console.log(err);
       }); //TBD
   }
-
+  handleClick(e) {
+    let currentState = this.state;
+    currentState.activeId = e.target.id;
+    this.setState(currentState);
+  }
   render() {
-    const certificatePart = (
-      <ul className="list-group" style={{ width: "30%" }}>
-        {" "}
-        <li className="list-group-item disabled">Certificates</li>
-        {this.state.certification}
-      </ul>
-    );
     return (
       <div>
         <div className="d-flex flex-row">
@@ -99,31 +167,120 @@ class Member extends Component {
           </div>
         </div>
         <div className="d-flex flex-row">
-          <ul className="list-group" style={{ width: "30%" }}>
-            <li className="list-group-item list-group-item-action">
+          <ul
+            className="list-group"
+            onClick={this.handleClick.bind(this)}
+            style={{ minWidth: "30%" }}
+          >
+            <li
+              className={
+                this.state.activeId === "1"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="1"
+            >
               Certificates
             </li>
-            <li className="list-group-item list-group-item-action">Events</li>
+            <li
+              className={
+                this.state.activeId === "2"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="2"
+            >
+              Tasks
+            </li>
+            <li
+              className={
+                this.state.activeId === "3"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="3"
+            >
+              Reviews
+            </li>
+            <li
+              className={
+                this.state.activeId === "4"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="4"
+            >
+              Calendar
+            </li>
+            <li
+              className={
+                this.state.activeId === "5"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="5"
+            >
+              Events
+            </li>
           </ul>
-          <div className="flex-grow-1" style={{ height: "10%", width: "50%" }}>
-            <div>
-              <BigCalendar
-                views={["week", "agenda"]}
-                defaultView={"week"}
-                step={60}
-                showMultiDayTimes
-                localizer={localizer}
-                defaultDate={
-                  new Date(new Date().setDate(new Date().getDate() - 1))
-                }
-                events={
-                  this.state.calendar
-                    ? this.state.calendar
-                    : [{ title: "NOW", start: new Date(), end: new Date() }]
-                }
-              />
-            </div>
-          </div>
+          {(function(state) {
+            switch (state.activeId) {
+              case "1":
+                return (
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.certification}
+                  </ul>
+                );
+              case "2":
+                return (
+                  <ul
+                    className="list-group d-flex flex-wrap flex-row"
+                    style={{ width: "100%" }}
+                  >
+                    {state.tasks}
+                  </ul>
+                );
+              case "3":
+                return (
+                  <ul
+                    className="list-group d-flex flex-wrap flex-row"
+                    style={{ width: "100%" }}
+                  >
+                    {state.reviews}
+                  </ul>
+                );
+              case "4":
+                return (
+                  <div className="w-100">
+                    <BigCalendar
+                      views={["week", "agenda"]}
+                      defaultView={"week"}
+                      step={60}
+                      showMultiDayTimes
+                      localizer={localizer}
+                      defaultDate={
+                        new Date(new Date().setDate(new Date().getDate() - 1))
+                      }
+                      events={
+                        state.calendar
+                          ? state.calendar
+                          : [
+                              {
+                                title: "NOW",
+                                start: new Date(),
+                                end: new Date()
+                              }
+                            ]
+                      }
+                    />
+                  </div>
+                );
+              case "5":
+                break;
+              default:
+                break;
+            }
+          })(this.state)}
         </div>
       </div>
     );
