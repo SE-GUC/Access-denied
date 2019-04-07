@@ -4,10 +4,20 @@ import Certificate from "./Screens/Certificate";
 import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
+import Signup from "./Screens/SignUp";
+import Login from "./Screens/LogIn";
+import Search from "./Screens/SearchPage";
+import ConsultancyForm from "./Components/ConsultancyForm";
+import CoworkingForm from "./Components/CoworkingForm";
+import EducationalForm from "./Components/EducationalForm";
+import FilterPanel from "./Components/filterPanel";
+import MemberForm from "./Components/MemberForm";
+import PartnerForm from "./Components/PartnerForm";
+import TaskStatus from "./Components/taskStatus";
 
 class App extends Component {
   render() {
-    const marginVal = window.location.pathname !== "/" ? "4.75%" : "0%";
+    const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
     return (
       <Router>
         {window.location.pathname !== "/" ? (
@@ -24,7 +34,26 @@ class App extends Component {
                 <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
               )}
             />
-            <Route path="/member/" component={Member} />
+            <Route path="/profile/" component={Member} />
+            <Route path="/signup/" component={Signup} />
+            <Route path="/login/" component={Login} />
+            <Route path="/search/" component={Search} />
+            {/* Some Components for grading purposes only */}
+            <Route
+              path="/components/"
+              render={() => (
+                <>
+                  <ConsultancyForm />
+                  <CoworkingForm />
+                  <EducationalForm />
+                  <MemberForm />
+                  <PartnerForm />
+                  <TaskStatus />
+                  <FilterPanel />
+                </>
+              )}
+            />
+            {/* Some Components for grading purposes only */}
           </Switch>
         </div>
       </Router>

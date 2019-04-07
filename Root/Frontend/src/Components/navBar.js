@@ -85,19 +85,22 @@ class NavBar extends Component {
   }
   handleClick = event => {
     let currentState = this.state;
-    console.log(event.target.dataset.id);
+    console.log(event.target.toString());
     currentState.anchorEl = event.target;
     if (event.target.dataset.id === "1") {
       currentState.redirect = true;
-      currentState.redirectTarget = `/member?email=${this.props.email}`;
-    }
-    if (event.target.dataset.id === "2") {
+      currentState.redirectTarget = `/profile?email=${this.props.email}`;
+      currentState.anchorEl = null;
+    } else if (event.target.dataset.id === "2") {
       currentState.redirect = true;
-      currentState.redirectTarget = "/register";
-    }
-    if (event.target.dataset.id === "3") {
+      currentState.redirectTarget = "/signup";
+      currentState.anchorEl = null;
+    } else if (event.target.dataset.id === "3") {
       currentState.redirect = true;
       currentState.redirectTarget = "/login";
+      currentState.anchorEl = null;
+    } else if (event.target.toString() == "[object HTMLDivElement]") {
+      currentState.anchorEl = null;
     }
     this.setState(currentState);
   };
@@ -169,7 +172,7 @@ class NavBar extends Component {
               color="inherit"
               noWrap
             >
-              {classes.root}
+              LirtenHub
             </Typography>
             <div className={classes.grow} />
             <div className={classes.search}>
