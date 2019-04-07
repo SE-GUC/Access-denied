@@ -4,8 +4,6 @@ import Certificate from "./Screens/Certificate";
 import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
-import Search from "./Screens/SearchPage"
-
 
 class App extends Component {
   render() {
@@ -27,8 +25,6 @@ class App extends Component {
               )}
             />
             <Route path="/member/" component={Member} />
-            <Route path="/nav/" component={NavBar} />
-            <Route path="/search/" component={Search} />
           </Switch>
         </div>
       </Router>
