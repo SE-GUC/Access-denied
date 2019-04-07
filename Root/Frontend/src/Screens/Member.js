@@ -263,7 +263,7 @@ class Member extends Component {
                       showMultiDayTimes
                       localizer={localizer}
                       defaultDate={
-                        new Date(new Date().setDate(new Date().getDate() - 1))
+                        new Date(new Date().setDate(new Date().getDate()))
                       }
                       events={
                         state.calendar
