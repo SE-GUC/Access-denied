@@ -25,7 +25,6 @@ class App extends Component {
               )}
             />
             <Route path="/member/" component={Member} />
-            <Route path="/nav/" component={NavBar} />
           </Switch>
         </div>
       </Router>
