@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-// import '../Screens/SearchPage.css';
-import S from "../Components/searchbar";
-import F from "../Components/filterPanel";
+import "../Screens/SearchPage.css";
+import Search from "../Components/searchbar";
+import Filter from "../Components/filterPanel";
 
 class SearchPage extends Component {
   render() {
     return (
       <div>
         <div>
-          <S />
+          <Search />
         </div>
         <div>
-          <F />
+          <Filter />
         </div>
       </div>
     );
