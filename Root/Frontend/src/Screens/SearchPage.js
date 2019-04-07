@@ -41,9 +41,8 @@ class SearchPage extends Component {
         <div><F change={this.SetResults} /></div>
         <C results={this.state.results} />
       </div>
-      
-    )
+    );
   }
 }
 
-export default SearchPage ;
+export default SearchPage;
