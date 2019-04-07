@@ -54,6 +54,9 @@ class Certificate extends Component {
       .then(data => {
         this.setState({ certificate: data[0] });
         this.setState({ loaded: true });
+      })
+      .catch(err => {
+        console.log(err);
       });
   }
   handleClick() {
@@ -122,13 +125,13 @@ class Certificate extends Component {
   render() {
     this.checkapplied();
     return !this.state.loaded ? (
-      <div class="d-flex justify-content-center">
+      <div className="d-flex justify-content-center">
         <div
           className="spinner-border text-success"
           style={{ width: "10rem", height: "10rem", "margin-top": "17%" }}
           role="status"
         >
-          <span class="sr-only">Loading...</span>
+          <span className="sr-only">Loading...</span>
         </div>
       </div>
     ) : !this.state.certificate ? (
@@ -139,6 +142,10 @@ class Certificate extends Component {
           open={this.state.snackbar.open}
           type={this.state.snackbar.type}
           message={this.state.snackbar.text}
+          onClick={setTimeout(
+            () => this.setState({ snackbar: { open: false } }),
+            5000
+          )}
         />
         <div className="card">
           <img className="card-img" src={bg} alt="Card" />
@@ -151,7 +158,7 @@ class Certificate extends Component {
               <p className="card-text">
                 Get this certificate to start earning more
               </p>
-              <p className="card-text" style={{ "font-size": 20 }}>
+              <p className="card-text" style={{ fontSize: 20 }}>
                 Prove your skills and increase your chances of winning jobs
               </p>
               <button
