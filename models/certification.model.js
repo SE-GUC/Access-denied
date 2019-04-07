@@ -16,18 +16,14 @@ const certificationSchema = new mongoose.Schema({
   },
   membersapplied: [
     {
-      MEMBERS: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Members'
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
     }
   ],
   membersaccepted: [
     {
-      MEMBERS: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Members'
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Members'
     }
   ],
 

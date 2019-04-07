@@ -105,6 +105,22 @@ router.get('/all', (request, response) => {
       response.status(500).json(error)
     })
 })
+
+router.get('/member', (req, res) => {
+  if (!req.query.id) return res.status(400).send('Member id is Missing')
+  Task.find({ assignee: req.query.id })
+    .populate('owner', 'name')
+    .then(document => {
+      if (!document || document.length == 0) {
+        return res.status(500).json(document)
+      }
+
+      res.json(document)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
 router.get('/isTaskDone', (request, response) => {
   let reqowner = request.query.owner
   let reqassignee = request.query.assignee
