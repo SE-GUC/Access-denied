@@ -232,7 +232,8 @@ class Member extends Component {
                   </ul>
                 );
               case "2":
-                if (!state.tasks) return <h4>No Tasks Yet..</h4>;
+                if (!state.tasks)
+                  return <h4 className="text-muted">No Tasks Yet..</h4>;
                 return (
                   <ul
                     className="list-group d-flex flex-wrap flex-row"
@@ -242,7 +243,8 @@ class Member extends Component {
                   </ul>
                 );
               case "3":
-                if (!state.reviews) return <h4>No Reviews Yet..</h4>;
+                if (!state.reviews)
+                  return <h4 className="text-muted">No Reviews Yet..</h4>;
                 return (
                   <ul
                     className="list-group d-flex flex-wrap flex-row"
@@ -278,7 +280,8 @@ class Member extends Component {
                   </div>
                 );
               case "5":
-                if (!state.events) return <h4> No Events yet</h4>;
+                if (!state.events)
+                  return <h4 className="text-muted"> No Events yet</h4>;
                 break;
               default:
                 break;
