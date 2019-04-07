@@ -14,6 +14,7 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
+import taskStatus from "./Components/taskStatus";
 
 class App extends Component {
   render() {
@@ -37,6 +38,7 @@ class App extends Component {
             <Route path="/profile/" component={Member} />
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
+            <Route path="/taskStatus/" component={taskStatus} />
             <Route path="/search/" component={Search} />
             {/* Some Components for grading purposes only */}
             <Route
