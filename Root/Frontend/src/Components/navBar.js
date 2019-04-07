@@ -101,6 +101,10 @@ class NavBar extends Component {
       currentState.anchorEl = null;
     } else if (event.target.toString() == "[object HTMLDivElement]") {
       currentState.anchorEl = null;
+    }else if (event.target.dataset.id === "4") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/taskStatus";
+      currentState.anchorEl = null;
     }
     this.setState(currentState);
   };
@@ -162,6 +166,9 @@ class NavBar extends Component {
                 </MenuItem>
                 <MenuItem onClick={this.handleClose} data-id="3">
                   Login
+                </MenuItem>
+                <MenuItem onClick={this.handleClose} data-id="4">
+                  task status
                 </MenuItem>
               </Menu>
               <MenuIcon />
