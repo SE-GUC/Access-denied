@@ -6,25 +6,39 @@ import F from '../Components/filterPanel';
 import C from '../Components/results';
 
 class SearchPage extends Component {
+  constructor(props) {
+    super(props)
 
+    this.SetResults = this.SetResults.bind(this)
+  }
   state = {
-    results: []
+    results: []      }
+
+        componentDidMount() {
+       axios.get(`http://localhost:3001/api/task/all`)
+       .then(res=>{
+        this.state={
+          results:res.data
+        }
+       })
+       }
+
+
+      SetResults (res){
+        this.state={
+          results:res
+        }
+        console.log(this.state.results)
       }
 
-      async GetTasks() {
-        axios.get(`http://localhost:3001/api/task/all`)
-          .then(res => {
-            const task = res.data;
-            this.setState( {tasks:task} );
-          })}
+
           
   render() {
-    await this.GetTasks();
+  //  await this.GetTasks();
 
     return (
      <div>
-       <div><S/></div>
-        <div><F/></div>
+        <div><F change={this.SetResults} /></div>
         <C results={this.state.results} />
       </div>
       

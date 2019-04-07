@@ -4,51 +4,36 @@ import Certificate from "./Screens/Certificate";
 import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
-import S from "./Screens/SearchPage"
+import Search from "./Screens/SearchPage"
+
+
 class App extends Component {
   render() {
+    const marginVal = window.location.pathname !== "/" ? "4.75%" : "0%";
     return (
-      <div>
-        <S/>
-      </div>
-
-
-
-    )
-
-
+      <Router>
+        {window.location.pathname !== "/" ? (
+          <div>
+            <NavBar />
+          </div>
+        ) : null}
+        <div style={{ marginTop: marginVal }}>
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route
+              path="/certificate/"
+              render={props => (
+                <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
+              )}
+            />
+            <Route path="/member/" component={Member} />
+            <Route path="/nav/" component={NavBar} />
+            <Route path="/search/" component={Search} />
+          </Switch>
+        </div>
+      </Router>
+    );
   }
-
-
-
 }
-
-// class App extends Component {
-//   render() {
-//     const marginVal = window.location.pathname !== "/" ? "4.75%" : "0%";
-//     return (
-//       <Router>
-//         {window.location.pathname !== "/" ? (
-//           <div>
-//             <NavBar />
-//           </div>
-//         ) : null}
-//         <div style={{ marginTop: marginVal }}>
-//           <Switch>
-//             <Route path="/" exact component={Home} />
-//             <Route
-//               path="/certificate/"
-//               render={props => (
-//                 <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
-//               )}
-//             />
-//             <Route path="/member/" component={Member} />
-//             <Route path="/nav/" component={NavBar} />
-//           </Switch>
-//         </div>
-//       </Router>
-//     );
-//   }
-// }
 
 export default App;

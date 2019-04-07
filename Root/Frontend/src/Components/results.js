@@ -10,10 +10,7 @@ class results extends Component {
                 <div> <C content={p.description} title={p.name} image={null}  />
                 </div>
             )}) 
-     
-       
-      
-    
+
  )
 }} 
 
