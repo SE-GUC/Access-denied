@@ -6,7 +6,7 @@ import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
 import Login from "./Screens/LogIn";
-import Search from "./Screens/SearchPage";
+// import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
 import EducationalForm from "./Components/EducationalForm";
@@ -39,7 +39,7 @@ class App extends Component {
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
             <Route path="/taskStatus/" component={taskStatus} />
-            <Route path="/search/" component={Search} />
+            {/* <Route path="/search/" component={Search} /> */}
             {/* Some Components for grading purposes only */}
             <Route
               path="/components/"
