@@ -1,5 +1,4 @@
 import React from "react";
-import s from "./searchbar";
 class filterPanel extends React.Component {
   constructor(props) {
     super(props);

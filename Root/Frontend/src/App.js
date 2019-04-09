@@ -14,7 +14,7 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
-
+import Chat from "./Components/Chat";
 class App extends Component {
   render() {
     const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
@@ -54,6 +54,12 @@ class App extends Component {
               )}
             />
             {/* Some Components for grading purposes only */}
+            <Route
+              path="/chat/"
+              render={props => (
+                <Chat {...props} id="5ca0b858bc01d360848affbb" />
+              )}
+            />
           </Switch>
         </div>
       </Router>
