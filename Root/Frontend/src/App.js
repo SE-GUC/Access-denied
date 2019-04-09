@@ -5,7 +5,7 @@ import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
-import Login from "./Screens/LogIn";
+import Login from "./Screens/Login";
 import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
@@ -20,7 +20,8 @@ class App extends Component {
     const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
     return (
       <Router>
-        {window.location.pathname !== "/" ? (
+        {window.location.pathname !== "/" &&
+        window.location.pathname !== "/login" ? (
           <div>
             <NavBar />
           </div>
