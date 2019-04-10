@@ -19,6 +19,7 @@ import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
 import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
+import Review from "./Screens/Review";
 class App extends Component {
   render() {
     const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
@@ -68,6 +69,10 @@ class App extends Component {
               render={props => (
                 <Chat {...props} id="5ca0b858bc01d360848affbb" />
               )}
+            />
+            <Route
+              path="/review/"
+              render={props => <Review {...props} type="member" />}
             />
           </Switch>
         </div>

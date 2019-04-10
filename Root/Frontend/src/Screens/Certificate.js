@@ -72,7 +72,7 @@ class Certificate extends Component {
         }
       });
     } else {
-      fetch("http://localhost:3001/api/certification/apply", {
+      fetch("/api/certification/apply", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
