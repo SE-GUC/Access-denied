@@ -12,6 +12,7 @@
     "react": "^16.8.6",
     "react-big-calendar": "^0.20.4",
     "react-bootstrap": "^1.0.0-beta.6",
+    "react-chat-window": "^1.2.1",
     "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.4",
     "react-landing-page": "^2.0.2",
@@ -19,6 +20,7 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
     "rebass": "^3.1.0",
+    "socket.io-client": "^2.2.0",
     "styled-components": "^4.2.0"
   },
   "scripts": {

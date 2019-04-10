@@ -18,6 +18,7 @@ class Member extends Component {
     this.state = {
       email: props.email,
       name: null,
+      basicInfo: null,
       certification: null,
       calendar: null,
       memberSince: null,
@@ -25,8 +26,9 @@ class Member extends Component {
       reviews: null,
       tasks: null,
       events: null,
-      activeId: "4",
-      displayed: null
+      activeId: "1",
+      displayed: null,
+      loaded: false
     };
   }
 
@@ -41,6 +43,31 @@ class Member extends Component {
         let currentState = this.state;
         currentState.email = email;
         currentState.name = res.name;
+        currentState.basicInfo = (
+          <table class="table">
+            <tbody>
+              <tr>
+                <th scope="row" />
+                <td>Name: </td>
+                <td> {res.name}</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Hourly Rate: </td>
+                <td>{res.payRate} $</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Address: </td>
+                <td>
+                  {res.address.city} City, {res.address.area},{" "}
+                  {res.address.street} st.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        );
+
         currentState.certification = res.certification.map(cert => (
           <li className="list-group-item">
             {" "}
@@ -122,6 +149,8 @@ class Member extends Component {
             </div>
           </div>
         ));
+        currentState.loaded = true;
+        this.setState(currentState);
       })
       .catch(err => {
         console.log(err);
@@ -133,6 +162,7 @@ class Member extends Component {
     this.setState(currentState);
   }
   render() {
+    console.log(this.state);
     return (
       <div>
         <div className="d-flex flex-row">
@@ -180,7 +210,7 @@ class Member extends Component {
               }
               id="1"
             >
-              Certificates
+              Basic Information
             </li>
             <li
               className={
@@ -190,7 +220,7 @@ class Member extends Component {
               }
               id="2"
             >
-              Tasks
+              Certificates
             </li>
             <li
               className={
@@ -200,7 +230,7 @@ class Member extends Component {
               }
               id="3"
             >
-              Reviews
+              Tasks
             </li>
             <li
               className={
@@ -210,7 +240,7 @@ class Member extends Component {
               }
               id="4"
             >
-              Calendar
+              Reviews
             </li>
             <li
               className={
@@ -220,19 +250,67 @@ class Member extends Component {
               }
               id="5"
             >
+              Calendar
+            </li>
+            <li
+              className={
+                this.state.activeId === "6"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="6"
+            >
               Events
             </li>
           </ul>
           {(function(state) {
             switch (state.activeId) {
               case "1":
+                if (!state.loaded)
+                  return (
+                    <div
+                      class="spinner-border"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                      role="status"
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  );
+                return (
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.basicInfo}
+                  </ul>
+                );
+              case "2":
+                if (!state.loaded)
+                  return (
+                    <div
+                      class="spinner-border"
+                      role="status"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  );
+                if (!state.certification || state.certification.length === 0)
+                  return <h4 className="text-muted">No Certificates Yet..</h4>;
                 return (
                   <ul className="list-group" style={{ width: "100%" }}>
                     {state.certification}
                   </ul>
                 );
-              case "2":
-                if (!state.tasks)
+              case "3":
+                if (!state.loaded)
+                  return (
+                    <div
+                      class="spinner-border"
+                      role="status"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  );
+                if (!state.tasks || state.tasks.length === 0)
                   return <h4 className="text-muted">No Tasks Yet..</h4>;
                 return (
                   <ul
@@ -242,8 +320,18 @@ class Member extends Component {
                     {state.tasks}
                   </ul>
                 );
-              case "3":
-                if (!state.reviews)
+              case "4":
+                if (!state.loaded)
+                  return (
+                    <div
+                      class="spinner-border"
+                      role="status"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  );
+                if (!state.reviews || state.reviews.length === 0)
                   return <h4 className="text-muted">No Reviews Yet..</h4>;
                 return (
                   <ul
@@ -253,7 +341,7 @@ class Member extends Component {
                     {state.reviews}
                   </ul>
                 );
-              case "4":
+              case "5":
                 return (
                   <div className="w-100">
                     <BigCalendar
@@ -279,7 +367,17 @@ class Member extends Component {
                     />
                   </div>
                 );
-              case "5":
+              case "6":
+                if (!state.loaded)
+                  return (
+                    <div
+                      class="spinner-border"
+                      role="status"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                    >
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  );
                 if (!state.events)
                   return <h4 className="text-muted"> No Events yet</h4>;
                 break;
