@@ -15,6 +15,7 @@ import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
 import taskStatus from "./Components/taskStatus";
+import Partner from "./Screens/Partner";
 
 class App extends Component {
   render() {
@@ -36,6 +37,7 @@ class App extends Component {
               )}
             />
             <Route path="/profile/" component={Member} />
+            <Route path="/partner/" component={Partner} />
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
             <Route path="/taskStatus/" component={taskStatus} />

@@ -19,15 +19,11 @@ class Member extends Component {
       email: props.email,
       name: null,
       basicInfo: null,
-      certification: null,
-      calendar: null,
-      memberSince: null,
-      expiryDate: null,
+      members: null,
       reviews: null,
       tasks: null,
       events: null,
       activeId: "1",
-      displayed: null,
       loaded: false
     };
   }
@@ -37,7 +33,7 @@ class Member extends Component {
     let email = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).email;
-    fetch(`/api/member?email=${email}`)
+    fetch(`/api/partner?email=${email}`)
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -53,8 +49,8 @@ class Member extends Component {
               </tr>
               <tr>
                 <th scope="row" />
-                <td>Hourly Rate: </td>
-                <td>{res.payRate} $</td>
+                <td>Telephone : </td>
+                <td>+20{res.Telephone_number}</td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -64,29 +60,86 @@ class Member extends Component {
                   {res.address.street} st.
                 </td>
               </tr>
+              <tr>
+                <th scope="row" />
+                <td>Number of Employees</td>
+                <td>{res.number_of_employees}</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Field of Work</td>
+                <td>{res.field_of_work}</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Partners </td>
+                <td>{res.other_partners}</td>
+              </tr>
             </tbody>
           </table>
         );
 
-        currentState.certification = res.certification.map(cert => (
-          <li className="list-group-item">
-            {" "}
-            <a href={`/certificate?name=${cert.name_of_certification}`}>
-              {cert.name_of_certification}
-            </a>
-          </li>
-        ));
-        currentState.calendar = res.calendar.map(oldevent => {
-          return {
-            title: oldevent.Event,
-            start: new Date(oldevent.Date),
-            end: new Date(oldevent.Date)
-          };
+        currentState.members = res.members.map(member => {
+          if (member.pastwork) {
+            member.pastwork = `worked before at ${member.pastwork}`;
+          }
+          return (
+            <div className="card list-group-item">
+              <div className="card-body">
+                <h4 className="card-title">{member.name}</h4>
+                <h6 className="card-subtitle mb-2 text-muted">
+                  {member.email}
+                </h6>
+                <p className="card-text">{member.age}.</p>
+              </div>
+            </div>
+          );
         });
-        currentState.memberSince = new Date(res.memberSince).toDateString();
-        currentState.expiryDate = new Date(res.expiryDate).toDateString();
+        currentState.events = res.events.map(event => (
+          <div className="card list-group-item">
+            <div className="card-body">
+              <h4 className="card-title">{event.date}</h4>
+              <p className="card-text">{event.description}</p>
+            </div>
+          </div>
+        ));
         this.setState(currentState);
         id = res._id;
+        return fetch(`/api/task/partner?id=${id}`);
+      })
+      .then(res => res.json())
+      .then(res => {
+        let currentState = this.state;
+        res.sort((a, b) => {
+          if (a.isComplete) {
+            if (b.isComplete) return 0;
+            else return 1;
+          } else {
+            if (b.isComplete) return -1;
+            else return 0;
+          }
+        });
+        currentState.tasks = res.map(task => (
+          <div className="list-group-item card w-50">
+            <div className="card-body">
+              <a
+                className="card-title font-weight-bold"
+                href={`/task?id=${task._id}`}
+              >
+                {task.name}
+              </a>
+              <h6 className="card-subtitle mb-2 text-muted">
+                {task.isComplete ? "Done" : "In Progress"}
+              </h6>
+              <div className="card-text">
+                <h6>by: {task.assignee.name}</h6>
+                Date: <h6>{new Date(task.date).toDateString()} </h6>
+              </div>
+            </div>
+          </div>
+        ));
+        currentState.loaded = true;
+        this.setState(currentState);
         return fetch(`/api/review?reviewee=${id}`);
       })
       .then(res => res.json())
@@ -116,44 +169,9 @@ class Member extends Component {
           </div>
         ));
         this.setState(currentState);
-        return fetch(`/api/task/member?id=${id}`);
-      })
-      .then(res => res.json())
-      .then(res => {
-        let currentState = this.state;
-        res.sort((a, b) => {
-          if (a.isComplete) {
-            if (b.isComplete) return 0;
-            else return 1;
-          } else {
-            if (b.isComplete) return -1;
-            else return 0;
-          }
-        });
-        currentState.tasks = res.map(task => (
-          <div className="list-group-item card w-50">
-            <div className="card-body">
-              <a
-                className="card-title font-weight-bold"
-                href={`/task?id=${task._id}`}
-              >
-                {task.name}
-              </a>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {task.isComplete ? "Done" : "In Progress"}
-              </h6>
-              <div className="card-text">
-                <h6>From: {task.owner.name}</h6>
-                Date: <h6>{new Date(task.date).toDateString()} </h6>
-              </div>
-            </div>
-          </div>
-        ));
-        currentState.loaded = true;
-        this.setState(currentState);
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       }); //TBD
   }
   handleClick(e) {
@@ -187,14 +205,7 @@ class Member extends Component {
               backgroundRepeat: "no-repeat",
               backgroundSize: "auto"
             }}
-          >
-            <div className="d-flex flex-column text-capitalize text-light align-self-end">
-              <div className="p-2">member since: {this.state.memberSince}</div>
-              <div className="p-2">
-                membership expires at: {this.state.expiryDate}
-              </div>
-            </div>
-          </div>
+          />
         </div>
         <div className="d-flex flex-row">
           <ul
@@ -220,7 +231,7 @@ class Member extends Component {
               }
               id="2"
             >
-              Certificates
+              Events
             </li>
             <li
               className={
@@ -250,17 +261,7 @@ class Member extends Component {
               }
               id="5"
             >
-              Calendar
-            </li>
-            <li
-              className={
-                this.state.activeId === "6"
-                  ? "list-group-item list-group-item-action list-group-item-dark"
-                  : "list-group-item list-group-item-action"
-              }
-              id="6"
-            >
-              Events
+              Members
             </li>
           </ul>
           {(function(state) {
@@ -292,11 +293,11 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.certification || state.certification.length === 0)
-                  return <h4 className="text-muted">No Certificates Yet..</h4>;
+                if (!state.events || state.events.length === 0)
+                  return <h4 className="text-muted">No Events Yet..</h4>;
                 return (
                   <ul className="list-group" style={{ width: "100%" }}>
-                    {state.certification}
+                    {state.events}
                   </ul>
                 );
               case "3":
@@ -342,32 +343,6 @@ class Member extends Component {
                   </ul>
                 );
               case "5":
-                return (
-                  <div className="w-100">
-                    <BigCalendar
-                      views={["week", "agenda"]}
-                      defaultView={"week"}
-                      step={60}
-                      showMultiDayTimes
-                      localizer={localizer}
-                      defaultDate={
-                        new Date(new Date().setDate(new Date().getDate()))
-                      }
-                      events={
-                        state.calendar
-                          ? state.calendar
-                          : [
-                              {
-                                title: "NOW",
-                                start: new Date(),
-                                end: new Date()
-                              }
-                            ]
-                      }
-                    />
-                  </div>
-                );
-              case "6":
                 if (!state.loaded)
                   return (
                     <div
@@ -378,9 +353,13 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.events)
-                  return <h4 className="text-muted"> No Events yet</h4>;
-                break;
+                if (!state.members || state.members.length === 0)
+                  return <h4 className="text-muted">No Members Yet..</h4>;
+                return (
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.members}
+                  </ul>
+                );
               default:
                 break;
             }
