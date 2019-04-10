@@ -5,8 +5,8 @@ import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
-import Login from "./Screens/LogIn";
-// import Search from "./Screens/SearchPage";
+import Login from "./Screens/Login";
+//import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
 import EducationalForm from "./Components/EducationalForm";
@@ -17,12 +17,14 @@ import TaskStatus from "./Components/taskStatus";
 import taskStatus from "./Components/taskStatus";
 import Partner from "./Screens/Partner";
 
+import Chat from "./Components/Chat";
 class App extends Component {
   render() {
     const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
     return (
       <Router>
-        {window.location.pathname !== "/" ? (
+        {window.location.pathname !== "/" &&
+        window.location.pathname !== "/login" ? (
           <div>
             <NavBar />
           </div>
@@ -40,7 +42,7 @@ class App extends Component {
             <Route path="/partner/" component={Partner} />
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
-            <Route path="/taskStatus/" component={taskStatus} />
+            <Route path="/taskStatus/" component={TaskStatus} />
             {/* <Route path="/search/" component={Search} /> */}
             {/* Some Components for grading purposes only */}
             <Route
@@ -58,6 +60,12 @@ class App extends Component {
               )}
             />
             {/* Some Components for grading purposes only */}
+            <Route
+              path="/chat/"
+              render={props => (
+                <Chat {...props} id="5ca0b858bc01d360848affbb" />
+              )}
+            />
           </Switch>
         </div>
       </Router>
