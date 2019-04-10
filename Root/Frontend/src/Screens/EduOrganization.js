@@ -2,32 +2,21 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import BigCalendar from "react-big-calendar";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
-import moment from "moment";
 
-// Setup the localizer by providing the moment (or globalize) Object
-// to the correct localizer.
-const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-
-class Member extends Component {
+class Edu extends Component {
   constructor(props) {
     super(props);
     this.state = {
       email: props.email,
       name: null,
       basicInfo: null,
-      certification: null,
-      calendar: null,
-      memberSince: null,
-      expiryDate: null,
-      reviews: null,
-      tasks: null,
-      events: null,
+      courses: null,
+      certificates: null,
+      trainers: null,
+      trainingPrograms: null,
       activeId: "1",
-      displayed: null,
       loaded: false
     };
   }
@@ -37,7 +26,7 @@ class Member extends Component {
     let email = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).email;
-    fetch(`/api/member?email=${email}`)
+    fetch(`/api/educationalorganisation?email=${email}`)
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -53,8 +42,8 @@ class Member extends Component {
               </tr>
               <tr>
                 <th scope="row" />
-                <td>Hourly Rate: </td>
-                <td>{res.payRate} $</td>
+                <td>Contact information : </td>
+                <td>+20{res.contactInformation}</td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -64,96 +53,59 @@ class Member extends Component {
                   {res.address.street} st.
                 </td>
               </tr>
+              <tr>
+                <th scope="row" />
+                <td>Vision</td>
+                <td>{res.vision}</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Mission</td>
+                <td>{res.mission}</td>
+              </tr>
+              <tr>
+                <th scope="row" />
+                <td>Partners </td>
+                <td>
+                  <ul>
+                    {res.partners.map(partner => (
+                      <li> {partner}</li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
             </tbody>
+            {res.information ? (
+              <tr>
+                <th scope="row" />
+                <td>Extra info: </td>
+                <td>{res.information}</td>
+              </tr>
+            ) : null}
           </table>
         );
 
-        currentState.certification = res.certification.map(cert => (
-          <li className="list-group-item">
+        currentState.courses = res.course.map(course => (
+          <li className="list-group-item"> {course}</li>
+        ));
+        currentState.certificates = res.certificate.map(cert => (
+          <a className="list-group-item" href={`/certifcate?name=${cert.name}`}>
             {" "}
-            <a href={`/certificate?name=${cert.name_of_certification}`}>
-              {cert.name_of_certification}
-            </a>
-          </li>
+            {cert.name}
+          </a>
         ));
-        currentState.calendar = res.calendar.map(oldevent => {
-          return {
-            title: oldevent.Event,
-            start: new Date(oldevent.Date),
-            end: new Date(oldevent.Date)
-          };
-        });
-        currentState.memberSince = new Date(res.memberSince).toDateString();
-        currentState.expiryDate = new Date(res.expiryDate).toDateString();
-        this.setState(currentState);
-        id = res._id;
-        return fetch(`/api/review?reviewee=${id}`);
-      })
-      .then(res => res.json())
-      .then(res => {
-        let currentState = this.state;
-        currentState.reviews = res.map(review => (
-          <div className="list-group-item card w-25">
-            <div className="card-body">
-              <h4 className="card-title">
-                {(function() {
-                  let rating = "";
-                  let count = 5 - review.rating;
-                  for (let i = 0; i < review.rating; i++) rating += "★";
-                  for (let i = 0; i < count; i++) rating += "☆";
-                  return rating;
-                })()}
-              </h4>
-              <h6 className="card-subtitle mb-2 text-muted">
-                "{review.review}"
-              </h6>
-              <div className="card-text">
-                <h6>From: {review.reviewer.name}</h6>
-                For:{" "}
-                <a href={`/task?id=${review.task._id}`}>{review.task.name}</a>
-              </div>
-            </div>
-          </div>
+        currentState.trainers = res.trainer.map(trainer => (
+          <li className="list-group-item"> {trainer}</li>
         ));
-        this.setState(currentState);
-        return fetch(`/api/task/member?id=${id}`);
-      })
-      .then(res => res.json())
-      .then(res => {
-        let currentState = this.state;
-        res.sort((a, b) => {
-          if (a.isComplete) {
-            if (b.isComplete) return 0;
-            else return 1;
-          } else {
-            if (b.isComplete) return -1;
-            else return 0;
-          }
-        });
-        currentState.tasks = res.map(task => (
-          <div className="list-group-item card w-50">
-            <div className="card-body">
-              <a
-                className="card-title font-weight-bold"
-                href={`/task?id=${task._id}`}
-              >
-                {task.name}
-              </a>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {task.isComplete ? "Done" : "In Progress"}
-              </h6>
-              <div className="card-text">
-                <h6>From: {task.owner.name}</h6>
-                Date: <h6>{new Date(task.date).toDateString()} </h6>
-              </div>
-            </div>
-          </div>
+        currentState.trainingPrograms = res.trainingProgram.map(prog => (
+          <li className="list-group-item"> {prog}</li>
         ));
         currentState.loaded = true;
         this.setState(currentState);
+        id = res._id;
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
       }); //TBD
   }
   handleClick(e) {
@@ -187,14 +139,7 @@ class Member extends Component {
               backgroundRepeat: "no-repeat",
               backgroundSize: "auto"
             }}
-          >
-            <div className="d-flex flex-column text-capitalize text-light align-self-end">
-              <div className="p-2">member since: {this.state.memberSince}</div>
-              <div className="p-2">
-                membership expires at: {this.state.expiryDate}
-              </div>
-            </div>
-          </div>
+          />
         </div>
         <div className="d-flex flex-row">
           <ul
@@ -220,7 +165,7 @@ class Member extends Component {
               }
               id="2"
             >
-              Certificates
+              Courses
             </li>
             <li
               className={
@@ -230,7 +175,7 @@ class Member extends Component {
               }
               id="3"
             >
-              Tasks
+              Certificates
             </li>
             <li
               className={
@@ -240,7 +185,7 @@ class Member extends Component {
               }
               id="4"
             >
-              Reviews
+              Trainers
             </li>
             <li
               className={
@@ -250,17 +195,7 @@ class Member extends Component {
               }
               id="5"
             >
-              Calendar
-            </li>
-            <li
-              className={
-                this.state.activeId === "6"
-                  ? "list-group-item list-group-item-action list-group-item-dark"
-                  : "list-group-item list-group-item-action"
-              }
-              id="6"
-            >
-              Events
+              Training Programs
             </li>
           </ul>
           {(function(state) {
@@ -292,11 +227,11 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.certification || state.certification.length === 0)
-                  return <h4 className="text-muted">No Certificates Yet..</h4>;
+                if (!state.courses || state.courses.length === 0)
+                  return <h4 className="text-muted">No Courses Yet..</h4>;
                 return (
                   <ul className="list-group" style={{ width: "100%" }}>
-                    {state.certification}
+                    {state.courses}
                   </ul>
                 );
               case "3":
@@ -310,14 +245,11 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.tasks || state.tasks.length === 0)
-                  return <h4 className="text-muted">No Tasks Yet..</h4>;
+                if (!state.certificates || state.certificates.length === 0)
+                  return <h4 className="text-muted">No Certificates Yet..</h4>;
                 return (
-                  <ul
-                    className="list-group d-flex flex-wrap flex-row"
-                    style={{ width: "100%" }}
-                  >
-                    {state.tasks}
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.certificates}
                   </ul>
                 );
               case "4":
@@ -331,43 +263,14 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.reviews || state.reviews.length === 0)
-                  return <h4 className="text-muted">No Reviews Yet..</h4>;
+                if (!state.trainers || state.trainers.length === 0)
+                  return <h4 className="text-muted">No Trainers Yet..</h4>;
                 return (
-                  <ul
-                    className="list-group d-flex flex-wrap flex-row"
-                    style={{ width: "100%" }}
-                  >
-                    {state.reviews}
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.trainers}
                   </ul>
                 );
               case "5":
-                return (
-                  <div className="w-100">
-                    <BigCalendar
-                      views={["week", "agenda"]}
-                      defaultView={"week"}
-                      step={60}
-                      showMultiDayTimes
-                      localizer={localizer}
-                      defaultDate={
-                        new Date(new Date().setDate(new Date().getDate()))
-                      }
-                      events={
-                        state.calendar
-                          ? state.calendar
-                          : [
-                              {
-                                title: "NOW",
-                                start: new Date(),
-                                end: new Date()
-                              }
-                            ]
-                      }
-                    />
-                  </div>
-                );
-              case "6":
                 if (!state.loaded)
                   return (
                     <div
@@ -378,9 +281,18 @@ class Member extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.events)
-                  return <h4 className="text-muted"> No Events yet</h4>;
-                break;
+                if (
+                  !state.trainingPrograms ||
+                  state.trainingPrograms.length === 0
+                )
+                  return (
+                    <h4 className="text-muted">No Training Programs Yet..</h4>
+                  );
+                return (
+                  <ul className="list-group" style={{ width: "100%" }}>
+                    {state.trainingPrograms}
+                  </ul>
+                );
               default:
                 break;
             }
@@ -390,4 +302,4 @@ class Member extends Component {
     );
   }
 }
-export default Member;
+export default Edu;
