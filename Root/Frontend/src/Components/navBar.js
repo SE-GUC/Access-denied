@@ -222,7 +222,7 @@ class NavBar extends Component {
         >
           <Toolbar
             disableGutters={!this.state.open}
-            style={{ "min-height": "50px" }}
+            style={{ minHeight: "50px" }}
           >
             <IconButton
               aria-owns={anchorEl ? "simple-menu" : undefined}

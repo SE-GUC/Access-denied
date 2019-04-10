@@ -18,6 +18,7 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
+    "react-star-rating-component": "^1.4.1",
     "rebass": "^3.1.0",
     "socket.io-client": "^2.2.0",
     "styled-components": "^4.2.0"
