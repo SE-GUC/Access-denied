@@ -30,6 +30,7 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "#232c5d",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -219,7 +220,10 @@ class NavBar extends Component {
             [classes.appBarShift]: this.state.open
           })}
         >
-          <Toolbar disableGutters={!this.state.open}>
+          <Toolbar
+            disableGutters={!this.state.open}
+            style={{ "min-height": "50px" }}
+          >
             <IconButton
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"

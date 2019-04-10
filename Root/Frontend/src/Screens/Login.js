@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Snackbar from "../Components/snackbar";
 
 const styles = theme => ({
   main: {
@@ -45,55 +46,78 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3
   }
 });
-
-function SignIn(props) {
-  const { classes } = props;
-
-  return (
-    <main className={classes.main}>
-      <CssBaseline />
-      <Paper className={classes.paper}>
-        <Avatar
-          className={classes.avatar}
-          style={{ backgroundColor: "#394cb6" }}
-        >
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={console.log("WOW")}
+class SignIn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { valid: true };
+  }
+  handleLogin(e) {
+    e.preventDefault();
+    if (document.getElementById("loginform").checkValidity()) {
+      console.log("valid");
+    } else {
+      this.setState({ valid: false });
+    }
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      <main className={classes.main}>
+        <CssBaseline />
+        <Paper className={classes.paper}>
+          <Avatar
+            className={classes.avatar}
+            style={{ backgroundColor: "#394cb6" }}
           >
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Sign in
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  );
+          </Typography>
+          <form className={classes.form} id="loginform">
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="email">Email Address</InputLabel>
+              <Input id="email" name="email" autoComplete="email" autoFocus />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <InputLabel htmlFor="password">Password</InputLabel>
+              <Input
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </FormControl>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={e => this.handleLogin(e)}
+            >
+              Sign in
+            </Button>
+          </form>
+          {!this.state.valid ? (
+            <Snackbar
+              id="snackbar"
+              open={true}
+              type="error"
+              message="Please enter correct data"
+              onClick={setTimeout(() => this.setState({ valid: true }), 5000)}
+            />
+          ) : (
+            <></>
+          )}
+        </Paper>
+      </main>
+    );
+  }
 }
 
 SignIn.propTypes = {
