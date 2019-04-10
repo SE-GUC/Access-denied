@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
 router.post('/newPost', (req, res) => {
   const isValidated = validator.createValidation(req.body)
   if (isValidated.error) {
-    return res.send()
+    return res.status(500).send('Validation')
   }
   let requestAssigner = req.body.reviewee
   let requestAssignee = req.body.reviewer
@@ -46,7 +46,7 @@ router.post('/newPost', (req, res) => {
     .then(doc => {
       let checker = doc.data.length === 0
       if (checker) {
-        return res.send()
+        return res.status(500).send('Incorrect data')
       } else {
         const model = new reviewModel(req.body)
         model
@@ -55,12 +55,12 @@ router.post('/newPost', (req, res) => {
             res.status(201).send(doc)
           })
           .catch(err => {
-            return res.send()
+            return res.status(500).send()
           })
       }
     })
     .catch(err => {
-      return res.send()
+      return res.status(500).send('incorrect Data')
     })
 })
 router.get('/', (req, res) => {
@@ -142,7 +142,8 @@ router.post('/partnerReview', (request, response) => {
     .get(`${baseURL}/api/task/Done`, {
       params: {
         assigner: requestAssigner,
-        assignee: requestAssignee
+        assignee: requestAssignee,
+        taskID: req.body.task
       }
     })
     .then(doc => {
