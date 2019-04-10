@@ -20,7 +20,7 @@ import EduOrganization from "./Screens/EduOrganization";
 import Chat from "./Components/Chat";
 class App extends Component {
   render() {
-    const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
+    const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
     return (
       <Router>
         {window.location.pathname !== "/" &&
