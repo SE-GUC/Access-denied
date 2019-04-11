@@ -15,7 +15,11 @@ module.exports = {
         .max(30)
         .required(),
       certification: Joi,
-      calendar: Joi.array()
+      calendar: Joi.array(),
+      birthDate: Joi.date().required(),
+      address: Joi,
+      payRate: Joi.number(),
+      expiryDate: Joi.date()
     }
 
     return Joi.validate(request, createSchema)
@@ -31,7 +35,11 @@ module.exports = {
         .min(6)
         .max(30),
       certification: Joi,
-      calendar: Joi.array()
+      calendar: Joi.array(),
+      birthDate: Joi.date(),
+      address: Joi,
+      payRate: Joi.number(),
+      expiryDate: Joi.date()
     }
 
     return Joi.validate(request, updateSchema)
