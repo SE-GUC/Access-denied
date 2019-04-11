@@ -8,7 +8,7 @@ require('dotenv').config()
 
 const uri = process.env.MONGOURI
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 //Require routers
 const taskRoute = require('./routes/task')
 const consultancyRoute = require('./routes/consultancy')
@@ -22,6 +22,7 @@ const reviewRoute = require('./routes/review')
 const EvaluationRoute = require('./routes/Evaluation')
 const applicationRoute = require('./routes/application')
 const searchRoute = require('./routes/search')
+const requestRoute = require('./routes/requests')
 
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json())
@@ -60,6 +61,7 @@ app.use('/api/review', reviewRoute)
 app.use('/api/Evaluation', EvaluationRoute)
 app.use('/api/application', applicationRoute)
 app.use('/search', searchRoute)
+app.use('/api', requestRoute)
 
 // 404 & 500 Error handlers  //Todo: handle errors in a different way
 app.use((error, request, response, next) => {
@@ -69,7 +71,8 @@ app.use((error, request, response, next) => {
 // Connect to mongo
 mongoose
   .connect(uri, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+      autoIndex: false 
   })
   .then(() => {
     console.log('Connected to MongoDB')

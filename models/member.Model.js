@@ -47,4 +47,19 @@ MemberSchema.methods.comparePassword = function(candidatePassword, cb) {
     })
     .catch(err => cb(err))
 }
+
+MemberSchema.set('toObject', { virtuals: true })
+MemberSchema.set('toJSON', { virtuals: true })
+MemberSchema
+.virtual('Tags')
+.get(function get ()  {
+    let Certification =this.certification
+      let save = []
+      Certification.forEach(function(element) {
+        save.push(element.skills.toString())
+      })
+
+  return save;
+});
+
 module.exports = mongoose.model('Members', MemberSchema)
