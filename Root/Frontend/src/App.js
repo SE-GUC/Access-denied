@@ -15,6 +15,7 @@ import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
 import Chat from "./Components/Chat";
+
 class App extends Component {
   render() {
     const marginVal = window.location.pathname !== "/" ? "4.15%" : "0%";
