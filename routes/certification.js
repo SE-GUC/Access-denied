@@ -262,4 +262,31 @@ router.delete('/schedule', (req, res) => {
       res.status(500).json(err)
     })
 })
+
+router.post('/apply', (req, res) => {
+  if (!req || !req.body.name || !req.body.id) {
+    return res.status(400).send('Body is Missing')
+  }
+
+  certificationModel
+    .findOneAndUpdate(
+      { name: req.body.name },
+      {
+        $push: {
+          membersapplied: req.body.id
+        }
+      },
+      {
+        safe: true,
+        upsert: true,
+        new: true
+      }
+    )
+    .then(doc => {
+      res.json(doc)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
 module.exports = router

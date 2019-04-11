@@ -2,6 +2,8 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const app = express()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 require('dotenv').config()
 
 // Database Configuration...
@@ -21,6 +23,7 @@ const scheduleRoute = require('./routes/schedule')
 const reviewRoute = require('./routes/review')
 const EvaluationRoute = require('./routes/Evaluation')
 const applicationRoute = require('./routes/application')
+const messageRoute = require('./routes/message')
 const searchRoute = require('./routes/search')
 const requestRoute = require('./routes/requests')
 
@@ -48,6 +51,7 @@ app.use((request, response, next) => {
 //Setup Static Directory
 // app.use(express.static('./public'))
 //Setup routing directories/paths
+app.set('io', io)
 
 app.use('/api/task', taskRoute.router) // Tested - Passed - changed file name to match file naming agreement
 app.use('/api/consultancy', consultancyRoute) // Tested - Passed
@@ -60,9 +64,13 @@ app.use('/api/schedule', scheduleRoute)
 app.use('/api/review', reviewRoute)
 app.use('/api/Evaluation', EvaluationRoute)
 app.use('/api/application', applicationRoute)
+app.use('/api/message', messageRoute)
 app.use('/search', searchRoute)
 app.use('/api', requestRoute)
 
+io.on('connection', () => {
+  console.log('Connected...')
+})
 // 404 & 500 Error handlers  //Todo: handle errors in a different way
 app.use((error, request, response, next) => {
   response.status(500).send('500: Internal Server Error')
@@ -76,7 +84,7 @@ mongoose
   })
   .then(() => {
     console.log('Connected to MongoDB')
-    app.listen(PORT, () => {
+    http.listen(PORT, () => {
       console.log('Application listening to port: ' + PORT)
     })
   })
