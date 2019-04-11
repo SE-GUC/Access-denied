@@ -148,7 +148,7 @@ router.get('/isTaskDone', (request, response) => {
   let key = {
     owner: reqowner,
     assignee: reqassignee,
-    _id: reqid,
+    _id: mongoose.Types.ObjectId(reqid),
     isComplete: true
   }
   Task.findOne(key)
