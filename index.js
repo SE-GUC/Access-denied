@@ -13,6 +13,7 @@ const uri = process.env.MONGOURI
 const PORT = process.env.PORT || 3001
 //Require routers
 const taskRoute = require('./routes/task')
+const skillsRoute = require('./routes/skills')
 const consultancyRoute = require('./routes/consultancy')
 const coworkingspaceRoute = require('./routes/coworkingspace')
 const partnerRoute = require('./routes/partner')
@@ -65,6 +66,7 @@ app.use('/api/review', reviewRoute)
 app.use('/api/Evaluation', EvaluationRoute)
 app.use('/api/application', applicationRoute)
 app.use('/api/message', messageRoute)
+app.use('/api/skills', skillsRoute)
 app.use('/search', searchRoute)
 app.use('/api', requestRoute)
 
