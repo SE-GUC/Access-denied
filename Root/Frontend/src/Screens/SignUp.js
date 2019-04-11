@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-//import "./App.css";
+import "./SignUp.css";
 //import Select from "react-dropdown-select";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -9,6 +9,7 @@ import ConsultancyForm from "../Components/ConsultancyForm";
 import CoworkingForm from "../Components/CoworkingForm";
 import MemberForm from "../Components/MemberForm";
 import PartnerForm from "../Components/PartnerForm";
+import bluewall from "../Images/bluewall.jpg";
 
 class SignUp extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ class SignUp extends Component {
       consultancy: false,
       edu: false,
       partner: false,
-      coworking: false
+      coworking: false,
+      loaded: false
     }; //state keeps track of which option was chosen by the user, initially: all is false
 
     //functions ending in 'display' to set the state variables to true once clicked by the user
@@ -75,6 +77,10 @@ class SignUp extends Component {
     });
   }
 
+  componentDidMount() {
+    this.setState({ loaded: true });
+  }
+
   render() {
     let form; //form that will be rendered
     //boolean variables for checking which was clicked
@@ -103,15 +109,12 @@ since not all types of profiles need to provide the same info
     if (coworking) {
       form = <CoworkingForm />;
     }
-    return (
-      <div className="App">
-        <link
-          rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous"
-        />
-
+    return !this.state.loaded ? (
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    ) : (
+      <div>
         <br />
         <label>Welcome to LirtenHub</label>
         <br />

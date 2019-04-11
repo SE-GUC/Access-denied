@@ -1,0 +1,21 @@
+.bluewall {
+  /* The image used */
+  background-image: url(../Images/bluewall.jpg);
+
+  /* Full height */
+  height: 100%;
+  width: 10em;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+div {
+  width: 75%;
+  margin-left: 15%;
+  margin-top: 17%;
+}
