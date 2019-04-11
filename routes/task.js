@@ -122,7 +122,7 @@ router.get('/member', (req, res) => {
     })
 })
 
-router.get('/parnter', (req, res) => {
+router.get('/partner', (req, res) => {
   if (!req.query.id) return res.status(400).send('Member id is Missing')
   Task.find({ owner: req.query.id })
     .populate('assignee', 'name')

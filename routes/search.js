@@ -21,16 +21,17 @@ const searchNames = list => {
   models.push(mongoose.models.Certification)
   models.push(mongoose.models.Task)
   models.push(mongoose.models.Members)
+  models.push(mongoose.models.Partners)
+  models.push(mongoose.models.CoworkingSpace)
+  models.push(mongoose.models.EducationalOrganisation)
   regex = list.map(e => new RegExp(e, 'i'))
   return Promise.all(
     models.map(model =>
-      model
-        .find({
-          name: {
-            $in: regex
-          }
-        })
-        .select('name')
+      model.find({
+        name: {
+          $in: regex
+        }
+      })
     )
   )
 }
@@ -62,7 +63,7 @@ router.get('/', (req, res) => {
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true
-        return res.json(doc.flat(Infinity))
+        return res.json(doc)
       }
       result = doc
       return searchNames(splitted)
