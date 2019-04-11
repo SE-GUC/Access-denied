@@ -3,20 +3,18 @@ import { Launcher } from "react-chat-window";
 import Dialog from "./Dialog";
 import io from "socket.io-client";
 
-import qs from "query-string";
-
 class Chat extends Component {
   constructor() {
     super();
     this.state = {
       messageList: [],
-      them: "5ca0c0b44e81266044cf2b70",
+      them: null,
       chats: []
     };
   }
   getMessages() {
-    let id = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
-      .id;
+    if (!this.state.them) return;
+    let id = this.props.id;
     fetch(`/api/message/convo?id1=${id}&id2=${this.state.them}`)
       .then(res => res.json())
       .then(messages => {
@@ -34,8 +32,7 @@ class Chat extends Component {
       });
   }
   componentDidMount() {
-    let id = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
-      .id;
+    let id = this.props.id;
     this.getMessages();
     fetch(`/api/message?id=${id}`)
       .then(res => res.json())
@@ -44,16 +41,20 @@ class Chat extends Component {
       });
     var socket = io();
     socket.on(id, obj => {
-      this.setState({
-        messageList: [
-          ...this.state.messageList,
-          {
-            author: obj.from === id ? "me" : "them",
-            type: "text",
-            data: { text: obj.message }
-          }
-        ]
-      });
+      if (obj.from === this.state.them) {
+        this.setState({
+          messageList: [
+            ...this.state.messageList,
+            {
+              author: obj.from === id ? "me" : "them",
+              type: "text",
+              data: { text: obj.message }
+            }
+          ]
+        });
+      } else {
+        this.props.handleNotification(true);
+      }
     });
   }
 
@@ -64,8 +65,7 @@ class Chat extends Component {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        from: qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
-          .id,
+        from: this.props.id,
         to: this.state.them,
         date: new Date(),
         message: message.data.text
@@ -97,16 +97,20 @@ class Chat extends Component {
   render() {
     return (
       <div>
-        <Launcher
-          agentProfile={{
-            teamName: "react-chat-window",
-            imageUrl:
-              "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
-          }}
-          onMessageWasSent={this._onMessageWasSent.bind(this)}
-          messageList={this.state.messageList}
-          showEmoji
-        />
+        {!this.state.them ? (
+          <></>
+        ) : (
+          <Launcher
+            agentProfile={{
+              teamName: this.state.them,
+              imageUrl:
+                "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png"
+            }}
+            onMessageWasSent={this._onMessageWasSent.bind(this)}
+            messageList={this.state.messageList}
+            showEmoji
+          />
+        )}
         <Dialog
           chats={this.state.chats}
           handleChat={this.handleChat.bind(this)}
