@@ -21,6 +21,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import Badge from "@material-ui/core/Badge";
 
 const drawerWidth = 200;
 
@@ -236,6 +237,7 @@ class NavBar extends Component {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               className={classes.title}
               variant="h6"
@@ -245,6 +247,17 @@ class NavBar extends Component {
               LirtenHub
             </Typography>
             <div className={classes.grow} />
+            <IconButton
+              color="inherit"
+              onClick={() => this.props.handleNotification(false)}
+            >
+              <Badge
+                badgeContent={this.props.notification ? "!" : ""}
+                color="primary"
+              >
+                <MailIcon />
+              </Badge>
+            </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />

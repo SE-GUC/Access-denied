@@ -100,8 +100,10 @@ class SimpleDialogDemo extends React.Component {
     return (
       <div>
         <Button
+          id="chatsbtn"
           variant="outlined"
           color="primary"
+          hidden={true}
           onClick={this.handleClickOpen}
         >
           Chats

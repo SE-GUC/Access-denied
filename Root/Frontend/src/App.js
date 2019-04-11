@@ -21,6 +21,20 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      notify: false
+    };
+    this.handleNotification = this.handleNotification.bind(this);
+  }
+  handleNotification(add) {
+    if (add) this.setState({ notify: true });
+    else {
+      this.setState({ notify: false });
+      document.getElementById("chatsbtn").click();
+    }
+  }
   render() {
     const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
     return (
@@ -28,7 +42,10 @@ class App extends Component {
         {window.location.pathname !== "/" &&
         window.location.pathname !== "/login" ? (
           <div>
-            <NavBar />
+            <NavBar
+              notification={this.state.notify}
+              handleNotification={this.handleNotification}
+            />
           </div>
         ) : null}
         <div style={{ marginTop: marginVal }}>
@@ -65,16 +82,14 @@ class App extends Component {
             />
             {/* Some Components for grading purposes only */}
             <Route
-              path="/chat/"
-              render={props => (
-                <Chat {...props} id="5ca0b858bc01d360848affbb" />
-              )}
-            />
-            <Route
               path="/review/"
               render={props => <Review {...props} type="member" />}
             />
           </Switch>
+          <Chat
+            id="5ca0b858bc01d360848affbb"
+            handleNotification={this.handleNotification}
+          />
         </div>
       </Router>
     );
