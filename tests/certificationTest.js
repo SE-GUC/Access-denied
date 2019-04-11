@@ -6,7 +6,7 @@ let reviewreply = ''
 
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
-const createTest = test('cretes a new certification', async () => {
+const createTest = test('create a new certification', async () => {
   const body = {
     name: 'testname2',
     Evaluation_procedure: '5c9fdc26d3b7fb66e4c4f0d9'
