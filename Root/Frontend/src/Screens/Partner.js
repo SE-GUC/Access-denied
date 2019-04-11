@@ -98,7 +98,7 @@ class Partner extends Component {
         ));
         this.setState(currentState);
         id = res._id;
-        return fetch(`/api/task/partner?id=${id}`);
+       return fetch(`/api/task/partner?id=${id}`);
       })
       .then(res => res.json())
       .then(res => {
