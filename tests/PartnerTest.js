@@ -1,6 +1,5 @@
 let baseURL = process.env.BASEURL || `http://localhost:3000`
 const axios = require('axios')
-const fetch = require('node-fetch')
 let apiRoute = `${baseURL}/api/partner`
 
 const testPost = test('PartnerPost right data', async () => {

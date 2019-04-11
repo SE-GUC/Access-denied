@@ -14,11 +14,12 @@ const validator = require('../validations/taskValidations')
 const axios = require('axios')
 
 const mongoose = require('mongoose')
+const fetch = require('node-fetch')
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('usefindandmodify', false)
 
-const baseURL = process.env.BASEURL || 'http://localhost:3000'
+const baseURL = process.env.BASEURL || 'http://localhost:3001'
 
 /*
     POST/CREATE route for Task Entity
@@ -28,18 +29,42 @@ const baseURL = process.env.BASEURL || 'http://localhost:3000'
  * @description Create a new document in Tasks Collection
  * @returns Success/Error JSON
  */
+
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job 
+//if not it will make post request to this API 
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+  // `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+  // {
+    
+  //     route:`api/task`,
+  //     body: request.body,
+  //     type: "POST"},
+  //  )
+  // .then(q=>{
+  //   console.log(q.data)
+
+  //   response.send(q.data)
+  // })
+  // .catch(e=>{
+  //   response.send(e)
+  // })
+  // ) else "the rest of the code"
+
 router.post('/', (request, response) => {
+
   if (!request.body) {
     return response.status(400).send('400: Bad Request')
   }
 
-  // const isValidated = validator.createValidation(request.body)
+  const isValidated = validator.createValidation(request.body)
 
-  // if (isValidated.error) {
-  //   return response.status(400).send({
-  //     error: isValidated.error.details[0].message
-  //   })
-  // }
+  if (isValidated.error) {
+    return response.status(400).send({
+      error: isValidated.error.details[0].message
+    })
+  }
 
   Task.create(request.body)
     .then(document => {
@@ -50,6 +75,7 @@ router.post('/', (request, response) => {
       response.status(201).json(document)
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json(error)
     })
 })
@@ -65,7 +91,8 @@ router.post('/', (request, response) => {
  * @requires _id
  */
 
-router.get('/', (request, response) => {
+
+router.get('/', (request, response) => {  
   let documentID = request.query.id
 
   if (!documentID) {
@@ -79,6 +106,7 @@ router.get('/', (request, response) => {
   }
 
   Task.findOne(key)
+  .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -94,6 +122,7 @@ router.get('/all', (request, response) => {
   let key = {}
 
   Task.find(key)
+  // .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -152,6 +181,7 @@ router.get('/isTaskDone', (request, response) => {
     isComplete: true
   }
   Task.findOne(key)
+  .populate('owner')    
     .then(document => {
       response.json(document)
     })
@@ -168,6 +198,28 @@ router.get('/isTaskDone', (request, response) => {
  * @description Update Document in Database
  * @requires id
  */
+
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job 
+//if not it will make post request to this API 
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+  // `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+  // {
+    
+  //     route:`api/task`,
+  //     body: request.body,
+  //     type: "POST"},
+  //  )
+  // .then(q=>{
+  //   console.log(q.data)
+
+  //   response.send(q.data)
+  // })
+  // .catch(e=>{
+  //   response.send(e)
+  // })
+  // ) else "the rest of the code"
 
 router.put('/', (request, response) => {
   let documentID = request.query.id
