@@ -1,36 +1,43 @@
 import React from "react";
 import { appendFileSync } from "fs";
 //  import '../Screens/SearchPage.css';
+import {InputGroup,Button,Form} from 'react-bootstrap'
 class Searchbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   render() {
     return (
-      <div>
-        <div className="searchnav">
-          <input
-            type="text"
-            id="se"
-            placeholder="Search.."
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                this.search(document.getElementById("se").value);
-              }
-            }}
-          />
-        </div>
-      </div>
+         <InputGroup className="searchnav">
+    <Form.Control id="searchtext"
+      placeholder="Search..."
+      aria-label="Recipient's username"
+      aria-describedby="basic-addon2"onKeyPress={event => {
+        if (event.key === "Enter") {
+           this.handleChange(event.target)
+        }
+      }}
+    />
+    <InputGroup.Append>
+      <Button variant="outline-secondary" onClick={()=>this.handleChange(document.getElementById("searchtext"))}>Search</Button>
+    </InputGroup.Append>
+  </InputGroup>
+
+      
     );
   }
 
-  search(keywords) {
+  handleChange(event) {
     //to do search function
-    console.log(keywords);
-    console.log(JSON.stringify(this.props.Tags))
-    let y =JSON.stringify(this.props.Tags)
+    let y =event.value
     console.log(y);
-    fetch(`search/filteredby?tags=`+y)
+    fetch(`search?q=`+y)
     .then(res => res.json())
     .then(res => {
-      this.props.fu(res)
+      console.log(res);
+      this.props.change(res)
     })
     .catch(err => {
       console.log(err);
