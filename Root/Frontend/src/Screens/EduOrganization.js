@@ -103,7 +103,7 @@ class Edu extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("name")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -111,7 +111,7 @@ class Edu extends Component {
                 <th scope="row" />
                 <td>Contact information : </td>
                 <td>+20{res.contactInformation}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Contact information :")}>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("contactInformation")}>
                    edit
                  </Button></div></td>
               </tr>

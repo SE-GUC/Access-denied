@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import qs from "query-string";
 import "../App.css";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
@@ -9,8 +8,8 @@ import { Redirect } from 'react-router-dom'
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
+import { Switch } from "@material-ui/core";
 const axios = require('axios')
 
 class Partner extends Component {
@@ -30,7 +29,8 @@ class Partner extends Component {
       redirect: false,
       open: false,
       dialogText:"",
-      newData:""
+      newData:"",
+      editedAttribute:""
     };
   }
   setRedirect = () => {
@@ -39,7 +39,24 @@ class Partner extends Component {
   
     });
   }
+  checkAttribute = name => event => {
+    
+    
+
+  }
   handleClickOpen = name => event => {
+    
+    // switch ([this.state.dialogText]) {
+    //   case "Name":return this.setState({ 
+    //                       [this.state.editedAttribute]:"name"
+    //                     });
+        
+       
+    
+    //   default:
+    //     break;
+    // }
+    
     this.setState({ 
       open: true,
       dialogText:name
@@ -53,9 +70,8 @@ class Partner extends Component {
   };
   handleApply =()=>{
     this.setState({ open: false })
-    const textInput= this.state.dialogText
     const data = {
-      "name" :this.state.newData
+      [this.state.dialogText] :this.state.newData
     }
     axios.put(`/api/partner?id=`+this.state.id, data)
 
@@ -73,7 +89,7 @@ class Partner extends Component {
     });
     
     
-    console.log(this.state.name)
+    
     
   };
   handleChange = name => event => {
@@ -81,7 +97,7 @@ class Partner extends Component {
     newData: event.target.value,
   
     });   
-    console.log(this.state.newData) 
+    
   };
 
   componentDidMount() {
@@ -99,7 +115,7 @@ class Partner extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
+                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -107,7 +123,7 @@ class Partner extends Component {
                 <th scope="row" />
                 <td>Telephone : </td>
                 <td>+20{res.Telephone_number}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Telephone")}>
+                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Telephone_number")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -118,7 +134,7 @@ class Partner extends Component {
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
                 </td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address")}>
+                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -126,7 +142,7 @@ class Partner extends Component {
                 <th scope="row" />
                 <td>Number of Employees</td>
                 <td>{res.number_of_employees}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Number of Employees")}>
+                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Number of Employees")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -134,7 +150,7 @@ class Partner extends Component {
                 <th scope="row" />
                 <td>Field of Work</td>
                 <td>{res.field_of_work}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Field of Work")}>
+                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Field of Work")}>
                    edit
                  </Button></div></td>
               </tr>
@@ -143,7 +159,7 @@ class Partner extends Component {
                   <th scope="row" />
                   <td>Partners </td>
                   <td>{res.other_partners}</td>
-                  <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Partners")}>
+                  <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Partners")}>
                    edit
                  </Button></div></td>
                 </tr>
@@ -266,13 +282,14 @@ class Partner extends Component {
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title"></DialogTitle>
+          
           <DialogContent>
             
             <TextField
               autoFocus
               margin="dense"
               id="name"
+
               label={this.state.dialogText}
               onChange={this.handleChange('newData')}
               type="email"
