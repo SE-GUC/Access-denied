@@ -156,11 +156,7 @@ class NavBar extends Component {
     if (event.key === "Enter") {
       let currentState = this.state;
       currentState.redirect = true;
-      currentState.redirectTarget = `/search?q=${currentState.searchText}`;
-      this.setState(currentState);
-    } else {
-      let currentState = this.state;
-      currentState.searchText += event.key;
+      currentState.redirectTarget = `/search?q=${event.target.value}`;
       this.setState(currentState);
     }
   };
@@ -170,6 +166,7 @@ class NavBar extends Component {
       currentState.redirect = false;
       let target = currentState.redirectTarget;
       currentState.redirectTarget = null;
+      currentState.searchText = "";
       this.setState(currentState);
       return <Redirect to={target} />;
     }

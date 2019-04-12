@@ -14,8 +14,6 @@
     "react": "^16.8.6",
     "react-big-calendar": "^0.20.4",
     "react-bootstrap": "^1.0.0-beta.6",
-    "react-chat": "0.0.1-alpha1",
-    "react-chat-widget": "^2.1.4-1",
     "react-chat-window": "^1.2.1",
     "react-dom": "^16.8.6",
     "react-dropdown": "^1.6.4",
