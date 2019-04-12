@@ -35,6 +35,11 @@ class Member extends Component {
 
   componentDidMount() {
     let id = this.state.id;
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
     fetch(`/api/member?id=${id}`)
       .then(res => res.json())
       .then(res => {
@@ -68,7 +73,7 @@ class Member extends Component {
         currentState.certification = res.certification.map(cert => (
           <li className="list-group-item">
             {" "}
-            <a href={`/certificate?name=${cert.name_of_certification}`}>
+            <a href={`/certificate?id=${cert.ref_of_certification}`}>
               {cert.name_of_certification}
             </a>
           </li>
@@ -89,6 +94,7 @@ class Member extends Component {
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
+        console.log(res);
         currentState.reviews = res.map(review => (
           <div className="list-group-item card w-25">
             <div className="card-body">
@@ -105,7 +111,12 @@ class Member extends Component {
                 "{review.review}"
               </h6>
               <div className="card-text">
-                <h6>From: {review.reviewer.name}</h6>
+                <h6>
+                  From:{" "}
+                  <a href={`/partner?id=${review.reviewer._id}`}>
+                    {review.reviewer.name}
+                  </a>
+                </h6>
                 For:{" "}
                 <a href={`/task?id=${review.task._id}`}>{review.task.name}</a>
               </div>
@@ -140,7 +151,12 @@ class Member extends Component {
                 {task.isComplete ? "Done" : "In Progress"}
               </h6>
               <div className="card-text">
-                <h6>From: {task.owner.name}</h6>
+                <h6>
+                  From:{" "}
+                  <a href={`/partner?id=${task.owner._id}`}>
+                    {task.owner.name}
+                  </a>
+                </h6>
                 Date: <h6>{new Date(task.date).toDateString()} </h6>
               </div>
             </div>

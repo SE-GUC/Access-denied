@@ -24,11 +24,16 @@ class Partner extends Component {
 
   componentDidMount() {
     let id = this.state.id;
-
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
     fetch(`/api/partner?id=${id}`)
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
+        console.log(res);
         currentState.name = res.name;
         currentState.basicInfo = (
           <table className="table">
@@ -91,7 +96,9 @@ class Partner extends Component {
         currentState.events = res.events.map(event => (
           <div className="card list-group-item">
             <div className="card-body">
-              <h4 className="card-title">{event.date}</h4>
+              <h4 className="card-title">
+                {new Date(event.date).toDateString()}
+              </h4>
               <p className="card-text">{event.description}</p>
             </div>
           </div>
@@ -126,9 +133,15 @@ class Partner extends Component {
               </h6>
               <div className="card-text">
                 <h6>
-                  {task.assignee
-                    ? `by: ${task.assignee.name}`
-                    : "Not yet assigned to a member"}
+                  <a
+                    href={
+                      task.assignee ? `/profile?id=${task.assignee._id}` : null
+                    }
+                  >
+                    {task.assignee
+                      ? `by: ${task.assignee.name}`
+                      : "Not yet assigned to a member"}
+                  </a>
                 </h6>
                 Date: <h6>{new Date(task.date).toDateString()} </h6>
               </div>
@@ -158,7 +171,12 @@ class Partner extends Component {
                 "{review.review}"
               </h6>
               <div className="card-text">
-                <h6>From: {review.reviewer.name}</h6>
+                <h6>
+                  From:{" "}
+                  <a href={`/partner?id=${review.reviewer._id}`}>
+                    {review.reviewer.name}
+                  </a>
+                </h6>
                 For:{" "}
                 <a href={`/task?id=${review.task._id}`}>{review.task.name}</a>
               </div>
