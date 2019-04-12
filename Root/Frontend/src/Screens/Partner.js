@@ -63,11 +63,13 @@ class Partner extends Component {
                 <td>Field of Work</td>
                 <td>{res.field_of_work}</td>
               </tr>
-              <tr>
-                <th scope="row" />
-                <td>Partners </td>
-                <td>{res.other_partners}</td>
-              </tr>
+              {!res.other_partners ? null : (
+                <tr>
+                  <th scope="row" />
+                  <td>Partners </td>
+                  <td>{res.other_partners}</td>
+                </tr>
+              )}
             </tbody>
           </table>
         );
@@ -125,7 +127,11 @@ class Partner extends Component {
                 {task.isComplete ? "Done" : "In Progress"}
               </h6>
               <div className="card-text">
-                <h6>by: {task.assignee.name}</h6>
+                <h6>
+                  {task.assignee
+                    ? `by: ${task.assignee.name}`
+                    : "Not yet assigned to a member"}
+                </h6>
                 Date: <h6>{new Date(task.date).toDateString()} </h6>
               </div>
             </div>
