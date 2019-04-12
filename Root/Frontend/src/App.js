@@ -72,7 +72,7 @@ class App extends Component {
               component={props => (
                 <Partner
                   {...props}
-                  id="5cb084236ffc2f11609dda06"
+                  id="5cb084456ffc2f11609dda0b"
                   email="than2sq@hallf.gone"
                 />
               )}
