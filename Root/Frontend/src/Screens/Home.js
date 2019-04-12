@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import bg from "../Images/bg.jpg";
+import { Link } from "react-router-dom";
 import {
   Hero,
   CallToAction,
@@ -27,18 +29,17 @@ class Home extends Component {
   render() {
     return (
       <>
-        <Hero
-          color="white"
-          bg="black"
-          backgroundImage="https://mindlercareerlibrarynew.imgix.net/1G-Computer_ScienceCsIT_Software_Engineering.png"
-        >
+        <Hero color="white" bg="black" backgroundImage={bg}>
           <Section heading="Lirten Hub" subhead="Your way to Success" />
           <span>
-            <CallToAction href="/signup" mt={3}>
-              Signup
+            <CallToAction mt={3}>
+              <Link to="/signup">Signup</Link>
             </CallToAction>
             <CallToAction href="/login" mt={3}>
-              Login
+              <Link to="/login">login</Link>
+            </CallToAction>
+            <CallToAction href="/About" mt={3}>
+              About Us
             </CallToAction>
           </span>
           <ScrollDownIndicator />

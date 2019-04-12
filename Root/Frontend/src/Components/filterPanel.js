@@ -1,84 +1,65 @@
 import React from "react";
-import s from "./searchbar";
+import S from "./searchbar";
+class Key extends React.Component {
+  render() {
+    this.setState = this.props.state;
+
+    return (
+      <div>
+        <label>{this.props.title}</label>
+        <input
+          type="text"
+          id={this.props.id}
+          name={this.props.title}
+          size="10"
+          onChange={this.props.fu}
+        />
+      </div>
+    );
+  }
+}
+
 class filterPanel extends React.Component {
   constructor(props) {
     super(props);
-    //   this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      keywords: Array(6).fill(null)
-    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
+  state = {
+    keywordsResults: Array(6).fill(null),
+    keywords:this.props.keywords
+  };
+
   handleChange(event) {
-    // const data = new FormData(event.target);
-    this.state.keywords[event.target.id] = event.target.value;
-    console.log(this.state.keywords);
+    if(event.target.value){
+    this.state.keywordsResults[event.target.id] = this.state.keywords[event.target.id]+event.target.value;
+    let tags =JSON.stringify(this.state.keywordsResults)
+    console.log(tags);
+    fetch(`/search/filteredbyt?tags=${tags}`)
+    .then(res => res.json())
+    .then(res => {
+      console.log(res);
+      this.props.change(res)
+    })
+    .catch(err => {
+      console.log(err);
+    });}
+    else{
+      this.props.change(-1)
+    }
   }
 
   render() {
+    const Tags = this.props.keywords;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
+        {Tags.map(p => {
+          return <Key id={Tags.indexOf(p)} title={p} fu={this.handleChange} />;
+        })}
         <div>
-          <label>{"effortLevel:"}</label>
-          <input
-            type="text"
-            id={0}
-            name={"effortLevel:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
+          {" "}
+          {/* <S Tags={this.state.keywordsResults} fu={this.props.change} /> */}
         </div>
-        <div>
-          <label>{"experienceLevel:"}</label>
-          <input
-            type="text"
-            id={1}
-            name={"experienceLevel:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
-        </div>{" "}
-        <div>
-          <label>{"commitmentLevel:"}</label>
-          <input
-            type="text"
-            id={2}
-            name={"commitmentLevel:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
-        </div>{" "}
-        <div>
-          <label>{"timeRequired:"}</label>
-          <input
-            type="text"
-            id={3}
-            name={"timeRequired:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
-        </div>{" "}
-        <div>
-          <label>{"monetaryComp:"}</label>
-          <input
-            type="text"
-            id={4}
-            name={"monetaryComp:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
-        </div>{" "}
-        <div>
-          <label>{"skills:"}</label>
-          <input
-            type="text"
-            id={5}
-            name={"skills:"}
-            onChange={(this.handleChange = this.handleChange.bind(this))}
-            size="10"
-          />
-        </div>
-        <input type="submit" value="Submit" />
       </form>
     );
   }
