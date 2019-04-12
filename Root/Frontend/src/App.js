@@ -14,6 +14,7 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
+import taskview from "./Screens/taskview";
 
 class App extends Component {
   render() {
@@ -38,6 +39,7 @@ class App extends Component {
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
             <Route path="/search/" component={Search} />
+            <Route path="/taskview" component={taskview}/>
             {/* Some Components for grading purposes only */}
             <Route
               path="/components/"
