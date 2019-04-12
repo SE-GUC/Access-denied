@@ -11,9 +11,10 @@ require('dotenv').config()
 
 const uri = process.env.MONGOURI
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 //Require routers
 const taskRoute = require('./routes/task')
+const skillsRoute = require('./routes/skills')
 const consultancyRoute = require('./routes/consultancy')
 const coworkingspaceRoute = require('./routes/coworkingspace')
 const partnerRoute = require('./routes/partner')
@@ -28,6 +29,8 @@ const messageRoute = require('./routes/message')
 const searchRoute = require('./routes/search')
 const userRoute = require('./routes/user')
 const loginRoute = require('./routes/login')
+const requestRoute = require('./routes/requests')
+
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json())
 app.use(
@@ -57,7 +60,6 @@ const verifyToken = token => {
 }
 //Setup Static Directory
 // app.use(express.static('./public'))
-
 //Setup routing directories/paths
 app.set('io', io)
 app.set('verifyToken', verifyToken)
@@ -75,7 +77,9 @@ app.use('/api/application', applicationRoute)
 app.use('/api/message', messageRoute)
 app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
+app.use('/api/skills', skillsRoute)
 app.use('/search', searchRoute)
+app.use('/api', requestRoute)
 
 io.on('connection', () => {
   console.log('Connected...')
@@ -88,7 +92,8 @@ app.use((error, request, response, next) => {
 // Connect to mongo
 mongoose
   .connect(uri, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+      autoIndex: false 
   })
   .then(() => {
     console.log('Connected to MongoDB')
