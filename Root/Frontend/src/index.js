@@ -1,12 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-<<<<<<< HEAD
-import App from "./App";
-=======
+
+
 import App from "./App.js";
 //import TaskForm from "./Screens/TaskForm";
->>>>>>> d4ba196185bfe1e45b0d30ebf1a4f541c4e17b78
+
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(<App/>, document.getElementById("root"));

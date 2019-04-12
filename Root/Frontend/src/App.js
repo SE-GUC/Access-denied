@@ -111,6 +111,7 @@ class App extends Component {
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
                <Route path="/search/" component={Search} /> 
+               <Route path="/applyOnTask/" component={ApplyOnTask} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
@@ -136,44 +137,10 @@ class App extends Component {
               id="5ca0b858bc01d360848affbb"
               handleNotification={this.handleNotification}
             />
-<<<<<<< HEAD
-            <Route path="/profile/" component={Member} />
-            <Route path="/signup/" component={Signup} />
-            <Route path="/login/" component={Login} />
-            <Route path="/taskStatus/" component={TaskStatus} />
-            <Route path="/applyOnTask/" component={ApplyOnTask} />
-            {/* <Route path="/search/" component={Search} /> */}
-            {/* Some Components for grading purposes only */}
-            <Route
-              path="/components/"
-              render={() => (
-                <>
-                  <ConsultancyForm />
-                  <CoworkingForm />
-                  <EducationalForm />
-                  <MemberForm />
-                  <PartnerForm />
-                  <TaskStatus />
-                  <FilterPanel />
-                </>
-              )}
-            />
-            {/* Some Components for grading purposes only */}
-            <Route
-              path="/chat/"
-              render={props => (
-                <Chat {...props} id="5ca0b858bc01d360848affbb" />
-              )}
-            />
-          </Switch>
-        </div>
-      </Router>
-=======
           </div>
         </Router>
       </AppProvider>
 
->>>>>>> d4ba196185bfe1e45b0d30ebf1a4f541c4e17b78
     );
   }
 }
