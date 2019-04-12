@@ -6,6 +6,7 @@ import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
 import Login from "./Screens/Login";
+import ApplyOnTask from "./Screens/ApplyOnTask";
 //import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
@@ -14,6 +15,8 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
+import ApplyMemberTask from "./Components/ApplyMemberTask";
+import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
 import Chat from "./Components/Chat";
 
 class App extends Component {
@@ -40,6 +43,7 @@ class App extends Component {
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
             <Route path="/taskStatus/" component={TaskStatus} />
+            <Route path="/applyOnTask/" component={ApplyOnTask} />
             {/* <Route path="/search/" component={Search} /> */}
             {/* Some Components for grading purposes only */}
             <Route

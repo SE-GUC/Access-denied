@@ -1,7 +1,8 @@
 import React ,{ Component } from "react";
 import ApplyConsultancyTask from "../Components/ApplyConsultancyTask";
 import ApplyMemberTask from "../Components/ApplyMemberTask";
-import "./ApplyOnTask.css";
+
+
 
 
 class ApplyOnTask extends Component
@@ -10,7 +11,7 @@ class ApplyOnTask extends Component
     {
        super(props);
        this.state={
-           consultancy:false,
+           consultancy:true,
            member:true
        }
     }
@@ -18,6 +19,7 @@ class ApplyOnTask extends Component
     render(){
         
         let form;
+
         if(this.state.consultancy){
             form=<ApplyConsultancyTask/>
         }
