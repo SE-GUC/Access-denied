@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Snackbar from "../Components/snackbar";
+import { AppConsumer } from "../Containers/AppProvider";
 
 const styles = theme => ({
   main: {
@@ -49,7 +50,7 @@ const styles = theme => ({
 class SignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = { valid: null };
+    this.state = { valid: null, token: null, changed: false, setToken: null };
   }
   handleLogin(e) {
     e.preventDefault();
@@ -70,6 +71,8 @@ class SignIn extends Component {
         .then(data => {
           console.log(data);
           this.setState({ valid: true });
+          this.state.setToken(data);
+          this.props.history.push("/profile");
         })
         .catch(err => this.setState({ valid: false }));
     } else {
@@ -80,6 +83,16 @@ class SignIn extends Component {
     const { classes } = this.props;
     return (
       <main className={classes.main}>
+        <AppConsumer>
+          {context => {
+            if (this.state.changed) return;
+            this.setState({
+              token: context.token,
+              setToken: context.setToken,
+              changed: true
+            });
+          }}
+        </AppConsumer>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar
