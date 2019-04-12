@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./Register.css";
-import ListDividers from "../Components/ListDividers";
+import ListDivider from "../Components/ListDividers";
 import { MuiThemeProvider } from "@material-ui/core";
 
 class Register extends Component {
@@ -21,14 +21,12 @@ class Register extends Component {
       <div id="cont">
         <div id="sign">
           <br />
-          <label>Who are you?</label>
+          <label id="labelR">Who are you?</label>
           <h3>I am a...</h3>
         </div>
 
         <div id="selectors">
-          <MuiThemeProvider>
-            <ListDividers />
-          </MuiThemeProvider>
+          <ListDivider />
         </div>
       </div>
     );

@@ -4,6 +4,13 @@ import Certificate from "./Screens/Certificate";
 import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
+import EducationalForm from "./Components/EducationalForm";
+import Register from "./Screens/Register";
+import LogIn from "./Screens/LogIn";
+import PartnerForm from "./Components/PartnerForm";
+import CoworkingForm from "./Components/CoworkingForm";
+import ConsultancyForm from "./Components/ConsultancyForm";
+import MemberForm from "./Components/MemberForm";
 
 class App extends Component {
   render() {
@@ -26,6 +33,12 @@ class App extends Component {
             />
             <Route path="/member/" component={Member} />
             <Route path="/nav/" component={NavBar} />
+            <Route path="/signup/" component={Register} />
+            <Route path="/eduForm" component={EducationalForm} />
+            <Route path="/coworkingForm" component={CoworkingForm} />
+            <Route path="/partnerForm" component={PartnerForm} />
+            <Route path="/consultancyForm" component={ConsultancyForm} />
+            <Route path="/memberForm" component={MemberForm} />
           </Switch>
         </div>
       </Router>

@@ -1,8 +1,12 @@
 #myForm {
-  text-align: center;
-  font: 2em Helvetica;
-  height: 200px;
+  text-align: left;
+  font: 1em Helvetica;
+  height: 50px;
+  margin-bottom: 10%;
+  margin-left: 0%;
+  margin-right: 30%;
+  margin-top: 50%;
 
-  color: blueviolet;
+  color: black;
   border: 0ch;
 }
