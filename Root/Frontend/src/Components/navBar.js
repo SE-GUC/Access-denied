@@ -21,6 +21,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import Badge from "@material-ui/core/Badge";
 
 const drawerWidth = 200;
 
@@ -30,6 +31,7 @@ const styles = theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "#232c5d",
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -198,9 +200,14 @@ class NavBar extends Component {
       currentState.redirectTarget = "/signup";
       currentState.anchorEl = null;
       currentState.open = false;
-    } else if (event.currentTarget.dataset.id === "4") {
+    } else if (event.currentTarget.dataset.id === "5") {
       currentState.redirect = true;
       currentState.redirectTarget = "/logout";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    }else if (event.currentTarget.dataset.id === "4") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/About";
       currentState.anchorEl = null;
       currentState.open = false;
     }
@@ -209,7 +216,7 @@ class NavBar extends Component {
   render() {
     const { classes, theme } = this.props;
     const { anchorEl } = this.state;
-    const drawerList = ["Profile", "Login", "Register"];
+    const drawerList = ["Profile", "Login", "Register","About Us"];
     return (
       <div className={classes.root}>
         {this.renderRedirect()}
@@ -219,7 +226,10 @@ class NavBar extends Component {
             [classes.appBarShift]: this.state.open
           })}
         >
-          <Toolbar disableGutters={!this.state.open}>
+          <Toolbar
+            disableGutters={!this.state.open}
+            style={{ minHeight: "50px" }}
+          >
             <IconButton
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"
@@ -232,6 +242,7 @@ class NavBar extends Component {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography
               className={classes.title}
               variant="h6"
@@ -241,6 +252,17 @@ class NavBar extends Component {
               LirtenHub
             </Typography>
             <div className={classes.grow} />
+            <IconButton
+              color="inherit"
+              onClick={() => this.props.handleNotification(false)}
+            >
+              <Badge
+                badgeContent={this.props.notification ? "!" : ""}
+                color="primary"
+              >
+                <MailIcon />
+              </Badge>
+            </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
