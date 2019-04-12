@@ -74,9 +74,7 @@ class Checkout extends React.Component {
     }
   }
   handleFinish = () => {
-    let reviewer = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).reviewer;
+    let reviewer = this.props.id;
     let reviewee = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).reviewee;

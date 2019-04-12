@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import withStyles from "@material-ui/core/styles/withStyles";
 import Snackbar from "../Components/snackbar";
+import { AppConsumer } from "../Containers/AppProvider";
 
 const styles = theme => ({
   main: {
@@ -49,12 +50,30 @@ const styles = theme => ({
 class SignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = { valid: true };
+    this.state = { valid: null, token: null, changed: false, setToken: null };
   }
   handleLogin(e) {
     e.preventDefault();
     if (document.getElementById("loginform").checkValidity()) {
-      console.log("valid");
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          this.setState({ valid: true });
+          this.state.setToken(data);
+          this.props.history.push("/profile");
+        })
+        .catch(err => this.setState({ valid: false }));
     } else {
       this.setState({ valid: false });
     }
@@ -63,6 +82,16 @@ class SignIn extends Component {
     const { classes } = this.props;
     return (
       <main className={classes.main}>
+        <AppConsumer>
+          {context => {
+            if (this.state.changed) return;
+            this.setState({
+              token: context.token,
+              setToken: context.setToken,
+              changed: true
+            });
+          }}
+        </AppConsumer>
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar
@@ -103,13 +132,24 @@ class SignIn extends Component {
               Sign in
             </Button>
           </form>
-          {!this.state.valid ? (
+          {this.state.valid === false ? (
             <Snackbar
               id="snackbar"
               open={true}
               type="error"
               message="Please enter correct data"
-              onClick={setTimeout(() => this.setState({ valid: true }), 5000)}
+              onClick={setTimeout(() => this.setState({ valid: null }), 5000)}
+            />
+          ) : (
+            <></>
+          )}
+          {this.state.valid === true ? (
+            <Snackbar
+              id="snackbar"
+              open={true}
+              type="success"
+              message="Login successfull"
+              onClick={setTimeout(() => this.setState({ valid: null }), 5000)}
             />
           ) : (
             <></>

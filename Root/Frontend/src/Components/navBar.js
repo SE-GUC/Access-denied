@@ -200,9 +200,14 @@ class NavBar extends Component {
       currentState.redirectTarget = "/signup";
       currentState.anchorEl = null;
       currentState.open = false;
-    } else if (event.currentTarget.dataset.id === "4") {
+    } else if (event.currentTarget.dataset.id === "5") {
       currentState.redirect = true;
       currentState.redirectTarget = "/logout";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    }else if (event.currentTarget.dataset.id === "4") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/About";
       currentState.anchorEl = null;
       currentState.open = false;
     }
@@ -211,7 +216,7 @@ class NavBar extends Component {
   render() {
     const { classes, theme } = this.props;
     const { anchorEl } = this.state;
-    const drawerList = ["Profile", "Login", "Register"];
+    const drawerList = ["Profile", "Login", "Register","About Us"];
     return (
       <div className={classes.root}>
         {this.renderRedirect()}
