@@ -14,6 +14,7 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
+import About from "./Screens/About";
 import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
 import Coworking from "./Screens/Coworking";
@@ -59,12 +60,49 @@ class App extends Component {
                   <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
                 )}
               />
-              <Route path="/profile/" component={Member} />
-              <Route path="/partner/" component={Partner} />
-              <Route path="/eduorganization/" component={EduOrganization} />
-              <Route path="/coworking/" component={Coworking} />
+              <Route
+                path="/profile/"
+                component={props => (
+                  <Member
+                    {...props}
+                    id="5cafc26b348fd72d1ca019e9"
+                    email="Mahmood@gmail.com"
+                  />
+                )}
+              />
+              <Route
+                path="/partner/"
+                component={props => (
+                  <Partner
+                    {...props}
+                    id="5cb084456ffc2f11609dda0b"
+                    email="than2sq@hallf.gone"
+                  />
+                )}
+              />
+              <Route
+                path="/eduorganization/"
+                component={props => (
+                  <EduOrganization
+                    {...props}
+                    id="5cb07ed0fe0b4e1f38d3f4f9"
+                    email="than2s@half.gonee"
+                  />
+                )}
+              />
+              <Route
+                path="/coworking/"
+                component={props => (
+                  <Coworking
+                    {...props}
+                    id="5cb07c2ffe0b4e1f38d3f4f6"
+                    email="Coworking@space.com"
+                  />
+                )}
+              />
               <Route path="/signup/" component={Signup} />
               <Route path="/login/" component={Login} />
+              <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
               {/* <Route path="/search/" component={Search} /> */}
               {/* Some Components for grading purposes only */}
@@ -85,13 +123,7 @@ class App extends Component {
               {/* Some Components for grading purposes only */}
               <Route
                 path="/review/"
-                render={props => (
-                  <Review
-                    {...props}
-                    type="member"
-                    id="5ca0b858bc01d360848affbb"
-                  />
-                )}
+                render={props => <Review {...props} type="member" />}
               />
             </Switch>
             <Chat

@@ -69,7 +69,6 @@ class SignIn extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           this.setState({ valid: true });
           this.state.setToken(data);
           this.props.history.push("/profile");

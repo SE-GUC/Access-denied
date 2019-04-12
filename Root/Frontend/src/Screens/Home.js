@@ -38,6 +38,9 @@ class Home extends Component {
             <CallToAction href="/login" mt={3}>
               <Link to="/login">login</Link>
             </CallToAction>
+            <CallToAction href="/About" mt={3}>
+              About Us
+            </CallToAction>
           </span>
           <ScrollDownIndicator />
         </Hero>

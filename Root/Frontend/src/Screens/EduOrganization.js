@@ -9,6 +9,7 @@ class Edu extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.id,
       email: props.email,
       name: null,
       basicInfo: null,
@@ -22,15 +23,16 @@ class Edu extends Component {
   }
 
   componentDidMount() {
-    let id = "";
-    let email = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).email;
-    fetch(`/api/educationalorganisation?email=${email}`)
+    let id = this.state.id;
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
+    fetch(`/api/educationalorganisation?id=${id}`)
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
-        currentState.email = email;
         currentState.name = res.name;
         currentState.basicInfo = (
           <table className="table">
@@ -89,7 +91,7 @@ class Edu extends Component {
           <li className="list-group-item"> {course}</li>
         ));
         currentState.certificates = res.certificate.map(cert => (
-          <a className="list-group-item" href={`/certifcate?name=${cert.name}`}>
+          <a className="list-group-item" href={`/certifcate?id=${cert._id}`}>
             {" "}
             {cert.name}
           </a>
