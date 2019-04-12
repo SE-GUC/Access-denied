@@ -16,6 +16,7 @@ class Coworking extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: props.id,
       email: props.email,
       name: null,
       basicInfo: null,
@@ -27,15 +28,11 @@ class Coworking extends Component {
   }
 
   componentDidMount() {
-    let id = "";
-    let email = qs.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).email;
-    fetch(`/api/coworking?email=${email}`)
+    let id = this.state.id;
+    fetch(`/api/coworking?id=${id}`)
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
-        currentState.email = email;
         currentState.name = res.name;
         currentState.basicInfo = (
           <table className="table">
