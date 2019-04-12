@@ -5,7 +5,7 @@ const validator = require('../validations/userValidations')
 const axios = require('axios')
 const _ = require('lodash')
 const baseURL = process.env.BASEURL || 'http://localhost:3000'
-
+var util = require('util')
 router.post('/', (req, res) => {
   const isValidated = validator.createValidation(
     _.pick(req.body, ['email', 'password', 'type', 'profile'])
@@ -99,7 +99,7 @@ router.post('/', (req, res) => {
       return res.json(_.pick(doc, ['email', 'type', 'profile', '_id']))
     })
     .catch(err => {
-      res.status(500).send('Error')
+      res.status(500).send(util.inspect(err.response.data))
     })
 })
 

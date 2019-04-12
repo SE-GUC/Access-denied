@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
     return res.status(400).send('id is mising.')
   }
   partnerModel
-    .find({
+    .findOne({
       _id: req.query.id
     })
     .then(doc => {
