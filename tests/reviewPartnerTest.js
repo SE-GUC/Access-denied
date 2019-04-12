@@ -2,12 +2,44 @@ const fetch = require('node-fetch')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 const axios = require('axios')
 let reply = ''
+let memberId,
+  partnerId,
+  taskId = ''
 const funcs = {
   postMemberReviewsPartner: async () => {
+    let member = {
+      name: 'ahmed',
+      birthDate: '2018-01-01T00:00:00.000Z'
+    }
+    let memberData = (await axios.post(`${baseURL}/api/Member`, member)).data
+    memberId = memberData._id
+
+    let partner = {
+      name: 'testnomoreihate',
+      Telephone_number: '1015142324',
+      number_of_employees: '30',
+      field_of_work: 'testwhyyyyy'
+    }
+    let partnerRes = await axios.post(`${baseURL}/api/partner`, partner)
+    let partnerData = partnerRes.data
+    partnerId = partnerData._id
+
+    const taskBody = {
+      name: 'Tester.Test123',
+      description: 'This is Tester.Test123 Description',
+      extraNotes: 'This is Tester.Test123 Extra Notes',
+      effortLevel: 999999999,
+      monetaryComp: 999999999,
+      owner: partnerId,
+      assignee: memberId
+    }
+
+    let taskData = await axios.post(`${baseURL}/api/task`, taskBody)
+    taskId = taskData.data._id
     const document = {
       name: 'Tester.Test123',
-      owner: '5c9494d3f0c6c02014be6b5f',
-      assignee: '5c7581a12357f33970c4d757',
+      owner: partnerId,
+      assignee: memberId,
       description: 'This is Tester.Test123 Description',
       extraNotes: 'This is Tester.Test123 Extra Notes',
       effortLevel: 999999999,
@@ -19,10 +51,13 @@ const funcs = {
       method: 'POST',
       body: JSON.stringify({
         task: task.data._id,
-        reviewee: '5c9494d3f0c6c02014be6b5f',
-        reviewer: '5c7581a12357f33970c4d757',
+        reviewee: partnerId,
+        reviewer: memberId,
         review: 'xxxxx',
-        rating: 2
+        rating: 2,
+        reviewerModel: 'Members',
+        revieweeModel: 'Partners',
+        task: taskId
       }),
       headers: {
         'Content-Type': 'application/json'
@@ -52,15 +87,15 @@ const funcs = {
 
 const postTest = test('post member reviews partner', async () => {
   const response = await funcs.postMemberReviewsPartner()
-  expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
-    expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
+  expect(response.reviewer).toEqual(memberId) &&
+    expect(response.reviewee).toEqual(partnerId) &&
+    expect(response.task).toEqual(taskId)
 })
 const deleteTest = test('delete member reviews partner', async () => {
   const response = await funcs.deleteMemberReviewsPartner()
-  expect(response.reviewer).toEqual('5c7581a12357f33970c4d757') &&
-    expect(response.reviewee).toEqual('5c9494d3f0c6c02014be6b5f') &&
-    expect(response.task).toEqual('5ca002ae15f5040438cf1fa9')
+  expect(response.reviewer).toEqual(memberId) &&
+    expect(response.reviewee).toEqual(partnerId) &&
+    expect(response.task).toEqual(taskId)
 })
 
 module.exports = {
