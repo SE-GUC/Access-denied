@@ -70,7 +70,7 @@ class taskview extends Component{
             
             })
             console.log(this.state.name)
-
+            console.log(this.state.owner)
 
         }
 
