@@ -24,8 +24,17 @@ class Searchbar extends React.Component {
   search(keywords) {
     //to do search function
     console.log(keywords);
-    console.log(this.props.Tags);
-     this.props.fu(["changed"])
+    console.log(JSON.stringify(this.props.Tags))
+    let y =JSON.stringify(this.props.Tags)
+    console.log(y);
+    fetch(`search/filteredby?tags=`+y)
+    .then(res => res.json())
+    .then(res => {
+      this.props.fu(res)
+    })
+    .catch(err => {
+      console.log(err);
+    });
   }
 }
 
