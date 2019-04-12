@@ -263,16 +263,20 @@ router.delete('/schedule', (req, res) => {
 })
 
 router.post('/apply', (req, res) => {
-  if (!req || !req.query.id || !req.body.id) {
+  if (!req || !req.query.id || !req.body.token) {
     return res.status(400).send('Body is Missing')
   }
 
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.token)
+  if (!ver) return res.status(500).send('Error')
+  let id = ver.profile
   certificationModel
     .findOneAndUpdate(
       { _id: req.query.id },
       {
         $push: {
-          membersapplied: req.body.id
+          membersapplied: id
         }
       },
       {
