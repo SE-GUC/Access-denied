@@ -16,17 +16,29 @@ class SearchPage extends Component {
   };
 
   componentDidMount() {
-    axios.get(`http://localhost:3001/api/task/all`).then(res => {
-      this.state = {
-        results: res.data
-      };
-    });
+   this.reset()
   }
-
-  SetResults(res) {
-    this.state = {
+reset(){
+  fetch(`api/task/all`)
+  .then(res => res.json())
+  .then(res => {
+    this.setState({
       results: res
-    };
+    })
+  })
+  .catch(err => {
+    console.log(err);
+  });
+}
+  SetResults(res) {
+    if(res===-1){
+     this.reset()
+    }else{
+      this.setState({
+        results: res
+      })
+    }
+    
     console.log(this.state.results);
   }
 
