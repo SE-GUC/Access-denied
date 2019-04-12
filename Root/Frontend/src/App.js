@@ -14,7 +14,7 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
-import taskStatus from "./Components/taskStatus";
+import About from "./Screens/About";
 import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
 import Coworking from "./Screens/Coworking";
@@ -72,7 +72,7 @@ class App extends Component {
               component={props => (
                 <Partner
                   {...props}
-                  id="5cb084236ffc2f11609dda06"
+                  id="5cb084456ffc2f11609dda0b"
                   email="than2sq@hallf.gone"
                 />
               )}
@@ -99,6 +99,7 @@ class App extends Component {
             />
             <Route path="/signup/" component={Signup} />
             <Route path="/login/" component={Login} />
+            <Route path="/About/" component={About} />
             <Route path="/taskStatus/" component={TaskStatus} />
             {/* <Route path="/search/" component={Search} /> */}
             {/* Some Components for grading purposes only */}

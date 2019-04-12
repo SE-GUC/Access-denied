@@ -29,6 +29,11 @@ class Coworking extends Component {
 
   componentDidMount() {
     let id = this.state.id;
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
     fetch(`/api/coworking?id=${id}`)
       .then(res => res.json())
       .then(res => {
