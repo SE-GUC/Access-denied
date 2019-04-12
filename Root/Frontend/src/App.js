@@ -73,7 +73,7 @@ class App extends Component {
                 <Partner
                   {...props}
                   id="5cb084236ffc2f11609dda06"
-                  email="than2sq@hallf.gonee"
+                  email="than2sq@hallf.gone"
                 />
               )}
             />
