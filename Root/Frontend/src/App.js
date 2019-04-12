@@ -6,7 +6,8 @@ import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
 import Login from "./Screens/Login";
-//import Search from "./Screens/SearchPage";
+import ApplyOnTask from "./Screens/ApplyOnTask";
+import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
 import EducationalForm from "./Components/EducationalForm";
@@ -14,6 +15,9 @@ import FilterPanel from "./Components/filterPanel";
 import MemberForm from "./Components/MemberForm";
 import PartnerForm from "./Components/PartnerForm";
 import TaskStatus from "./Components/taskStatus";
+import ApplyMemberTask from "./Components/ApplyMemberTask";
+import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
+
 import About from "./Screens/About";
 import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
@@ -21,6 +25,8 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
+
+
 
 class App extends Component {
   constructor(props) {
@@ -104,7 +110,8 @@ class App extends Component {
               <Route path="/login/" component={Login} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
-              {/* <Route path="/search/" component={Search} /> */}
+               <Route path="/search/" component={Search} /> 
+               <Route path="/applyOnTask/" component={ApplyOnTask} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
@@ -133,6 +140,7 @@ class App extends Component {
           </div>
         </Router>
       </AppProvider>
+
     );
   }
 }

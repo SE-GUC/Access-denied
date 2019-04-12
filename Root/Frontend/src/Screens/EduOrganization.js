@@ -4,6 +4,14 @@ import qs from "query-string";
 import "../App.css";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
+import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom'
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
+const axios = require('axios')
 
 class Edu extends Component {
   constructor(props) {
@@ -18,9 +26,63 @@ class Edu extends Component {
       trainers: null,
       trainingPrograms: null,
       activeId: "1",
-      loaded: false
+      loaded: false,
+      redirect: false,
+      open: false,
+      dialogText:"",
+      newData:""
     };
   }
+  setRedirect = () => {
+    this.setState({
+      redirect: true
+  
+    });
+  }
+  handleClickOpen = name => event => {
+    this.setState({ 
+      open: true,
+      dialogText:name
+     });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false })
+    
+
+  };
+  handleApply =()=>{
+    this.setState({ open: false })
+    const textInput= this.state.dialogText
+    const data = {
+      "name" :this.state.newData
+    }
+    axios.put(`/api/partner?id=`+this.state.id, data)
+
+  }
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/target' />
+    }
+  }
+  handleClick = name => event => {
+    this.setState({
+      [name]: event.target.value,
+  
+    });
+    
+    
+    console.log(this.state.name)
+    
+  };
+  handleChange = name => event => {
+    this.setState({
+    newData: event.target.value,
+  
+    });   
+    console.log(this.state.newData) 
+  };
 
   componentDidMount() {
     let id = this.state.id;
@@ -41,11 +103,17 @@ class Edu extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
+                   edit
+                 </Button></div></td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Contact information : </td>
                 <td>+20{res.contactInformation}</td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Contact information :")}>
+                   edit
+                 </Button></div></td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -54,16 +122,25 @@ class Edu extends Component {
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
                 </td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address:")}>
+                   edit
+                 </Button></div></td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Vision</td>
                 <td>{res.vision}</td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Vision")}>
+                   edit
+                 </Button></div></td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Mission</td>
                 <td>{res.mission}</td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Mission")}>
+                   edit
+                 </Button></div></td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -75,6 +152,9 @@ class Edu extends Component {
                     ))}
                   </ul>
                 </td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Partners")}>
+                   edit
+                 </Button></div></td>
               </tr>
             </tbody>
             {res.information ? (
@@ -82,6 +162,9 @@ class Edu extends Component {
                 <th scope="row" />
                 <td>Extra info: </td>
                 <td>{res.information}</td>
+                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Extra info: ")}>
+                   edit
+                 </Button></div></td>
               </tr>
             ) : null}
           </table>
@@ -119,6 +202,35 @@ class Edu extends Component {
     console.log(this.state);
     return (
       <div>
+        <div>
+          <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title"></DialogTitle>
+          <DialogContent>
+            
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label={this.state.dialogText}
+              onChange={this.handleChange('newData')}
+              type="email"
+              fullWidth
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={this.handleApply} color="primary">
+              Apply
+            </Button>
+          </DialogActions>
+        </Dialog>
+        </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
             <img
