@@ -7,14 +7,14 @@ import BigCalendar from "react-big-calendar";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
-import Button from '@material-ui/core/Button';
-import { Redirect } from 'react-router-dom'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-const axios = require('axios')
+import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+const axios = require("axios");
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -34,59 +34,51 @@ class Coworking extends Component {
       loaded: false,
       redirect: false,
       open: false,
-      dialogText:"",
-      newData:""
+      dialogText: "",
+      newData: ""
     };
   }
   setRedirect = () => {
     this.setState({
       redirect: true
-  
     });
-  }
+  };
   handleClickOpen = name => event => {
-    this.setState({ 
+    this.setState({
       open: true,
-      dialogText:name
-     });
+      dialogText: name
+    });
   };
 
   handleClose = () => {
-    this.setState({ open: false })
-    
-
+    this.setState({ open: false });
   };
-  handleApply =()=>{
-    this.setState({ open: false })
-    const textInput= this.state.dialogText
+  handleApply = () => {
+    this.setState({ open: false });
+    const textInput = this.state.dialogText;
     const data = {
-      "name" :this.state.newData
-    }
-    axios.put(`/api/partner?id=`+this.state.id, data)
-
-  }
+      name: this.state.newData
+    };
+    axios.put(`/api/partner?id=` + this.state.id, data);
+  };
 
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/target' />
+      return <Redirect to="/target" />;
     }
-  }
+  };
   handleClick = name => event => {
     this.setState({
-      [name]: event.target.value,
-  
+      [name]: event.target.value
     });
-    
-    
-    console.log(this.state.name)
-    
+
+    console.log(this.state.name);
   };
   handleChange = name => event => {
     this.setState({
-    newData: event.target.value,
-  
-    });   
-    console.log(this.state.newData) 
+      newData: event.target.value
+    });
+    console.log(this.state.newData);
   };
 
   componentDidMount() {
@@ -108,17 +100,39 @@ class Coworking extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    {this.renderRedirect()}{" "}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={this.handleClickOpen("Name")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Phone No.: </td>
                 <td>020{res.phoneNumber}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Phone No.:")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    {this.renderRedirect()}{" "}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={this.handleClickOpen("Phone No.:")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -127,9 +141,20 @@ class Coworking extends Component {
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
                 </td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address:")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    {this.renderRedirect()}{" "}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={this.handleClickOpen("Address:")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -137,26 +162,59 @@ class Coworking extends Component {
                 <td>
                   From: {res.workingHours.from} to: {res.workingHours.to}
                 </td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("workingHours")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    {this.renderRedirect()}{" "}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={this.handleClickOpen("workingHours")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td> Rooms: </td>
                 <td>{res.noOfRooms} Rooms at your service</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Rooms at your service")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    {this.renderRedirect()}{" "}
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      onClick={this.handleClickOpen("Rooms at your service")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               {res.description ? (
                 <tr>
                   <th scope="row" />
                   <td> details and info</td>
                   <td>{res.description}</td>
-                  <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("details and info")}>
-                   edit
-                 </Button></div></td>
+                  <td>
+                    {" "}
+                    <div>
+                      {this.renderRedirect()}{" "}
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        onClick={this.handleClickOpen("details and info")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               ) : null}
             </tbody>
@@ -182,32 +240,31 @@ class Coworking extends Component {
       <div>
         <div>
           <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title"></DialogTitle>
-          <DialogContent>
-            
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label={this.state.dialogText}
-              onChange={this.handleChange('newData')}
-              type="email"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleApply} color="primary">
-              Apply
-            </Button>
-          </DialogActions>
-        </Dialog>
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" />
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="name"
+                label={this.state.dialogText}
+                onChange={this.handleChange("newData")}
+                type="email"
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleApply} color="primary">
+                Apply
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>

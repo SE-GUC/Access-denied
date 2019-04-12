@@ -5,8 +5,10 @@ const AppContext = React.createContext();
 class AppProvider extends Component {
   state = {
     token: null,
-    setToken: value => {
-      this.setState({ token: value });
+    id: null,
+    type: null,
+    setToken: (value, id, type) => {
+      this.setState({ token: value, id: id, type: type });
     }
   };
   render() {

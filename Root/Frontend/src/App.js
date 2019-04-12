@@ -26,9 +26,6 @@ import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
 
-
-
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -61,12 +58,7 @@ class App extends Component {
           <div style={{ marginTop: marginVal }}>
             <Switch>
               <Route path="/" exact component={Home} />
-              <Route
-                path="/certificate/"
-                render={props => (
-                  <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
-                )}
-              />
+              <Route path="/certificate/" component={Certificate} />
               <Route
                 path="/profile/"
                 component={props => (
@@ -111,14 +103,14 @@ class App extends Component {
               <Route path="/login/" component={Login} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
-               <Route path="/search/" component={Search} /> 
-               <Route path="/applyOnTask/" component={ApplyOnTask} />
-                    <Route path="/signup/" component={Register} />
-            <Route path="/eduForm" component={EducationalForm} />
-            <Route path="/coworkingForm" component={CoworkingForm} />
-            <Route path="/partnerForm" component={PartnerForm} />
-            <Route path="/consultancyForm" component={ConsultancyForm} />
-            <Route path="/memberForm" component={MemberForm} />
+              <Route path="/search/" component={Search} />
+              <Route path="/applyOnTask/" component={ApplyOnTask} />
+              <Route path="/signup/" component={Register} />
+              <Route path="/eduForm" component={EducationalForm} />
+              <Route path="/coworkingForm" component={CoworkingForm} />
+              <Route path="/partnerForm" component={PartnerForm} />
+              <Route path="/consultancyForm" component={ConsultancyForm} />
+              <Route path="/memberForm" component={MemberForm} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
@@ -144,12 +136,9 @@ class App extends Component {
               id="5ca0b858bc01d360848affbb"
               handleNotification={this.handleNotification}
             />
-
           </div>
         </Router>
       </AppProvider>
-
-
     );
   }
 }
