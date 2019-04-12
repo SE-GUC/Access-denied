@@ -83,7 +83,13 @@ class App extends Component {
             {/* Some Components for grading purposes only */}
             <Route
               path="/review/"
-              render={props => <Review {...props} type="member" />}
+              render={props => (
+                <Review
+                  {...props}
+                  type="member"
+                  id="5ca0b858bc01d360848affbb"
+                />
+              )}
             />
           </Switch>
           <Chat

@@ -49,12 +49,29 @@ const styles = theme => ({
 class SignIn extends Component {
   constructor(props) {
     super(props);
-    this.state = { valid: true };
+    this.state = { valid: null };
   }
   handleLogin(e) {
     e.preventDefault();
     if (document.getElementById("loginform").checkValidity()) {
-      console.log("valid");
+      let email = document.getElementById("email").value;
+      let password = document.getElementById("password").value;
+      fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.setState({ valid: true });
+        })
+        .catch(err => this.setState({ valid: false }));
     } else {
       this.setState({ valid: false });
     }
@@ -103,13 +120,24 @@ class SignIn extends Component {
               Sign in
             </Button>
           </form>
-          {!this.state.valid ? (
+          {this.state.valid === false ? (
             <Snackbar
               id="snackbar"
               open={true}
               type="error"
               message="Please enter correct data"
-              onClick={setTimeout(() => this.setState({ valid: true }), 5000)}
+              onClick={setTimeout(() => this.setState({ valid: null }), 5000)}
+            />
+          ) : (
+            <></>
+          )}
+          {this.state.valid === true ? (
+            <Snackbar
+              id="snackbar"
+              open={true}
+              type="success"
+              message="Login successfull"
+              onClick={setTimeout(() => this.setState({ valid: null }), 5000)}
             />
           ) : (
             <></>
