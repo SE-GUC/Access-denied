@@ -27,14 +27,7 @@ class filterPanel extends React.Component {
 
   state = {
     keywordsResults: Array(6).fill(null),
-    keywords: [
-      "effortLevel:",
-      "experienceLevel:",
-      "commitmentLevel:",
-      "timeRequired:",
-      "monetaryComp:",
-      "skills:"
-    ]
+    keywords:this.props.keywords
   };
 
   handleChange(event) {
@@ -42,7 +35,7 @@ class filterPanel extends React.Component {
     this.state.keywordsResults[event.target.id] = this.state.keywords[event.target.id]+event.target.value;
     let tags =JSON.stringify(this.state.keywordsResults)
     console.log(tags);
-    fetch(`http://localhost:3001/api/`)
+    fetch(`/search/filteredbyt?tags=${tags}`)
     .then(res => res.json())
     .then(res => {
       console.log(res);
@@ -57,7 +50,7 @@ class filterPanel extends React.Component {
   }
 
   render() {
-    const Tags = this.state.keywords;
+    const Tags = this.props.keywords;
     return (
       <form>
         {Tags.map(p => {
@@ -65,7 +58,7 @@ class filterPanel extends React.Component {
         })}
         <div>
           {" "}
-          <S Tags={this.state.keywordsResults} fu={this.props.change} />
+          {/* <S Tags={this.state.keywordsResults} fu={this.props.change} /> */}
         </div>
       </form>
     );

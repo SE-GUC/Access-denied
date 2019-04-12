@@ -6,7 +6,7 @@ import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
 import Signup from "./Screens/SignUp";
 import Login from "./Screens/Login";
-//import Search from "./Screens/SearchPage";
+import Search from "./Screens/SearchPage";
 import ConsultancyForm from "./Components/ConsultancyForm";
 import CoworkingForm from "./Components/CoworkingForm";
 import EducationalForm from "./Components/EducationalForm";
@@ -21,6 +21,7 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
+
 
 class App extends Component {
   constructor(props) {
@@ -104,7 +105,7 @@ class App extends Component {
               <Route path="/login/" component={Login} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
-              {/* <Route path="/search/" component={Search} /> */}
+               <Route path="/search/" component={Search} /> 
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
@@ -133,6 +134,7 @@ class App extends Component {
           </div>
         </Router>
       </AppProvider>
+
     );
   }
 }
