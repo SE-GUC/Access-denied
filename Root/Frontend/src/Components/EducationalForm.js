@@ -31,7 +31,7 @@ class EducationalForm extends React.Component {
       name: this.state.name,
       password: this.state.password
     };
-    fetch(`http://localhost:3001/api/EducationalOrganisation`, {
+    /*  fetch(`http://localhost:3001/api/EducationalOrganisation`, {
       //
       method: "POST",
       body: JSON.stringify(mem),
@@ -41,7 +41,7 @@ class EducationalForm extends React.Component {
       // credentials: "same-origin"
     })
       .then(res => res.json())
-      .then(json => console.log("json"));
+      .then(json => console.log("json"));*/
 
     event.preventDefault();
   }
@@ -74,7 +74,7 @@ class EducationalForm extends React.Component {
                 name="name"
                 required
                 minLength="3"
-                placeholder="your full name"
+                placeholder="Organisation name"
                 value={this.state.name}
                 onChange={this.handleChange}
               />
@@ -87,7 +87,7 @@ class EducationalForm extends React.Component {
                 type="text"
                 name="email"
                 required
-                placeholder="your email"
+                placeholder="Bussiness Email"
                 value={this.state.email}
                 onChange={this.handleChange}
               />
@@ -101,7 +101,7 @@ class EducationalForm extends React.Component {
                 name="password"
                 required
                 minLength="6"
-                placeholder="your password"
+                placeholder="account password"
                 value={this.state.password}
                 onChange={this.handleChange}
               />
@@ -114,7 +114,7 @@ class EducationalForm extends React.Component {
                 type="text"
                 name="city"
                 required
-                placeholder="city of your headquarters"
+                placeholder="headquarters city"
                 value={this.state.birthDate}
                 onChange={this.handleChange}
               />
@@ -126,7 +126,7 @@ class EducationalForm extends React.Component {
               <input
                 type="text"
                 name="area"
-                placeholder="area of your headquarters"
+                placeholder="headquarters area"
                 value={this.state.area}
                 onChange={this.handleChange}
               />
@@ -138,7 +138,7 @@ class EducationalForm extends React.Component {
               <input
                 type="text"
                 name="street"
-                placeholder="street of your headquarters"
+                placeholder="headquarters street"
                 value={this.state.street}
                 onChange={this.handleChange}
               />
