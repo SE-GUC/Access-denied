@@ -39,7 +39,6 @@ const EducationalOrganisationSchema = new mongoose.Schema({
     }
   ],
   trainer: [String],
-
   trainingProgram: [String]
 })
 

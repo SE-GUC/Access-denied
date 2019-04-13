@@ -50,7 +50,7 @@ const testSearchTags = test('searching with keywords', async () => {
   }
   let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
   let searching = await axios.get(
-    `${baseURL}/search/filteredby` + `?tags=["k1"]`
+    `${baseURL}/search/filteredbyt` + `?tags=["k1"]`
   )
   let response = searching.data
   let taskId = responsetask.data._id
