@@ -12,8 +12,6 @@ const testMemberApply = test('Member apply on task', async () => {
   }
   const memberdocument = {
     name: 'testz',
-    email: 'gz@50.com',
-    password: 'whkacbak;lcbna;o',
     certification: [
       {
         skills: ['python', 'java']
@@ -23,11 +21,10 @@ const testMemberApply = test('Member apply on task', async () => {
   let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
   let responsemember = await axios.post(`${baseURL}/api/Member`, memberdocument)
   let taskid = responsetask.data._id
-  let memberemail = responsemember.data.email
   let memberid = responsemember.data._id
   const document = {
-    id: taskid,
-    email: memberemail,
+    id: memberid,
+    taskId: taskid,
     details: 'helllllo from other siiiiide'
   }
   let com = await axios.post(`${baseURL}/api/Member/applyonTask`, document)
@@ -36,7 +33,7 @@ const testMemberApply = test('Member apply on task', async () => {
   expect(response.applier).toEqual(memberid)
   expect(response.applierModel).toEqual('Members')
   await axios.delete(`${baseURL}/api/task` + `?id=${taskid}`)
-  await axios.delete(`${baseURL}/api/Member` + `?email=${memberemail}`)
+  await axios.delete(`${baseURL}/api/Member` + `?id=${memberid}`)
   await axios.delete(`${baseURL}/api/application` + `?id=${response._id}`)
 })
 const testSearchTags = test('searching with keywords', async () => {
@@ -73,7 +70,7 @@ const testSearchSkills = test('searching for some skills', async () => {
   let jason = JSON.stringify({ skills: taskdocument.skills[0] })
 
   let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
-  let searching = await axios.get(`${baseURL}/search//sk` + `?skills=` + jason)
+  let searching = await axios.get(`${baseURL}/search/sk` + `?skills=` + jason)
   let response = searching.data
   let taskId = responsetask.data._id
   let t = response.find(function(ele) {

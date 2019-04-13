@@ -7,9 +7,7 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-      email: Joi.string()
-        .email()
-        .required(),
+
       address: Joi,
       contactInformation: Joi.string(),
       vision: Joi.string(),
@@ -29,11 +27,7 @@ module.exports = {
     const updateSchema = {
       name: Joi.string()
         .min(3)
-        .max(500)
-        .required(),
-      email: Joi.string()
-        .email()
-        .required(),
+        .max(500),
       address: Joi,
       contactInformation: Joi.string(),
       vision: Joi.string(),
