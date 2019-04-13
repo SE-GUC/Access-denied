@@ -3,21 +3,27 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../App.css";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
-import Button from '@material-ui/core/Button';
-import { Redirect } from 'react-router-dom'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import TextField from '@material-ui/core/TextField';
-import { Switch } from "@material-ui/core";
-const axios = require('axios')
-
+import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+import qs from "query-string";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+const axios = require("axios");
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 class Partner extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
       name: null,
       basicInfo: null,
       members: null,
@@ -30,71 +36,61 @@ class Partner extends Component {
       open: false,
       dialogText:"",
       newData:"",
-      editedAttribute:""
+      city:"",
+      area:"",
+      street:""
     };
   }
   setRedirect = () => {
     this.setState({
       redirect: true
-  
     });
   }
-  checkAttribute = name => event => {
-    
-    
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="./TaskForm.js" />;
+    }
+  };
 
-  }
   handleClickOpen = name => event => {
-    
-    // switch ([this.state.dialogText]) {
-    //   case "Name":return this.setState({ 
-    //                       [this.state.editedAttribute]:"name"
-    //                     });
-        
-       
-    
-    //   default:
-    //     break;
-    // }
     
     this.setState({ 
       open: true,
-      dialogText:name
-     });
+      dialogText: name
+    });
+   
+    
   };
 
   handleClose = () => {
-    this.setState({ open: false })
-    
-
+    this.setState({ open: false });
   };
   handleApply =()=>{
+    
+    if(this.state.dialogText==="address"){
+      
+      const data = {
+        "address":{
+          "city":this.state.city,
+          "area": this.state.area,
+          "street": this.state.street
+
+        }
+      }
+      axios.put(`/api/partner?id=`+this.state.id, data)
+    }else{
+      const data = {
+        [this.state.dialogText] :this.state.newData
+      }
+      axios.put(`/api/partner?id=`+this.state.id, data)
+    }
     this.setState({ open: false })
-    const data = {
-      [this.state.dialogText] :this.state.newData
-    }
-    axios.put(`/api/partner?id=`+this.state.id, data)
-
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/target' />
-    }
-  }
-  handleClick = name => event => {
-    this.setState({
-      [name]: event.target.value,
   
-    });
-    
-    
-    
-    
-  };
   handleChange = name => event => {
     this.setState({
-    newData: event.target.value,
+    [name]: event.target.value,
   
     });   
     
@@ -102,7 +98,11 @@ class Partner extends Component {
 
   componentDidMount() {
     let id = this.state.id;
-
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
     fetch(`/api/partner?id=${id}`)
       .then(res => res.json())
       .then(res => {
@@ -115,17 +115,41 @@ class Partner extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
-                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("name")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Telephone : </td>
                 <td>+20{res.Telephone_number}</td>
-                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Telephone_number")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("Telephone_number")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -134,34 +158,82 @@ class Partner extends Component {
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
                 </td>
-                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("address")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Number of Employees</td>
                 <td>{res.number_of_employees}</td>
-                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Number of Employees")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("number_of_employees")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Field of Work</td>
                 <td>{res.field_of_work}</td>
-                <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Field of Work")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("field_of_work")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               {!res.other_partners ? null : (
                 <tr>
                   <th scope="row" />
                   <td>Partners </td>
                   <td>{res.other_partners}</td>
-                  <td> <div> <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Partners")}>
-                   edit
-                 </Button></div></td>
+                  <td>
+                    {" "}
+                    <div>
+                      
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("other_partners")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -187,14 +259,16 @@ class Partner extends Component {
         currentState.events = res.events.map(event => (
           <div className="card list-group-item">
             <div className="card-body">
-              <h4 className="card-title">{event.date}</h4>
+              <h4 className="card-title">
+                {new Date(event.date).toDateString()}
+              </h4>
               <p className="card-text">{event.description}</p>
             </div>
           </div>
         ));
         this.setState(currentState);
         id = res._id;
-       return fetch(`/api/task/partner?id=${id}`);
+        return fetch(`/api/task/partner?id=${id}`);
       })
       .then(res => res.json())
       .then(res => {
@@ -268,43 +342,97 @@ class Partner extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
-    return (   
+    return (
       <div>
         <div>
-          <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
+           {(this.state.dialogText !== "address")?
+           <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" />
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                
+                onChange={this.handleChange("newData")}
+                
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleApply} color="primary">
+                Apply
+              </Button>
+            </DialogActions>
+          </Dialog>:
+           <Dialog
+           open={this.state.open}
+           onClose={this.handleClose}
+           aria-labelledby="form-dialog-title"
+         >
+           <DialogTitle id="form-dialog-title" />
+           <DialogContent>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="city"
+               //Value={this.state.city}
+               onChange={this.handleChange("city")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="area"
+              //  Value={this.state.area}
+               onChange={this.handleChange("area")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="street"
+               //Value={this.state.street}
+               onChange={this.handleChange("street")}
+               type="email"
+               fullWidth
+             />
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={this.handleClose} color="primary">
+               Cancel
+             </Button>
+             <Button onClick={this.handleApply} color="primary">
+               Apply
+             </Button>
+           </DialogActions>
+         </Dialog>
           
-          <DialogContent>
-            
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
+        }
 
-              label={this.state.dialogText}
-              onChange={this.handleChange('newData')}
-              type="email"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleApply} color="primary">
-              Apply
-            </Button>
-          </DialogActions>
-        </Dialog>
+           
+          
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
@@ -434,15 +562,46 @@ class Partner extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.tasks || state.tasks.length === 0)
-                  return <h4 className="text-muted">No Tasks Yet..</h4>;
+                  
+                if (!state.tasks || state.tasks.length === 0){
+                  return (
+                    <div>
+                      {this.renderRedirect()}
+                      <Fab color="primary" aria-label="Add" onClick={this.setRedirect()}>
+                      
+                      </Fab>
+                      
+                      <h4 className="text-muted">No Tasks Yet..</h4>
+                    </div>
+                  )
+                    
+                  
+
+                }
+                    
                 return (
+                  <div>
+                  
+                      
+                      <Fab color="primary" aria-label="Add" >
+                      
+                      </Fab>
+                  
+                  
+                  
                   <ul
                     className="list-group d-flex flex-wrap flex-row"
                     style={{ width: "100%" }}
                   >
+                  
+                 
                     {state.tasks}
                   </ul>
+                  
+                  </div>
+
+                
+                  
                 );
               case "4":
                 if (!state.loaded)

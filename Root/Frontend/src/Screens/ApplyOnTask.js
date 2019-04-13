@@ -1,36 +1,26 @@
-import React ,{ Component } from "react";
+import React, { Component } from "react";
 import ApplyConsultancyTask from "../Components/ApplyConsultancyTask";
 import ApplyMemberTask from "../Components/ApplyMemberTask";
 
+class ApplyOnTask extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      consultancy: true,
+      member: true
+    };
+  }
 
+  render() {
+    let form;
 
-
-class ApplyOnTask extends Component
-{
-    constructor (props)
-    {
-       super(props);
-       this.state={
-           consultancy:true,
-           member:true
-       }
+    if (this.state.consultancy) {
+      form = <ApplyConsultancyTask />;
     }
-
-    render(){
-        
-        let form;
-
-        if(this.state.consultancy){
-            form=<ApplyConsultancyTask/>
-        }
-        if(this.state.member){
-            form=<ApplyMemberTask/>
-        }
-        return(
-        <div className="ApplicationForm">
-         {form}
-         </div>
-        );
+    if (this.state.member) {
+      form = <ApplyMemberTask />;
     }
+    return <div className="ApplicationForm">{form}</div>;
+  }
 }
 export default ApplyOnTask;

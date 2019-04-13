@@ -22,7 +22,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import Badge from "@material-ui/core/Badge";
-
+import { Link } from "react-router-dom";
 const drawerWidth = 200;
 
 const styles = theme => ({
@@ -156,11 +156,7 @@ class NavBar extends Component {
     if (event.key === "Enter") {
       let currentState = this.state;
       currentState.redirect = true;
-      currentState.redirectTarget = `/search?q=${currentState.searchText}`;
-      this.setState(currentState);
-    } else {
-      let currentState = this.state;
-      currentState.searchText += event.key;
+      currentState.redirectTarget = `/search?q=${event.target.value}`;
       this.setState(currentState);
     }
   };
@@ -170,6 +166,7 @@ class NavBar extends Component {
       currentState.redirect = false;
       let target = currentState.redirectTarget;
       currentState.redirectTarget = null;
+      currentState.searchText = "";
       this.setState(currentState);
       return <Redirect to={target} />;
     }
@@ -186,8 +183,9 @@ class NavBar extends Component {
     let currentState = this.state;
     currentState.anchorEl = event.currentTarget;
     if (event.currentTarget.dataset.id === "1") {
+      console.log(this.state);
       currentState.redirect = true;
-      currentState.redirectTarget = `/profile?email=${this.props.email}`;
+      currentState.redirectTarget = `/profile`;
       currentState.anchorEl = null;
       currentState.open = false;
     } else if (event.currentTarget.dataset.id === "2") {
@@ -205,7 +203,7 @@ class NavBar extends Component {
       currentState.redirectTarget = "/logout";
       currentState.anchorEl = null;
       currentState.open = false;
-    }else if (event.currentTarget.dataset.id === "4") {
+    } else if (event.currentTarget.dataset.id === "4") {
       currentState.redirect = true;
       currentState.redirectTarget = "/About";
       currentState.anchorEl = null;
@@ -216,7 +214,7 @@ class NavBar extends Component {
   render() {
     const { classes, theme } = this.props;
     const { anchorEl } = this.state;
-    const drawerList = ["Profile", "Login", "Register","About Us"];
+    const drawerList = ["Profile", "Login", "Register", "About Us"];
     return (
       <div className={classes.root}>
         {this.renderRedirect()}
@@ -249,7 +247,12 @@ class NavBar extends Component {
               color="inherit"
               noWrap
             >
-              LirtenHub
+              <Link
+                to="/"
+                style={{ color: "inherit", "text-decoration": "inherit" }}
+              >
+                LirtenHub
+              </Link>
             </Typography>
             <div className={classes.grow} />
             <IconButton

@@ -27,25 +27,26 @@ class filterPanel extends React.Component {
 
   state = {
     keywordsResults: Array(6).fill(null),
-    keywords:this.props.keywords
+    keywords: this.props.keywords
   };
 
   handleChange(event) {
-    if(event.target.value){
-    this.state.keywordsResults[event.target.id] = this.state.keywords[event.target.id]+event.target.value;
-    let tags =JSON.stringify(this.state.keywordsResults)
-    console.log(tags);
-    fetch(`/search/filteredbyt?tags=${tags}`)
-    .then(res => res.json())
-    .then(res => {
-      console.log(res);
-      this.props.change(res)
-    })
-    .catch(err => {
-      console.log(err);
-    });}
-    else{
-      this.props.change(-1)
+    if (event.target.value) {
+      this.state.keywordsResults[event.target.id] =
+        this.state.keywords[event.target.id] + event.target.value;
+      let tags = JSON.stringify(this.state.keywordsResults);
+      console.log(tags);
+      fetch(`/search/filteredbyt?tags=${tags}`)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+          this.props.change(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      this.props.change(-1);
     }
   }
 

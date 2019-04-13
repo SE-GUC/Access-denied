@@ -3,6 +3,7 @@ import bg from "../Images/bloom-wfh-1630_1-2.jpg";
 import awardrate from "../Images/awardrate.jpg";
 import "./Certificate.css";
 import "bootstrap/dist/css/bootstrap.css";
+import { AppConsumer } from "../Containers/AppProvider";
 import {
   /*eslint-disable */
   Hero,
@@ -43,7 +44,11 @@ class Certificate extends Component {
       open: false,
       text: "",
       type: ""
-    }
+    },
+    token: null,
+    id: null,
+    type: null,
+    changed: false
   };
   componentDidMount() {
     this.checkapplied();
@@ -61,7 +66,7 @@ class Certificate extends Component {
   }
   handleClick() {
     if (
-      this.state.certificate.membersapplied.indexOf(this.props.id) >= 0 ||
+      this.state.certificate.membersapplied.indexOf(this.state.id) >= 0 ||
       this.state.applied
     ) {
       this.setState({
@@ -78,7 +83,7 @@ class Certificate extends Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          id: this.props.id
+          token: this.state.token
         })
       })
         .then(res => res.json())
@@ -109,7 +114,7 @@ class Certificate extends Component {
   checkapplied() {
     if (this.state.certificate) {
       if (this.state.certificate.membersapplied && !this.state.applied) {
-        if (this.state.certificate.membersapplied.indexOf(this.props.id) >= 0) {
+        if (this.state.certificate.membersapplied.indexOf(this.state.id) >= 0) {
           this.setState({
             applied: true,
             button: {
@@ -137,6 +142,17 @@ class Certificate extends Component {
       <Redirect to="/" />
     ) : (
       <div>
+        <AppConsumer>
+          {context => {
+            if (this.state.changed) return;
+            this.setState({
+              token: context.token,
+              id: context.id,
+              type: context.type,
+              changed: true
+            });
+          }}
+        </AppConsumer>
         <Snackbar
           open={this.state.snackbar.open}
           type={this.state.snackbar.type}
