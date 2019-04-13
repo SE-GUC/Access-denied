@@ -17,7 +17,7 @@ import MemberForm from "./Components/MemberForm";
 import TaskStatus from "./Components/taskStatus";
 import ApplyMemberTask from "./Components/ApplyMemberTask";
 import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
-
+import Logout from "./Components/Logout";
 import About from "./Screens/About";
 import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
@@ -26,7 +26,7 @@ import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
 import Profile from "./Screens/Profile";
-import taskview from "./Screens/taskview"
+import taskview from "./Screens/taskview";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -89,24 +89,9 @@ class App extends Component {
               <Route path="/partnerForm/" component={PartnerForm} />
               <Route path="/consultancyForm/" component={ConsultancyForm} />
               <Route path="/memberForm/" component={MemberForm} />
-              <Route path="/taskview/" component={taskview}/>
-              {/* Some Components for grading purposes only */}
-              <Route
-                path="/components/"
-                render={() => (
-                  <>
-                    <ConsultancyForm />
-                    <CoworkingForm />
-                    <EducationalForm />
-                    <MemberForm />
-                    <PartnerForm />
-                    <TaskStatus />
-                    <FilterPanel />
-                  </>
-                )}
-              />
-              {/* Some Components for grading purposes only */}
+              <Route path="/taskview/" component={taskview} />
               <Route path="/review/" component={Review} />
+              <Route path="/logout/" component={Logout} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
