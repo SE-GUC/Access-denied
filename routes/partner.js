@@ -58,7 +58,7 @@ router.get('/', (req, res) => {
     return res.status(400).send('Email is mising.')
   }
   partnerModel
-    .findOne({
+    .find({
       email: req.query.email
     })
     .then(doc => {
