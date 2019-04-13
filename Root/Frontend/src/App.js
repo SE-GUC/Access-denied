@@ -43,20 +43,20 @@ class App extends Component {
     }
   }
   render() {
-    const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
+    // const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
     return (
       <AppProvider>
         <Router>
-          {window.location.pathname !== "/" &&
-          window.location.pathname !== "/login" ? (
-            <div>
-              <NavBar
-                notification={this.state.notify}
-                handleNotification={this.handleNotification}
-              />
-            </div>
-          ) : null}
-          <div style={{ marginTop: marginVal }}>
+          {/* {window.location.pathname !== "/" &&
+          window.location.pathname !== "/login" ? ( */}
+          <div>
+            <NavBar
+              notification={this.state.notify}
+              handleNotification={this.handleNotification}
+            />
+          </div>
+          {/* ) : null} */}
+          <div style={{ marginTop: "50px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
@@ -106,15 +106,9 @@ class App extends Component {
                 )}
               />
               {/* Some Components for grading purposes only */}
-              <Route
-                path="/review/"
-                render={props => <Review {...props} type="member" />}
-              />
+              <Route path="/review/" component={Review} />
             </Switch>
-            <Chat
-              id="5ca0b858bc01d360848affbb"
-              handleNotification={this.handleNotification}
-            />
+            <Chat handleNotification={this.handleNotification} />
           </div>
         </Router>
       </AppProvider>
