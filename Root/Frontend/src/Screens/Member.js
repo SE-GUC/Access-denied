@@ -7,7 +7,7 @@ import BigCalendar from "react-big-calendar";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
-
+import { Link } from "react-router-dom";
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -73,9 +73,9 @@ class Member extends Component {
         currentState.certification = res.certification.map(cert => (
           <li className="list-group-item">
             {" "}
-            <a href={`/certificate?id=${cert.ref_of_certification}`}>
+            <Link to={`/certificate?id=${cert.ref_of_certification}`}>
               {cert.name_of_certification}
-            </a>
+            </Link>
           </li>
         ));
         currentState.calendar = res.calendar.map(oldevent => {
