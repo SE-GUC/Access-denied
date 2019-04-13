@@ -183,8 +183,9 @@ class NavBar extends Component {
     let currentState = this.state;
     currentState.anchorEl = event.currentTarget;
     if (event.currentTarget.dataset.id === "1") {
+      console.log(this.state);
       currentState.redirect = true;
-      currentState.redirectTarget = `/profile?email=${this.props.email}`;
+      currentState.redirectTarget = `/profile`;
       currentState.anchorEl = null;
       currentState.open = false;
     } else if (event.currentTarget.dataset.id === "2") {
