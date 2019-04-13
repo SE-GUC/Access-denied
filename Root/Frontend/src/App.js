@@ -4,16 +4,16 @@ import Certificate from "./Screens/Certificate";
 import Home from "./Screens/Home";
 import Member from "./Screens/Member";
 import NavBar from "./Components/navBar";
-import Signup from "./Screens/SignUp";
 import Login from "./Screens/Login";
 import ApplyOnTask from "./Screens/ApplyOnTask";
 import Search from "./Screens/SearchPage";
-import ConsultancyForm from "./Components/ConsultancyForm";
-import CoworkingForm from "./Components/CoworkingForm";
-import EducationalForm from "./Components/EducationalForm";
 import FilterPanel from "./Components/filterPanel";
-import MemberForm from "./Components/MemberForm";
+import EducationalForm from "./Components/EducationalForm";
+import Register from "./Screens/Register";
 import PartnerForm from "./Components/PartnerForm";
+import CoworkingForm from "./Components/CoworkingForm";
+import ConsultancyForm from "./Components/ConsultancyForm";
+import MemberForm from "./Components/MemberForm";
 import TaskStatus from "./Components/taskStatus";
 import ApplyMemberTask from "./Components/ApplyMemberTask";
 import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
@@ -25,8 +25,6 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
-
-
 
 class App extends Component {
   constructor(props) {
@@ -60,12 +58,7 @@ class App extends Component {
           <div style={{ marginTop: marginVal }}>
             <Switch>
               <Route path="/" exact component={Home} />
-              <Route
-                path="/certificate/"
-                render={props => (
-                  <Certificate {...props} id="5ca0c0b44e81266044cf2b70" />
-                )}
-              />
+              <Route path="/certificate/" component={Certificate} />
               <Route
                 path="/profile/"
                 component={props => (
@@ -110,8 +103,14 @@ class App extends Component {
               <Route path="/login/" component={Login} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
-               <Route path="/search/" component={Search} /> 
-               <Route path="/applyOnTask/" component={ApplyOnTask} />
+              <Route path="/search/" component={Search} />
+              <Route path="/applyOnTask/" component={ApplyOnTask} />
+              <Route path="/signup/" component={Register} />
+              <Route path="/eduForm" component={EducationalForm} />
+              <Route path="/coworkingForm" component={CoworkingForm} />
+              <Route path="/partnerForm" component={PartnerForm} />
+              <Route path="/consultancyForm" component={ConsultancyForm} />
+              <Route path="/memberForm" component={MemberForm} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
@@ -140,7 +139,6 @@ class App extends Component {
           </div>
         </Router>
       </AppProvider>
-
     );
   }
 }
