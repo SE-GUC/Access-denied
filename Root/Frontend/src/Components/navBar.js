@@ -9,19 +9,73 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import { withStyles } from "@material-ui/core/styles";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import { Redirect } from "react-router";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import classNames from "classnames";
+import Divider from "@material-ui/core/Divider";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import Badge from "@material-ui/core/Badge";
+
+const drawerWidth = 200;
 
 const styles = theme => ({
   root: {
     width: "100%"
   },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    backgroundColor: "#232c5d",
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["width", "margin"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  hide: {
+    display: "none"
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: "nowrap"
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  drawerClose: {
+    transition: theme.transitions.create("width", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    overflowX: "hidden",
+    width: 0,
+    [theme.breakpoints.up("sm")]: {
+      width: 0
+    }
+  },
   grow: {
     flexGrow: 1
   },
   menuButton: {
-    marginLeft: -12,
+    marginLeft: 0,
     marginRight: 20
   },
   title: {
@@ -30,6 +84,13 @@ const styles = theme => ({
       display: "block"
     }
   },
+  toolbar: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar
+  },
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -37,10 +98,10 @@ const styles = theme => ({
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
-    marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing.unit,
+      marginRight: 10,
       width: "auto"
     }
   },
@@ -51,7 +112,8 @@ const styles = theme => ({
     pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "left",
+    marginLeft: 10
   },
   inputRoot: {
     color: "inherit",
@@ -80,27 +142,10 @@ class NavBar extends Component {
       anchorEl: null,
       redirect: false,
       redirectTarget: null,
-      searchText: ""
+      searchText: "",
+      open: false
     };
   }
-  handleClick = event => {
-    let currentState = this.state;
-    console.log(event.target.dataset.id);
-    currentState.anchorEl = event.target;
-    if (event.target.dataset.id === "1") {
-      currentState.redirect = true;
-      currentState.redirectTarget = `/member?email=${this.props.email}`;
-    }
-    if (event.target.dataset.id === "2") {
-      currentState.redirect = true;
-      currentState.redirectTarget = "/register";
-    }
-    if (event.target.dataset.id === "3") {
-      currentState.redirect = true;
-      currentState.redirectTarget = "/login";
-    }
-    this.setState(currentState);
-  };
 
   handleClose = () => {
     let currentState = this.state;
@@ -111,7 +156,7 @@ class NavBar extends Component {
     if (event.key === "Enter") {
       let currentState = this.state;
       currentState.redirect = true;
-      currentState.redirectTarget = `/search?q=${this.state.searchText}`;
+      currentState.redirectTarget = `/search?q=${currentState.searchText}`;
       this.setState(currentState);
     } else {
       let currentState = this.state;
@@ -129,49 +174,95 @@ class NavBar extends Component {
       return <Redirect to={target} />;
     }
   };
+
+  handleDrawerOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleDrawerClose = () => {
+    this.setState({ open: false });
+  };
+  handleDrawerClick = event => {
+    let currentState = this.state;
+    currentState.anchorEl = event.currentTarget;
+    if (event.currentTarget.dataset.id === "1") {
+      currentState.redirect = true;
+      currentState.redirectTarget = `/profile?email=${this.props.email}`;
+      currentState.anchorEl = null;
+      currentState.open = false;
+    } else if (event.currentTarget.dataset.id === "2") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/login";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    } else if (event.currentTarget.dataset.id === "3") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/signup";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    } else if (event.currentTarget.dataset.id === "5") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/logout";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    }else if (event.currentTarget.dataset.id === "4") {
+      currentState.redirect = true;
+      currentState.redirectTarget = "/About";
+      currentState.anchorEl = null;
+      currentState.open = false;
+    }
+    this.setState(currentState);
+  };
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
     const { anchorEl } = this.state;
+    const drawerList = ["Profile", "Login", "Register","About Us"];
     return (
       <div className={classes.root}>
         {this.renderRedirect()}
-        <AppBar>
-          <Toolbar>
+        <AppBar
+          position="fixed"
+          className={classNames(classes.appBar, {
+            [classes.appBarShift]: this.state.open
+          })}
+        >
+          <Toolbar
+            disableGutters={!this.state.open}
+            style={{ minHeight: "50px" }}
+          >
             <IconButton
               aria-owns={anchorEl ? "simple-menu" : undefined}
               aria-haspopup="true"
-              onClick={this.handleClick}
-              className={classes.menuButton}
+              className={classNames(classes.menuButton, {
+                [classes.hide]: this.state.open
+              })}
+              onClick={this.handleDrawerOpen}
               color="inherit"
               aria-label="Open drawer"
             >
-              <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={this.handleClose}
-              >
-                <MenuItem onClick={this.handleClose} data-id="1">
-                  Profile
-                </MenuItem>
-                <MenuItem onClick={this.handleClose} data-id="2">
-                  Register
-                </MenuItem>
-                <MenuItem onClick={this.handleClose} data-id="3">
-                  Login
-                </MenuItem>
-              </Menu>
               <MenuIcon />
             </IconButton>
+
             <Typography
               className={classes.title}
               variant="h6"
               color="inherit"
               noWrap
             >
-              {classes.root}
+              LirtenHub
             </Typography>
             <div className={classes.grow} />
+            <IconButton
+              color="inherit"
+              onClick={() => this.props.handleNotification(false)}
+            >
+              <Badge
+                badgeContent={this.props.notification ? "!" : ""}
+                color="primary"
+              >
+                <MailIcon />
+              </Badge>
+            </IconButton>
             <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
@@ -187,13 +278,70 @@ class NavBar extends Component {
             </div>
           </Toolbar>
         </AppBar>
+        <Drawer
+          variant="permanent"
+          className={classNames(classes.drawer, {
+            [classes.drawerOpen]: this.state.open,
+            [classes.drawerClose]: !this.state.open
+          })}
+          classes={{
+            paper: classNames({
+              [classes.drawerOpen]: this.state.open,
+              [classes.drawerClose]: !this.state.open
+            })
+          }}
+          open={this.state.open}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={this.handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton>
+          </div>
+          <Divider />
+          <List onClick={this.handleDrawerClick}>
+            {drawerList.map((text, index) => (
+              <ListItem
+                button
+                key={text}
+                onClick={this.handleDrawerClick}
+                data-id={index + 1}
+              >
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+          <Divider />
+          <List>
+            {["Logout"].map((text, index) => (
+              <ListItem
+                button
+                key={text}
+                onClick={this.handleDrawerClick}
+                data-id={drawerList.length + index + 1}
+              >
+                <ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
       </div>
     );
   }
 }
 
 NavBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(NavBar);
+export default withStyles(styles, { withTheme: true })(NavBar);

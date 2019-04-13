@@ -47,12 +47,12 @@ class Certificate extends Component {
   };
   componentDidMount() {
     this.checkapplied();
-    let name = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
-      .name;
-    fetch(`/api/certification?name=${name}`)
+    let id = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
+      .id;
+    fetch(`/api/certification?id=${id}`)
       .then(response => response.json())
       .then(data => {
-        this.setState({ certificate: data[0] });
+        this.setState({ certificate: data });
         this.setState({ loaded: true });
       })
       .catch(err => {
@@ -72,13 +72,12 @@ class Certificate extends Component {
         }
       });
     } else {
-      fetch("/api/certification/apply", {
+      fetch(`/api/certification/apply?id=${this.state.certificate.id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name: this.state.certificate.name,
           id: this.props.id
         })
       })
