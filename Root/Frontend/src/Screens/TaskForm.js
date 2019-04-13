@@ -117,7 +117,7 @@ class TaskForm extends React.Component {
   handleClick() {
     const data = {
       name: this.state.name,
-      description: this.state.description,
+      description: this.state.Description,
       extraNotes: this.state.extraNotes,
       effortLevel: this.state.effortLevel,
       commitmentLevel: this.state.commitmentLevel,
@@ -247,7 +247,7 @@ class TaskForm extends React.Component {
         <br />
         <TextField
           id="outlined-timeRequired"
-          label="experience Level"
+          label="time Required"
           className={classes.textField}
           value={this.state.timeRequired}
           onChange={this.handleChange("timeRequired")}

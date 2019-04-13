@@ -13,6 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import qs from "query-string";
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import TaskForm from "./TaskForm";
 const axios = require("axios");
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && !isNaN(n - 0);
@@ -48,7 +49,7 @@ class Partner extends Component {
   }
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="./TaskForm.js" />;
+      return <Redirect to="/newtask" />;
     }
   };
 
@@ -95,6 +96,13 @@ class Partner extends Component {
     });   
     
   };
+  handleClick(e) {
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
+  }
 
   componentDidMount() {
     let id = this.state.id;
@@ -303,6 +311,7 @@ class Partner extends Component {
                 Date: <h6>{new Date(task.date).toDateString()} </h6>
               </div>
             </div>
+            
           </div>
         ));
         currentState.loaded = true;
@@ -340,13 +349,6 @@ class Partner extends Component {
       .catch(err => {
         console.error(err);
       }); //TBD
-  }
-  handleClick(e) {
-    if (isNumber(e.target.id)) {
-      let currentState = this.state;
-      currentState.activeId = e.target.id;
-      this.setState(currentState);
-    }
   }
   render() {
     console.log(this.state);
@@ -515,7 +517,7 @@ class Partner extends Component {
               Members
             </li>
           </ul>
-          {(function(state) {
+          {(function(state,thisCopy) {
             switch (state.activeId) {
               case "1":
                 if (!state.loaded)
@@ -566,27 +568,27 @@ class Partner extends Component {
                 if (!state.tasks || state.tasks.length === 0){
                   return (
                     <div>
-                      {this.renderRedirect()}
-                      <Fab color="primary" aria-label="Add" onClick={this.setRedirect()}>
-                      
+                      {thisCopy.renderRedirect()}
+                  <Fab color="primary" aria-label="Add" onClick={()=> thisCopy.setRedirect()}>
+                      <AddIcon/>
                       </Fab>
                       
                       <h4 className="text-muted">No Tasks Yet..</h4>
                     </div>
                   )
+
+                  
                     
                   
 
                 }
-                    
+                     
                 return (
                   <div>
-                  
-                      
-                      <Fab color="primary" aria-label="Add" >
-                      
+                  {thisCopy.renderRedirect()}
+                  <Fab color="primary" aria-label="Add" onClick={()=> thisCopy.setRedirect()}>
+                      <AddIcon/>
                       </Fab>
-                  
                   
                   
                   <ul
@@ -642,10 +644,25 @@ class Partner extends Component {
                     {state.members}
                   </ul>
                 );
+              case "6": 
+              if (!state.loaded)
+                  return (
+                    <div
+                      className="spinner-border"
+                      role="status"
+                      style={{ marginLeft: "35%", marginTop: "15%" }}
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  );
+                
+                return (
+                  <TaskForm/>
+                ); 
               default:
                 break;
             }
-          })(this.state)}
+          })(this.state,this)}
         </div>
       </div>
     );
