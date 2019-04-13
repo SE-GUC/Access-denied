@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
 import { Redirect } from "react-router-dom";
@@ -80,7 +80,12 @@ class Partner extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/partner?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/partner?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -362,7 +367,7 @@ class Partner extends Component {
             <img
               className="card-img-top"
               src={profile}
-              style={{ width: "30%", alignSelf: "center" }}
+              style={{ width: "40%", alignSelf: "center" }}
               alt="profile"
             />
             <div className="text-center text-capitalize card-body">
@@ -377,7 +382,7 @@ class Partner extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>

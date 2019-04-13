@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
 import { Redirect } from "react-router-dom";
@@ -22,7 +22,6 @@ class Edu extends Component {
       id: props.id,
       email: props.email,
       verified: props.verified,
-
       name: null,
       basicInfo: null,
       courses: null,
@@ -80,7 +79,12 @@ class Edu extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/educationalorganisation?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/educationalorganisation?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -325,7 +329,7 @@ class Edu extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>

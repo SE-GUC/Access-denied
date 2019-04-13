@@ -4,7 +4,7 @@ import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
 import Button from "@material-ui/core/Button";
@@ -88,7 +88,12 @@ class Coworking extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/coworking?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/coworking?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -294,7 +299,7 @@ class Coworking extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>
