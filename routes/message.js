@@ -67,6 +67,12 @@ router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Missing body')
   }
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.from)
+  if (!ver) return res.status(500).send('Error')
+  let id = ver.profile
+  req.body.from = id
+  console.log(req.body.from)
   let model = new messageModel(req.body)
   model
     .save()
