@@ -25,6 +25,7 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
+import Profile from "./Screens/Profile";
 
 class App extends Component {
   constructor(props) {
@@ -60,56 +61,34 @@ class App extends Component {
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
               <Route
-                path="/profile/"
-                component={props => (
-                  <Member
-                    {...props}
-                    id="5cafc26b348fd72d1ca019e9"
-                    email="Mahmood@gmail.com"
-                  />
-                )}
+                path="/member/"
+                component={props => <Member {...props} />}
               />
               <Route
                 path="/partner/"
-                component={props => (
-                  <Partner
-                    {...props}
-                    id="5cb084456ffc2f11609dda0b"
-                    email="than2sq@hallf.gone"
-                  />
-                )}
+                component={props => <Partner {...props} />}
               />
               <Route
                 path="/eduorganization/"
-                component={props => (
-                  <EduOrganization
-                    {...props}
-                    id="5cb07ed0fe0b4e1f38d3f4f9"
-                    email="than2s@half.gonee"
-                  />
-                )}
+                component={props => <EduOrganization {...props} />}
               />
               <Route
                 path="/coworking/"
-                component={props => (
-                  <Coworking
-                    {...props}
-                    id="5cb07c2ffe0b4e1f38d3f4f6"
-                    email="Coworking@space.com"
-                  />
-                )}
+                component={props => <Coworking {...props} />}
               />
               <Route path="/login/" component={Login} />
+              <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
               <Route path="/search/" component={Search} />
+              <Route path="/member/" component={Member} />
               <Route path="/applyOnTask/" component={ApplyOnTask} />
               <Route path="/signup/" component={Register} />
-              <Route path="/eduForm" component={EducationalForm} />
-              <Route path="/coworkingForm" component={CoworkingForm} />
-              <Route path="/partnerForm" component={PartnerForm} />
-              <Route path="/consultancyForm" component={ConsultancyForm} />
-              <Route path="/memberForm" component={MemberForm} />
+              <Route path="/eduForm/" component={EducationalForm} />
+              <Route path="/coworkingForm/" component={CoworkingForm} />
+              <Route path="/partnerForm/" component={PartnerForm} />
+              <Route path="/consultancyForm/" component={ConsultancyForm} />
+              <Route path="/memberForm/" component={MemberForm} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"

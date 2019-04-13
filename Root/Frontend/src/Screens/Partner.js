@@ -12,13 +12,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 const axios = require("axios");
-
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 class Partner extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
       name: null,
       basicInfo: null,
       members: null,
@@ -62,13 +65,7 @@ class Partner extends Component {
       return <Redirect to="/target" />;
     }
   };
-  handleClick = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
 
-    console.log(this.state.name);
-  };
   handleChange = name => event => {
     this.setState({
       newData: event.target.value
@@ -78,7 +75,11 @@ class Partner extends Component {
 
   componentDidMount() {
     let id = this.state.id;
-
+    if (!this.state.id) {
+      id = qs.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+    }
     fetch(`/api/partner?id=${id}`)
       .then(res => res.json())
       .then(res => {
@@ -99,6 +100,7 @@ class Partner extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Name")}
                     >
                       edit
@@ -118,6 +120,7 @@ class Partner extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Telephone")}
                     >
                       edit
@@ -140,6 +143,7 @@ class Partner extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Address")}
                     >
                       edit
@@ -159,6 +163,7 @@ class Partner extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Number of Employees")}
                     >
                       edit
@@ -178,6 +183,7 @@ class Partner extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Field of Work")}
                     >
                       edit
@@ -198,6 +204,7 @@ class Partner extends Component {
                         variant="outlined"
                         size="small"
                         color="primary"
+                        hidden={!this.state.verified}
                         onClick={this.handleClickOpen("Partners")}
                       >
                         edit
@@ -229,7 +236,9 @@ class Partner extends Component {
         currentState.events = res.events.map(event => (
           <div className="card list-group-item">
             <div className="card-body">
-              <h4 className="card-title">{event.date}</h4>
+              <h4 className="card-title">
+                {new Date(event.date).toDateString()}
+              </h4>
               <p className="card-text">{event.description}</p>
             </div>
           </div>
@@ -310,9 +319,11 @@ class Partner extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
