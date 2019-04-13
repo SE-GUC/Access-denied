@@ -26,7 +26,7 @@ import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
 import Profile from "./Screens/Profile";
-
+import taskview from "./Screens/taskview"
 class App extends Component {
   constructor(props) {
     super(props);
@@ -89,6 +89,7 @@ class App extends Component {
               <Route path="/partnerForm/" component={PartnerForm} />
               <Route path="/consultancyForm/" component={ConsultancyForm} />
               <Route path="/memberForm/" component={MemberForm} />
+              <Route path="/taskview/" component={taskview}/>
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
