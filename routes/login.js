@@ -37,4 +37,14 @@ router.get('/', (req, res) => {
   else res.json('Error')
 })
 
+router.post('/verify', (req, res) => {
+  if (!req.query.id || !req.body.token)
+    return res.status(400).send('Body is missing')
+  let verify = req.app.get('verifyToken')
+  let data = verify(req.body.token)
+  if (!data) return res.status(200).send({ valid: false })
+  if (data.profile === req.query.id)
+    return res.status(200).send({ valid: true })
+  return res.status(200).send({ valid: false })
+})
 module.exports = router
