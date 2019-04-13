@@ -46,15 +46,15 @@ class App extends Component {
     return (
       <AppProvider>
         <Router>
-          {window.location.pathname !== "/" &&
-          window.location.pathname !== "/login" ? (
-            <div>
-              <NavBar
-                notification={this.state.notify}
-                handleNotification={this.handleNotification}
-              />
-            </div>
-          ) : null}
+          {/* {window.location.pathname !== "/" &&
+          window.location.pathname !== "/login" ? ( */}
+          <div>
+            <NavBar
+              notification={this.state.notify}
+              handleNotification={this.handleNotification}
+            />
+          </div>
+          {/* ) : null} */}
           <div style={{ marginTop: marginVal }}>
             <Switch>
               <Route path="/" exact component={Home} />
@@ -99,7 +99,6 @@ class App extends Component {
                   />
                 )}
               />
-              <Route path="/signup/" component={Signup} />
               <Route path="/login/" component={Login} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
@@ -127,15 +126,9 @@ class App extends Component {
                 )}
               />
               {/* Some Components for grading purposes only */}
-              <Route
-                path="/review/"
-                render={props => <Review {...props} type="member" />}
-              />
+              <Route path="/review/" component={Review} />
             </Switch>
-            <Chat
-              id="5ca0b858bc01d360848affbb"
-              handleNotification={this.handleNotification}
-            />
+            <Chat handleNotification={this.handleNotification} />
           </div>
         </Router>
       </AppProvider>

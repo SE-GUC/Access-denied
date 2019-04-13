@@ -39,7 +39,7 @@ class Home extends Component {
               <Link to="/login">login</Link>
             </CallToAction>
             <CallToAction href="/About" mt={3}>
-              About Us
+              <Link to="/About">About Us</Link>
             </CallToAction>
           </span>
           <ScrollDownIndicator />
