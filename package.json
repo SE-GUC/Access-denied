@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --runInBand"
   },
   "repository": {
     "type": "git",
@@ -36,6 +36,7 @@
     "express": "^4.16.4",
     "http": "0.0.0",
     "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
     "jsx": "^0.9.89",
     "jtest": "0.0.1",
     "loadsh": "0.0.4",

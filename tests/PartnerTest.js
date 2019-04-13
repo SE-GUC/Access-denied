@@ -2,18 +2,18 @@ let baseURL = process.env.BASEURL || `http://localhost:3000`
 const axios = require('axios')
 let apiRoute = `${baseURL}/api/partner`
 
+let id = ''
 const testPost = test('PartnerPost right data', async () => {
   const doc = {
     name: 'testnomoreihate',
-    email: 'testisbaddd@gmail.com',
     Telephone_number: '1015142324',
     number_of_employees: '30',
     field_of_work: 'testwhyyyyy'
   }
   let response1 = await axios.post(apiRoute, doc)
   let response = response1.data
+  id = response._id
   expect(response.name).toEqual('testnomoreihate')
-  expect(response.email).toEqual('testisbaddd@gmail.com')
   expect(response.Telephone_number).toEqual(1015142324)
   expect(response.number_of_employees).toEqual(30)
   expect(response.members).toEqual([])
@@ -23,10 +23,9 @@ const testPost = test('PartnerPost right data', async () => {
 })
 
 const testGet = test('PartnerGet right data', async () => {
-  let response1 = await axios.get(apiRoute + `?email=testisbaddd@gmail.com`)
+  let response1 = await axios.get(apiRoute + `?id=${id}`)
   let response = response1.data
   expect(response.name).toEqual('testnomoreihate')
-  expect(response.email).toEqual('testisbaddd@gmail.com')
   expect(response.Telephone_number).toEqual(1015142324)
   expect(response.number_of_employees).toEqual(30)
   expect(response.members).toEqual([])
@@ -43,13 +42,9 @@ const testPut = test('PartnerPut right data', async () => {
       }
     ]
   }
-  let response1 = await axios.put(
-    apiRoute + `?email=testisbaddd@gmail.com`,
-    updatedDocument
-  )
+  let response1 = await axios.put(apiRoute + `?id=${id}`, updatedDocument)
   let response = response1.data
   expect(response.name).toEqual('testnomoreihate')
-  expect(response.email).toEqual('testisbaddd@gmail.com')
   expect(response.Telephone_number).toEqual(1015142324)
   expect(response.number_of_employees).toEqual(30)
   expect(response.members[0].name).toEqual(' ahmedt'),
@@ -60,8 +55,8 @@ const testPut = test('PartnerPut right data', async () => {
 })
 
 const testDelete = test('PartnerDelete right data', async () => {
-  let res = await axios.delete(apiRoute + `?email=testisbaddd@gmail.com`)
-  let response = await axios.get(apiRoute + `?email=testisbaddd@gmail.com`)
+  let res = await axios.delete(apiRoute + `?id=${id}`)
+  let response = await axios.get(apiRoute + `?id=${id}`)
   expect(response.data).toEqual(null)
 })
 
