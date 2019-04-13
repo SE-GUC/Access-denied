@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import bg from "../Images/bg.jpg";
 import { Link } from "react-router-dom";
+import { AppConsumer } from "../Containers/AppProvider";
 import {
   Hero,
   CallToAction,
@@ -26,9 +27,18 @@ const featherCheckmark = (
   </svg>
 );
 class Home extends Component {
+  scroll() {
+    setTimeout(() => window.scrollTo(0, 50), 200);
+  }
   render() {
+    this.scroll();
     return (
       <>
+        <AppConsumer>
+          {context => {
+            if (context.token) this.props.history.push("/profile");
+          }}
+        </AppConsumer>
         <Hero color="white" bg="black" backgroundImage={bg}>
           <Section heading="Lirten Hub" subhead="Your way to Success" />
           <span>
@@ -41,8 +51,8 @@ class Home extends Component {
             <CallToAction href="/About" mt={3}>
               <Link to="/About">About Us</Link>
             </CallToAction>
+            <ScrollDownIndicator />
           </span>
-          <ScrollDownIndicator />
         </Hero>
         <Section
           width={1}

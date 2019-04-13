@@ -43,7 +43,7 @@ class App extends Component {
     }
   }
   render() {
-    const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
+    // const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
     return (
       <AppProvider>
         <Router>
@@ -56,7 +56,7 @@ class App extends Component {
             />
           </div>
           {/* ) : null} */}
-          <div style={{ marginTop: marginVal }}>
+          <div style={{ marginTop: "50px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
