@@ -81,13 +81,14 @@ class App extends Component {
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
               <Route path="/search/" component={Search} />
+              <Route path="/member/" component={Member} />
               <Route path="/applyOnTask/" component={ApplyOnTask} />
               <Route path="/signup/" component={Register} />
-              <Route path="/eduForm" component={EducationalForm} />
-              <Route path="/coworkingForm" component={CoworkingForm} />
-              <Route path="/partnerForm" component={PartnerForm} />
-              <Route path="/consultancyForm" component={ConsultancyForm} />
-              <Route path="/memberForm" component={MemberForm} />
+              <Route path="/eduForm/" component={EducationalForm} />
+              <Route path="/coworkingForm/" component={CoworkingForm} />
+              <Route path="/partnerForm/" component={PartnerForm} />
+              <Route path="/consultancyForm/" component={ConsultancyForm} />
+              <Route path="/memberForm/" component={MemberForm} />
               {/* Some Components for grading purposes only */}
               <Route
                 path="/components/"
