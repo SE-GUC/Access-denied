@@ -16,7 +16,7 @@ const postFeedbackTest = test('post feedback', async () => {
   memberId = memberData._id
 
   let partner = {
-    name: 'testnomoreihate',
+    name: 'testnomoreihatez',
     Telephone_number: '1015142324',
     number_of_employees: '30',
     field_of_work: 'testwhyyyyy'
@@ -45,8 +45,6 @@ const postFeedbackTest = test('post feedback', async () => {
     revieweeModel: 'Partners'
   }
   reviewreply = (await axios.post(`${baseURL}/api/review`, body)).data
-  let docID = task.data._id
-  let deleteresponse = await axios.delete(`${baseURL}/api/task?id=${docID}`)
   expect(_.pick(reviewreply, Object.keys(body))).toEqual(body)
 })
 
@@ -63,10 +61,8 @@ const viewFeedbackTest = test('view feedback', async () => {
 
   expect(
     _.pick(
-      (await axios.get(
-        `${baseURL}/api/partner/getFeedback?id=5c9519e7cef4f345903ba59d`,
-        body
-      )).data[0],
+      (await axios.get(`${baseURL}/api/partner/getFeedback?id=${partnerId}}`))
+        .data[0],
       ['review']
     )
   ).toEqual({ review: reviewreply.review })
@@ -81,11 +77,10 @@ const deleteFeedbackTest = test('delete feedback', async () => {
     reviewerModel: 'Members',
     revieweeModel: 'Partners'
   }
-  reviewreply = (await axios.delete(
-    `${baseURL}/api/review?id=${reviewreply._id}`,
-    body
-  )).data
-  expect(_.pick(reviewreply, Object.keys(body))).toEqual(body)
+  reviewreplyz = (await axios.delete(
+    `${baseURL}/api/review?id=${reviewreply._id}`
+  )).data[0]
+  expect(_.pick(reviewreplyz, Object.keys(body))).toEqual(body)
 })
 
 module.exports = {

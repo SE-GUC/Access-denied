@@ -14,12 +14,7 @@ const EvaluationSchema = new mongoose.Schema({
     type: String
   }, //link to evaluation
 
-  duration: Number, //duration of evaluation
-
-  certificate: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Certification'
-  } //reference to certification
+  duration: Number //duration of evaluation
 })
 
 let Mymodel = mongoose.model('Evaluation', EvaluationSchema)

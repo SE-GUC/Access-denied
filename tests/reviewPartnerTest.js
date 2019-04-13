@@ -15,7 +15,7 @@ const funcs = {
     memberId = memberData._id
 
     let partner = {
-      name: 'testnomoreihate',
+      name: 'testnomoreihater',
       Telephone_number: '1015142324',
       number_of_employees: '30',
       field_of_work: 'testwhyyyyy'
