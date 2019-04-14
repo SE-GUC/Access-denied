@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 // import '../Screens/SearchPage.css';
-import S from "../Components/searchbar";
-import F from "../Components/filterPanel";
-import Results from "../Components/results";
-import { Redirect } from "react-router-dom";
+import S from '../Components/searchbar'
+import F from '../Components/filterPanel'
+import Results from '../Components/results'
+import { Redirect } from 'react-router-dom'
 
 import {
   Jumbotron,
@@ -15,116 +15,116 @@ import {
   CardColumns,
   Tabs,
   Nav
-} from "react-bootstrap";
+} from 'react-bootstrap'
 class SearchPage extends Component {
   constructor(props) {
-    super(props);
-    this.SetFilters = this.SetFilters.bind(this);
-    this.SetResults = this.SetResults.bind(this);
-    this.renderRedirect = this.renderRedirect.bind(this);
+    super(props)
+    this.SetFilters = this.SetFilters.bind(this)
+    this.SetResults = this.SetResults.bind(this)
+    this.renderRedirect = this.renderRedirect.bind(this)
   }
   state = {
     flip: true,
     results: Array(6).fill([]),
     newResults: Array(6).fill([]),
     tabs: [
-      "Certificates",
-      "Tasks",
-      "Members",
-      "Partners",
-      "CoworkingSpace",
-      "EducationalOrganisations"
+      'Certificates',
+      'Tasks',
+      'Members',
+      'Partners',
+      'CoworkingSpace',
+      'EducationalOrganisations'
     ],
     tags: [
       [
-        "Certification Name:",
-        "Educational Organization:",
-        "Method_of_payment:",
-        "Fees:",
-        "others:",
-        "skills:"
+        'Certification Name:',
+        'Educational Organization:',
+        'Method_of_payment:',
+        'Fees:',
+        'others:',
+        'skills:'
       ],
       [
-        "OwnerName:",
-        "effortLevel:",
-        "experienceLevel:",
-        "commitmentLevel:",
-        "timeRequired:",
-        "monetaryComp:",
-        "skills:",
-        "others:"
+        'OwnerName:',
+        'effortLevel:',
+        'experienceLevel:',
+        'commitmentLevel:',
+        'timeRequired:',
+        'monetaryComp:',
+        'skills:',
+        'others:'
       ],
-      ["place holder:"],
-      ["place holder:"],
-      ["place holder:"],
-      ["place holder:"]
+      ['place holder:'],
+      ['place holder:'],
+      ['place holder:'],
+      ['place holder:']
     ],
     routes: [
-      "Certificates",
-      "/taskview",
-      "Member",
-      "Partners",
-      "CoworkingSpace",
-      "EducationalOrganisations"
+      'Certificates',
+      '/taskview',
+      'Member',
+      'Partners',
+      'CoworkingSpace',
+      'EducationalOrganisations'
     ],
     redirect: false,
     goto: null
-  };
+  }
 
   componentDidMount() {
-    this.reset();
+    this.reset()
   }
   reset() {
-    fetch(`/search?q= `)
+    fetch(`/api/search?q= `)
       .then(res => res.json())
       .then(res => {
         this.setState({
           results: res.slice(),
           newResults: res.slice()
-        });
+        })
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
   renderRedirect = (route, id, b) => {
     if (b) {
       this.setState({
         redirect: true,
-        goto: route + "?id=" + id
-      });
+        goto: route + '?id=' + id
+      })
     }
-  };
+  }
   call() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.goto} />;
+      return <Redirect to={this.state.goto} />
     }
   }
   SetResults(res) {
     this.setState({
       results: res.slice(),
       newResults: res.slice()
-    });
+    })
 
-    console.log(this.state.results);
+    console.log(this.state.results)
   }
   SetFilters(i, res) {
     if (res === -1) {
       this.setState({
         newResults: this.state.results
-      });
+      })
     } else {
-      this.state.newResults[i] = res;
-      let t = this.state.newResults.slice();
+      this.state.newResults[i] = res
+      let t = this.state.newResults.slice()
       this.setState({
         newResults: t
-      });
+      })
       // this.forceUpdate()
     }
-    console.log(this.state.results);
+    console.log(this.state.results)
   }
   render() {
-    const tabs = this.state.tabs;
+    const tabs = this.state.tabs
 
     return (
       <div>
@@ -148,7 +148,7 @@ class SearchPage extends Component {
                           <Nav.Item>
                             <Nav.Link eventKey={p}>{p}</Nav.Link>
                           </Nav.Item>
-                        );
+                        )
                       })}
                     </Nav>
                   </Col>
@@ -165,7 +165,7 @@ class SearchPage extends Component {
                               flip={this.state.flip}
                             />
                           </Tab.Pane>
-                        );
+                        )
                       })}
                     </Tab.Content>
                   </Col>
@@ -187,7 +187,7 @@ class SearchPage extends Component {
                           redirect={this.state.redirect}
                         />
                       </Tab>
-                    );
+                    )
                   })}
                 </Tabs>
               </Col>
@@ -195,8 +195,8 @@ class SearchPage extends Component {
           </Container>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default SearchPage;
+export default SearchPage
