@@ -8,14 +8,14 @@
 
 const mongoose = require('mongoose')
 
-let requestSchema = new mongoose.Schema(
-  {
+let requestSchema = new mongoose.Schema({
   requester: String, //TODO :ref partner, members , users of the system
-  route:{
+  route: {
     type: String,
-    required: true},
+    required: true
+  },
   body: Object,
-  type:{
+  type: {
     type: String,
     required: true,
     enum: ['POST', 'PUT', 'GET', 'DELETE']
@@ -25,15 +25,12 @@ let requestSchema = new mongoose.Schema(
     type: Date,
     default: new Date()
   }
-  }
-  )
-
+})
 
 // delete mongoose.connection.models['requests']
 // delete mongoose.connection.models['request']
 
 let requestModel = mongoose.model('request', requestSchema)
-
 
 // requestModel.collection.drop()
 

@@ -1,6 +1,6 @@
 const fetch = require('node-fetch')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
-const edumodel = require('../models/EducationalOrganisation.model')
+const edumodel = require('../models/educationalOrganisation.model')
 let id = ''
 const funcs = {
   postEducationalOrganisation: async () => {

@@ -6,7 +6,7 @@ const testMemberApply = test('Member apply on task', async () => {
     name: 'z.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     skills: ['python', 'java']
   }
@@ -41,13 +41,13 @@ const testSearchTags = test('searching with keywords', async () => {
     name: 'z2.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     Keywords: ['k1']
   }
   let responsetask = await axios.post(`${baseURL}/api/task`, taskdocument)
   let searching = await axios.get(
-    `${baseURL}/search/filteredby` + `?tags=["k1"]`
+    `${baseURL}/search/filteredbyt` + `?tags=["k1"]`
   )
   let response = searching.data
   let taskId = responsetask.data._id
@@ -63,7 +63,7 @@ const testSearchSkills = test('searching for some skills', async () => {
     name: 'z2.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     skills: ['k1']
   }

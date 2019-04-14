@@ -26,5 +26,9 @@ const MemberSchema = new mongoose.Schema({
   memberSince: { type: Date, default: Date.now },
   expiryDate: Date
 })
+// delete mongoose.connection.models['Members']
+// delete mongoose.connection.models['Member']
+let MemberModel = mongoose.model('Members', MemberSchema)
 
-module.exports = mongoose.model('Members', MemberSchema)
+// MemberModel.collection.drop()
+module.exports = MemberModel

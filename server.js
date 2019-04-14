@@ -78,9 +78,15 @@ app.use('/api/message', messageRoute)
 app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/skills', skillsRoute)
-app.use('/search', searchRoute)
+app.use('/api/search', searchRoute)
 app.use('/api', requestRoute)
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 io.on('connection', () => {
   console.log('Connected...')
 })
@@ -93,7 +99,7 @@ app.use((error, request, response, next) => {
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
-      autoIndex: false 
+    autoIndex: false
   })
   .then(() => {
     console.log('Connected to MongoDB')

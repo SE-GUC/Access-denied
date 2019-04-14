@@ -4,6 +4,7 @@ const router = express.Router()
 const validator = require('../validations/partnerValidations')
 const axios = require('axios')
 const reviewModel = require('../models/review.model')
+const baseURL = process.env.BASEURL || 'http://localhost:3001'
 
 //TODO:check if its admin or not aka {request.query.token_id}
 //if it's admin it will do its job
@@ -65,6 +66,7 @@ router.get('/', (req, res) => {
       res.json(doc)
     })
     .catch(err => {
+      console.log(err)
       res.status(500).json(err)
     })
 })
@@ -204,6 +206,25 @@ router.get('/getFeedback', (req, res) => {
     })
     .catch(err => {
       res.status(500).json(err)
+    })
+})
+router.put('/chooseAssignee', (req, res) => {
+  let taskID = req.query.id
+  if (!taskID) {
+    return res.send('No task provided')
+  }
+  axios
+    .put(`${baseURL}/api/task/chooseAssignee?id=${taskID}`, {
+      assignee: req.body.assignee
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send(doc)
+      }
+      res.status(201).json(doc.data)
+    })
+    .catch(err => {
+      res.send('err')
     })
 })
 
