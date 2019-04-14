@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import qs from "query-string";
 import "../App.css";
 import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import qs from "query-string";
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import TaskForm from "./TaskForm";
 const axios = require("axios");
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && !isNaN(n - 0);
@@ -30,48 +32,77 @@ class Partner extends Component {
       events: null,
       activeId: "1",
       loaded: false,
-      redirect: false,
       open: false,
-      dialogText: "",
-      newData: ""
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null,
+      renderTask:false,
     };
   }
-  setRedirect = () => {
+  
+  
+  createTask = () => {
+    
     this.setState({
-      redirect: true
-    });
-  };
+      createTask: true,
+      activeId: "6"
+    })
+  }
+
   handleClickOpen = name => event => {
-    this.setState({
+    
+    this.setState({ 
       open: true,
       dialogText: name
     });
+   
+    
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleApply = () => {
-    this.setState({ open: false });
-    const textInput = this.state.dialogText;
-    const data = {
-      name: this.state.newData
-    };
-    axios.put(`/api/partner?id=` + this.state.id, data);
-  };
+  handleApply =()=>{
+    
+    if(this.state.dialogText==="address"){
+      
+      const data = {
+        "address":{
+          "city":this.state.city,
+          "area": this.state.area,
+          "street": this.state.street
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/target" />;
+        }
+      }
+      axios.put(`/api/partner?id=`+this.state.id, data)
+    }else{
+      const data = {
+        [this.state.dialogText] :this.state.newData
+      }
+      axios.put(`/api/partner?id=`+this.state.id, data)
     }
-  };
+    this.setState({ open: false })
+  }
 
+  
   handleChange = name => event => {
     this.setState({
-      newData: event.target.value
-    });
-    console.log(this.state.newData);
+    [name]: event.target.value,
+  
+    });   
+    
   };
+  handleClick(e) {
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+     
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+
+    }
+  }
 
   componentDidMount() {
     let id = this.state.id;
@@ -100,13 +131,13 @@ class Partner extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Name")}
+                      onClick={this.handleClickOpen("name")}
                     >
                       edit
                     </Button>
@@ -120,13 +151,13 @@ class Partner extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Telephone")}
+                      onClick={this.handleClickOpen("Telephone_number")}
                     >
                       edit
                     </Button>
@@ -143,13 +174,13 @@ class Partner extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Address")}
+                      onClick={this.handleClickOpen("address")}
                     >
                       edit
                     </Button>
@@ -163,13 +194,13 @@ class Partner extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Number of Employees")}
+                      onClick={this.handleClickOpen("number_of_employees")}
                     >
                       edit
                     </Button>
@@ -183,13 +214,13 @@ class Partner extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Field of Work")}
+                      onClick={this.handleClickOpen("field_of_work")}
                     >
                       edit
                     </Button>
@@ -204,13 +235,13 @@ class Partner extends Component {
                   <td>
                     {" "}
                     <div>
-                      {this.renderRedirect()}{" "}
+                      
                       <Button
                         variant="outlined"
                         size="small"
                         color="primary"
                         hidden={!this.state.verified}
-                        onClick={this.handleClickOpen("Partners")}
+                        onClick={this.handleClickOpen("other_partners")}
                       >
                         edit
                       </Button>
@@ -285,6 +316,7 @@ class Partner extends Component {
                 Date: <h6>{new Date(task.date).toDateString()} </h6>
               </div>
             </div>
+            
           </div>
         ));
         currentState.loaded = true;
@@ -323,19 +355,13 @@ class Partner extends Component {
         console.error(err);
       }); //TBD
   }
-  handleClick(e) {
-    if (isNumber(e.target.id)) {
-      let currentState = this.state;
-      currentState.activeId = e.target.id;
-      this.setState(currentState);
-    }
-  }
   render() {
     console.log(this.state);
     return (
       <div>
         <div>
-          <Dialog
+           {(this.state.dialogText !== "address")?
+           <Dialog
             open={this.state.open}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
@@ -345,10 +371,9 @@ class Partner extends Component {
               <TextField
                 autoFocus
                 margin="dense"
-                id="name"
-                label={this.state.dialogText}
+                
                 onChange={this.handleChange("newData")}
-                type="email"
+                
                 fullWidth
               />
             </DialogContent>
@@ -360,7 +385,61 @@ class Partner extends Component {
                 Apply
               </Button>
             </DialogActions>
-          </Dialog>
+          </Dialog>:
+           <Dialog
+           open={this.state.open}
+           onClose={this.handleClose}
+           aria-labelledby="form-dialog-title"
+         >
+           <DialogTitle id="form-dialog-title" />
+           <DialogContent>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="city"
+               //Value={this.state.city}
+               onChange={this.handleChange("city")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="area"
+              //  Value={this.state.area}
+               onChange={this.handleChange("area")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="street"
+               //Value={this.state.street}
+               onChange={this.handleChange("street")}
+               type="email"
+               fullWidth
+             />
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={this.handleClose} color="primary">
+               Cancel
+             </Button>
+             <Button onClick={this.handleApply} color="primary">
+               Apply
+             </Button>
+           </DialogActions>
+         </Dialog>
+          
+        }
+
+           
+          
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
@@ -443,7 +522,7 @@ class Partner extends Component {
               Members
             </li>
           </ul>
-          {(function(state) {
+          {(function(state,thisCopy) {
             switch (state.activeId) {
               case "1":
                 if (!state.loaded)
@@ -490,15 +569,44 @@ class Partner extends Component {
                       <span className="sr-only">Loading...</span>
                     </div>
                   );
-                if (!state.tasks || state.tasks.length === 0)
-                  return <h4 className="text-muted">No Tasks Yet..</h4>;
+                  
+                if (!state.tasks || state.tasks.length === 0){
+                  return (
+                    <div>
+                   <Fab color="primary" aria-label="Add" onClick={thisCopy.createTask}>
+                      <AddIcon/>
+                      </Fab>
+                      
+                      <h4 className="text-muted">No Tasks Yet..</h4>
+                    </div>
+                  )
+
+                  
+                    
+                  
+
+                }
+                     
                 return (
+                  <div>
+                  <Fab color="primary" aria-label="Add" onClick={thisCopy.createTask}>
+                      <AddIcon/>
+                      </Fab>
+                  
+                  
                   <ul
                     className="list-group d-flex flex-wrap flex-row"
                     style={{ width: "100%" }}
                   >
+                  
+                 
                     {state.tasks}
                   </ul>
+                  
+                  </div>
+
+                
+                  
                 );
               case "4":
                 if (!state.loaded)
@@ -539,10 +647,18 @@ class Partner extends Component {
                     {state.members}
                   </ul>
                 );
+              case "6": 
+              if (state.createTask)
+              return (
+                <TaskForm/>
+                
+              ); 
+                  
+              break
               default:
                 break;
             }
-          })(this.state)}
+          })(this.state,this)}
         </div>
       </div>
     );
