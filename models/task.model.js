@@ -103,8 +103,6 @@ taskSchema.virtual('Tags').get(function get() {
 //delete mongoose.connection.models['Task']
 let taskModel = mongoose.model('Task', taskSchema)
 
-
-
 // taskModel.collection.drop()
 
 module.exports = taskModel

@@ -30,7 +30,5 @@ const MemberSchema = new mongoose.Schema({
 // delete mongoose.connection.models['Member']
 let MemberModel = mongoose.model('Members', MemberSchema)
 
-
-
 // MemberModel.collection.drop()
 module.exports = MemberModel

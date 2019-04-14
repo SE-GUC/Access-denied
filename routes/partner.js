@@ -209,23 +209,23 @@ router.get('/getFeedback', (req, res) => {
     })
 })
 router.put('/chooseAssignee', (req, res) => {
-  let taskID=req.query.id
+  let taskID = req.query.id
   if (!taskID) {
     return res.send('No task provided')
   }
   axios
-  .put(`${baseURL}/api/task/chooseAssignee?id=${taskID}`, {
-    assignee:req.body.assignee
-  })
-  .then(doc => {
-    if (!doc || doc.data.length === 0) {
-      return res.send(doc)
-    }
-    res.status(201).json(doc.data)
-  })
-  .catch(err => {
-    res.send("err")
-  })
+    .put(`${baseURL}/api/task/chooseAssignee?id=${taskID}`, {
+      assignee: req.body.assignee
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send(doc)
+      }
+      res.status(201).json(doc.data)
+    })
+    .catch(err => {
+      res.send('err')
+    })
 })
 
 module.exports = router

@@ -53,7 +53,6 @@ const baseURL = process.env.BASEURL || 'http://localhost:3001'
 // ) else "the rest of the code"
 
 router.post('/', (request, response) => {
-
   if (!request.body) {
     return response.status(400).send('400: Bad Request')
   }
@@ -86,8 +85,7 @@ router.post('/', (request, response) => {
  * @requires _id
  */
 
-
-router.get('/', (request, response) => {  
+router.get('/', (request, response) => {
   let documentID = request.query.id
 
   if (!documentID) {

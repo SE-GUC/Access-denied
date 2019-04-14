@@ -53,7 +53,6 @@ function searcht(tags, alltasks) {
   return tasks
 }
 router.get('/', (req, res) => {
-  
   let resolved = false
   // if (!req.query.q) {
   //   return res.status(400).send('Query is Missing')
@@ -78,8 +77,10 @@ router.get('/', (req, res) => {
         res.json(result.flat(Infinity))
       }
     })
-    .catch(err => {console.log(err)
-    res.status(500).json(err)})
+    .catch(err => {
+      console.log(err)
+      res.status(500).json(err)
+    })
 })
 router.get('/sk', (req, res) => {
   //how the array of skills will come , may need to stringfy the array
@@ -108,7 +109,7 @@ router.get('/filteredbyt', (req, res) => {
   console.log(JSON.stringify(q))
 
   let tags = JSON.parse(q)
-console.log(tags)
+  console.log(tags)
   if (!tags) {
     return res.status(400).status('400: no criteria has been specified')
   }
@@ -132,7 +133,7 @@ router.get('/filteredbycert', (req, res) => {
   console.log(JSON.stringify(q))
 
   let tags = JSON.parse(q)
-console.log(tags)
+  console.log(tags)
   if (!tags) {
     return res.status(400).status('400: no criteria has been specified')
   }
@@ -156,7 +157,7 @@ router.get('/filteredbym', (req, res) => {
   console.log(JSON.stringify(q))
 
   let tags = JSON.parse(q)
-console.log(tags)
+  console.log(tags)
   if (!tags) {
     return res.status(400).status('400: no criteria has been specified')
   }
