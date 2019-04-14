@@ -1,6 +1,6 @@
 import React from "react";
-import { appendFileSync } from "fs";
-//  import '../Screens/SearchPage.css';
+// import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { InputGroup, Button, Form } from "react-bootstrap";
 class Searchbar extends React.Component {
   constructor(props) {
@@ -35,7 +35,13 @@ class Searchbar extends React.Component {
       </InputGroup>
     );
   }
-
+  // getBooks = (res) => dispatch => {
+  //   dispatch({
+  //     type: SET_RES,
+  //     payload: res
+  //   })
+  
+  // };
   handleChange(event) {
     //to do search function
     let y = event.value;
@@ -51,5 +57,10 @@ class Searchbar extends React.Component {
       });
   }
 }
-
-export default Searchbar;
+// Searchbar.propTypes = {
+// 	getBooks: PropTypes.func.isRequired
+// };
+// const mapStateToProps = state => ({
+// 	results: state.books.books
+// });connect(mapStateToProps,{ getBooks})
+export default (Searchbar);
