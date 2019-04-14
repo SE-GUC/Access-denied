@@ -44,5 +44,11 @@ const consultancySchema = new mongoose.Schema({
     }
   ]
 })
+// delete mongoose.connection.models['ConsultancyAgencies']
+// delete mongoose.connection.models['ConsultancyAgencie']
+let consultancyModel = mongoose.model('ConsultancyAgencies', consultancySchema)
 
-module.exports = mongoose.model('ConsultancyAgencies', consultancySchema)
+
+
+// consultancyModel.collection.drop()
+module.exports = consultancyModel

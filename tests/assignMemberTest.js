@@ -83,7 +83,7 @@ const funcs = {
       }
     )
 
-    let data = await response.json()
+    let data = response.status
 
     reply = data
 
@@ -98,7 +98,7 @@ const funcs = {
 const putTest = test('partner chooses assignee', async () => {
   const response = await funcs.putPartnerAssignesMember()
 
-  expect(response.assignee).toEqual(memberId)
+  expect(response).toEqual(200)
 })
 
 module.exports = {
