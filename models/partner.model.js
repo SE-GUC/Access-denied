@@ -9,10 +9,7 @@ const PartnerSchema = new mongoose.Schema({
     unique: true
   },
   //2- contact info,
-  email: {
-    type: String,
-    unique: true
-  },
+
   Telephone_number: {
     type: Number
   },
