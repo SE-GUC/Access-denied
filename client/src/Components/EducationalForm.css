@@ -1,0 +1,13 @@
+.theform {
+  margin-left: 100px;
+  margin-right: 150px;
+
+  margin-top: 20px;
+  margin-bottom: 60px;
+  padding-left: 200px;
+  left: 100px;
+}
+
+#FormLabel {
+  color: black;
+}
