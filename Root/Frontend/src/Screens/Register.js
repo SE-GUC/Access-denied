@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./Register.css";
 import ListDivider from "../Components/ListDividers";
+import { AppConsumer } from "../Containers/AppProvider";
 
 class Register extends Component {
   constructor(props) {
@@ -18,6 +19,11 @@ class Register extends Component {
   render() {
     return (
       <div id="cont">
+        <AppConsumer>
+          {context => {
+            if (context.token) this.props.history.push("/profile");
+          }}
+        </AppConsumer>
         <div id="sign">
           <br />
           <label id="labelR">Who are you?</label>
