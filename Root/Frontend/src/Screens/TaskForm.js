@@ -118,7 +118,7 @@ class TaskForm extends React.Component {
   handleClick() {
     const data = {
       name: this.state.name,
-      owner:this.state.id,
+      owner: this.state.id,
       description: this.state.Description,
       extraNotes: this.state.extraNotes,
       effortLevel: this.state.effortLevel,
@@ -128,7 +128,7 @@ class TaskForm extends React.Component {
       monetaryComp: this.state.monetaryComp
     };
     axios.post("/api/task/", data);
-    console.log(this.state)
+    console.log(this.state);
   }
   state = {
     name: "",
@@ -142,9 +142,9 @@ class TaskForm extends React.Component {
     monetaryComp: "",
     timeRequired: "",
     token: null,
-    id : null,
+    id: null,
     type: null,
-    changed : false
+    changed: false
   };
 
   handleChange = name => event => {
@@ -160,169 +160,169 @@ class TaskForm extends React.Component {
 
     return (
       <div>
-     <AppConsumer>
-      {context => {
-        if (this.state.changed) return;
-        this.setState({
-          token: context.token,
-          id: context.id,
-          type: context.type,
-          changed: true
-        });
-      }}
-    </AppConsumer>
-      
-      <form noValidate autoComplete="on">
-        <TextField
-          required
-          id="outlined-name"
-          label="Title"
-          className={classes.textField}
-          value={this.state.name}
-          onChange={this.handleChange("name")}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          required
-          id="outlined-description"
-          label="Description"
-          multiline
-          rows="20"
-          value={this.state.Description}
-          onChange={this.handleChange("Description")}
-          defaultValue={this.state.Description}
-          className={classes.textField}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-extranotes"
-          label="Extra Notes"
-          multiline
-          rowsMax="4"
-          className={classes.textField}
-          value={this.state.extraNotes}
-          onChange={this.handleChange("extraNotes")}
-          margin="normal"
-          variant="outlined"
-        />
-
-        <br />
-        <TextField
-          id="filled-select-effortlevel"
-          select
-          label="Effort Level"
-          className={classes.textField}
-          value={this.state.effortlevel}
-          onChange={this.handleChange("effortlevel")}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu
-            }
+        <AppConsumer>
+          {context => {
+            if (this.state.changed) return;
+            this.setState({
+              token: context.token,
+              id: context.id,
+              type: context.type,
+              changed: true
+            });
           }}
-          margin="normal"
-          variant="filled"
-        >
-          {level.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <br />
-        <TextField
-          id="filled-select-commitmentLevel"
-          select
-          label="commitment Level"
-          className={classes.textField}
-          value={this.state.commitmentLevel}
-          onChange={this.handleChange("commitmentLevel")}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu
-            }
-          }}
-          margin="normal"
-          variant="filled"
-        >
-          {level.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <br />
-        <TextField
-          id="outlined-experienceLevel"
-          label="experience Level"
-          className={classes.textField}
-          value={this.state.experienceLevel}
-          onChange={this.handleChange("experienceLevel")}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="outlined-timeRequired"
-          label="time Required"
-          className={classes.textField}
-          value={this.state.timeRequired}
-          onChange={this.handleChange("timeRequired")}
-          margin="normal"
-          variant="outlined"
-        />
-        <br />
-        <TextField
-          id="filled-select-currency"
-          select
-          label="Select"
-          className={classes.textField}
-          value={this.state.currency}
-          onChange={this.handleChange("currency")}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu
-            }
-          }}
-          helperText="Please select your currency"
-          margin="normal"
-          variant="filled"
-        >
-          {currencies.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </TextField>
-        <TextField
-          id="outlined-name"
-          label="monetaryComp"
-          className={classes.textField}
-          value={this.state.monetaryComp}
-          onChange={this.handleChange("monetaryComp")}
-          margin="normal"
-          variant="outlined"
-        />
+        </AppConsumer>
 
-        <br />
+        <form noValidate autoComplete="on">
+          <TextField
+            required
+            id="outlined-name"
+            label="Title"
+            className={classes.textField}
+            value={this.state.name}
+            onChange={this.handleChange("name")}
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          <TextField
+            required
+            id="outlined-description"
+            label="Description"
+            multiline
+            rows="20"
+            value={this.state.Description}
+            onChange={this.handleChange("Description")}
+            defaultValue={this.state.Description}
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          <TextField
+            id="outlined-extranotes"
+            label="Extra Notes"
+            multiline
+            rowsMax="4"
+            className={classes.textField}
+            value={this.state.extraNotes}
+            onChange={this.handleChange("extraNotes")}
+            margin="normal"
+            variant="outlined"
+          />
 
-        <Fab
-          variant="extended"
-          color="primary"
-          aria-label="Add"
-          className={classes.margin}
-          onClick={this.handleClick}
-        >
-          <NavigationIcon className={classes.extendedIcon} />
-          Submit
-        </Fab>
-        {/* <Alert >
+          <br />
+          <TextField
+            id="filled-select-effortlevel"
+            select
+            label="Effort Level"
+            className={classes.textField}
+            value={this.state.effortlevel}
+            onChange={this.handleChange("effortlevel")}
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu
+              }
+            }}
+            margin="normal"
+            variant="filled"
+          >
+            {level.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <br />
+          <TextField
+            id="filled-select-commitmentLevel"
+            select
+            label="commitment Level"
+            className={classes.textField}
+            value={this.state.commitmentLevel}
+            onChange={this.handleChange("commitmentLevel")}
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu
+              }
+            }}
+            margin="normal"
+            variant="filled"
+          >
+            {level.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <br />
+          <TextField
+            id="outlined-experienceLevel"
+            label="experience Level"
+            className={classes.textField}
+            value={this.state.experienceLevel}
+            onChange={this.handleChange("experienceLevel")}
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          <TextField
+            id="outlined-timeRequired"
+            label="time Required"
+            className={classes.textField}
+            value={this.state.timeRequired}
+            onChange={this.handleChange("timeRequired")}
+            margin="normal"
+            variant="outlined"
+          />
+          <br />
+          <TextField
+            id="filled-select-currency"
+            select
+            label="Select"
+            className={classes.textField}
+            value={this.state.currency}
+            onChange={this.handleChange("currency")}
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu
+              }
+            }}
+            helperText="Please select your currency"
+            margin="normal"
+            variant="filled"
+          >
+            {currencies.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            id="outlined-name"
+            label="monetaryComp"
+            className={classes.textField}
+            value={this.state.monetaryComp}
+            onChange={this.handleChange("monetaryComp")}
+            margin="normal"
+            variant="outlined"
+          />
+
+          <br />
+
+          <Fab
+            variant="extended"
+            color="primary"
+            aria-label="Add"
+            className={classes.margin}
+            onClick={this.handleClick}
+          >
+            <NavigationIcon className={classes.extendedIcon} />
+            Submit
+          </Fab>
+          {/* <Alert >
         This is a success alert — check it out!
         </Alert> */}
-      </form>
+        </form>
       </div>
     );
   }
