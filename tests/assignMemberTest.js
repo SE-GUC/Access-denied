@@ -51,7 +51,6 @@ const funcs = {
           })
           let data = await response.json()
           reply = data
-          let docID = task.data._id
           let deleteresponse = await axios.delete(
             `${baseURL}/api/task` + `?id=${taskId}`
           )
