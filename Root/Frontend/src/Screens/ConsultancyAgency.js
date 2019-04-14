@@ -151,9 +151,7 @@ class ConsultancyAgency extends Component {
               >
                 {task.name}
               </a>
-              <h6 className="card-subtitle mb-2 text-muted">
-                {task.isComplete ? "Done" : "In Progress"}
-              </h6>
+              <h6 className="card-subtitle mb-2 text-muted">{task.phase}</h6>
               <div className="card-text">
                 <h6>
                   From:{" "}
