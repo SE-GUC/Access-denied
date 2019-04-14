@@ -4,20 +4,23 @@ import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
 import { Link } from "react-router-dom";
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 class Member extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
       name: null,
       basicInfo: null,
       certification: null,
@@ -40,7 +43,12 @@ class Member extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/member?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/member?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -170,9 +178,11 @@ class Member extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
@@ -198,7 +208,7 @@ class Member extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           >
             <div className="d-flex flex-column text-capitalize text-light align-self-end">

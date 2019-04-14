@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
 import { Redirect } from "react-router-dom";
@@ -12,13 +12,16 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 const axios = require("axios");
-
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 class Edu extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
       name: null,
       basicInfo: null,
       courses: null,
@@ -62,13 +65,6 @@ class Edu extends Component {
       return <Redirect to="/target" />;
     }
   };
-  handleClick = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
-
-    console.log(this.state.name);
-  };
   handleChange = name => event => {
     this.setState({
       newData: event.target.value
@@ -83,7 +79,12 @@ class Edu extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/educationalorganisation?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/educationalorganisation?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -103,6 +104,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Name")}
                     >
                       edit
@@ -122,6 +124,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Contact information :")}
                     >
                       edit
@@ -144,6 +147,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Address:")}
                     >
                       edit
@@ -163,6 +167,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Vision")}
                     >
                       edit
@@ -182,6 +187,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Mission")}
                     >
                       edit
@@ -207,6 +213,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Partners")}
                     >
                       edit
@@ -228,6 +235,7 @@ class Edu extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Extra info: ")}
                     >
                       edit
@@ -263,9 +271,11 @@ class Edu extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
@@ -319,7 +329,7 @@ class Edu extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>

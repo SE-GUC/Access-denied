@@ -17,7 +17,7 @@ import MemberForm from "./Components/MemberForm";
 import TaskStatus from "./Components/taskStatus";
 import ApplyMemberTask from "./Components/ApplyMemberTask";
 import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
-
+import Logout from "./Components/Logout";
 import About from "./Screens/About";
 import Partner from "./Screens/Partner";
 import EduOrganization from "./Screens/EduOrganization";
@@ -25,7 +25,8 @@ import Coworking from "./Screens/Coworking";
 import Chat from "./Components/Chat";
 import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
-
+import Profile from "./Screens/Profile";
+import taskview from "./Screens/taskview";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -42,65 +43,41 @@ class App extends Component {
     }
   }
   render() {
-    const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
+    // const marginVal = window.location.pathname !== "/" ? "50px" : "0%";
     return (
       <AppProvider>
         <Router>
-          {window.location.pathname !== "/" &&
-          window.location.pathname !== "/login" ? (
-            <div>
-              <NavBar
-                notification={this.state.notify}
-                handleNotification={this.handleNotification}
-              />
-            </div>
-          ) : null}
-          <div style={{ marginTop: marginVal }}>
+          {/* {window.location.pathname !== "/" &&
+          window.location.pathname !== "/login" ? ( */}
+          <div>
+            <NavBar
+              notification={this.state.notify}
+              handleNotification={this.handleNotification}
+            />
+          </div>
+          {/* ) : null} */}
+          <div style={{ marginTop: "50px" }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
               <Route
-                path="/profile/"
-                component={props => (
-                  <Member
-                    {...props}
-                    id="5cafc26b348fd72d1ca019e9"
-                    email="Mahmood@gmail.com"
-                  />
-                )}
+                path="/member/"
+                component={props => <Member {...props} />}
               />
               <Route
                 path="/partner/"
-                component={props => (
-                  <Partner
-                    {...props}
-                    id="5cb084456ffc2f11609dda0b"
-                    email="than2sq@hallf.gone"
-                  />
-                )}
+                component={props => <Partner {...props} />}
               />
               <Route
                 path="/eduorganization/"
-                component={props => (
-                  <EduOrganization
-                    {...props}
-                    id="5cb07ed0fe0b4e1f38d3f4f9"
-                    email="than2s@half.gonee"
-                  />
-                )}
+                component={props => <EduOrganization {...props} />}
               />
               <Route
                 path="/coworking/"
-                component={props => (
-                  <Coworking
-                    {...props}
-                    id="5cb07c2ffe0b4e1f38d3f4f6"
-                    email="Coworking@space.com"
-                  />
-                )}
+                component={props => <Coworking {...props} />}
               />
-
               <Route path="/login/" component={Login} />
+              <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
               <Route path="/search/" component={Search} />
@@ -112,31 +89,11 @@ class App extends Component {
               <Route path="/partnerForm/" component={PartnerForm} />
               <Route path="/consultancyForm/" component={ConsultancyForm} />
               <Route path="/memberForm/" component={MemberForm} />
-              {/* Some Components for grading purposes only */}
-              <Route
-                path="/components/"
-                render={() => (
-                  <>
-                    <ConsultancyForm />
-                    <CoworkingForm />
-                    <EducationalForm />
-                    <MemberForm />
-                    <PartnerForm />
-                    <TaskStatus />
-                    <FilterPanel />
-                  </>
-                )}
-              />
-              {/* Some Components for grading purposes only */}
-              <Route
-                path="/review/"
-                render={props => <Review {...props} type="member" />}
-              />
+              <Route path="/taskview/" component={taskview} />
+              <Route path="/review/" component={Review} />
+              <Route path="/logout/" component={Logout} />
             </Switch>
-            <Chat
-              id="5ca0b858bc01d360848affbb"
-              handleNotification={this.handleNotification}
-            />
+            <Chat handleNotification={this.handleNotification} />
           </div>
         </Router>
       </AppProvider>

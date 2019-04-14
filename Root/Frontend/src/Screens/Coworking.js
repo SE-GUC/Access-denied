@@ -4,7 +4,7 @@ import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
 import Button from "@material-ui/core/Button";
@@ -19,6 +19,9 @@ const axios = require("axios");
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 
 class Coworking extends Component {
   constructor(props) {
@@ -26,6 +29,8 @@ class Coworking extends Component {
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
+
       name: null,
       basicInfo: null,
       schedule: null,
@@ -48,6 +53,7 @@ class Coworking extends Component {
       open: true,
       dialogText: name
     });
+    console.log("wow");
   };
 
   handleClose = () => {
@@ -67,13 +73,7 @@ class Coworking extends Component {
       return <Redirect to="/target" />;
     }
   };
-  handleClick = name => event => {
-    this.setState({
-      [name]: event.target.value
-    });
 
-    console.log(this.state.name);
-  };
   handleChange = name => event => {
     this.setState({
       newData: event.target.value
@@ -88,7 +88,12 @@ class Coworking extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/coworking?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/coworking?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -108,6 +113,7 @@ class Coworking extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Name")}
                     >
                       edit
@@ -127,6 +133,7 @@ class Coworking extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Phone No.:")}
                     >
                       edit
@@ -149,6 +156,7 @@ class Coworking extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Address:")}
                     >
                       edit
@@ -170,6 +178,7 @@ class Coworking extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("workingHours")}
                     >
                       edit
@@ -189,6 +198,7 @@ class Coworking extends Component {
                       variant="outlined"
                       size="small"
                       color="primary"
+                      hidden={!this.state.verified}
                       onClick={this.handleClickOpen("Rooms at your service")}
                     >
                       edit
@@ -209,6 +219,7 @@ class Coworking extends Component {
                         variant="outlined"
                         size="small"
                         color="primary"
+                        hidden={!this.state.verified}
                         onClick={this.handleClickOpen("details and info")}
                       >
                         edit
@@ -230,9 +241,11 @@ class Coworking extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
@@ -286,7 +299,7 @@ class Coworking extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>
