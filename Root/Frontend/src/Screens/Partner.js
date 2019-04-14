@@ -4,7 +4,6 @@ import "../App.css";
 import profile from "../Images/profile.jpg";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -33,25 +32,24 @@ class Partner extends Component {
       events: null,
       activeId: "1",
       loaded: false,
-      redirect: false,
       open: false,
-      dialogText:"",
-      newData:"",
-      city:"",
-      area:"",
-      street:""
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null,
+      renderTask:false,
     };
   }
-  setRedirect = () => {
+  
+  
+  createTask = () => {
+    
     this.setState({
-      redirect: true
-    });
+      createTask: true,
+      activeId: "6"
+    })
   }
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/newtask" />;
-    }
-  };
 
   handleClickOpen = name => event => {
     
@@ -99,8 +97,10 @@ class Partner extends Component {
   handleClick(e) {
     if (isNumber(e.target.id)) {
       let currentState = this.state;
+     
       currentState.activeId = e.target.id;
       this.setState(currentState);
+
     }
   }
 
@@ -568,8 +568,7 @@ class Partner extends Component {
                 if (!state.tasks || state.tasks.length === 0){
                   return (
                     <div>
-                      {thisCopy.renderRedirect()}
-                  <Fab color="primary" aria-label="Add" onClick={()=> thisCopy.setRedirect()}>
+                   <Fab color="primary" aria-label="Add" onClick={thisCopy.createTask}>
                       <AddIcon/>
                       </Fab>
                       
@@ -585,8 +584,7 @@ class Partner extends Component {
                      
                 return (
                   <div>
-                  {thisCopy.renderRedirect()}
-                  <Fab color="primary" aria-label="Add" onClick={()=> thisCopy.setRedirect()}>
+                  <Fab color="primary" aria-label="Add" onClick={thisCopy.createTask}>
                       <AddIcon/>
                       </Fab>
                   
@@ -645,20 +643,13 @@ class Partner extends Component {
                   </ul>
                 );
               case "6": 
-              if (!state.loaded)
-                  return (
-                    <div
-                      className="spinner-border"
-                      role="status"
-                      style={{ marginLeft: "35%", marginTop: "15%" }}
-                    >
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  );
+              if (state.createTask)
+              return (
+                <TaskForm/>
                 
-                return (
-                  <TaskForm/>
-                ); 
+              ); 
+                  
+              break
               default:
                 break;
             }

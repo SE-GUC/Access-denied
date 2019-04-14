@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Alert from "react-bootstrap/Alert";
+
 import { withStyles } from "@material-ui/core/styles";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 import NavigationIcon from "@material-ui/icons/Navigation";
 import Fab from "@material-ui/core/Fab";
+import { AppConsumer } from "../Containers/AppProvider";
 const axios = require("axios");
 
 const styles = theme => ({
@@ -117,6 +118,7 @@ class TaskForm extends React.Component {
   handleClick() {
     const data = {
       name: this.state.name,
+      owner:this.state.id,
       description: this.state.Description,
       extraNotes: this.state.extraNotes,
       effortLevel: this.state.effortLevel,
@@ -126,6 +128,7 @@ class TaskForm extends React.Component {
       monetaryComp: this.state.monetaryComp
     };
     axios.post("/api/task/", data);
+    console.log(this.state)
   }
   state = {
     name: "",
@@ -137,7 +140,11 @@ class TaskForm extends React.Component {
     experienceLevel: "",
     currency: "",
     monetaryComp: "",
-    timeRequired: ""
+    timeRequired: "",
+    token: null,
+    id : null,
+    type: null,
+    changed : false
   };
 
   handleChange = name => event => {
@@ -152,6 +159,19 @@ class TaskForm extends React.Component {
     const { classes } = this.props;
 
     return (
+      <div>
+     <AppConsumer>
+      {context => {
+        if (this.state.changed) return;
+        this.setState({
+          token: context.token,
+          id: context.id,
+          type: context.type,
+          changed: true
+        });
+      }}
+    </AppConsumer>
+      
       <form noValidate autoComplete="on">
         <TextField
           required
@@ -303,6 +323,7 @@ class TaskForm extends React.Component {
         This is a success alert — check it out!
         </Alert> */}
       </form>
+      </div>
     );
   }
 }

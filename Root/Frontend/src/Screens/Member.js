@@ -43,23 +43,13 @@ class Member extends Component {
       loaded: false,
       redirect: false,
       open: false,
-      dialogText:"",
-      newData:"",
-      city:"",
-      area:"",
-      street:""
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null
       
     };
-  }
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  }
-  checkAttribute = name => event => {
-    
-    
-
   }
   handleClickOpen = name => event => {
     
@@ -96,11 +86,7 @@ class Member extends Component {
     this.setState({ open: false })
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/target" />;
-    }
-  };
+  
   handleChange = name => event => {
     this.setState({
     [name]: event.target.value,
@@ -108,6 +94,7 @@ class Member extends Component {
     });   
     
   };
+  
 
 
   componentDidMount() {
@@ -132,7 +119,7 @@ class Member extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                   
                     <Button
                       variant="outlined"
                       size="small"
@@ -152,7 +139,7 @@ class Member extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
@@ -175,7 +162,7 @@ class Member extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
@@ -302,7 +289,7 @@ class Member extends Component {
     console.log(this.state);
     return (
       <div>
-         <div>
+          <div>
            {(this.state.dialogText !== "address")?
            <Dialog
             open={this.state.open}
@@ -341,6 +328,7 @@ class Member extends Component {
                margin="dense"
                id="name"
                label="city"
+               //Value={this.state.city}
                onChange={this.handleChange("city")}
                type="email"
                fullWidth
@@ -351,6 +339,7 @@ class Member extends Component {
                margin="dense"
                id="name"
                label="area"
+              //  Value={this.state.area}
                onChange={this.handleChange("area")}
                type="email"
                fullWidth
@@ -361,6 +350,7 @@ class Member extends Component {
                margin="dense"
                id="name"
                label="street"
+               //Value={this.state.street}
                onChange={this.handleChange("street")}
                type="email"
                fullWidth
