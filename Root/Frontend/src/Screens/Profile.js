@@ -8,6 +8,7 @@ import Member from "./Member";
 import Partner from "./Partner";
 import Coworking from "./Coworking";
 import EduOrganization from "./EduOrganization";
+import ConsultancyAgency from "./ConsultancyAgency";
 class Profile extends Component {
   state = {
     token: null,
@@ -52,7 +53,7 @@ class Profile extends Component {
           );
         case "ConsultancyAgencies":
           return (
-            <Member
+            <ConsultancyAgency
               verified={true}
               id={this.state.id}
               email={this.state.email}
