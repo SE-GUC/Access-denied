@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import ReviewForm from "../Components/ReviewForm";
 import RatingForm from "../Components/RatingForm";
+import { AppConsumer } from "../Containers/AppProvider";
 
 const styles = theme => ({
   appBar: {
@@ -55,7 +56,11 @@ class Checkout extends React.Component {
   state = {
     activeStep: 0,
     review: "",
-    rating: 0
+    rating: 0,
+    token: null,
+    id: null,
+    type: null,
+    changed: false
   };
 
   getStepContent(step) {
@@ -74,7 +79,7 @@ class Checkout extends React.Component {
     }
   }
   handleFinish = () => {
-    let reviewer = this.props.id;
+    let reviewer = this.state.token;
     let reviewee = qs.parse(this.props.location.search, {
       ignoreQueryPrefix: true
     }).reviewee;
@@ -82,7 +87,7 @@ class Checkout extends React.Component {
       ignoreQueryPrefix: true
     }).task;
     fetch(
-      this.props.type === "member"
+      this.state.type === "Members"
         ? "/api/review/newPost"
         : "/api/review/partnerReview",
       {
@@ -91,13 +96,13 @@ class Checkout extends React.Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          reviewer: reviewer,
+          token: reviewer,
           reviewee: reviewee,
           task: task,
           review: this.state.review,
           rating: this.state.rating,
-          reviewerModel: this.props.type === "member" ? "Members" : "Partners",
-          revieweeModel: this.props.type === "member" ? "Partners" : "Members"
+          reviewerModel: this.state.type === "Members" ? "Members" : "Partners",
+          revieweeModel: this.state.type === "Members" ? "Partners" : "Members"
         })
       }
     )
@@ -144,6 +149,17 @@ class Checkout extends React.Component {
 
     return (
       <React.Fragment>
+        <AppConsumer>
+          {context => {
+            if (this.state.changed) return;
+            this.setState({
+              token: context.token,
+              id: context.id,
+              type: context.type,
+              changed: true
+            });
+          }}
+        </AppConsumer>
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>

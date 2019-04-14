@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
 import { Redirect } from "react-router-dom";
@@ -22,7 +22,6 @@ class Edu extends Component {
       id: props.id,
       email: props.email,
       verified: props.verified,
-
       name: null,
       basicInfo: null,
       courses: null,
@@ -33,46 +32,61 @@ class Edu extends Component {
       loaded: false,
       redirect: false,
       open: false,
-      dialogText: "",
-      newData: ""
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null,
     };
   }
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-    });
-  };
   handleClickOpen = name => event => {
-    this.setState({
+    
+    this.setState({ 
       open: true,
       dialogText: name
     });
+   
+    
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleApply = () => {
-    this.setState({ open: false });
-    const textInput = this.state.dialogText;
-    const data = {
-      name: this.state.newData
-    };
-    axios.put(`/api/partner?id=` + this.state.id, data);
-  };
+  handleApply =()=>{
+    
+    if(this.state.dialogText==="address"){
+      
+      const data = {
+        "address":{
+          "city":this.state.city,
+          "area": this.state.area,
+          "street": this.state.street
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to="/target" />;
+        }
+      }
+      axios.put(`/api/EducationalOrganisation?id=`+this.state.id, data)
+    }else{
+      const data = {
+        [this.state.dialogText] :this.state.newData
+      }
+      axios.put(`/api/EducationalOrganisation?id=`+this.state.id, data)
     }
-  };
-  handleChange = name => event => {
-    this.setState({
-      newData: event.target.value
-    });
-    console.log(this.state.newData);
-  };
+    this.setState({ open: false })
+  }
 
+  
+  handleChange = name => event => {
+    if(name==="partners"){
+      this.setState({
+        [name]: [event.target.value],
+    })
+  }else
+    this.setState({
+    [name]: event.target.value,
+  
+    });   
+    
+  };
   componentDidMount() {
     let id = this.state.id;
     if (!this.state.id) {
@@ -80,7 +94,12 @@ class Edu extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/educationalorganisation?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/educationalorganisation?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -95,13 +114,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Name")}
+                      onClick={this.handleClickOpen("name")}
                     >
                       edit
                     </Button>
@@ -115,13 +134,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Contact information :")}
+                      onClick={this.handleClickOpen("contactInformation")}
                     >
                       edit
                     </Button>
@@ -138,13 +157,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Address:")}
+                      onClick={this.handleClickOpen("address")}
                     >
                       edit
                     </Button>
@@ -158,13 +177,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Vision")}
+                      onClick={this.handleClickOpen("vision")}
                     >
                       edit
                     </Button>
@@ -178,13 +197,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Mission")}
+                      onClick={this.handleClickOpen("mission")}
                     >
                       edit
                     </Button>
@@ -204,13 +223,13 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    {this.renderRedirect()}{" "}
+                    
                     <Button
                       variant="outlined"
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Partners")}
+                      onClick={this.handleClickOpen("partners")}
                     >
                       edit
                     </Button>
@@ -232,7 +251,7 @@ class Edu extends Component {
                       size="small"
                       color="primary"
                       hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("Extra info: ")}
+                      onClick={this.handleClickOpen("information")}
                     >
                       edit
                     </Button>
@@ -277,8 +296,9 @@ class Edu extends Component {
     console.log(this.state);
     return (
       <div>
-        <div>
-          <Dialog
+         <div>
+           {(this.state.dialogText !== "address")?
+           <Dialog
             open={this.state.open}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
@@ -288,10 +308,9 @@ class Edu extends Component {
               <TextField
                 autoFocus
                 margin="dense"
-                id="name"
-                label={this.state.dialogText}
+                
                 onChange={this.handleChange("newData")}
-                type="email"
+                
                 fullWidth
               />
             </DialogContent>
@@ -303,7 +322,61 @@ class Edu extends Component {
                 Apply
               </Button>
             </DialogActions>
-          </Dialog>
+          </Dialog>:
+           <Dialog
+           open={this.state.open}
+           onClose={this.handleClose}
+           aria-labelledby="form-dialog-title"
+         >
+           <DialogTitle id="form-dialog-title" />
+           <DialogContent>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="city"
+               //Value={this.state.city}
+               onChange={this.handleChange("city")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="area"
+              //  Value={this.state.area}
+               onChange={this.handleChange("area")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="street"
+               //Value={this.state.street}
+               onChange={this.handleChange("street")}
+               type="email"
+               fullWidth
+             />
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={this.handleClose} color="primary">
+               Cancel
+             </Button>
+             <Button onClick={this.handleApply} color="primary">
+               Apply
+             </Button>
+           </DialogActions>
+         </Dialog>
+          
+        }
+
+           
+          
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
@@ -325,7 +398,7 @@ class Edu extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>
