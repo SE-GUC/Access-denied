@@ -431,6 +431,7 @@ router.put('/chooseAssignee', (req, res) => {
   Task.find(key)
     .then(document => {
       if (!document || document.length == 0) {
+        console.log("error1")
         return res.send();
       }
       let s=document[0].applications
@@ -439,7 +440,6 @@ router.put('/chooseAssignee', (req, res) => {
         return element.applier==req.body.assignee
       })   
       if(result!=null){
-        console.log("here")
         Task.findOneAndUpdate(
           {
             _id: req.query.id
@@ -453,7 +453,7 @@ router.put('/chooseAssignee', (req, res) => {
           res.status(201).send(doc)
         })
         .catch(err => {
-          console.log(err)
+          console.log("err")
           res.send()
         })
     }
@@ -463,7 +463,7 @@ router.put('/chooseAssignee', (req, res) => {
     }
   })
   .catch(err => {
-    console.log(err)
+    console.log("errfinal")
     res.send()
   }) })
 
