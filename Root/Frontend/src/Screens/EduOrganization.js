@@ -32,60 +32,51 @@ class Edu extends Component {
       loaded: false,
       redirect: false,
       open: false,
-      dialogText:null,
-      newData:null,
-      city:null,
-      area:null,
-      street:null,
+      dialogText: null,
+      newData: null,
+      city: null,
+      area: null,
+      street: null
     };
   }
   handleClickOpen = name => event => {
-    
-    this.setState({ 
+    this.setState({
       open: true,
       dialogText: name
     });
-   
-    
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleApply =()=>{
-    
-    if(this.state.dialogText==="address"){
-      
+  handleApply = () => {
+    if (this.state.dialogText === "address") {
       const data = {
-        "address":{
-          "city":this.state.city,
-          "area": this.state.area,
-          "street": this.state.street
-
+        address: {
+          city: this.state.city,
+          area: this.state.area,
+          street: this.state.street
         }
-      }
-      axios.put(`/api/EducationalOrganisation?id=`+this.state.id, data)
-    }else{
+      };
+      axios.put(`/api/EducationalOrganisation?id=` + this.state.id, data);
+    } else {
       const data = {
-        [this.state.dialogText] :this.state.newData
-      }
-      axios.put(`/api/EducationalOrganisation?id=`+this.state.id, data)
+        [this.state.dialogText]: this.state.newData
+      };
+      axios.put(`/api/EducationalOrganisation?id=` + this.state.id, data);
     }
-    this.setState({ open: false })
-  }
+    this.setState({ open: false });
+  };
 
-  
   handleChange = name => event => {
-    if(name==="partners"){
+    if (name === "partners") {
       this.setState({
-        [name]: [event.target.value],
-    })
-  }else
-    this.setState({
-    [name]: event.target.value,
-  
-    });   
-    
+        [name]: [event.target.value]
+      });
+    } else
+      this.setState({
+        [name]: event.target.value
+      });
   };
   componentDidMount() {
     let id = this.state.id;
@@ -114,7 +105,6 @@ class Edu extends Component {
                 <td>
                   {" "}
                   <div>
-                    
                     <Button
                       variant="outlined"
                       size="small"
@@ -127,138 +117,143 @@ class Edu extends Component {
                   </div>
                 </td>
               </tr>
-              <tr>
-                <th scope="row" />
-                <td>Contact information : </td>
-                <td>+20{res.contactInformation}</td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("contactInformation")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Address: </td>
-                <td>
-                  {res.address.city} City, {res.address.area},{" "}
-                  {res.address.street} st.
-                </td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("address")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Vision</td>
-                <td>{res.vision}</td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("vision")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Mission</td>
-                <td>{res.mission}</td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("mission")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Partners </td>
-                <td>
-                  <ul>
-                    {res.partners.map(partner => (
-                      <li> {partner}</li>
-                    ))}
-                  </ul>
-                </td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("partners")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
+              {res.contactInformation ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Contact information : </td>
+                  <td>+20{res.contactInformation}</td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("contactInformation")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.address ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Address: </td>
+                  <td>
+                    {res.address.city} City, {res.address.area},{" "}
+                    {res.address.street} st.
+                  </td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("address")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.vision ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Vision</td>
+                  <td>{res.vision}</td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("vision")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.mission ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Mission</td>
+                  <td>{res.mission}</td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("mission")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.partners ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Partners </td>
+                  <td>
+                    <ul>
+                      {res.partners.map(partner => (
+                        <li> {partner}</li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("partners")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.information ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Extra info: </td>
+                  <td>{res.information}</td>
+                  <td>
+                    {" "}
+                    <div>
+                      {this.renderRedirect()}{" "}
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("information")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
-            {res.information ? (
-              <tr>
-                <th scope="row" />
-                <td>Extra info: </td>
-                <td>{res.information}</td>
-                <td>
-                  {" "}
-                  <div>
-                    {this.renderRedirect()}{" "}
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("information")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ) : null}
           </table>
         );
 
@@ -296,87 +291,82 @@ class Edu extends Component {
     console.log(this.state);
     return (
       <div>
-         <div>
-           {(this.state.dialogText !== "address")?
-           <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title" />
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                
-                onChange={this.handleChange("newData")}
-                
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleApply} color="primary">
-                Apply
-              </Button>
-            </DialogActions>
-          </Dialog>:
-           <Dialog
-           open={this.state.open}
-           onClose={this.handleClose}
-           aria-labelledby="form-dialog-title"
-         >
-           <DialogTitle id="form-dialog-title" />
-           <DialogContent>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="city"
-               //Value={this.state.city}
-               onChange={this.handleChange("city")}
-               type="email"
-               fullWidth
-             />
-             <br/>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="area"
-              //  Value={this.state.area}
-               onChange={this.handleChange("area")}
-               type="email"
-               fullWidth
-             />
-             <br/>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="street"
-               //Value={this.state.street}
-               onChange={this.handleChange("street")}
-               type="email"
-               fullWidth
-             />
-           </DialogContent>
-           <DialogActions>
-             <Button onClick={this.handleClose} color="primary">
-               Cancel
-             </Button>
-             <Button onClick={this.handleApply} color="primary">
-               Apply
-             </Button>
-           </DialogActions>
-         </Dialog>
-          
-        }
-
-           
-          
+        <div>
+          {this.state.dialogText !== "address" ? (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" />
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  onChange={this.handleChange("newData")}
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={this.handleApply} color="primary">
+                  Apply
+                </Button>
+              </DialogActions>
+            </Dialog>
+          ) : (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" />
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="city"
+                  //Value={this.state.city}
+                  onChange={this.handleChange("city")}
+                  type="email"
+                  fullWidth
+                />
+                <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="area"
+                  //  Value={this.state.area}
+                  onChange={this.handleChange("area")}
+                  type="email"
+                  fullWidth
+                />
+                <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="street"
+                  //Value={this.state.street}
+                  onChange={this.handleChange("street")}
+                  type="email"
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={this.handleApply} color="primary">
+                  Apply
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>

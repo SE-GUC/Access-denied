@@ -38,67 +38,56 @@ class Coworking extends Component {
       displayed: null,
       loaded: false,
       open: false,
-      dialogText:null,
-      newData:null,
-      city:null,
-      area:null,
-      street:null,
-      from:null,
-      to:null
+      dialogText: null,
+      newData: null,
+      city: null,
+      area: null,
+      street: null,
+      from: null,
+      to: null
     };
   }
   handleClickOpen = name => event => {
-    
-    this.setState({ 
+    this.setState({
       open: true,
       dialogText: name
     });
-   
-    
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
-  handleApply =()=>{
-    
-    if(this.state.dialogText==="address"){
-      
+  handleApply = () => {
+    if (this.state.dialogText === "address") {
       const data = {
-        "address":{
-          "city":this.state.city,
-          "area": this.state.area,
-          "street": this.state.street
-
+        address: {
+          city: this.state.city,
+          area: this.state.area,
+          street: this.state.street
         }
-      }
-      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
-    }else if(this.state.dialogText==="workingHours"){
+      };
+      axios.put(`/api/coworkingspace?id=` + this.state.id, data);
+    } else if (this.state.dialogText === "workingHours") {
       const data = {
-        "workingHours":{
-          "from":this.state.from,
-          "to": this.state.to,
-          
-
+        workingHours: {
+          from: this.state.from,
+          to: this.state.to
         }
-      }
-      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
-    }else{
+      };
+      axios.put(`/api/coworkingspace?id=` + this.state.id, data);
+    } else {
       const data = {
-        [this.state.dialogText] :this.state.newData
-      }
-      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
+        [this.state.dialogText]: this.state.newData
+      };
+      axios.put(`/api/coworkingspace?id=` + this.state.id, data);
     }
-    this.setState({ open: false })
-  }
+    this.setState({ open: false });
+  };
 
-  
   handleChange = name => event => {
     this.setState({
-    [name]: event.target.value,
-  
-    });   
-    
+      [name]: event.target.value
+    });
   };
 
   componentDidMount() {
@@ -128,7 +117,6 @@ class Coworking extends Component {
                 <td>
                   {" "}
                   <div>
-                    
                     <Button
                       variant="outlined"
                       size="small"
@@ -141,91 +129,95 @@ class Coworking extends Component {
                   </div>
                 </td>
               </tr>
-              <tr>
-                <th scope="row" />
-                <td>Phone No.: </td>
-                <td>020{res.phoneNumber}</td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("phoneNumber")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Address: </td>
-                <td>
-                  {res.address.city} City, {res.address.area},{" "}
-                  {res.address.street} st.
-                </td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("address")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>workingHours: </td>
-                <td>
-                  From: {res.workingHours.from} to: {res.workingHours.to}
-                </td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("workingHours")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td> Rooms: </td>
-                <td>{res.noOfRooms} Rooms at your service</td>
-                <td>
-                  {" "}
-                  <div>
-                    
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      hidden={!this.state.verified}
-                      onClick={this.handleClickOpen("noOfRooms")}
-                    >
-                      edit
-                    </Button>
-                  </div>
-                </td>
-              </tr>
+              {res.phoneNumber ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Phone No.: </td>
+                  <td>020{res.phoneNumber}</td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("phoneNumber")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.address ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Address: </td>
+                  <td>
+                    {res.address.city} City, {res.address.area},{" "}
+                    {res.address.street} st.
+                  </td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("address")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.workingHours ? (
+                <tr>
+                  <th scope="row" />
+                  <td>workingHours: </td>
+                  <td>
+                    From: {res.workingHours.from} to: {res.workingHours.to}
+                  </td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("workingHours")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
+              {res.noOfRooms ? (
+                <tr>
+                  <th scope="row" />
+                  <td> Rooms: </td>
+                  <td>{res.noOfRooms} Rooms at your service</td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("noOfRooms")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
               {res.description ? (
                 <tr>
                   <th scope="row" />
@@ -234,7 +226,6 @@ class Coworking extends Component {
                   <td>
                     {" "}
                     <div>
-                      
                       <Button
                         variant="outlined"
                         size="small"
@@ -272,124 +263,120 @@ class Coworking extends Component {
     return (
       <div>
         <div>
-           {(this.state.dialogText === "address")?
-           <Dialog
-           open={this.state.open}
-           onClose={this.handleClose}
-           aria-labelledby="form-dialog-title"
-         >
-           <DialogTitle id="form-dialog-title" />
-           <DialogContent>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="city"
-               //Value={this.state.city}
-               onChange={this.handleChange("city")}
-               type="email"
-               fullWidth
-             />
-             <br/>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="area"
-              //  Value={this.state.area}
-               onChange={this.handleChange("area")}
-               type="email"
-               fullWidth
-             />
-             <br/>
-             <TextField
-               autoFocus
-               margin="dense"
-               id="name"
-               label="street"
-               //Value={this.state.street}
-               onChange={this.handleChange("street")}
-               type="email"
-               fullWidth
-             />
-           </DialogContent>
-           <DialogActions>
-             <Button onClick={this.handleClose} color="primary">
-               Cancel
-             </Button>
-             <Button onClick={this.handleApply} color="primary">
-               Apply
-             </Button>
-           </DialogActions>
-         </Dialog>:(this.state.dialogText === "workingHours")?
-         <Dialog
-         open={this.state.open}
-         onClose={this.handleClose}
-         aria-labelledby="form-dialog-title"
-       >
-         <DialogTitle id="form-dialog-title" />
-         <DialogContent>
-           <TextField
-             autoFocus
-             margin="dense"
-             id="name"
-             label="from"
-            //  Value={this.state.area}
-             onChange={this.handleChange("from")}
-             type="email"
-             fullWidth
-           />
-           <br/>
-           <TextField
-             autoFocus
-             margin="dense"
-             id="name"
-             label="to"
-             //Value={this.state.street}
-             onChange={this.handleChange("to")}
-             type="email"
-             fullWidth
-           />
-         </DialogContent>
-         <DialogActions>
-           <Button onClick={this.handleClose} color="primary">
-             Cancel
-           </Button>
-           <Button onClick={this.handleApply} color="primary">
-             Apply
-           </Button>
-         </DialogActions>
-       </Dialog>:
-           <Dialog
-            open={this.state.open}
-            onClose={this.handleClose}
-            aria-labelledby="form-dialog-title"
-          >
-            <DialogTitle id="form-dialog-title" />
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                
-                onChange={this.handleChange("newData")}
-                
-                fullWidth
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleApply} color="primary">
-                Apply
-              </Button>
-            </DialogActions>
-          </Dialog>
-          
-        }
-
-           
-          
+          {this.state.dialogText === "address" ? (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" />
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="city"
+                  //Value={this.state.city}
+                  onChange={this.handleChange("city")}
+                  type="email"
+                  fullWidth
+                />
+                <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="area"
+                  //  Value={this.state.area}
+                  onChange={this.handleChange("area")}
+                  type="email"
+                  fullWidth
+                />
+                <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="street"
+                  //Value={this.state.street}
+                  onChange={this.handleChange("street")}
+                  type="email"
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={this.handleApply} color="primary">
+                  Apply
+                </Button>
+              </DialogActions>
+            </Dialog>
+          ) : this.state.dialogText === "workingHours" ? (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" />
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="from"
+                  //  Value={this.state.area}
+                  onChange={this.handleChange("from")}
+                  type="email"
+                  fullWidth
+                />
+                <br />
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="to"
+                  //Value={this.state.street}
+                  onChange={this.handleChange("to")}
+                  type="email"
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={this.handleApply} color="primary">
+                  Apply
+                </Button>
+              </DialogActions>
+            </Dialog>
+          ) : (
+            <Dialog
+              open={this.state.open}
+              onClose={this.handleClose}
+              aria-labelledby="form-dialog-title"
+            >
+              <DialogTitle id="form-dialog-title" />
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  onChange={this.handleChange("newData")}
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button onClick={this.handleApply} color="primary">
+                  Apply
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )}
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
