@@ -7,7 +7,7 @@ class taskStatus extends React.Component {
   };
 
   componentDidMount() {
-    fetch(`http://localhost:3001/api/task?id=5ca5f83962230b49f4ba162f`)
+    fetch(`/api/task?id=5ca5f83962230b49f4ba162f`)
       .then(res => res.json())
       .then(res => {
         const task = res.data;
