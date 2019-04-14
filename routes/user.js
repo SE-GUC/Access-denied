@@ -216,6 +216,23 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/email', (req, res) => {
+  // Only admins should be able to get user info
+  if (!req.query.id) {
+    return res.status(400).send('id is missing.')
+  }
+  User.findOne({
+    profile: req.query.id
+  })
+    .select('-password')
+    .then(doc => {
+      res.json(doc)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
+
 router.put('/', (req, res) => {
   if (!req.query.email) {
     return res.status(400).send('Email is missing.')

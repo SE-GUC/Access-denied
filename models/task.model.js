@@ -56,7 +56,7 @@ let taskSchema = new mongoose.Schema({
   monetaryComp: {
     type: Number
   },
-  skills: [String],
+  skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skills' }],
   keywords: [String],
   applied_members: [
     {
@@ -64,31 +64,17 @@ let taskSchema = new mongoose.Schema({
       ref: 'Members'
     }
   ],
-  applications: [
-    {
-      applier: {
-        type: mongoose.Schema.Types.ObjectId,
-        refPath: 'applierModel',
-        required: true
-      },
-      date: {
-        type: Date,
-        default: new Date()
-      },
-      details: {
-        type: String,
-        required: true
-      },
-      applierModel: {
-        type: String,
-        required: true,
-        enum: ['Members', 'ConsultancyAgencies']
-      }
-    }
-  ],
-  paymentMethod: {
+  phase: {
     type: String,
-    enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
+    enum: [
+      'Awaiting approval',
+      'Looking for ConsultancyAgencies',
+      'Consultancy hired',
+      'Looking for Members',
+      'Ongoing',
+      'Completed'
+    ],
+    default: 'Awaiting approval'
   }
 })
 
@@ -112,6 +98,6 @@ taskSchema.virtual('Tags').get(function get() {
 //delete mongoose.connection.models['Task']
 let taskModel = mongoose.model('Task', taskSchema)
 
-//taskModel.collection.drop()
+// taskModel.collection.drop()
 
 module.exports = taskModel
