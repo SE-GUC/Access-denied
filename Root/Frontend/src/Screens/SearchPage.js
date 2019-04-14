@@ -24,9 +24,9 @@ class SearchPage extends Component {
     this.renderRedirect = this.renderRedirect.bind(this);
   }
   state = {
-    flip:true,
+    flip: true,
     results: Array(6).fill([]),
-    newResults:Array(6).fill([]),
+    newResults: Array(6).fill([]),
     tabs: [
       "Certificates",
       "Tasks",
@@ -59,16 +59,16 @@ class SearchPage extends Component {
       ["place holder:"],
       ["place holder:"]
     ],
-    routes :[
+    routes: [
       "Certificates",
       "/taskview",
-      "Members",
+      "Member",
       "Partners",
       "CoworkingSpace",
       "EducationalOrganisations"
     ],
     redirect: false,
-    goto:null
+    goto: null
   };
 
   componentDidMount() {
@@ -76,27 +76,26 @@ class SearchPage extends Component {
   }
   reset() {
     fetch(`/search?q= `)
-    .then(res => res.json())
+      .then(res => res.json())
       .then(res => {
         this.setState({
           results: res.slice(),
           newResults: res.slice()
         });
-        
       })
       .catch(err => {
         console.log(err);
       });
   }
-  renderRedirect = (route,id,b) => {
+  renderRedirect = (route, id, b) => {
     if (b) {
       this.setState({
-        redirect:true,
-        goto: route + '?taskid='+id 
-      })
+        redirect: true,
+        goto: route + "?id=" + id
+      });
     }
   };
-  call(){
+  call() {
     if (this.state.redirect) {
       return <Redirect to={this.state.goto} />;
     }
@@ -109,16 +108,17 @@ class SearchPage extends Component {
 
     console.log(this.state.results);
   }
-  SetFilters(i,res) {
+  SetFilters(i, res) {
     if (res === -1) {
       this.setState({
-        newResults:this.state.results
+        newResults: this.state.results
       });
     } else {
-       this.state.newResults[i]=res
-       let t=this.state.newResults.slice()
+      this.state.newResults[i] = res;
+      let t = this.state.newResults.slice();
       this.setState({
-        newResults:t})
+        newResults: t
+      });
       // this.forceUpdate()
     }
     console.log(this.state.results);
@@ -127,7 +127,8 @@ class SearchPage extends Component {
     const tabs = this.state.tabs;
 
     return (
-      <div>{this.call()}
+      <div>
+        {this.call()}
         <Jumbotron>
           <h1>ADVANCED SEARCH</h1>
           <p>here you can search for everything we have!</p>
@@ -142,7 +143,7 @@ class SearchPage extends Component {
                 <Row>
                   <Col xs md lg="5">
                     <Nav variant="pills" fill={true} className="flex-column">
-                      {tabs.slice(0,2).map(p => {
+                      {tabs.slice(0, 2).map(p => {
                         return (
                           <Nav.Item>
                             <Nav.Link eventKey={p}>{p}</Nav.Link>
@@ -153,10 +154,11 @@ class SearchPage extends Component {
                   </Col>
                   <Col>
                     <Tab.Content>
-                      {tabs.slice(0,2).map(p => {
+                      {tabs.slice(0, 2).map(p => {
                         return (
                           <Tab.Pane eventKey={p}>
-                            <F id={tabs.indexOf(p)}
+                            <F
+                              id={tabs.indexOf(p)}
                               keywords={this.state.tags[tabs.indexOf(p)]}
                               change={this.SetFilters}
                               results={this.state.results[tabs.indexOf(p)]}
