@@ -94,8 +94,8 @@ taskSchema.virtual('Tags').get(function get() {
   return s
 })
 
-// delete mongoose.connection.models['Tasks']
-// delete mongoose.connection.models['Task']
+//delete mongoose.connection.models['Tasks']
+//delete mongoose.connection.models['Task']
 let taskModel = mongoose.model('Task', taskSchema)
 
 // taskModel.collection.drop()

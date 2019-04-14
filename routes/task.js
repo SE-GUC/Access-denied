@@ -381,6 +381,102 @@ router.put('/phase', (req, res) => {
     })
     .catch(err => res.status(500).send(err))
 })
+router.put('/memberApplies', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Error')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    console.log('err')
+    return res.status(400).send({
+      error: isValidated.error.details[0].message
+    })
+  }
+
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.applications.applier)
+
+  if (!ver) return res.status(500).send('Error')
+
+  Task.findOneAndUpdate(
+    {
+      _id: req.query.id,
+      phase: { phase: 'Looking for Members' }
+    },
+    Task.update(
+      { _id: 'req.query.id' },
+      {
+        $push: {
+          applications: {
+            applier: ver.profile,
+            details: req.body.applications.details,
+            applierModel: req.body.applications.applierModel
+          }
+        }
+      }
+    ),
+    {
+      new: true
+    }
+  )
+    .then(doc => {
+      res.status(200).json(doc)
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json(err)
+    })
+})
+
+router.put('/chooseAssignee', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Task id is missing.')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    return res.send()
+  }
+  let key = {
+    _id: req.query.id
+  }
+  Task.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log('error1')
+        return res.send()
+      }
+      let s = document[0].applications
+      let result = s.find(function(element) {
+        console.log(element.details)
+        return element.applier == req.body.assignee
+      })
+      if (result != null) {
+        Task.findOneAndUpdate(
+          {
+            _id: req.query.id
+          },
+          req.body,
+          {
+            new: true
+          }
+        )
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            console.log('err')
+            res.send()
+          })
+      } else {
+        console.log('notfound')
+        res.send()
+      }
+    })
+    .catch(err => {
+      console.log('errfinal')
+      res.send()
+    })
+})
 
 router.post('/browse', (req, res) => {
   if (!req.body.token) return res.status(400).send('Body is Missing')
