@@ -93,7 +93,7 @@ app.use((error, request, response, next) => {
 mongoose
   .connect(uri, {
     useNewUrlParser: true,
-      autoIndex: false 
+    autoIndex: false
   })
   .then(() => {
     console.log('Connected to MongoDB')

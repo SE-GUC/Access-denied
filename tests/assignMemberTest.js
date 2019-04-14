@@ -24,48 +24,49 @@ const funcs = {
     let partnerData = partnerRes.data
     partnerId = partnerData._id
 
-     let task = {
-        name: 'Tester.Test123',
-        description: 'This is Tester.Test123 Description',
-        extraNotes: 'This is Tester.Test123 Extra Notes',
-        effortLevel: 999999999,
-        monetaryComp: 999999999,
-        owner: partnerId,
-        applications:{
-            applier:memberId,
-            details:"my plan",
-            applierModel:'Members'
-        }}
-        let taskRes = await axios.post(`${baseURL}/api/task`, task)
-        let taskData = taskRes.data
-        taskId = taskData._id
-        let response = await fetch( `${baseURL}/api/partner/chooseAssignee` + `?id=${taskId}`, {
-            method: 'PUT',
-            body:JSON.stringify({
-              assignee:memberId
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            credentials: 'same-origin'
-          })
-          let data = await response.json()
-          reply = data
-          let docID = task.data._id
-          let deleteresponse = await axios.delete(
-            `${baseURL}/api/task` + `?id=${taskId}`
-          )
-          return data
-        }
+    let task = {
+      name: 'Tester.Test123',
+      description: 'This is Tester.Test123 Description',
+      extraNotes: 'This is Tester.Test123 Extra Notes',
+      effortLevel: 9,
+      monetaryComp: 999999999,
+      owner: partnerId,
+      applications: {
+        applier: memberId,
+        details: 'my plan',
+        applierModel: 'Members'
+      }
+    }
+    let taskRes = await axios.post(`${baseURL}/api/task`, task)
+    let taskData = taskRes.data
+    taskId = taskData._id
+    let response = await fetch(
+      `${baseURL}/api/partner/chooseAssignee` + `?id=${taskId}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify({
+          assignee: memberId
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+      }
+    )
+    let data = await response.json()
+    reply = data
+    let docID = task.data._id
+    let deleteresponse = await axios.delete(
+      `${baseURL}/api/task` + `?id=${taskId}`
+    )
+    return data
+  }
 }
-        const putTest = test('partner chooses assignee', async () => {
-            const response = await funcs.putPartnerAssignesMember()
-            expect(response.assignee).toEqual(memberId)
-          })
-      
+const putTest = test('partner chooses assignee', async () => {
+  const response = await funcs.putPartnerAssignesMember()
+  expect(response.assignee).toEqual(memberId)
+})
 
-
-          module.exports = {
-            putTest
-          }
-      
+module.exports = {
+  putTest
+}
