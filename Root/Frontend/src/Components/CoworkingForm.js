@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import "./Form.css";
 import { Form, Button, Jumbotron, Container } from "react-bootstrap";
-
-const fetch = require("node-fetch");
+import AlertGreen from "./AlertGreen";
 
 class CoworkingForm extends React.Component {
   constructor(props) {
@@ -14,7 +13,8 @@ class CoworkingForm extends React.Component {
       phoneNumber: "",
       city: "",
       area: "",
-      street: ""
+      street: "",
+      valid: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,31 +26,40 @@ class CoworkingForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.name);
-    let add = {
-      city: this.state.city,
-      street: this.state.street,
-      area: this.state.area
-    };
     let mem = {
       email: this.state.email,
       name: this.state.name,
       password: this.state.password,
-      address: add
+      address: {
+        city: this.state.city,
+        street: this.state.street,
+        area: this.state.area
+      },
+      phoneNumber: this.state.phoneNumber,
+      type: "CoworkingSpaces"
     };
-    alert(
-      "submitted"
-    ); /*fetch(`http://localhost:3001/api/CoworkingSpace`, {
+    fetch(`/api/user`, {
       //
       method: "POST",
       body: JSON.stringify(mem),
       headers: {
         "Content-Type": "application/json"
       }
-      // credentials: "same-origin"
     })
       .then(res => res.json())
-      .then(json => console.log("json"));*/
+      .then(json => {
+        console.log(json);
+        if (json === "Error") {
+          alert("You have already registered to LirtenHub");
+        } else {
+          this.setState({ valid: true });
+          alert("success!");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert("something went wrong");
+      });
 
     event.preventDefault();
   }
@@ -78,10 +87,13 @@ class CoworkingForm extends React.Component {
             Name:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="name"
               required
               minLength="3"
+              maxLength="500"
               placeholder="Name of your coworking space"
               value={this.state.name}
               onChange={this.handleChange}
@@ -92,6 +104,8 @@ class CoworkingForm extends React.Component {
             Email:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="email"
               required
@@ -105,6 +119,8 @@ class CoworkingForm extends React.Component {
             Password:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="password"
               name="password"
               required
@@ -119,6 +135,8 @@ class CoworkingForm extends React.Component {
             city:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="city"
               required
@@ -132,6 +150,8 @@ class CoworkingForm extends React.Component {
             Area:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="area"
               required
@@ -145,6 +165,8 @@ class CoworkingForm extends React.Component {
             Street:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="street"
               placeholder="street of your headquarters"
@@ -158,6 +180,8 @@ class CoworkingForm extends React.Component {
             Phone Number:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="phoneNumber"
               required
@@ -167,13 +191,25 @@ class CoworkingForm extends React.Component {
             />
           </label>
           <br />
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="defaultUnchecked"
+            required
+          />
+          <label class="custom-control-label" for="defaultUnchecked">
+            I have read and agreed to the terms and conditions of LirtenHub
+          </label>
+          <br />
           <br />
 
           <Button size="lg" type="submit" value="Submit">
             Submit
           </Button>
+
           <br />
         </Form>
+        {this.state.valid === true ? <AlertGreen /> : <></>}
       </div>
     );
   }

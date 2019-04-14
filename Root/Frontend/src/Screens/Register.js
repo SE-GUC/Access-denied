@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./Register.css";
 import ListDivider from "../Components/ListDividers";
-import { MuiThemeProvider } from "@material-ui/core";
 
 class Register extends Component {
   constructor(props) {
