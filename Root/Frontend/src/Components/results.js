@@ -21,19 +21,27 @@ class results extends Component {
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      route: nextProps.route 
+      route: nextProps.route
     });
-    console.log("route")
-  
-    
+    console.log("route");
   }
- 
+
   render() {
     const cards = this.props.results;
     return (
       <CardColumns>
         {cards.map(p => {
-          return <C content={p.description} title={p.name} date={p.date} id={p._id} redirect={this.state.redirect} route= {this.props.route} redirect={this.props.renderRedirect }/>;
+          return (
+            <C
+              content={p.description}
+              title={p.name}
+              date={p.date}
+              id={p._id}
+              redirect={this.state.redirect}
+              route={this.props.route}
+              redirect={this.props.renderRedirect}
+            />
+          );
         })}{" "}
       </CardColumns>
     );

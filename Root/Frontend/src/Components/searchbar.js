@@ -1,6 +1,6 @@
 import React from "react";
 // import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { InputGroup, Button, Form } from "react-bootstrap";
 class Searchbar extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class Searchbar extends React.Component {
   //     type: SET_RES,
   //     payload: res
   //   })
-  
+
   // };
   handleChange(event) {
     //to do search function
@@ -63,4 +63,4 @@ class Searchbar extends React.Component {
 // const mapStateToProps = state => ({
 // 	results: state.books.books
 // });connect(mapStateToProps,{ getBooks})
-export default (Searchbar);
+export default Searchbar;
