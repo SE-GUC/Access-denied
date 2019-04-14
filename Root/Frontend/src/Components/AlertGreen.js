@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import { Redirect } from "react-router";
 class AlertGreen extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { show: true };
+    this.state = { show: true, done: false };
   }
 
   render() {
     const handleHide = () => this.setState({ show: false });
-    const handleShow = () => this.setState({ show: true });
+    if (!this.state.show) {
+      return <Redirect to="/" />;
+    }
     return (
       <>
         <Alert show={this.state.show} variant="success">
@@ -25,8 +28,6 @@ class AlertGreen extends React.Component {
             </Button>
           </div>
         </Alert>
-
-        {!this.state.show && <Button onClick={handleShow}>Show Alert</Button>}
       </>
     );
   }

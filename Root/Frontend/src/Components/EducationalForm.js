@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { Form, Button, Jumbotron, Container } from "react-bootstrap";
 import "./EducationalForm.css";
-const fetch = require("node-fetch");
+//const fetch = require("node-fetch");
 
 class EducationalForm extends React.Component {
   constructor(props) {
@@ -25,23 +25,40 @@ class EducationalForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.name);
+    let address = {
+      city: this.state.city,
+      area: this.state.area,
+      street: this.state.street
+    };
     let mem = {
       email: this.state.email,
       name: this.state.name,
-      password: this.state.password
+      password: this.state.password,
+      address,
+      type: "EducationalOrganisation"
     };
-    /*  fetch(`http://localhost:3001/api/EducationalOrganisation`, {
+
+    fetch(`/api/user`, {
       //
       method: "POST",
       body: JSON.stringify(mem),
       headers: {
         "Content-Type": "application/json"
       }
-      // credentials: "same-origin"
     })
       .then(res => res.json())
-      .then(json => console.log("json"));*/
+      .then(json => {
+        console.log(json);
+        if (json === "Error") {
+          alert("you are have already registered to LirtenHub");
+        } else {
+          alert("success");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert("something went wrong");
+      });
 
     event.preventDefault();
   }
@@ -70,10 +87,13 @@ class EducationalForm extends React.Component {
               Name:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="text"
                 name="name"
                 required
                 minLength="3"
+                maxLength="500"
                 placeholder="Organisation name"
                 value={this.state.name}
                 onChange={this.handleChange}
@@ -84,6 +104,8 @@ class EducationalForm extends React.Component {
               Email:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="text"
                 name="email"
                 required
@@ -97,6 +119,8 @@ class EducationalForm extends React.Component {
               Password:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="password"
                 name="password"
                 required
@@ -111,6 +135,8 @@ class EducationalForm extends React.Component {
               city:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="text"
                 name="city"
                 required
@@ -124,6 +150,8 @@ class EducationalForm extends React.Component {
               Area:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="text"
                 name="area"
                 placeholder="headquarters area"
@@ -136,12 +164,24 @@ class EducationalForm extends React.Component {
               Street:
               <br />
               <input
+                id="exampleForm2"
+                class="form-control"
                 type="text"
                 name="street"
                 placeholder="headquarters street"
                 value={this.state.street}
                 onChange={this.handleChange}
               />
+            </label>
+            <br />
+            <input
+              type="checkbox"
+              class="custom-control-input"
+              id="defaultUnchecked"
+              required
+            />
+            <label class="custom-control-label" for="defaultUnchecked">
+              I have read and agreed to the terms and conditions of LirtenHub
             </label>
             <br />
             <br />
