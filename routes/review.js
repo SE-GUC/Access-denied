@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
 router.post('/newPost', (req, res) => {
   const isValidated = validator.createValidation(req.body)
   if (isValidated.error) {
-    return res.send()
+    return res.status(500).send('Validation')
   }
   let requestAssigner = req.body.reviewee
   let requestAssignee = req.body.reviewer
@@ -46,7 +46,7 @@ router.post('/newPost', (req, res) => {
     .then(doc => {
       let checker = doc.data.length === 0
       if (checker) {
-        return res.send()
+        return res.status(500).send('Incorrect data')
       } else {
         const model = new reviewModel(req.body)
         model
@@ -55,12 +55,12 @@ router.post('/newPost', (req, res) => {
             res.status(201).send(doc)
           })
           .catch(err => {
-            return res.send()
+            return res.status(500).send()
           })
       }
     })
     .catch(err => {
-      return res.send()
+      return res.status(500).send('incorrect Data')
     })
 })
 router.get('/', (req, res) => {
@@ -73,7 +73,7 @@ router.get('/', (req, res) => {
     })
     .populate('reviewer', 'name')
     .populate('reviewee', 'name')
-    .populate('task', 'name')
+    .populate('task')
     .then(doc => {
       res.json(doc)
     })
@@ -134,42 +134,42 @@ router.delete('/', (req, res) => {
     })
 })
 
-router.post('/partnerReview', (request, response) => {
-  let requestAssigner = request.body.reviewer
-  let requestAssignee = request.body.reviewee
-  let post = false
+router.post('/partnerReview', (req, res) => {
+  let requestAssigner = req.body.reviewer
+  let requestAssignee = req.body.reviewee
   axios
     .get(`${baseURL}/api/task/Done`, {
       params: {
         assigner: requestAssigner,
-        assignee: requestAssignee
+        assignee: requestAssignee,
+        taskID: req.body.task
       }
     })
     .then(doc => {
       if (!doc || doc.data.length === 0) {
         console.log('null')
-        return response.status(500).send(doc)
+        return res.status(500).send(doc)
       }
-      const isValidated = validator.createValidation(request.body)
+      const isValidated = validator.createValidation(req.body)
       if (isValidated.error)
-        return response
+        return res
           .status(400)
           .send({ error: isValidated.error.details[0].message })
-      const model = new reviewModel(request.body)
+      const model = new reviewModel(req.body)
       model
         .save()
         .then(document => {
           if (!document || document.length === 0) {
-            return response.status(500).send(document)
+            return res.status(500).send(document)
           }
-          response.status(201).send(document)
+          res.status(201).send(document)
         })
         .catch(err => {
-          response.status(500).json(err)
+          res.status(500).json(err)
         })
     })
     .catch(err => {
-      response.status(500).json(err)
+      res.status(500).json(err)
     })
 })
 

@@ -3,6 +3,27 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/EducationalOrganisationValidations.js')
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
@@ -25,12 +46,12 @@ router.post('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.email) {
+  if (!req.query.id) {
     return res.status(400).send('Missing')
   }
   educationalorganisations
     .findOne({
-      email: req.query.email
+      _id: req.query.id
     })
     .populate('certificate')
     .then(doc => {
@@ -51,16 +72,37 @@ router.get('/all', (request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
     })
 })
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Educational Organisation email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Educational Organisation id is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -68,7 +110,7 @@ router.put('/', (req, res) => {
   educationalorganisations
     .findOneAndUpdate(
       {
-        email: req.query.email
+        _id: req.query.id
       },
       req.body,
       {
@@ -84,12 +126,12 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Educational Organisation email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('Educational Organisation id is missing.')
   }
   educationalorganisations
     .findOneAndDelete({
-      email: req.query.email
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)

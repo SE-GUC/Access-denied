@@ -6,66 +6,94 @@ const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
   }
-  const isValidated = validator.createValidation(req.body)
-  if (isValidated.error)
-    return res.status(400).send({ error: isValidated.error.details[0].message })
-  let model = new certificationModel(req.body)
-
-  model
-    .save()
+  // const isValidated = validator.createValidation(req.body)
+  // if (isValidated.error)
+  //   return res.status(400).send({ error: isValidated.error.details[0].message })
+  // let model = new certificationModel(req.body)
+  certificationModel
+    .create(req.body)
     .then(doc => {
+      console.log(doc)
       if (!doc || doc.length === 0) {
         return res.status(500).send(doc)
       }
 
-      res.status(200).send(doc)
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)
     })
 })
-router.get('/all', (_request, response) => {
-  let key = {}
 
-  certificationModel
-    .find(key)
-    .then(document => {
-      if (!document || document.length == 0) {
-        return response.status(500).json(document)
-      }
-
-      response.status(200).json(document)
-    })
-    .catch(error => {
-      response.status(500).json(error)
-    })
-})
 router.get('/all', (request, response) => {
   let key = {}
-  //let model = new certificationModel(req.body)
-  //model.save()
 
   certificationModel
     .find(key)
+    .populate('schedule')
+    .populate('eduorganization')
     .then(document => {
+      console.log(document)
+
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
-
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
+      console.log(error)
       response.status(500).json(error)
     })
 })
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
 
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.put('/', (req, res) => {
-  if (!req.query.name) {
-    return res.status(400).send('name of certification is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id of certification is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -73,7 +101,7 @@ router.put('/', (req, res) => {
   certificationModel
     .findOneAndUpdate(
       {
-        name: req.query.name
+        _id: req.query.id
       },
       req.body,
       {
@@ -90,12 +118,12 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.name) {
-    return res.status(400).send('name is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id is missing.')
   }
   certificationModel
     .findOneAndDelete({
-      name: req.query.name
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)
@@ -106,14 +134,13 @@ router.delete('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.name) {
-    return res.status(400).send('name of certification is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id of certification is missing.')
   }
   certificationModel
-    .find({
-      name: req.query.name
-    })
+    .findById(req.query.id)
     .populate('schedule')
+    .populate('eduorganization')
     .then(doc => {
       res.json(doc)
     })
@@ -132,7 +159,6 @@ router.post('/offlineEvaluation/', (req, res) => {
   axios
     .post(`${baseURL}/api/schedule`, {})
     .then(response => {
-      console.log(response.data._id)
       let schedule = response.data._id
       req.body.schedule = schedule
       return certificationModel.findByIdAndUpdate(req.query.id, {
@@ -230,6 +256,37 @@ router.delete('/schedule', (req, res) => {
       }
       let scheduleId = doc.schedule
       res.redirect(307, `../schedule/${scheduleId}/slot?id=${req.query.slot}`)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
+
+router.post('/apply', (req, res) => {
+  if (!req || !req.query.id || !req.body.token) {
+    return res.status(400).send('Body is Missing')
+  }
+
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.token)
+  if (!ver) return res.status(500).send('Error')
+  let id = ver.profile
+  certificationModel
+    .findOneAndUpdate(
+      { _id: req.query.id },
+      {
+        $push: {
+          membersapplied: id
+        }
+      },
+      {
+        safe: true,
+        upsert: true,
+        new: true
+      }
+    )
+    .then(doc => {
+      res.json(doc)
     })
     .catch(err => {
       res.status(500).json(err)

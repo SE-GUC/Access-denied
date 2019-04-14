@@ -12,11 +12,7 @@ let CoworkingSchema = new Schema({
     area: { type: String, required: true },
     street: { type: String, required: true }
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
+
   phoneNumber: {
     type: String,
     required: true,
