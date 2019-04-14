@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
+
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -37,8 +39,11 @@ class taskview extends Component{
         super(props);
         this.state = {
           task: null,
-          name :null
+          name :null,
+          redirect: false
         };
+        this.onClick = this.onClick.bind(this);
+
       }
 
       
@@ -51,36 +56,43 @@ class taskview extends Component{
         console.log(taskid)
         axios.get(`/api/task/?id=`+taskid)
         .then(q=>{
-         const consid = q.data.consultancy
+         const consid = q.data.consultancy==undefined?" ":q.data.consultancy
          console.log(q.data)
           console.log(consid+"this")
           axios.get(`/api/consultancy/?id=`+consid).then(qq=>{
               console.log(qq.data)
-              this.setState({
-                task: q.data,
-                name: q.data.name,
-                owner: q.data.owner,
-                description: q.data.description,
-                consaltancy:qq.data==null?null:qq.data.name,
-                extranotes: q.data.extraNotes,
-                date: q.data.date,
-                effortlevel: q.data.effortLevel,
-                commitmentlevel:q.data.commitmentLevel,
-                experiencelevel: q.data.experienceLevel,
-                timerequired: q.data.timeRequired,
-                monetrarycomp: q.data.monetaryComp,
-                skills: q.data.skills
-            
-            })
+              this.setState({consaltancy:qq.data==null?null:qq.data.name})
           })
-          console.log(this.state.consu)
-            console.log(this.state.name)
+          // console.log(this.state.consu)
+          //   console.log(this.state.name)
+            this.setState({
+              task: q.data,
+              name: q.data.name,
+              owner: q.data.owner,
+              description: q.data.description,
+              extranotes: q.data.extraNotes,
+              date: q.data.date,
+              effortlevel: q.data.effortLevel,
+              commitmentlevel:q.data.commitmentLevel,
+              experiencelevel: q.data.experienceLevel,
+              timerequired: q.data.timeRequired,
+              monetrarycomp: q.data.monetaryComp,
+              skills: q.data.skills
+          
+          })
         }
         )
        
            
     }
-    
+    onClick(){
+      this.setState({redirect:true})
+    }
+    renderRedirect = () => {
+      if (this.state.redirect) {
+        return <Redirect to={'/applyOnTask?taskid='+this.state.task._id} />;
+      }
+    };
     render(){
       while(this.state.task==null){
         return(
@@ -94,7 +106,7 @@ class taskview extends Component{
      
            
            
-          <div>
+          <div> {this.renderRedirect()}
             <Paper style={{ maxWidth:800 ,marginLeft:"20%",color: 'white',marginTop:"5%"}}>
             <Typography gutterBottom variant="h3" component="h2" align="center" style={{color:indigo[500]}} >
             {this.state.name==null? "No Data Avaliable":this.state.name}
@@ -180,8 +192,8 @@ class taskview extends Component{
                </Card>
             
           
-            
-             <Applyontask/>
+               <Button size="lg" onClick ={this.onClick}className="buttonSubmit" variant="link" >Apply </Button>
+             
              </div>
        
 
