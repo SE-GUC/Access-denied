@@ -75,6 +75,11 @@ let taskSchema = new mongoose.Schema({
       'Completed'
     ],
     default: 'Awaiting approval'
+  },
+  paymentMethod: {
+    type: String,
+
+    enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
   }
 })
 

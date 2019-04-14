@@ -15,7 +15,7 @@ module.exports = {
         .max(500),
       isComplete: Joi.boolean(),
       date: Joi.date(),
-      effortLevel: Joi.number(),
+      effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),
@@ -51,7 +51,7 @@ module.exports = {
 
       paymentMethod: Joi,
       date: Joi.date(),
-      effortLevel: Joi.number(),
+      effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),

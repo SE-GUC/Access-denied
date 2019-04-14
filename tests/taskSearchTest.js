@@ -6,7 +6,7 @@ const testMemberApply = test('Member apply on task', async () => {
     name: 'z.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     skills: ['python', 'java']
   }
@@ -41,7 +41,7 @@ const testSearchTags = test('searching with keywords', async () => {
     name: 'z2.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     Keywords: ['k1']
   }
@@ -63,7 +63,7 @@ const testSearchSkills = test('searching for some skills', async () => {
     name: 'z2.Test123',
     description: 'This is z.Test123 Description',
     extraNotes: 'This is z.Test123 Extra Notes',
-    effortLevel: 995,
+    effortLevel: 5,
     monetaryComp: 93,
     skills: ['k1']
   }
