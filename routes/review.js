@@ -28,12 +28,15 @@ router.post('/', (req, res) => {
     })
 })
 router.post('/newPost', (req, res) => {
-  const isValidated = validator.createValidation(req.body)
-  if (isValidated.error) {
-    return res.status(500).send('Validation')
-  }
+  //const isValidated = validator.createValidation(req.body)
+  //if (isValidated.error) {
+  //  return res.status(500).send('Validation')
+  //}
   let requestAssigner = req.body.reviewee
-  let requestAssignee = req.body.reviewer
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.token)
+  if (!ver) return res.status(500).send('Error')
+  let requestAssignee = ver.profile
   let id = req.body.task
   axios
     .get(`${baseURL}/api/task/isTaskDone`, {
@@ -135,7 +138,10 @@ router.delete('/', (req, res) => {
 })
 
 router.post('/partnerReview', (req, res) => {
-  let requestAssigner = req.body.reviewer
+  let verify = req.app.get('verifyToken')
+  let ver = verify(req.body.token)
+  if (!ver) return res.status(500).send('Error')
+  let requestAssigner = ver.profile
   let requestAssignee = req.body.reviewee
   axios
     .get(`${baseURL}/api/task/Done`, {

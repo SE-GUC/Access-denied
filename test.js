@@ -1,7 +1,7 @@
 /**
 
  * @jest-environment node
-  */
+//  */
 
 require('dotenv').config()
 const mongoose = require('mongoose')
@@ -30,3 +30,4 @@ const memberTests = require('./tests/memberTest')
 const PartnerTests = require('./tests/PartnerTest')
 const applicationTests = require('./tests/applicationTest')
 const skillsTests = require('./tests/skillsTest')
+const assignmemberTests=require('./tests/assignMemberTest')
