@@ -92,6 +92,7 @@ class SignIn extends Component {
         <AppConsumer>
           {context => {
             if (this.state.changed) return;
+            if (context.token) this.props.history.push("/profile");
             this.setState({
               token: context.token,
               setToken: context.setToken,
