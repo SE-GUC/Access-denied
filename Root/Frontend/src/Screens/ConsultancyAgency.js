@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Button from "@material-ui/core/Button";
 import BigCalendar from "react-big-calendar";
 import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
@@ -59,19 +60,37 @@ class ConsultancyAgency extends Component {
                 <td>Name: </td>
                 <td> {res.name}</td>
               </tr>
-              <tr>
-                <th scope="row" />
-                <td>phone Number: </td>
-                <td>+20{res.phoneNumber}</td>
-              </tr>
-              <tr>
-                <th scope="row" />
-                <td>Address: </td>
-                <td>
-                  {res.address.city} City, {res.address.area},{" "}
-                  {res.address.street} st.
-                </td>
-              </tr>
+              {res.phoneNumber ? (
+                <tr>
+                  <th scope="row" />
+                  <td>phone Number: </td>
+                  <td>+20{res.phoneNumber}</td>
+                </tr>
+              ) : null}
+              {res.address ? (
+                <tr>
+                  <th scope="row" />
+                  <td>Address: </td>
+                  <td>
+                    {res.address.city} City, {res.address.area},{" "}
+                    {res.address.street} st.
+                  </td>
+                  <td>
+                    {" "}
+                    <div>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("address")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ) : null}
             </tbody>
           </table>
         );
