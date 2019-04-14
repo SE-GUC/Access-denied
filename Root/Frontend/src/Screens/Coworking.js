@@ -4,21 +4,24 @@ import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
-import Button from '@material-ui/core/Button';
-import { Redirect } from 'react-router-dom'
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import TextField from '@material-ui/core/TextField';
-const axios = require('axios')
+import Button from "@material-ui/core/Button";
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+const axios = require("axios");
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 
 class Coworking extends Component {
   constructor(props) {
@@ -26,67 +29,76 @@ class Coworking extends Component {
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
+
       name: null,
       basicInfo: null,
       schedule: null,
       activeId: "1",
       displayed: null,
       loaded: false,
-      redirect: false,
       open: false,
-      dialogText:"",
-      newData:""
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null,
+      from:null,
+      to:null
     };
   }
-  setRedirect = () => {
-    this.setState({
-      redirect: true
-  
-    });
-  }
   handleClickOpen = name => event => {
+    
     this.setState({ 
       open: true,
-      dialogText:name
-     });
+      dialogText: name
+    });
+   
+    
   };
 
   handleClose = () => {
-    this.setState({ open: false })
-    
-
+    this.setState({ open: false });
   };
   handleApply =()=>{
+    
+    if(this.state.dialogText==="address"){
+      
+      const data = {
+        "address":{
+          "city":this.state.city,
+          "area": this.state.area,
+          "street": this.state.street
+
+        }
+      }
+      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
+    }else if(this.state.dialogText==="workingHours"){
+      const data = {
+        "workingHours":{
+          "from":this.state.from,
+          "to": this.state.to,
+          
+
+        }
+      }
+      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
+    }else{
+      const data = {
+        [this.state.dialogText] :this.state.newData
+      }
+      axios.put(`/api/coworkingspace?id=`+this.state.id, data)
+    }
     this.setState({ open: false })
-    const textInput= this.state.dialogText
-    const data = {
-      "name" :this.state.newData
-    }
-    axios.put(`/api/partner?id=`+this.state.id, data)
-
   }
 
-  renderRedirect = () => {
-    if (this.state.redirect) {
-      return <Redirect to='/target' />
-    }
-  }
-  handleClick = name => event => {
-    this.setState({
-      [name]: event.target.value,
   
-    });
-    
-    
-    console.log(this.state.name)
-    
-  };
   handleChange = name => event => {
     this.setState({
-    newData: event.target.value,
+    [name]: event.target.value,
   
     });   
-    console.log(this.state.newData) 
+    
   };
 
   componentDidMount() {
@@ -96,7 +108,12 @@ class Coworking extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/coworking?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/coworking?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -108,17 +125,41 @@ class Coworking extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Name")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("name")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Phone No.: </td>
                 <td>020{res.phoneNumber}</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Phone No.:")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("phoneNumber")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -127,9 +168,21 @@ class Coworking extends Component {
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
                 </td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Address:")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("address")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -137,26 +190,62 @@ class Coworking extends Component {
                 <td>
                   From: {res.workingHours.from} to: {res.workingHours.to}
                 </td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("workingHours")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("workingHours")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td> Rooms: </td>
                 <td>{res.noOfRooms} Rooms at your service</td>
-                <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("Rooms at your service")}>
-                   edit
-                 </Button></div></td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("noOfRooms")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               {res.description ? (
                 <tr>
                   <th scope="row" />
                   <td> details and info</td>
                   <td>{res.description}</td>
-                  <td> <div>{this.renderRedirect()} <Button variant="outlined" size="small" color="primary" onClick={this.handleClickOpen("details and info")}>
-                   edit
-                 </Button></div></td>
+                  <td>
+                    {" "}
+                    <div>
+                      
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        hidden={!this.state.verified}
+                        onClick={this.handleClickOpen("description")}
+                      >
+                        edit
+                      </Button>
+                    </div>
+                  </td>
                 </tr>
               ) : null}
             </tbody>
@@ -172,42 +261,135 @@ class Coworking extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
     return (
       <div>
         <div>
-          <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title"></DialogTitle>
-          <DialogContent>
-            
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label={this.state.dialogText}
-              onChange={this.handleChange('newData')}
-              type="email"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleApply} color="primary">
-              Apply
-            </Button>
-          </DialogActions>
-        </Dialog>
+           {(this.state.dialogText === "address")?
+           <Dialog
+           open={this.state.open}
+           onClose={this.handleClose}
+           aria-labelledby="form-dialog-title"
+         >
+           <DialogTitle id="form-dialog-title" />
+           <DialogContent>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="city"
+               //Value={this.state.city}
+               onChange={this.handleChange("city")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="area"
+              //  Value={this.state.area}
+               onChange={this.handleChange("area")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="street"
+               //Value={this.state.street}
+               onChange={this.handleChange("street")}
+               type="email"
+               fullWidth
+             />
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={this.handleClose} color="primary">
+               Cancel
+             </Button>
+             <Button onClick={this.handleApply} color="primary">
+               Apply
+             </Button>
+           </DialogActions>
+         </Dialog>:(this.state.dialogText === "workingHours")?
+         <Dialog
+         open={this.state.open}
+         onClose={this.handleClose}
+         aria-labelledby="form-dialog-title"
+       >
+         <DialogTitle id="form-dialog-title" />
+         <DialogContent>
+           <TextField
+             autoFocus
+             margin="dense"
+             id="name"
+             label="from"
+            //  Value={this.state.area}
+             onChange={this.handleChange("from")}
+             type="email"
+             fullWidth
+           />
+           <br/>
+           <TextField
+             autoFocus
+             margin="dense"
+             id="name"
+             label="to"
+             //Value={this.state.street}
+             onChange={this.handleChange("to")}
+             type="email"
+             fullWidth
+           />
+         </DialogContent>
+         <DialogActions>
+           <Button onClick={this.handleClose} color="primary">
+             Cancel
+           </Button>
+           <Button onClick={this.handleApply} color="primary">
+             Apply
+           </Button>
+         </DialogActions>
+       </Dialog>:
+           <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" />
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                
+                onChange={this.handleChange("newData")}
+                
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleApply} color="primary">
+                Apply
+              </Button>
+            </DialogActions>
+          </Dialog>
+          
+        }
+
+           
+          
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
@@ -229,7 +411,7 @@ class Coworking extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           />
         </div>

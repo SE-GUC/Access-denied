@@ -4,20 +4,31 @@ import qs from "query-string";
 import "../App.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "react-big-calendar";
-import profile from "../Images/profile.jpg";
+import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
-
+import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import { Redirect } from "react-router-dom";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import TextField from "@material-ui/core/TextField";
+const axios = require("axios");
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+}
 class Member extends Component {
   constructor(props) {
     super(props);
     this.state = {
       id: props.id,
       email: props.email,
+      verified: props.verified,
       name: null,
       basicInfo: null,
       certification: null,
@@ -29,9 +40,62 @@ class Member extends Component {
       events: null,
       activeId: "1",
       displayed: null,
-      loaded: false
+      loaded: false,
+      redirect: false,
+      open: false,
+      dialogText:null,
+      newData:null,
+      city:null,
+      area:null,
+      street:null
+      
     };
   }
+  handleClickOpen = name => event => {
+    
+    this.setState({ 
+      open: true,
+      dialogText: name
+    });
+   
+    
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+  handleApply =()=>{
+    
+    if(this.state.dialogText==="address"){
+      
+      const data = {
+        "address":{
+          "city":this.state.city,
+          "area": this.state.area,
+          "street": this.state.street
+
+        }
+      }
+      axios.put(`/api/member?id=`+this.state.id, data)
+    }else{
+      const data = {
+        [this.state.dialogText] :this.state.newData
+      }
+      axios.put(`/api/member?id=`+this.state.id, data)
+    }
+    this.setState({ open: false })
+  }
+
+  
+  handleChange = name => event => {
+    this.setState({
+    [name]: event.target.value,
+  
+    });   
+    
+  };
+  
+
 
   componentDidMount() {
     let id = this.state.id;
@@ -40,7 +104,12 @@ class Member extends Component {
         ignoreQueryPrefix: true
       }).id;
     }
-    fetch(`/api/member?id=${id}`)
+    fetch(`/api/user/email?id=${id}`)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({ email: res.email });
+        return fetch(`/api/member?id=${id}`);
+      })
       .then(res => res.json())
       .then(res => {
         let currentState = this.state;
@@ -52,11 +121,41 @@ class Member extends Component {
                 <th scope="row" />
                 <td>Name: </td>
                 <td> {res.name}</td>
+                <td>
+                  {" "}
+                  <div>
+                   
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("name")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
                 <td>Hourly Rate: </td>
                 <td>{res.payRate} $</td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("payRate")}
+                    >
+                      edit
+                    </Button>
+                  </div>
+                </td>
               </tr>
               <tr>
                 <th scope="row" />
@@ -64,6 +163,21 @@ class Member extends Component {
                 <td>
                   {res.address.city} City, {res.address.area},{" "}
                   {res.address.street} st.
+                </td>
+                <td>
+                  {" "}
+                  <div>
+                    
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                      hidden={!this.state.verified}
+                      onClick={this.handleClickOpen("address")}
+                    >
+                      edit
+                    </Button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -73,9 +187,9 @@ class Member extends Component {
         currentState.certification = res.certification.map(cert => (
           <li className="list-group-item">
             {" "}
-            <a href={`/certificate?id=${cert.ref_of_certification}`}>
+            <Link to={`/certificate?id=${cert.ref_of_certification}`}>
               {cert.name_of_certification}
-            </a>
+            </Link>
           </li>
         ));
         currentState.calendar = res.calendar.map(oldevent => {
@@ -170,14 +284,98 @@ class Member extends Component {
       }); //TBD
   }
   handleClick(e) {
-    let currentState = this.state;
-    currentState.activeId = e.target.id;
-    this.setState(currentState);
+    if (isNumber(e.target.id)) {
+      let currentState = this.state;
+      currentState.activeId = e.target.id;
+      this.setState(currentState);
+    }
   }
   render() {
     console.log(this.state);
     return (
       <div>
+          <div>
+           {(this.state.dialogText !== "address")?
+           <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title" />
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                
+                onChange={this.handleChange("newData")}
+                
+                fullWidth
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleApply} color="primary">
+                Apply
+              </Button>
+            </DialogActions>
+          </Dialog>:
+           <Dialog
+           open={this.state.open}
+           onClose={this.handleClose}
+           aria-labelledby="form-dialog-title"
+         >
+           <DialogTitle id="form-dialog-title" />
+           <DialogContent>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="city"
+               //Value={this.state.city}
+               onChange={this.handleChange("city")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="area"
+              //  Value={this.state.area}
+               onChange={this.handleChange("area")}
+               type="email"
+               fullWidth
+             />
+             <br/>
+             <TextField
+               autoFocus
+               margin="dense"
+               id="name"
+               label="street"
+               //Value={this.state.street}
+               onChange={this.handleChange("street")}
+               type="email"
+               fullWidth
+             />
+           </DialogContent>
+           <DialogActions>
+             <Button onClick={this.handleClose} color="primary">
+               Cancel
+             </Button>
+             <Button onClick={this.handleApply} color="primary">
+               Apply
+             </Button>
+           </DialogActions>
+         </Dialog>
+          
+        }
+
+           
+          
+        </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: "30%" }}>
             <img
@@ -198,7 +396,7 @@ class Member extends Component {
             style={{
               backgroundImage: `url(${profileBG})`,
               backgroundRepeat: "no-repeat",
-              backgroundSize: "auto"
+              backgroundSize: "cover"
             }}
           >
             <div className="d-flex flex-column text-capitalize text-light align-self-end">

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Form, Button, Jumbotron, Container } from "react-bootstrap";
+import "./Form.css";
 
 class PartnerForm extends React.Component {
   constructor(props) {
@@ -6,6 +8,7 @@ class PartnerForm extends React.Component {
     this.state = {
       name: "",
       email: "",
+      password: "",
       telephoneNumber: "",
       fieldOfWork: ""
     };
@@ -19,55 +22,146 @@ class PartnerForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("submitted: " + this.state.name);
+    let part = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      field_of_work: this.state.fieldOfWork,
+      Telephone_number: this.state.telephoneNumber,
+      type: "Partners"
+    };
+
+    fetch(`/api/user`, {
+      //
+      method: "POST",
+      body: JSON.stringify(part),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        if (json === "Error") {
+          alert("you are already registered");
+        } else {
+          alert("success!");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert("something went wrong");
+      });
+
     event.preventDefault();
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
+      <div id="themain">
+        <div>
+          <Jumbotron fluid>
+            <Container>
+              <h1>Partner Signup!</h1>
+              <p>Welcome to LirtenHub!</p>
+            </Container>
+          </Jumbotron>
+        </div>
+        <form className="theform" onSubmit={this.handleSubmit}>
+          <label>
+            Name:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="text"
+              name="name"
+              minLength="3"
+              maxLength="500"
+              placeholder="your Name"
+              required
+              value={this.state.name}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            password:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="password"
+              name="password"
+              placeholder="your password"
+              required
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            email:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="text"
+              name="email"
+              placeholder="your email"
+              required
+              value={this.state.email}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            telephone number:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="text"
+              name="telephoneNumber"
+              minLength="3"
+              maxLength="500"
+              placeholder="contact number"
+              value={this.state.telephoneNumber}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            Field of work:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="text"
+              name="fieldOfWork"
+              minLength="3"
+              maxLength="500"
+              placeholder="your concentration"
+              value={this.state.fieldOfWork}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
           <input
-            type="text"
-            name="name"
-            value={this.state.name}
-            onChange={this.handleChange}
+            type="checkbox"
+            class="custom-control-input"
+            id="defaultUnchecked"
+            required
           />
-        </label>
-        <br />
-        <label>
-          email:
-          <input
-            type="text"
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          telephone number:
-          <input
-            type="text"
-            name="telephoneNumber"
-            value={this.state.telephoneNumber}
-            onChange={this.handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Field of work:
-          <input
-            type="text"
-            name="fieldOfWork"
-            value={this.state.fieldOfWork}
-            onChange={this.handleChange}
-          />
-        </label>
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
+          <label class="custom-control-label" for="defaultUnchecked">
+            I have read and agreed to the terms and conditions of LirtenHub
+          </label>
+          <br />
+          <Button size="lg" type="submit" value="Submit">
+            Submit
+          </Button>
+        </form>
+      </div>
     );
   }
 }

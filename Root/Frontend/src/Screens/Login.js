@@ -69,9 +69,16 @@ class SignIn extends Component {
       })
         .then(res => res.json())
         .then(data => {
-          this.setState({ valid: true });
-          this.state.setToken(data);
-          this.props.history.push("/profile");
+          fetch(`/api/login?token=${data}`)
+            .then(res => res.json())
+            .then(datas => {
+              console.log(JSON.stringify(datas));
+
+              if (datas === "Error") return this.setState({ valid: false });
+              this.setState({ valid: true });
+              this.state.setToken(data, datas.profile, datas.type);
+              this.props.history.push("/profile");
+            });
         })
         .catch(err => this.setState({ valid: false }));
     } else {

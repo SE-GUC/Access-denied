@@ -1,0 +1,42 @@
+#main {
+  text-align: center;
+  font: 2em Helvetica;
+
+  color: white;
+  border: 0ch;
+  width: 100%;
+  height: 100%;
+}
+
+#labelR {
+  margin: 15px;
+  text-align: center;
+  font: 2em Helvetica;
+  color: white;
+}
+
+#selectors {
+  margin-left: 550px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  color: white;
+  text-align: center;
+}
+
+#sign {
+  background: url("../Images/bluewall.jpg");
+  text-align: center;
+  font: 2em Helvetica;
+  height: 200px;
+
+  color: white;
+  border: 0ch;
+}
+#q {
+  text-align: center;
+  font: 2em Helvetica;
+  height: 100px;
+  color: black;
+
+  border: 0ch;
+}
