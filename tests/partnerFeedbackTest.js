@@ -30,7 +30,7 @@ const postFeedbackTest = test('post feedback', async () => {
     assignee: memberId,
     description: 'This is Tester.Test123 Description',
     extraNotes: 'This is Tester.Test123 Extra Notes',
-    effortLevel: 999999999,
+    effortLevel: 9,
     monetaryComp: 999999999,
     isComplete: true
   }
