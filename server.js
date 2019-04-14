@@ -11,7 +11,7 @@ require('dotenv').config()
 
 const uri = process.env.MONGOURI
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 //Require routers
 const taskRoute = require('./routes/task')
 const skillsRoute = require('./routes/skills')
@@ -39,6 +39,12 @@ app.use(
   })
 )
 //Setup Views Directory, TODO: Assign view engine, Let html as DEF
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 // app.set('views', './views')
 // app.set('view engine', 'html')
 
