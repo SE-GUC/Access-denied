@@ -1,4 +1,4 @@
-const educationalorganisations = require('../models/EducationalOrganisation.model')
+const educationalorganisations = require('../models/educationalOrganisation.model')
 const express = require('express')
 const router = express.Router()
 const validator = require('../validations/EducationalOrganisationValidations.js')

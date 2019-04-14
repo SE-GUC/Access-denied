@@ -31,29 +31,28 @@ const baseURL = process.env.BASEURL || 'http://localhost:3001'
  */
 
 //TODO:check if its admin or not aka {request.query.token_id}
-//if it's admin it will do its job 
-//if not it will make post request to this API 
+//if it's admin it will do its job
+//if not it will make post request to this API
 //sample code : if(request.query.token_id!=admin_token)
 //axios.post(
-  // `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
-  // {
-    
-  //     route:`api/task`,
-  //     body: request.body,
-  //     type: "POST"},
-  //  )
-  // .then(q=>{
-  //   console.log(q.data)
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
 
-  //   response.send(q.data)
-  // })
-  // .catch(e=>{
-  //   response.send(e)
-  // })
-  // ) else "the rest of the code"
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 
 router.post('/', (request, response) => {
-
   if (!request.body) {
     return response.status(400).send('400: Bad Request')
   }
@@ -80,19 +79,13 @@ router.post('/', (request, response) => {
     })
 })
 
-/*
-    GET/READ route for Task Entity
-    Either Get all the documents related to the Task Entity, or can be specified to fetch a certain document using 
-*/
-
 /**
  * @description Get Document in Database
  * @returns Success/Error JSON
  * @requires _id
  */
 
-
-router.get('/', (request, response) => {  
+router.get('/', (request, response) => {
   let documentID = request.query.id
 
   if (!documentID) {
@@ -106,7 +99,7 @@ router.get('/', (request, response) => {
   }
 
   Task.findOne(key)
-  .populate('owner')
+    .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -122,7 +115,7 @@ router.get('/all', (request, response) => {
   let key = {}
 
   Task.find(key)
-  // .populate('owner')
+    // .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -181,7 +174,7 @@ router.get('/isTaskDone', (request, response) => {
     isComplete: true
   }
   Task.findOne(key)
-  .populate('owner')    
+    .populate('owner')
     .then(document => {
       response.json(document)
     })
@@ -200,26 +193,26 @@ router.get('/isTaskDone', (request, response) => {
  */
 
 //TODO:check if its admin or not aka {request.query.token_id}
-//if it's admin it will do its job 
-//if not it will make post request to this API 
+//if it's admin it will do its job
+//if not it will make post request to this API
 //sample code : if(request.query.token_id!=admin_token)
 //axios.post(
-  // `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
-  // {
-    
-  //     route:`api/task`,
-  //     body: request.body,
-  //     type: "POST"},
-  //  )
-  // .then(q=>{
-  //   console.log(q.data)
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
 
-  //   response.send(q.data)
-  // })
-  // .catch(e=>{
-  //   response.send(e)
-  // })
-  // ) else "the rest of the code"
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 
 router.put('/', (request, response) => {
   let documentID = request.query.id
@@ -320,8 +313,7 @@ router.get('/filterTasks', (request, response) => {
   }
   let splitted = q.skills.split(',')
 
-  axios
-    .get(`${baseURL}/api/task/all`)
+  Task.find({ phase: 'Looking for Members' })
 
     .then(alltasks => {
       let result = search(splitted, alltasks)
@@ -371,7 +363,37 @@ router.put('/:id/done', (request, response) => {
       response.status(500).json(error)
     })
 })
+//additional tasks
+router.put('/phase', (req, res) => {
+  if (!req.query.id || !req.body.phase) {
+    res.status(400).send('Body is Missing')
+  }
+  Task.findByIdAndUpdate(
+    req.query.id,
+    { phase: req.body.phase },
+    {
+      new: true
+    }
+  )
+    .then(doc => {
+      if (!doc || doc.length === 0) return res.status(500).send(doc)
+      res.json(doc)
+    })
+    .catch(err => res.status(500).send(err))
+})
 
+router.post('/browse', (req, res) => {
+  if (!req.body.token) return res.status(400).send('Body is Missing')
+  let verify = req.app.get('verifyToken')
+  let data = verify(req.body.token)
+  if (!data) return res.status(500).send('Error')
+  let tasks = ''
+  if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
+    return res.status(400).send('Not Allowed to Browse')
+  Task.find({ phase: `Looking for ${data.type}` })
+    .then(doc => res.json(doc))
+    .catch(err => res.status(500).send(err))
+})
 module.exports = {
   router: router,
   searchTasksBySkills: search

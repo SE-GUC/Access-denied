@@ -6,8 +6,8 @@ const objectId = mongoose.Schema.Types.ObjectId
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    ref: 'Task',
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
