@@ -159,6 +159,21 @@ router.get('/partner', (req, res) => {
       res.status(500).json(error)
     })
 })
+router.get('/consultancy', (req, res) => {
+  if (!req.query.id) return res.status(400).send('consultancy id is Missing')
+  Task.find({ consultancy: req.query.id })
+    .populate('assignee', 'name')
+    .then(document => {
+      if (!document || document.length == 0) {
+        return res.status(500).json(document)
+      }
+
+      res.json(document)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
 
 router.get('/isTaskDone', (request, response) => {
   let reqowner = request.query.owner
@@ -401,7 +416,7 @@ router.put('/memberApplies', (req, res) => {
   Task.findOneAndUpdate(
     {
       _id: req.query.id,
-      phase: { phase: 'Looking for Members' }
+      phase: 'Looking for Members'
     },
     Task.update(
       { _id: 'req.query.id' },
