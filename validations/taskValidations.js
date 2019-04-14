@@ -21,6 +21,11 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
+      applications:Joi.object({
+        applier: Joi,
+        date: Joi.date(),
+        details: Joi,
+        applierModel:Joi}),
       Keywords: Joi
     }
 
@@ -47,6 +52,11 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
+      applications:Joi.object({
+        applier: Joi,
+        date: Joi.date(),
+        details: Joi,
+        applierModel:Joi}),
       Keywords: Joi
     }
 

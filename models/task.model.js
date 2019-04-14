@@ -62,7 +62,27 @@ let taskSchema = new mongoose.Schema(
   applied_members:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Members'
-  }]
+  }],
+  applications:[{
+    applier: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'applierModel',
+      required: true
+    },
+    date: {
+      type: Date,
+      default: new Date()
+    },
+    details: {
+      type: String,
+      required: true
+    },
+    applierModel: {
+      type: String,
+      required: true,
+      enum: ['Members', 'ConsultancyAgencies']
+    }
+    }]
 }
   )
 
@@ -85,12 +105,12 @@ taskSchema
   return  s;
 });
 
-// delete mongoose.connection.models['Tasks']
-// delete mongoose.connection.models['Task']
+//  delete mongoose.connection.models['Tasks']
+//  delete mongoose.connection.models['Task']
 let taskModel = mongoose.model('Task', taskSchema)
 
 
 
-// taskModel.collection.drop()
+//  taskModel.collection.drop()
 
 module.exports = taskModel
