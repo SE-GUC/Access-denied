@@ -4,7 +4,29 @@ const router = express.Router()
 const validator = require('../validations/partnerValidations')
 const axios = require('axios')
 const reviewModel = require('../models/review.model')
+const baseURL = process.env.BASEURL || 'http://localhost:3001'
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
@@ -33,12 +55,12 @@ router.post('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is mising.')
+  if (!req.query.id) {
+    return res.status(400).send('id is mising.')
   }
   partnerModel
     .findOne({
-      email: req.query.email
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)
@@ -48,6 +70,21 @@ router.get('/', (req, res) => {
     })
 })
 
+router.get('/search', (req, res) => {
+  if (!req.query.field_of_work) {
+    return res.status(400).send('field_of_work is mising.')
+  }
+  partnerModel
+    .find({
+      field_of_work: req.query.field_of_work
+    })
+    .then(doc => {
+      res.json(doc)
+    })
+    .catch(err => {
+      res.status(500).json(err)
+    })
+})
 router.get('/all', (request, response) => {
   let key = {}
 
@@ -65,9 +102,30 @@ router.get('/all', (request, response) => {
     })
 })
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is mising.')
+  if (!req.query.id) {
+    return res.status(400).send('id is mising.')
   }
   // const isValidated = validator.updateValidation(req.body)
   // if (isValidated.error)
@@ -75,7 +133,7 @@ router.put('/', (req, res) => {
   partnerModel
     .findOneAndUpdate(
       {
-        email: req.query.email
+        _id: req.query.id
       },
       req.body,
       {
@@ -91,8 +149,8 @@ router.put('/', (req, res) => {
 })
 
 router.put('/review', (req, res) => {
-  if (!req.query.email && !req.query.name) {
-    return res.status(400).send('Email is mising.')
+  if (!req.query.id && !req.query.name) {
+    return res.status(400).send('id is mising.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -100,7 +158,7 @@ router.put('/review', (req, res) => {
   partnerModel
     .findOneAndUpdate(
       {
-        email: req.query.email
+        _id: req.query.id
       },
       req.body,
       {
@@ -116,12 +174,12 @@ router.put('/review', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is mising.')
+  if (!req.query.id) {
+    return res.status(400).send('id is mising.')
   }
   partnerModel
     .findOneAndDelete({
-      email: req.query.email
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)
@@ -148,6 +206,25 @@ router.get('/getFeedback', (req, res) => {
     .catch(err => {
       res.status(500).json(err)
     })
+})
+router.put('/chooseAssignee', (req, res) => {
+  let taskID=req.query.id
+  if (!taskID) {
+    return res.send('No task provided')
+  }
+  axios
+  .put(`${baseURL}/api/task/chooseAssignee?id=${taskID}`, {
+    assignee:req.body.assignee
+  })
+  .then(doc => {
+    if (!doc || doc.data.length === 0) {
+      return res.send(doc)
+    }
+    res.status(201).json(doc.data)
+  })
+  .catch(err => {
+    res.send("err")
+  })
 })
 
 module.exports = router

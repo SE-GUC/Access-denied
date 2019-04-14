@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
-let baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3001'
 const axios = require('axios')
 
 Object.defineProperty(Array.prototype, 'flat', {
@@ -21,16 +21,17 @@ const searchNames = list => {
   models.push(mongoose.models.Certification)
   models.push(mongoose.models.Task)
   models.push(mongoose.models.Members)
+  models.push(mongoose.models.Partners)
+  models.push(mongoose.models.CoworkingSpace)
+  models.push(mongoose.models.EducationalOrganisation)
   regex = list.map(e => new RegExp(e, 'i'))
   return Promise.all(
     models.map(model =>
-      model
-        .find({
-          name: {
-            $in: regex
-          }
-        })
-        .select('name')
+      model.find({
+        name: {
+          $in: regex
+        }
+      })
     )
   )
 }
@@ -39,7 +40,7 @@ function searcht(tags, alltasks) {
   let tasks = []
   tags.forEach(function(tag) {
     alltasks.forEach(function(task) {
-      task.Keywords.forEach(function(key) {
+      task.Tags.forEach(function(key) {
         let j = tasks.find(function(ele) {
           return task == ele
         })
@@ -52,6 +53,7 @@ function searcht(tags, alltasks) {
   return tasks
 }
 router.get('/', (req, res) => {
+  
   let resolved = false
   if (!req.query.q) {
     return res.status(400).send('Query is Missing')
@@ -62,7 +64,7 @@ router.get('/', (req, res) => {
     .then(doc => {
       if (splitted.length < 2) {
         resolved = true
-        return res.json(doc.flat(Infinity))
+        return res.json(doc)
       }
       result = doc
       return searchNames(splitted)
@@ -76,7 +78,8 @@ router.get('/', (req, res) => {
         res.json(result.flat(Infinity))
       }
     })
-    .catch(err => res.status(500).json(err))
+    .catch(err => {console.log(err)
+    res.status(500).json(err)})
 })
 router.get('/sk', (req, res) => {
   //how the array of skills will come , may need to stringfy the array
@@ -99,12 +102,13 @@ router.get('/sk', (req, res) => {
     })
 })
 
-router.get('/filteredby', (req, res) => {
+router.get('/filteredbyt', (req, res) => {
   //will get the tags like normal array
   let q = req.query.tags
+  console.log(JSON.stringify(q))
 
   let tags = JSON.parse(q)
-
+console.log(tags)
   if (!tags) {
     return res.status(400).status('400: no criteria has been specified')
   }
@@ -117,8 +121,56 @@ router.get('/filteredby', (req, res) => {
       return res.json(result)
     })
     .catch(error => {
-      return res.send(error.response.data)
+      console.log(error)
+      return res.send(error)
     })
 })
 
+router.get('/filteredbycert', (req, res) => {
+  //will get the tags like normal array
+  let q = req.query.tags
+  console.log(JSON.stringify(q))
+
+  let tags = JSON.parse(q)
+console.log(tags)
+  if (!tags) {
+    return res.status(400).status('400: no criteria has been specified')
+  }
+
+  axios
+    .get(`${baseURL}/api/certification/all`)
+
+    .then(allcert => {
+      let result = searcht(tags, allcert.data)
+      return res.json(result)
+    })
+    .catch(error => {
+      console.log(error)
+      return res.send(error)
+    })
+})
+
+router.get('/filteredbym', (req, res) => {
+  //will get the tags like normal array
+  let q = req.query.tags
+  console.log(JSON.stringify(q))
+
+  let tags = JSON.parse(q)
+console.log(tags)
+  if (!tags) {
+    return res.status(400).status('400: no criteria has been specified')
+  }
+
+  axios
+    .get(`${baseURL}/api/Member/all`)
+
+    .then(allmembers => {
+      let result = searcht(tags, allmembers.data)
+      return res.json(result)
+    })
+    .catch(error => {
+      console.log(error)
+      return res.send(error)
+    })
+})
 module.exports = router
