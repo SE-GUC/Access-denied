@@ -14,12 +14,6 @@ const EducationalOrganisationSchema = new mongoose.Schema({
     street: String
   },
 
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-
   contactInformation: String,
 
   vision: String,
@@ -39,7 +33,6 @@ const EducationalOrganisationSchema = new mongoose.Schema({
     }
   ],
   trainer: [String],
-
   trainingProgram: [String]
 })
 

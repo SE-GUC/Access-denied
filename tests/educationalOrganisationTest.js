@@ -1,23 +1,26 @@
 const fetch = require('node-fetch')
 let baseURL = process.env.BASEURL || 'http://localhost:3000'
-const edumodel = require('../models/EducationalOrganisation.model')
-
+const edumodel = require('../models/educationalOrganisation.model')
+let id = ''
 const funcs = {
   postEducationalOrganisation: async () => {
     let response = await fetch(`${baseURL}/api/EducationalOrganisation`, {
       method: 'POST',
-      body: JSON.stringify({ name: 'CarolZainab', email: 'ct@gmail.com' }),
+      body: JSON.stringify({ name: 'CarolZainab' }),
       headers: {
         'Content-Type': 'application/json'
       },
       credentials: 'same-origin'
     })
+
     let data = await response.json()
+
+    id = data._id
     return data
   },
   getEducationalOrganisation: async () => {
     let response = await fetch(
-      `${baseURL}/api/EducationalOrganisation?email=ct@gmail.com `,
+      `${baseURL}/api/EducationalOrganisation?id=${id} `,
       {
         method: 'GET',
         headers: {
@@ -42,7 +45,7 @@ const funcs = {
   },
   deleteEducationalOrganisation: async () => {
     let response = await fetch(
-      `${baseURL}/api/EducationalOrganisation?email=ct@gmail.com `,
+      `${baseURL}/api/EducationalOrganisation?id=${id} `,
       {
         method: 'DELETE',
         headers: {
@@ -57,10 +60,10 @@ const funcs = {
 
   updateEducationalOrganisation: async () => {
     let response = await fetch(
-      `${baseURL}/api/EducationalOrganisation?email=ct@gmail.com`,
+      `${baseURL}/api/EducationalOrganisation?id=${id}`,
       {
         method: 'PUT',
-        body: JSON.stringify({ name: 'newname', email: 'ct@gmail.com' }),
+        body: JSON.stringify({ name: 'newname' }),
         headers: {
           'Content-Type': 'application/json'
         },
@@ -98,18 +101,17 @@ const readAllTest = test('get all Educational Organisations ', async () => {
 
 const readTest = test('get Educational Organisation ', async () => {
   const response = await funcs.getEducationalOrganisation()
-  expect(response.email).toEqual('ct@gmail.com')
+  expect(response._id).toEqual(id)
 })
 
 const updateTest = test('update Educational Organisation ', async () => {
   const response = await funcs.updateEducationalOrganisation()
-  expect(response.name).toEqual('newname') &&
-    expect(response.email).toEqual('ct@gmail.com')
+  expect(response.name).toEqual('newname') && expect(response._id).toEqual(id)
 })
 
 const deleteTest = test('delete Educational Organisation ', async () => {
   const response = await funcs.deleteEducationalOrganisation()
-  expect(response.email).toEqual('ct@gmail.com')
+  expect(response._id).toEqual(id)
 })
 
 //post an entity missing required info, expect an error

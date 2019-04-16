@@ -20,8 +20,8 @@ const postTask = test('POST /api/task', async () => {
     name: 'Tester.Test123',
     description: 'This is Tester.Test123 Description',
     extraNotes: 'This is Tester.Test123 Extra Notes',
-    effortLevel: 999999999,
-    monetaryComp: 999999999
+    effortLevel: 9,
+    monetaryComp: 9
   }
 
   let response = await axios.post(apiRoute, document)
@@ -41,8 +41,8 @@ const getTask = test('GET /api/task', async () => {
     name: 'Tester.Test123',
     description: 'This is Tester.Test123 Description',
     extraNotes: 'This is Tester.Test123 Extra Notes',
-    effortLevel: 999999999,
-    monetaryComp: 999999999
+    effortLevel: 9,
+    monetaryComp: 9
   }
 
   let response = await axios.post(apiRoute, document)
@@ -63,8 +63,8 @@ const putTask = test('PUT /api/task', async () => {
     name: 'Tester.Test123',
     description: 'This is Tester.Test123 Description',
     extraNotes: 'This is Tester.Test123 Extra Notes',
-    effortLevel: 999999999,
-    monetaryComp: 999999999
+    effortLevel: 9,
+    monetaryComp: 9
   }
 
   let response = await axios.post(apiRoute, document)
@@ -94,8 +94,8 @@ const deleteTask = test('DELETE /api/task', async () => {
     name: 'Tester.Test123',
     description: 'This is Tester.Test123 Description',
     extraNotes: 'This is Tester.Test123 Extra Notes',
-    effortLevel: 999999999,
-    monetaryComp: 999999999
+    effortLevel: 9,
+    monetaryComp: 9
   }
 
   let response = await axios.post(apiRoute, document)

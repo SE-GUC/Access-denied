@@ -5,11 +5,7 @@ const consultancySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
+
   phoneNumber: {
     type: String,
     required: true,
@@ -48,5 +44,11 @@ const consultancySchema = new mongoose.Schema({
     }
   ]
 })
+// delete mongoose.connection.models['ConsultancyAgencies']
+// delete mongoose.connection.models['ConsultancyAgencie']
+let consultancyModel = mongoose.model('ConsultancyAgencies', consultancySchema)
 
-module.exports = mongoose.model('ConsultancyAgencies', consultancySchema)
+
+
+// consultancyModel.collection.drop()
+module.exports = consultancyModel
