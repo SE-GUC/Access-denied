@@ -10,11 +10,16 @@ How to Implement/ support authorization in the website??
 - The function that extracts data is already implemented and will show you an example of how to use it 
 
 >router.get('/', (req, res) => {
+
 >let verify = req.app.get('verifyToken')
+
 >let ver = verify(req.body.token)
+
 >if (ver) res.json(ver)
+
 >else res.json('Error')
-})
+
+>})
  
 - The function returns the data if the token is valid, then you can take the data in the then part and check its integrity
 - the else part means the token is not even a valid token, which should be handled as well
