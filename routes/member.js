@@ -5,69 +5,99 @@ const validator = require('../validations/memberValidations.js')
 const app = express()
 const axios = require('axios')
 const _ = require('lodash')
-let baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3001'
 
 router.get('/cert', (req, res) => {
-  console.log(req.query.email)
+  if (!req.query.id || !req.query.cert) {
+    res.send('id or id of cert is missing')
+  }
   axios
     .get(`${baseURL}/api/Member`, {
       params: {
-        email: req.query.email
+        _id: req.query.id
       }
     })
     .then(response => {
       objid = response.data._id
-      console.log(response.data._id)
-      //get certifcate array
-      axios
-        .get(`${baseURL}/api/certification`, {
-          params: {
-            id_of_certification: req.query.id
-          }
-        })
-        .then(response => {
-          let memberModel = response.data[0].membersapplied
-          // res.json(memberModel)
-          let j = memberModel.find(function(value) {
-            return value.MEMBERS == objid
+      //if already taken
+      let T = response.data.certification.find(function(value) {
+        return value.ref_of_certification == req.query.cert
+      })
+
+      if (T) {
+        let str = JSON.stringify(T.ref_of_certification)
+        res.send('already taken !')
+      } else {
+        //get certifcate array
+        axios
+          .get(`${baseURL}/api/certification`, {
+            params: {
+              id_of_certification: req.query.cert
+            }
           })
-
-          if (j == null) {
-            //res.send("already applied")
-            memberModel.push({
-              MEMBERS: objid,
-              finished: 'false'
+          .then(response => {
+            let memberModel = response.data[0].membersapplied
+            let membermodelacc = response.data[0].membersaccepted
+            let allmembers = memberModel.concat(membermodelacc)
+            // res.json(memberModel)
+            let j = allmembers.find(function(value) {
+              return value.MEMBERS == objid
             })
-          }
+            if (j == null) {
+              //res.send("already applied")
+              memberModel.push({
+                MEMBERS: objid
+              })
+              axios
+                .put(
+                  `${baseURL}/api/certification?id_of_certification=` +
+                    req.query.cert,
+                  {
+                    membersapplied: memberModel
+                  }
+                )
+                .then(function(response) {
+                  res.send(response.data)
+                })
+            } else {
+              res.send('already applied for certifacte !')
+              const f = 'true'
+            }
 
-          //   res.json(memberModel)
-          console.log(response.data)
-          console.log(memberModel.tostring)
-          //update certifcate array
-
-          axios
-            .put(
-              `${baseURL}/api/certification?id_of_certification=` +
-                req.query.id,
-              {
-                membersapplied: memberModel
-              }
-            )
-            .then(function(response) {
-              console.log('saved successfully')
-              console.log(response.data)
-              res.send(response.data)
-            })
-        })
-        .catch(error => {
-          console.log(error)
-        })
+            //   res.json(memberModel)
+            //update certifcate array
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
     })
     .catch(error => {
       console.log(error)
     })
 })
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
@@ -86,7 +116,16 @@ router.post('/', (req, res) => {
       res
         .status(201)
         .send(
-          _.pick(doc, ['_id', 'name', 'email', 'calendar', 'certification'])
+          _.pick(doc, [
+            '_id',
+            'name',
+            'email',
+            'calendar',
+            'certification',
+            'address',
+            'birthDate',
+            'expiryDate'
+          ])
         )
     })
     .catch(err => {
@@ -95,12 +134,12 @@ router.post('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id is missing.')
   }
   memberModel
     .findOne({
-      email: req.query.email
+      _id: req.query.id
     })
     .select('-password')
     .then(doc => {
@@ -121,16 +160,37 @@ router.get('/all', (_request, response) => {
         return response.status(500).json(document)
       }
 
-      response.status(200).json(document)
+      response.json(document)
     })
     .catch(error => {
       response.status(500).json(error)
     })
 })
 
+//TODO:check if its admin or not aka {request.query.token_id}
+//if it's admin it will do its job
+//if not it will make post request to this API
+//sample code : if(request.query.token_id!=admin_token)
+//axios.post(
+// `http://localhost:3001/api/?token_id=${request.query.token_id}`,         //ref partner, members , users of the system
+// {
+
+//     route:`api/task`,
+//     body: request.body,
+//     type: "POST"},
+//  )
+// .then(q=>{
+//   console.log(q.data)
+
+//   response.send(q.data)
+// })
+// .catch(e=>{
+//   response.send(e)
+// })
+// ) else "the rest of the code"
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
@@ -138,7 +198,7 @@ router.put('/', (req, res) => {
   memberModel
     .findOneAndUpdate(
       {
-        email: req.query.email
+        _id: req.query.id
       },
       req.body,
       {
@@ -154,12 +214,12 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is mising.')
+  if (!req.query.id) {
+    return res.status(400).send('id is mising.')
   }
   memberModel
     .findOneAndDelete({
-      email: req.query.email
+      _id: req.query.id
     })
     .then(doc => {
       res.json(doc)
@@ -172,15 +232,12 @@ router.delete('/', (req, res) => {
 //user stories
 
 router.get('/tasksAvilable', (req, res) => {
-  axios
-    .get(`${baseURL}/api/Member`, {
-      params: {
-        email: req.query.email
-      }
+  memberModel
+    .findOne({
+      _id: req.query.id
     })
     .then(member => {
-      let id = member.data._id
-      let Certification = member.data.certification
+      let Certification = member.certification
       let save = []
       Certification.forEach(function(element) {
         save = element.skills + ',' + save
@@ -188,7 +245,7 @@ router.get('/tasksAvilable', (req, res) => {
       let skills = {
         skills: save
       }
-      axios
+      return axios
         .get(`${baseURL}/api/task/filterTasks`, {
           params: {
             skills: skills
@@ -196,45 +253,58 @@ router.get('/tasksAvilable', (req, res) => {
         })
 
         .then(tasks => {
-          let returned = {
-            id: id,
-            tasks: tasks.data
-          }
-
-          res.json(returned)
+          res.json(tasks.data)
         })
     })
+    .catch(err => {
+      res.status(500).send(err.response.data)
+    })
 })
-router.get('/applyonTask', (request, response) => {
-  let email = request.query.email
-  let taskemail = request.query.contactEmail
+router.post('/applyonTask', (req, res) => {
+  let id = req.body.id
+  let taskId = req.body.id
+  if (!id || !taskId) {
+    return res.status(400).send('Bad Request')
+  }
   axios
     .get(`${baseURL}/api/Member/tasksAvilable`, {
       params: {
-        email: email
+        id: id
       }
     })
     .then(tasks => {
-      axios
-        .get(`${baseURL}/api/task`, {
-          params: {
-            contactEmail: taskemail
-          }
-        })
-        .then(thetask => {
-          //   response.json(tasks.data.id)
-          tasks.data.tasks.forEach(function(atask) {
-            if (atask.title == thetask.data.title) {
-              axios
-                .put(`${baseURL}/api/task?contactEmail=` + taskemail, {
-                  assignee: tasks.data.id
-                })
-                .then(p => {
-                  response.json(p.data)
-                })
-            }
+      let t = tasks.data.find(function(ele) {
+        return taskId == ele._id
+      })
+      if ((t = !null)) {
+        return memberModel
+          .findOne({
+            _id: id
           })
-        })
+          .then(member => {
+            let memberId = member._id
+            return axios
+              .post(`${baseURL}/api/application`, {
+                task: taskId,
+                applier: memberId,
+                details: req.body.details,
+                applierModel: 'Members'
+              })
+              .then(response => {
+                let doc = response.data
+                if (!doc || doc.length === 0) return res.status(500).send(doc)
+                return res.send(doc)
+              })
+              .catch(err => {
+                console.log(err.response.data)
+
+                return res.send(err.response.data)
+              })
+          })
+      }
+    })
+    .catch(err => {
+      res.status(500).send(err.response.data)
     })
 })
 
@@ -264,12 +334,12 @@ router.post('/reviewPartner', (req, res) => {
 })
 
 router.post('/adddate', (req, res) => {
-  if (!req.query.email) return res.status(400).send('Email is missing')
+  if (!req.query.id) return res.status(400).send('id is missing')
   if (!req.body.date) return res.status(400).send('Date is missing')
   memberModel
     .findOneAndUpdate(
       {
-        email: req.query.email
+        _id: req.query.id
       },
       {
         $push: { calendar: req.body.date }

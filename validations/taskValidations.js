@@ -15,13 +15,21 @@ module.exports = {
         .max(500),
       isComplete: Joi.boolean(),
       date: Joi.date(),
-      effortLevel: Joi.number(),
+      effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
+
+      paymentMethod: Joi,
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi.array().items(Joi.string())
+      applications: Joi.object({
+        applier: Joi,
+        date: Joi.date(),
+        details: Joi,
+        applierModel: Joi
+      }),
+      Keywords: Joi
     }
 
     return Joi.validate(request, createSchema)
@@ -40,14 +48,22 @@ module.exports = {
         .min(3)
         .max(500),
       isComplete: Joi.boolean(),
+
+      paymentMethod: Joi,
       date: Joi.date(),
-      effortLevel: Joi.number(),
+      effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi.array()
+      applications: Joi.object({
+        applier: Joi,
+        date: Joi.date(),
+        details: Joi,
+        applierModel: Joi
+      }),
+      Keywords: Joi
     }
 
     return Joi.validate(request, updateSchema)
