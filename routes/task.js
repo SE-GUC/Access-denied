@@ -505,6 +505,32 @@ router.post('/browse', (req, res) => {
     .then(doc => res.json(doc))
     .catch(err => res.status(500).send(err))
 })
+router.post('/mytasks', (req, res) => {
+  if (!req.body.token) 
+    return res.status(400).send('Body is Missing')
+
+  let verify = req.app.get('verifyToken')
+  let data = verify(req.body.token)
+  if (!data) 
+    return res.status(500).send('Error')
+  
+  if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
+    return res.status(400).send('Not Allowed to view tasks')
+
+  if (data.type == 'Members')
+  {
+  Task.find({ phase:'Awaiting approval'} && {assignee: `${data.profile}` })
+    .then(doc => res.json(doc))
+    .catch(err => res.status(500).send(err))
+  }
+  else if (data.type == 'ConsultancyAgencie')
+  {
+  Task.find({ phase:'Awaiting approval'} && {consultancy: `${data.profile}` })
+    .then(doc => res.json(doc))
+    .catch(err => res.status(500).send(err))
+  }
+
+})
 module.exports = {
   router: router,
   searchTasksBySkills: search
