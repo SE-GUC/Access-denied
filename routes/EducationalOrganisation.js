@@ -2,6 +2,9 @@ const educationalorganisations = require('../models/educationalOrganisation.mode
 const express = require('express')
 const router = express.Router()
 const validator = require('../validations/EducationalOrganisationValidations.js')
+const axios = require("axios");
+const _ = require('lodash');
+const baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 //TODO:check if its admin or not aka {request.query.token_id}
 //if it's admin it will do its job
@@ -139,6 +142,41 @@ router.delete('/', (req, res) => {
     .catch(err => {
       res.status(500).json(err)
     })
+})
+
+router.put('/newCertification',(req, res) => {
+  
+  if(!req.body.token)
+    return res.status(400).send('body is missing')
+  const verify = req.app.get('verifyToken')
+  const data = verify(req.body.token)
+  let url = ''
+  
+  if(!data)
+    return res.status(500).send('there was no data from token')
+  if(data.type !== 'EducationalOrganisation')
+    return res.status(400).send('not allowed to create a new certification')
+  let  certificationBody = _.pick(req.body, [
+      'name',
+      'skills',
+      'Fees',
+      'Method_of_payment',
+      'keywords'
+    ])   
+ url = baseURL + '/api/certification' 
+ let createdCertification=axios.post(url, certificationBody);
+ createdCertification.then(function(result) {
+  
+    createdCertificationId=result.data._id
+    let newData={
+      //how to add to the array of certificates
+     "certificate":[createdCertificationId]
+    }
+   axios.put(baseURL+'/api/EducationalOrganisation?id='+[data.profile],newData) 
+    
+})
+
+
 })
 
 module.exports = router
