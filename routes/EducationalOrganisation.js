@@ -144,14 +144,16 @@ router.delete('/', (req, res) => {
     })
 })
 
-router.put('/newCertification',(req, res) => {
-  
+router.put('/newCertification',async(req, res) => {
+  try{
   if(!req.body.token)
     return res.status(400).send('body is missing')
   const verify = req.app.get('verifyToken')
   const data = verify(req.body.token)
+  console.log("153")
+  console.log(data)
+  console.log("155")
   let url = ''
-  
   if(!data)
     return res.status(500).send('there was no data from token')
   if(data.type !== 'EducationalOrganisation')
@@ -163,20 +165,42 @@ router.put('/newCertification',(req, res) => {
       'Method_of_payment',
       'keywords'
     ])   
- url = baseURL + '/api/certification' 
- let createdCertification=axios.post(url, certificationBody);
- createdCertification.then(function(result) {
-  
-    createdCertificationId=result.data._id
-    let newData={
-      //how to add to the array of certificates
-     "certificate":[createdCertificationId]
-    }
-   axios.put(baseURL+'/api/EducationalOrganisation?id='+[data.profile],newData) 
+    console.log("168")
+    console.log(certificationBody)
+    console.log("170") 
     
+      const newCertification = await x.create(certificationBody) 
+      const certificateId = newCertification._id
+      const eduOrg = await educationalorganisations.findById(data.profile)
+      const eduOrgCertificate = eduOrg.certificate
+      eduOrgCertificate.push(certificateId)
+      await educationalorganisations.findByIdAndUpdate(data.profile,{certificate:eduOrgCertificate},{new:true})
+      console.log(certificateId)
+      return res.send(eduOrg)
+      
+    } catch(err){
+      console.log(err)
+    }
+   
+
+//  let createdCertification=axios.post(baseURL+'/api/certification', certificationBody);
+//  let eduOrg=axios.get(baseURL+'/api/EducationalOrganisation?id='+data.profile)
+//  let certificateArray=[]
+//  eduOrg.then(function(result) {
+//   certificateArray=result.data.certificate  
+//   }).catch(err => {
+//   res.status(500).json(err)
+//   })
+//  createdCertification.then(function(result) {
+//     createdCertificationId=result.data._id
+//     let newData={
+//       //how to add to the array of certificates
+//      "certificate":certificateArray.push(createdCertificationId)
+//     }
+//    axios.put(baseURL+'/api/EducationalOrganisation?id='+[data.profile],newData)  
+//   }).catch(err => {
+//   res.status(500).json(err)
+//   })
 })
-
-
-})
-
+const x= require('../models/certification.model')
 module.exports = router
