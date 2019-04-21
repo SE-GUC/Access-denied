@@ -15,6 +15,11 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+
+
+import MyTasks from "./myTasks";
+import NavLink from "react-bootstrap/NavLink";
+import myTasks from "./myTasks";
 const axios = require("axios");
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -453,6 +458,17 @@ class Member extends Component {
             >
               Events
             </li>
+            <li
+              className={
+                this.state.activeId === "7"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="7"
+            >
+
+              My Tasks
+            </li>
           </ul>
           {(function(state) {
             switch (state.activeId) {
@@ -572,6 +588,15 @@ class Member extends Component {
                 if (!state.events)
                   return <h4 className="text-muted"> No Events yet</h4>;
                 break;
+                case "7":
+                  return (
+                    <div>
+                    <MyTasks/>
+                    </div>
+                  )
+                  break;
+               
+                
               default:
                 break;
             }

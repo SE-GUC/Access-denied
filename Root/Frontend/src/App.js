@@ -27,6 +27,7 @@ import Review from "./Screens/Review";
 import AppProvider from "./Containers/AppProvider";
 import Profile from "./Screens/Profile";
 import taskview from "./Screens/taskview";
+import myTasks from "./Screens/myTasks";
 import TaskForm from "./Screens/TaskForm";
 class App extends Component {
   constructor(props) {
@@ -77,6 +78,7 @@ class App extends Component {
                 path="/coworking/"
                 component={props => <Coworking {...props} />}
               />
+             
               <Route path="/login/" component={Login} />
               <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
@@ -93,6 +95,7 @@ class App extends Component {
               <Route path="/taskview/" component={taskview} />
               <Route path="/review/" component={Review} />
               <Route path="/newtask/" component={TaskForm} />
+              <Route path="/mytasks/" component={myTasks} />
               <Route path="/logout/" component={Logout} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
