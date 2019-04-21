@@ -9,6 +9,7 @@ import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import MyTasks from "./myTasks";
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 const localizer = BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
@@ -273,6 +274,17 @@ class ConsultancyAgency extends Component {
             >
               Reports
             </li>
+            <li
+              className={
+                this.state.activeId === "7"
+                  ? "list-group-item list-group-item-action list-group-item-dark"
+                  : "list-group-item list-group-item-action"
+              }
+              id="7"
+            >
+
+              My Tasks
+            </li>
           </ul>
           {(function(state) {
             switch (state.activeId) {
@@ -386,6 +398,13 @@ class ConsultancyAgency extends Component {
                   );
                 if (!state.reports)
                   return <h4 className="text-muted"> No reports yet</h4>;
+                break;
+                case "7":
+                return (
+                  <div>
+                  <MyTasks/>
+                  </div>
+                )
                 break;
               default:
                 break;

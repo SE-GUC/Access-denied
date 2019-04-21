@@ -1,0 +1,166 @@
+/* Design inspiration:  https://dribbble.com/shots/1978243-Latest-News */
+body, html {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #605f63;
+  }
+  
+  .card {
+    width: 280px;
+    display: block;
+    margin: 60px auto;
+    box-shadow: 10px 5px 40px 20px rgb(53, 53, 56);
+    transition: .25s;
+  }
+  .card:hover {
+    box-shadow: 10px 5px 40px 20px #434344;
+    cursor: pointer;
+  }
+  .card:hover .button-primary {
+    transform: translate(10px, 0);
+  }
+  
+  .card-header {
+    height: 150px;
+    padding: 15px;
+    width: 100%;
+    background-size: cover;
+    color: #fff;
+
+  }
+  
+  .card-header--title {
+    text-transform: uppercase;
+    font-size: x-large;
+    margin: 0;
+    text-align: center;
+  }
+  
+  .card-body {
+    padding: 15px;
+    background-color: #fff;
+    width: 100%;
+  }
+  
+  .date {
+    font-size: 11px;
+    font-weight: 600;
+    color: grey;
+  }
+  
+  .body-content {
+    padding-bottom: 8px;
+    font-weight: 200;
+    line-height: 1.0;
+  }
+  
+  .button-primary {
+    border: none;
+    box-shadow: none;
+    font-family: inherit;
+    background-color: transparent;
+    color: #341cac;
+    font-size: 15px;
+    transition: .25s;
+  }
+  .button-primary i {
+    padding-right: 4px;
+  }
+  
+  .designer-link {
+    color: #fff;
+    text-align: center;
+    fon-size: 12px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  /* Designer credit: https://dribbble.com/shots/1978243-Latest-News */
+  body, html {
+    overflow-x: hidden;
+  }
+  
+  .app-header {
+    display: block;
+    padding: 30px;
+   
+  }
+  
+  .app-title {
+    display: inline-block;
+    width: 100%;
+    margin: 80px 0 0 0;
+    float: left;
+    position: relative;
+    color: #fff;
+  }
+  @media (min-width: 768px) {
+    .app-title {
+      width: 20%;
+      margin: 280px 0 0 0;
+      
+    }
+  }
+  .app-title h1 {
+    font-weight: 200;
+    margin: 0;
+    text-overflow: ellipsis;
+    
+  }
+  .app-title p {
+    font-weight: 200;
+    opacity: .5;
+    text-overflow: ellipsis;
+    
+  }
+  
+  .app-title-content {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    /* width: 50%; */
+    text-align: center;
+    transform: translate(-50%, -50%);
+   
+  }
+  @media (min-width: 768px) {
+    .app-title-content {
+        -webkit-line-clamp: 2; 
+       -webkit-box-orient: vertical;
+      position: absolute;
+      text-align: right;
+    }
+  }
+  
+  .app-card-list {
+    display: inline-block;
+    width: 100%;
+    float: right;
+    margin: 0;
+    min-height: 75vh;
+    white-space: normal;
+    overflow-x: scroll;
+    margin-top: -70px;
+  }
+  .app-card-list::-webkit-scrollbar {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .app-card-list {
+      width: 80%;
+      white-space: nowrap;
+      margin-top: 0;
+    }
+  }
+  .app-card-list .card {
+    margin: 60px 30px;
+    display: inline-block;
+  }
+  .app-card-list .card .card-body {
+    white-space: normal;
+  }
+  
+  .designer-link {
+    display: inline-block;
+    padding-top: 40px;
+  }
+  
