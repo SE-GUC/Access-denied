@@ -9,7 +9,7 @@ require('dotenv').config()
 
 // Database Configuration...
 
-const uri =process.env.MONGOURI
+const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3001
 //Require routers
@@ -82,7 +82,7 @@ app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/skills', skillsRoute)
 app.use('/api/search', searchRoute)
-app.use('/api', requestRoute)
+app.use('/api/request', requestRoute)
 app.use('/api/project', projectRoute)
 
 if (process.env.NODE_ENV === 'production') {
