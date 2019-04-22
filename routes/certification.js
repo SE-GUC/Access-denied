@@ -347,7 +347,11 @@ router.put("/chooseApplicant", (req, res) => {
               new: true
             }
           )
+          .populate("Evaluation_procedure")
           .then(doc => {
+            axios.post(`${baseURL}/api/message/notify?id=${memberID}`, {
+              message: doc.Evaluation_procedure
+            });
             res.status(201).send(doc);
           })
           .catch(err => {
