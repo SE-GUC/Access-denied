@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
+import React, { Component } from "react";
+import { Container, Row, Col } from "react-bootstrap";
 
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
-import 'bootstrap/dist/css/bootstrap.min.css'
-import '../App.css'
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../App.css";
 
 class Footer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.state = {}
+    this.state = {};
   }
 
   componentDidMount() {}
 
   render() {
     return (
-      <Row style={{ marginTop: '20px' }}>
+      <Row style={{ marginTop: "60px" }}>
         <footer className="container-fluid bg-grey py-5">
           <div className="container">
             <div className="row">
@@ -25,21 +25,21 @@ class Footer extends Component {
                 <div className="row">
                   <div className="col-md-6 align-self-center">
                     <div className="logo-part">
-                      <h2 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
+                      <h1 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
                         Lirten Hub
-                      </h2>
+                      </h1>
                     </div>
                   </div>
                   <div className="col-md-6 px-4">
                     <h6> About Company</h6>
                     <p>We strive towards innovating the freelancing field!</p>
                     <Link to="/About/" className="btn-footer">
-                      {' '}
-                      More Info{' '}
+                      {" "}
+                      More Info{" "}
                     </Link>
                     <br />
                     <Link to="/" className="btn-footer">
-                      {' '}
+                      {" "}
                       Contact Us
                     </Link>
                   </div>
@@ -53,16 +53,16 @@ class Footer extends Component {
                       <div className="col-md-6">
                         <ul>
                           <li>
-                            {' '}
-                            <Link to="/"> Home</Link>{' '}
+                            {" "}
+                            <Link to="/"> Home</Link>{" "}
                           </li>
                           <li>
-                            {' '}
-                            <Link to="/About"> About</Link>{' '}
+                            {" "}
+                            <Link to="/About"> About</Link>{" "}
                           </li>
                           <li>
-                            {' '}
-                            <Link to="/Search/"> Search</Link>{' '}
+                            {" "}
+                            <Link to="/Search/"> Search</Link>{" "}
                           </li>
                         </ul>
                       </div>
@@ -81,7 +81,7 @@ class Footer extends Component {
                     <form className="form-footer my-3">
                       <input
                         type="text"
-                        placeholder="search here...."
+                        placeholder="Enter Your Email"
                         name="search"
                         disabled
                       />
@@ -95,8 +95,8 @@ class Footer extends Component {
           </div>
         </footer>
       </Row>
-    )
+    );
   }
 }
 
-export default Footer
+export default Footer;

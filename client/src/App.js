@@ -1,37 +1,41 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Certificate from './Screens/Certificate'
-import Home from './Screens/Home'
-import Member from './Screens/Member'
-import NavBar from './Components/navBar'
-import Login from './Screens/Login'
-import ApplyOnTask from './Screens/ApplyOnTask'
-import Search from './Screens/SearchPage'
-import FilterPanel from './Components/filterPanel'
-import EducationalForm from './Components/EducationalForm'
-import Register from './Screens/Register'
-import PartnerForm from './Components/PartnerForm'
-import CoworkingForm from './Components/CoworkingForm'
-import ConsultancyForm from './Components/ConsultancyForm'
-import MemberForm from './Components/MemberForm'
-import TaskStatus from './Components/taskStatus'
-import ApplyMemberTask from './Components/ApplyMemberTask'
-import ApplyConsultancyTask from './Components/ApplyConsultancyTask'
-import Logout from './Components/Logout'
-import About from './Screens/About'
-import Partner from './Screens/Partner'
-import EduOrganization from './Screens/EduOrganization'
-import Coworking from './Screens/Coworking'
-import Chat from './Components/Chat'
-import Review from './Screens/Review'
-import AppProvider from './Containers/AppProvider'
-import Profile from './Screens/Profile'
-import taskview from './Screens/taskview'
-import TaskForm from './Screens/TaskForm'
-import ProjectLanding from './Screens/ProjectLanding'
-import Footer from './Components/Footer'
-import allcertificate from'./Screens/Allcertificate'
+
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Certificate from "./Screens/Certificate";
+import Home from "./Screens/Home";
+import Member from "./Screens/Member";
+import NavBar from "./Components/navBar";
+import Login from "./Screens/Login";
+import ApplyOnTask from "./Screens/ApplyOnTask";
+import Search from "./Screens/SearchPage";
+import FilterPanel from "./Components/filterPanel";
+import EducationalForm from "./Components/EducationalForm";
+import Register from "./Screens/Register";
+import PartnerForm from "./Components/PartnerForm";
+import CoworkingForm from "./Components/CoworkingForm";
+import ConsultancyForm from "./Components/ConsultancyForm";
+import MemberForm from "./Components/MemberForm";
+import TaskStatus from "./Components/taskStatus";
+import ApplyMemberTask from "./Components/ApplyMemberTask";
+import ApplyConsultancyTask from "./Components/ApplyConsultancyTask";
+import Logout from "./Components/Logout";
+import About from "./Screens/About";
+import Partner from "./Screens/Partner";
+import EduOrganization from "./Screens/EduOrganization";
+import Coworking from "./Screens/Coworking";
+import Chat from "./Components/Chat";
+import Review from "./Screens/Review";
+import AppProvider from "./Containers/AppProvider";
+import Profile from "./Screens/Profile";
+import taskview from "./Screens/taskview";
+import TaskForm from "./Screens/TaskForm";
+import Admin from "./Screens/Admin";
+import CertAccept from "./Screens/CertAccept";
+import ProjectLanding from "./Screens/ProjectLanding";
+import Project from "./Screens/Project"
+import Footer from "./Components/Footer";
 import allcert from './Screens/Allcertificate';
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -82,6 +86,7 @@ class App extends Component {
                 component={props => <Coworking {...props} />}
               />
               <Route path="/login/" component={Login} />
+              <Route path="/CertAccept/" component={CertAccept} />
               <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
@@ -98,7 +103,9 @@ class App extends Component {
               <Route path="/review/" component={Review} />
               <Route path="/newtask/" component={TaskForm} />
               <Route path="/logout/" component={Logout} />
+              <Route path="/admin/" component={Admin} />
               <Route exact path="/Project" component={ProjectLanding} />
+              <Route exact path="/Project/:id" component={Project} />
               <Route path="/allcertificates/"  component={allcert}/>
             </Switch>
             <Chat handleNotification={this.handleNotification} />

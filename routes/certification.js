@@ -52,7 +52,11 @@ router.post('/', (req, res) => {
 
 router.get('/all', (request, response) => {
   let key = {}
-
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.name, 'i')
+    key.name = { $in: searchKey }
+  }
   certificationModel
     .find(key)
     .populate('schedule')
@@ -299,14 +303,15 @@ router.put('/chooseApplicant', (req, res) => {
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error) {
-    console.log("errorhere")
+    console.log('errorhere')
     return res.send()
   }
 
   let key = {
     _id: req.query.id
   }
-  certificationModel.find(key)
+  certificationModel
+    .find(key)
     .then(document => {
       if (!document || document.length == 0) {
         console.log('error1')
@@ -316,26 +321,36 @@ router.put('/chooseApplicant', (req, res) => {
       let result = s.find(function(element) {
         console.log(element._id)
         return element._id == req.body.membersapplied
-       
       })
       if (result != null) {
-        let memberID=req.body.membersapplied
+        let memberID = req.body.membersapplied
         console.log(memberID)
-        certificationModel.findOneAndUpdate(
-          {
-                  _id: req.query.id
-          },
-          certificationModel.update(
-            { _id: 'req.query.id' },
+        certificationModel
+          .findOneAndUpdate(
             {
-              $push: {
-                membersaccepted: memberID  }}
-          ),
-          {
-            new: true
-          }
-        )
+              _id: req.query.id
+            },
+            certificationModel.update(
+              { _id: 'req.query.id' },
+              {
+                $push: {
+                  membersaccepted: memberID
+                }
+              ,
+              $pull:{
+                membersapplied: memberID
+              }
+            }
+            ),
+            {
+              new: true
+            }
+          )
+          .populate('Evaluation_procedure')
           .then(doc => {
+            axios.post(`${baseURL}/api/message/notify?id=${memberID}`, {
+              message: doc.Evaluation_procedure
+            })
             res.status(201).send(doc)
           })
           .catch(err => {
@@ -351,5 +366,14 @@ router.put('/chooseApplicant', (req, res) => {
       console.log('errfinal')
       res.send()
     })
+})
+router.get('/applied', (req, res) => {
+  if (!req || !req.query.id) {
+    return res.status(400).send('Bad request')
+  }
+
+  certificationModel.find({ membersapplied: req.query.id }).then(doc => {
+    res.json(doc)
+  })
 })
 module.exports = router

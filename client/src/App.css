@@ -8,6 +8,7 @@
 }
 
 body {
+  overflow-x: hidden;
   font-family: 'Signika', sans-serif;
 }
 .bg-grey {

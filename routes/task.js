@@ -113,7 +113,11 @@ router.get('/', (request, response) => {
 
 router.get('/all', (request, response) => {
   let key = {}
-
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.name, 'i')
+    key.name = { $in: searchKey }
+  }
   Task.find(key)
     // .populate('owner')
     .then(document => {
@@ -241,6 +245,7 @@ router.put('/', (request, response) => {
   const isValidated = validator.updateValidation(request.body)
 
   if (isValidated.error) {
+    console.log(isValidated.error.details[0].message)
     return response.status(400).send({
       error: isValidated.error.details[0].message
     })
@@ -443,6 +448,64 @@ router.put('/memberApplies', (req, res) => {
     })
 })
 
+router.put('/chooseConsultancy', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Task id is missing.')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    return res.send()
+  }
+  let key = {
+    _id: req.query.id
+  }
+  Task.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log('error1')
+        return res.send()
+      }
+      let s = document[0].applications
+      let result = s.find(function(element) {
+        console.log(element.details)
+        return element.consultancy == req.body.consultancy
+      })
+      if (result != null) {
+        Task.findOneAndUpdate(
+          {
+            _id: req.query.id
+          },
+          req.body,
+          {
+            new: true
+          }
+        )
+          .then(doc => {
+            axios.post(
+              `${baseURL}/api/message/notify?id=${req.body.assignee}`,
+              {
+                message: `Congratulations, you have been accepted for ${
+                  doc.name
+                } task!`
+              }
+            )
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            console.log('err')
+            res.send()
+          })
+      } else {
+        console.log('notfound')
+        res.send()
+      }
+    })
+    .catch(err => {
+      console.log('errfinal')
+      res.send()
+    })
+})
+
 router.put('/chooseAssignee', (req, res) => {
   if (!req.query.id) {
     return res.status(400).send('Task id is missing.')
@@ -476,6 +539,14 @@ router.put('/chooseAssignee', (req, res) => {
           }
         )
           .then(doc => {
+            axios.post(
+              `${baseURL}/api/message/notify?id=${req.body.assignee}`,
+              {
+                message: `Congratulations, you have been accepted for ${
+                  doc.name
+                } task, Expect a message soon from the Task owners for the orientation details!`
+              }
+            )
             res.status(201).send(doc)
           })
           .catch(err => {
@@ -506,32 +577,28 @@ router.post('/browse', (req, res) => {
     .catch(err => res.status(500).send(err))
 })
 router.get('/mytasks', (req, res) => {
-  var token = req.get('token');
-  if (!token)
-    return res.status(400).send('Body is Missing')
+  var token = req.get('token')
+  if (!token) return res.status(400).send('Body is Missing')
 
   let verify = req.app.get('verifyToken')
   let data = verify(token)
-  console.log("DATA "+data)
-  if (!data) 
-    return res.status(500).send('Error')
-  
+  console.log('DATA ' + data)
+  if (!data) return res.status(500).send('Error')
+
   if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
     return res.status(400).send('Not Allowed to view tasks')
 
-  if (data.type == 'Members')
-  {
-  Task.find({ phase:'Awaiting approval'} && {assignee: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
+  if (data.type == 'Members') {
+    Task.find({ phase: 'Awaiting approval' } && { assignee: `${data.profile}` })
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
+  } else if (data.type == 'ConsultancyAgencie') {
+    Task.find(
+      { phase: 'Awaiting approval' } && { consultancy: `${data.profile}` }
+    )
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
   }
-  else if (data.type == 'ConsultancyAgencie')
-  {
-  Task.find({ phase:'Awaiting approval'} && {consultancy: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
-  }
-
 })
 module.exports = {
   router: router,
