@@ -292,4 +292,64 @@ router.post('/apply', (req, res) => {
       res.status(500).json(err)
     })
 })
+
+router.put('/chooseApplicant', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Certification id is missing.')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    console.log("errorhere")
+    return res.send()
+  }
+
+  let key = {
+    _id: req.query.id
+  }
+  certificationModel.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log('error1')
+        return res.send()
+      }
+      let s = document[0].membersapplied
+      let result = s.find(function(element) {
+        console.log(element._id)
+        return element._id == req.body.membersapplied
+       
+      })
+      if (result != null) {
+        let memberID=req.body.membersapplied
+        console.log(memberID)
+        certificationModel.findOneAndUpdate(
+          {
+                  _id: req.query.id
+          },
+          certificationModel.update(
+            { _id: 'req.query.id' },
+            {
+              $push: {
+                membersaccepted: memberID  }}
+          ),
+          {
+            new: true
+          }
+        )
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            console.log('err')
+            res.send()
+          })
+      } else {
+        console.log('notfound')
+        res.send()
+      }
+    })
+    .catch(err => {
+      console.log('errfinal')
+      res.send()
+    })
+})
 module.exports = router
