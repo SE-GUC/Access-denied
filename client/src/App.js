@@ -35,17 +35,17 @@ import Footer from "./Components/Footer";
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       notify: false
-    };
-    this.handleNotification = this.handleNotification.bind(this);
+    }
+    this.handleNotification = this.handleNotification.bind(this)
   }
   handleNotification(add) {
-    if (add) this.setState({ notify: true });
+    if (add) this.setState({ notify: true })
     else {
-      this.setState({ notify: false });
-      document.getElementById("chatsbtn").click();
+      this.setState({ notify: false })
+      document.getElementById('chatsbtn').click()
     }
   }
   render() {
@@ -62,7 +62,7 @@ class App extends Component {
             />
           </div>
           {/* ) : null} */}
-          <div style={{ marginTop: "50px" }}>
+          <div style={{ marginTop: '50px' }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
@@ -102,14 +102,15 @@ class App extends Component {
               <Route path="/logout/" component={Logout} />
               <Route path="/admin/" component={Admin} />
               <Route exact path="/Project" component={ProjectLanding} />
+              <Route exact path="/Project/:id" component={Project} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
           <Footer />
         </Router>
       </AppProvider>
-    );
+    )
   }
 }
 
-export default App;
+export default App
