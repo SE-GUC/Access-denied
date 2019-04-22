@@ -31,6 +31,7 @@ import TaskForm from "./Screens/TaskForm";
 import Admin from "./Screens/Admin";
 import CertAccept from "./Screens/CertAccept";
 import ProjectLanding from "./Screens/ProjectLanding";
+import Project from "./Screens/Project"
 import Footer from "./Components/Footer";
 
 class App extends Component {
