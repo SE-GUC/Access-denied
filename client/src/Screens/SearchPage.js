@@ -24,7 +24,7 @@ class SearchPage extends Component {
     this.renderRedirect = this.renderRedirect.bind(this)
   }
   state = {
-    w:null,
+    w:"",
     flip: true,
     results: Array(6).fill([]),
     newResults: Array(6).fill([]),
