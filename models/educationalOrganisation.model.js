@@ -40,6 +40,6 @@ let Mymodel = mongoose.model(
   'EducationalOrganisation',
   EducationalOrganisationSchema
 )
-//Mymodel.collection.drop()
+//Mymodel.collection.drop();
 
 module.exports = Mymodel

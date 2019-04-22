@@ -101,6 +101,29 @@ router.put('/:id', (request, response) => {
         })
 })
 
+router.get('/', (request, response) => {
+
+    projectModel
+    .find()
+    .populate('owner')
+    .then(document => {
+        if (!document || document.length === 0) {
+            return response
+                .status(500)
+                .json(document)
+        }
+
+        response
+            .status(201)
+            .json(document)
+    })
+    .catch(error => {
+        response
+            .status(500)
+            .json(error)
+    })
+})
+
 router.get('/:id', (request, response) => {
 
     if (!request.params.id) {

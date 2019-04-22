@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   List,
   Datagrid,
@@ -10,7 +10,7 @@ import {
   TextInput,
   SimpleForm,
   Filter
-} from "react-admin";
+} from 'react-admin'
 
 export const Certificates = props => (
   <List filters={<CertificatesFilter />} {...props}>
@@ -26,13 +26,13 @@ export const Certificates = props => (
       <TextField source="membersaccepted" />
     </Datagrid>
   </List>
-);
+)
 
 export const CertificatesFilter = props => (
   <Filter {...props}>
     <TextInput label="Name" source="name" alwaysOn />
   </Filter>
-);
+)
 
 export const CertificatesEdit = props => (
   <Edit {...props}>
@@ -48,4 +48,4 @@ export const CertificatesEdit = props => (
       <TextInput source="membersaccepted" />
     </SimpleForm>
   </Edit>
-);
+)
