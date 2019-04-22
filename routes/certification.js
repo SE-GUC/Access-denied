@@ -62,8 +62,6 @@ router.get('/all', (request, response) => {
     .populate('schedule')
     .populate('eduorganization')
     .then(document => {
-      console.log(document)
-
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
@@ -335,12 +333,11 @@ router.put('/chooseApplicant', (req, res) => {
               {
                 $push: {
                   membersaccepted: memberID
+                },
+                $pull: {
+                  membersapplied: memberID
                 }
-              ,
-              $pull:{
-                membersapplied: memberID
               }
-            }
             ),
             {
               new: true

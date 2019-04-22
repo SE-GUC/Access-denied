@@ -384,6 +384,15 @@ class Member extends Component {
               <div className="p-2">
                 membership expires at: {this.state.expiryDate}
               </div>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                hidden={this.state.verified}
+                onClick={this.handleClickOpen('name')}
+              >
+                Send a message
+              </Button>
             </div>
           </div>
         </div>
