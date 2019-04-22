@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import "./Register.css";
-import ListDivider from "../Components/ListDividers";
-import { AppConsumer } from "../Containers/AppProvider";
+import React, { Component } from 'react'
+import './Register.css'
+import ListDivider from '../Components/ListDividers'
+import { AppConsumer } from '../Containers/AppProvider'
 
 class Register extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       member: false,
       consultancy: false,
@@ -13,7 +13,7 @@ class Register extends Component {
       partner: false,
       coworking: false,
       loaded: false
-    };
+    }
   }
 
   render() {
@@ -21,7 +21,7 @@ class Register extends Component {
       <div id="cont">
         <AppConsumer>
           {context => {
-            if (context.token) this.props.history.push("/profile");
+            if (context.token) this.props.history.push('/profile')
           }}
         </AppConsumer>
         <div id="sign">
@@ -34,8 +34,8 @@ class Register extends Component {
           <ListDivider />
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Register;
+export default Register

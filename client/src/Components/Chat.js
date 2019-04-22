@@ -45,23 +45,6 @@ class Chat extends Component {
           this.setState({ chats: chats });
         });
     }
-    var socket = io();
-    socket.on(id, obj => {
-      if (obj.from === this.state.them) {
-        this.setState({
-          messageList: [
-            ...this.state.messageList,
-            {
-              author: obj.from === id ? "me" : "them",
-              type: "text",
-              data: { text: obj.message }
-            }
-          ]
-        });
-      } else {
-        this.props.handleNotification(true);
-      }
-    });
   }
 
   _onMessageWasSent(message) {
@@ -116,6 +99,23 @@ class Chat extends Component {
               .then(chats => {
                 this.setState({ chats: chats });
               });
+            var socket = io();
+            socket.on(context.id, obj => {
+              if (obj.from === this.state.them) {
+                this.setState({
+                  messageList: [
+                    ...this.state.messageList,
+                    {
+                      author: obj.from === context.id ? "me" : "them",
+                      type: "text",
+                      data: { text: obj.message }
+                    }
+                  ]
+                });
+              } else {
+                this.props.handleNotification(true);
+              }
+            });
           }}
         </AppConsumer>
         {!this.state.them ? (

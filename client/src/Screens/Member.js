@@ -260,9 +260,9 @@ class Member extends Component {
               </div>
             </div>
           </div>
-        ));
-        currentState.loaded = true;
-         this.setState(currentState); 
+        ))
+        currentState.loaded = true
+        this.setState(currentState)
       })
       .catch(err => {
         console.log(err)
@@ -557,7 +557,7 @@ class Member extends Component {
                       }
                     />
                   </div>
-                );
+                )
               case '6':
                 if (!state.loaded)
                   return (

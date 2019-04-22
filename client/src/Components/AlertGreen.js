@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import Alert from "react-bootstrap/Alert";
-import Button from "react-bootstrap/Button";
-import { Redirect } from "react-router";
+import React, { Component } from 'react'
+import Alert from 'react-bootstrap/Alert'
+import Button from 'react-bootstrap/Button'
+import { Redirect } from 'react-router'
 class AlertGreen extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.state = { show: true, done: false };
+    this.state = { show: true, done: false }
   }
 
   render() {
-    const handleHide = () => this.setState({ show: false });
+    const handleHide = () => this.setState({ show: false })
     if (!this.state.show) {
-      return <Redirect to="/" />;
+      return <Redirect to="/" />
     }
     return (
       <>
@@ -29,8 +29,8 @@ class AlertGreen extends React.Component {
           </div>
         </Alert>
       </>
-    );
+    )
   }
 }
 
-export default AlertGreen;
+export default AlertGreen

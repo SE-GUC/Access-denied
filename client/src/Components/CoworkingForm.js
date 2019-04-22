@@ -1,28 +1,28 @@
-import React, { Component } from "react";
-import "./Form.css";
-import { Form, Button, Jumbotron, Container } from "react-bootstrap";
-import AlertGreen from "./AlertGreen";
+import React, { Component } from 'react'
+import './Form.css'
+import { Form, Button, Jumbotron, Container } from 'react-bootstrap'
+import AlertGreen from './AlertGreen'
 
 class CoworkingForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      phoneNumber: "",
-      city: "",
-      area: "",
-      street: "",
+      name: '',
+      email: '',
+      password: '',
+      phoneNumber: '',
+      city: '',
+      area: '',
+      street: '',
       valid: false
-    };
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
@@ -36,32 +36,32 @@ class CoworkingForm extends React.Component {
         area: this.state.area
       },
       phoneNumber: this.state.phoneNumber,
-      type: "CoworkingSpaces"
-    };
+      type: 'CoworkingSpaces'
+    }
     fetch(`/api/user`, {
       //
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(mem),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
-        if (json === "Error") {
-          alert("You have already registered to LirtenHub");
+        console.log(json)
+        if (json === 'Error') {
+          alert('You have already registered to LirtenHub')
         } else {
-          this.setState({ valid: true });
-          alert("success!");
+          this.setState({ valid: true })
+          alert('success!')
         }
       })
       .catch(err => {
-        console.log(err);
-        alert("something went wrong");
-      });
+        console.log(err)
+        alert('something went wrong')
+      })
 
-    event.preventDefault();
+    event.preventDefault()
   }
 
   render() {
@@ -74,7 +74,6 @@ class CoworkingForm extends React.Component {
               <p>Welcome to LirtenHub!</p>
             </Container>
           </Jumbotron>
-          ;
         </div>
         <Form className="theform" onSubmit={this.handleSubmit}>
           <link
@@ -211,8 +210,8 @@ class CoworkingForm extends React.Component {
         </Form>
         {this.state.valid === true ? <AlertGreen /> : <></>}
       </div>
-    );
+    )
   }
 }
 
-export default CoworkingForm;
+export default CoworkingForm

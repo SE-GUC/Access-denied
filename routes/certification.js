@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
-let baseURL = process.env.BASEURL || 'http://localhost:3001'
+let baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 //TODO:check if its admin or not aka {request.query.token_id}
 //if it's admin it will do its job
@@ -52,7 +52,11 @@ router.post('/', (req, res) => {
 
 router.get('/all', (request, response) => {
   let key = {}
-
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.name, 'i')
+    key.name = { $in: searchKey }
+  }
   certificationModel
     .find(key)
     .populate('schedule')
@@ -292,7 +296,69 @@ router.post('/apply', (req, res) => {
       res.status(500).json(err)
     })
 })
-//given id of member in query parameter, returns certificates that the member applied to
+
+router.put('/chooseApplicant', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Certification id is missing.')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    console.log('errorhere')
+    return res.send()
+  }
+
+  let key = {
+    _id: req.query.id
+  }
+  certificationModel
+    .find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log('error1')
+        return res.send()
+      }
+      let s = document[0].membersapplied
+      let result = s.find(function(element) {
+        console.log(element._id)
+        return element._id == req.body.membersapplied
+      })
+      if (result != null) {
+        let memberID = req.body.membersapplied
+        console.log(memberID)
+        certificationModel
+          .findOneAndUpdate(
+            {
+              _id: req.query.id
+            },
+            certificationModel.update(
+              { _id: 'req.query.id' },
+              {
+                $push: {
+                  membersaccepted: memberID
+                }
+              }
+            ),
+            {
+              new: true
+            }
+          )
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            console.log('err')
+            res.send()
+          })
+      } else {
+        console.log('notfound')
+        res.send()
+      }
+    })
+    .catch(err => {
+      console.log('errfinal')
+      res.send()
+    })
+})
 router.get('/applied', (req, res) => {
   if (!req || !req.query.id) {
     return res.status(400).send('Bad request')
@@ -302,5 +368,4 @@ router.get('/applied', (req, res) => {
     res.json(doc)
   })
 })
-
 module.exports = router

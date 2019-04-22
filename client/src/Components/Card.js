@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, Button } from "react-bootstrap";
+import React from 'react'
+import { Card, Button } from 'react-bootstrap'
 
 function MediaCard(props) {
   return (
@@ -19,7 +19,7 @@ function MediaCard(props) {
         </Card.Footer>
       </Card.Body>
     </Card>
-  );
+  )
 }
 
-export default MediaCard;
+export default MediaCard

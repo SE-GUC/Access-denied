@@ -139,7 +139,7 @@ class TaskForm extends React.Component {
     axios.post('/api/task/', data)
     console.log(this.state)
   }
- 
+
   state = {
     name: '',
     multiline: '',

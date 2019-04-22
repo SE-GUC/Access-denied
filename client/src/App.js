@@ -28,6 +28,10 @@ import AppProvider from "./Containers/AppProvider";
 import Profile from "./Screens/Profile";
 import taskview from "./Screens/taskview";
 import TaskForm from "./Screens/TaskForm";
+import Admin from "./Screens/Admin";
+import ProjectLanding from "./Screens/ProjectLanding";
+import Footer from "./Components/Footer";
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -94,9 +98,12 @@ class App extends Component {
               <Route path="/review/" component={Review} />
               <Route path="/newtask/" component={TaskForm} />
               <Route path="/logout/" component={Logout} />
+              <Route path="/admin/" component={Admin} />
+              <Route exact path="/Project" component={ProjectLanding} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
+          <Footer />
         </Router>
       </AppProvider>
     );

@@ -1,32 +1,32 @@
-import React, { Component } from "react";
-import { Alert, Button, Jumbotron, Container } from "react-bootstrap";
-import "./Form.css";
+import React, { Component } from 'react'
+import { Alert, Button, Jumbotron, Container } from 'react-bootstrap'
+import './Form.css'
 
 class ConsultancyForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      email: "",
-      phoneNumber: "",
-      password: "",
-      city: "",
-      area: "",
-      street: "",
+      name: '',
+      email: '',
+      phoneNumber: '',
+      password: '',
+      city: '',
+      area: '',
+      street: '',
       valid: null
-    };
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
 
-    console.log(this.state.target + "hi");
+    console.log(this.state.target + 'hi')
   }
   success() {
-    return <Alert color="success" />;
+    return <Alert color="success" />
   }
 
   handleSubmit(event) {
@@ -40,29 +40,29 @@ class ConsultancyForm extends React.Component {
         street: this.state.street
       },
       phoneNumber: this.state.phoneNumber,
-      type: "ConsultancyAgencies"
-    };
+      type: 'ConsultancyAgencies'
+    }
     fetch(`/api/user`, {
       //
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(mem),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
-        if (json === "Error") {
-          return alert("you are already registered");
+        console.log(json)
+        if (json === 'Error') {
+          return alert('you are already registered')
         } else {
-          alert("success");
+          alert('success')
         }
       })
       .catch(err => {
-        alert("something went wrong");
-      });
-    event.preventDefault();
+        alert('something went wrong')
+      })
+    event.preventDefault()
   }
 
   render() {
@@ -75,7 +75,6 @@ class ConsultancyForm extends React.Component {
               <p>Welcome to LirtenHub!</p>
             </Container>
           </Jumbotron>
-          ;
         </div>
         <form className="theform" onSubmit={this.handleSubmit}>
           <label>
@@ -162,7 +161,7 @@ class ConsultancyForm extends React.Component {
               value={this.state.area}
               onChange={this.handleChange}
             />
-          </label>{" "}
+          </label>{' '}
           <br />
           <label>
             Street:
@@ -194,8 +193,8 @@ class ConsultancyForm extends React.Component {
           </Button>
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default ConsultancyForm;
+export default ConsultancyForm

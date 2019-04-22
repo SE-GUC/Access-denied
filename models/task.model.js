@@ -64,23 +64,6 @@ let taskSchema = new mongoose.Schema({
       ref: 'Members'
     }
   ],
-  phase: {
-    type: String,
-    enum: [
-      'Awaiting approval',
-      'Looking for ConsultancyAgencies',
-      'Consultancy hired',
-      'Looking for Members',
-      'Ongoing',
-      'Completed'
-    ],
-    default: 'Awaiting approval'
-  },
-  paymentMethod: {
-    type: String,
-
-    enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
-  },
   applications: [
     {
       applier: {
@@ -102,7 +85,24 @@ let taskSchema = new mongoose.Schema({
         enum: ['Members', 'ConsultancyAgencies']
       }
     }
-  ]
+  ],
+  phase: {
+    type: String,
+    enum: [
+      'Awaiting approval',
+      'Looking for ConsultancyAgencies',
+      'Consultancy hired',
+      'Looking for Members',
+      'Ongoing',
+      'Completed'
+    ],
+    default: 'Awaiting approval'
+  },
+  paymentMethod: {
+    type: String,
+
+    enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
+  }
 })
 
 taskSchema.set('toObject', { virtuals: true })

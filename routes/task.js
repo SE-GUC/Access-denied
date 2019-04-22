@@ -19,7 +19,7 @@ const fetch = require('node-fetch')
 mongoose.set('useCreateIndex', true)
 mongoose.set('usefindandmodify', false)
 
-const baseURL = process.env.BASEURL || 'http://localhost:3001'
+const baseURL = process.env.BASEURL || 'http://localhost:3000'
 
 /*
     POST/CREATE route for Task Entity
@@ -113,7 +113,11 @@ router.get('/', (request, response) => {
 
 router.get('/all', (request, response) => {
   let key = {}
-
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.name, 'i')
+    key.name = { $in: searchKey }
+  }
   Task.find(key)
     // .populate('owner')
     .then(document => {
@@ -241,6 +245,7 @@ router.put('/', (request, response) => {
   const isValidated = validator.updateValidation(request.body)
 
   if (isValidated.error) {
+    console.log(isValidated.error.details[0].message)
     return response.status(400).send({
       error: isValidated.error.details[0].message
     })
@@ -504,6 +509,30 @@ router.post('/browse', (req, res) => {
   Task.find({ phase: `Looking for ${data.type}` })
     .then(doc => res.json(doc))
     .catch(err => res.status(500).send(err))
+})
+router.get('/mytasks', (req, res) => {
+  var token = req.get('token')
+  if (!token) return res.status(400).send('Body is Missing')
+
+  let verify = req.app.get('verifyToken')
+  let data = verify(token)
+  console.log('DATA ' + data)
+  if (!data) return res.status(500).send('Error')
+
+  if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
+    return res.status(400).send('Not Allowed to view tasks')
+
+  if (data.type == 'Members') {
+    Task.find({ phase: 'Awaiting approval' } && { assignee: `${data.profile}` })
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
+  } else if (data.type == 'ConsultancyAgencie') {
+    Task.find(
+      { phase: 'Awaiting approval' } && { consultancy: `${data.profile}` }
+    )
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
+  }
 })
 module.exports = {
   router: router,
