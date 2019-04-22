@@ -1,15 +1,15 @@
-import React from "react";
-import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
-import Dataprovider from "../Components/Admin/Dataprovider";
-import { Users, UsersEdit } from "../Components/Admin/Users";
+import React from 'react'
+import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin'
+import Dataprovider from '../Components/Admin/Dataprovider'
+import { Users, UsersEdit } from '../Components/Admin/Users'
 import {
   Certificates,
   CertificatesEdit
-} from "../Components/Admin/Certificates";
-import { Tasks, TasksEdit } from "../Components/Admin/Tasks";
-
+} from '../Components/Admin/Certificates'
+import { Tasks, TasksEdit } from '../Components/Admin/Tasks'
+import Notify from '../Components/Admin/Notify'
 const App = () => (
-  <Admin dataProvider={Dataprovider}>
+  <Admin dashboard={Notify} dataProvider={Dataprovider}>
     <Resource name="user" list={Users} edit={UsersEdit} />
     <Resource
       name="certification"
@@ -18,6 +18,6 @@ const App = () => (
     />
     <Resource name="task" list={Tasks} edit={TasksEdit} />
   </Admin>
-);
+)
 
-export default App;
+export default App
