@@ -448,6 +448,64 @@ router.put("/memberApplies", (req, res) => {
     });
 });
 
+router.put("/chooseConsultancy", (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send("Task id is missing.");
+  }
+  const isValidated = validator.updateValidation(req.body);
+  if (isValidated.error) {
+    return res.send();
+  }
+  let key = {
+    _id: req.query.id
+  };
+  Task.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log("error1");
+        return res.send();
+      }
+      let s = document[0].applications;
+      let result = s.find(function(element) {
+        console.log(element.details);
+        return element.consultancy == req.body.consultancy;
+      });
+      if (result != null) {
+        Task.findOneAndUpdate(
+          {
+            _id: req.query.id
+          },
+          req.body,
+          {
+            new: true
+          }
+        )
+          .then(doc => {
+            axios.post(
+              `${baseURL}/api/message/notify?id=${req.body.assignee}`,
+              {
+                message: `Congratulations, you have been accepted for ${
+                  doc.name
+                } task!`
+              }
+            );
+            res.status(201).send(doc);
+          })
+          .catch(err => {
+            console.log("err");
+            res.send();
+          });
+      } else {
+        console.log("notfound");
+        res.send();
+      }
+    })
+    .catch(err => {
+      console.log("errfinal");
+      res.send();
+    });
+});
+
 router.put("/chooseAssignee", (req, res) => {
   if (!req.query.id) {
     return res.status(400).send("Task id is missing.");

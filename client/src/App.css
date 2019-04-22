@@ -1,5 +1,5 @@
 .fontstyle {
-  font-family: "Times New Roman", Times, serif;
+  font-family: 'Times New Roman', Times, serif;
   align-content: center;
 }
 .member {
@@ -8,7 +8,8 @@
 }
 
 body {
-  font-family: "Signika", sans-serif;
+  overflow-x: hidden;
+  font-family: 'Signika', sans-serif;
 }
 .bg-grey {
   background: #232c5d;
@@ -22,16 +23,16 @@ footer {
 footer p,
 a {
   font-size: 12px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 footer h6 {
-  font-family: "Playfair Display", serif;
+  font-family: 'Playfair Display', serif;
   margin-bottom: 40px;
   position: relative;
 }
 footer h6:after {
   position: absolute;
-  content: "";
+  content: '';
   background: grey;
   width: 12%;
   height: 1px;
@@ -51,7 +52,7 @@ footer h6:after {
 .btn-footer:hover {
   text-decoration: none;
 }
-.form-footer input[type="text"] {
+.form-footer input[type='text'] {
   border: none;
   border-radius: 16px 0 0 16px;
   outline: none;
@@ -62,7 +63,7 @@ footer h6:after {
   padding-left: 10px;
   font-style: italic;
 }
-.form-footer input[type="button"] {
+.form-footer input[type='button'] {
   border: none;
   background: #232323;
   margin-left: -5px;
