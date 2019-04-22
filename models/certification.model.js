@@ -6,9 +6,13 @@ const certificationSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  skills: [String],
+  skills: [{type: mongoose.Schema.Types.ObjectId, ref:"Skills"}],
   Fees: Number,
-  Method_of_payment: String,
+  Method_of_payment: {
+    type: String,
+
+    enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
+  },
   Evaluation_procedure: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'evaluationModel'

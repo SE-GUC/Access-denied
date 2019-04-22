@@ -7,7 +7,6 @@ const validator = require('../validations/skillsValidations')
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).send('Body is missing')
-    
   }
   const isValidated = validator.createValidation(req.body)
   if (isValidated.error) {
@@ -92,7 +91,6 @@ router.put('/', (req, res) => {
     })
 })
 
-
 router.delete('/', (req, res) => {
   if (!req.query.id) {
     return res.status(400).send('id is mising.')
@@ -108,6 +106,5 @@ router.delete('/', (req, res) => {
       res.status(500).json(err)
     })
 })
-
 
 module.exports = router

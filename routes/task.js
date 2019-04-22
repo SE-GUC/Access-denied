@@ -53,7 +53,6 @@ const baseURL = process.env.BASEURL || 'http://localhost:3001'
 // ) else "the rest of the code"
 
 router.post('/', (request, response) => {
-
   if (!request.body) {
     return response.status(400).send('400: Bad Request')
   }
@@ -86,8 +85,7 @@ router.post('/', (request, response) => {
  * @requires _id
  */
 
-
-router.get('/', (request, response) => {  
+router.get('/', (request, response) => {
   let documentID = request.query.id
 
   if (!documentID) {
@@ -102,6 +100,7 @@ router.get('/', (request, response) => {
 
   Task.findOne(key)
     .populate('owner')
+    .populate('skills')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -117,7 +116,8 @@ router.get('/all', (request, response) => {
   let key = {}
 
   Task.find(key)
-    // .populate('owner')
+     .populate('owner')
+     .populate('skills')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -149,6 +149,21 @@ router.get('/member', (req, res) => {
 router.get('/partner', (req, res) => {
   if (!req.query.id) return res.status(400).send('Member id is Missing')
   Task.find({ owner: req.query.id })
+    .populate('assignee', 'name')
+    .then(document => {
+      if (!document || document.length == 0) {
+        return res.status(500).json(document)
+      }
+
+      res.json(document)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
+router.get('/consultancy', (req, res) => {
+  if (!req.query.id) return res.status(400).send('consultancy id is Missing')
+  Task.find({ consultancy: req.query.id })
     .populate('assignee', 'name')
     .then(document => {
       if (!document || document.length == 0) {
@@ -403,7 +418,7 @@ router.put('/memberApplies', (req, res) => {
   Task.findOneAndUpdate(
     {
       _id: req.query.id,
-       phase: 'Looking for Members' 
+      phase: 'Looking for Members'
     },
     Task.update(
       { _id: 'req.query.id' },

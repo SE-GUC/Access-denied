@@ -11,7 +11,7 @@ require('dotenv').config()
 
 const uri = 'mongodb+srv://test:test@test-f4evh.mongodb.net/test?retryWrites=true'
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3001
 //Require routers
 const taskRoute = require('./routes/task')
 const skillsRoute = require('./routes/skills')
@@ -78,9 +78,15 @@ app.use('/api/message', messageRoute)
 app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/skills', skillsRoute)
-app.use('/search', searchRoute)
+app.use('/api/search', searchRoute)
 app.use('/api', requestRoute)
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+  })
+}
 io.on('connection', () => {
   console.log('Connected...')
 })

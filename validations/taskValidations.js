@@ -17,19 +17,20 @@ module.exports = {
       date: Joi.date(),
       effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
-      experienceLevel: Joi.number(),
-      timeRequired: Joi.number(),
+      experienceLevel: Joi.string(),
+      timeRequired: Joi,
       monetaryComp: Joi.number(),
 
       paymentMethod: Joi,
-      skills: Joi.array().items(Joi.string()),
+      skills: Joi,
       applications: Joi.object({
         applier: Joi,
         date: Joi.date(),
         details: Joi,
         applierModel: Joi
       }),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
     return Joi.validate(request, createSchema)
@@ -53,17 +54,18 @@ module.exports = {
       date: Joi.date(),
       effortLevel: Joi.number().max(10),
       commitmentLevel: Joi.number(),
-      experienceLevel: Joi.number(),
-      timeRequired: Joi.number(),
+      experienceLevel: Joi.string(),
+      timeRequired: Joi,
       monetaryComp: Joi.number(),
-      skills: Joi.array().items(Joi.string()),
+      skills: Joi,
       applications: Joi.object({
         applier: Joi,
         date: Joi.date(),
         details: Joi,
         applierModel: Joi
       }),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
     return Joi.validate(request, updateSchema)
