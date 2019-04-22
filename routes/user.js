@@ -279,11 +279,11 @@ router.put("/", (req, res) => {
   if (!req.query.id) {
     return res.status(400).send("id is missing.");
   }
-  // const isValidated = validator.updateValidation(req.body);
-  // if (isValidated.error)
-  //   return res
-  //     .status(400)
-  //     .send({ error: isValidated.error.details[0].message });
+  const isValidated = validator.updateValidation(req.body);
+  if (isValidated.error)
+    return res
+      .status(400)
+      .send({ error: isValidated.error.details[0].message });
   User.findOneAndUpdate(
     {
       _id: req.query.id

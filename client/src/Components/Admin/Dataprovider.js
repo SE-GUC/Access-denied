@@ -81,7 +81,15 @@ const convertHTTPResponseToDataProvider = (
   resource,
   params
 ) => {
-  const { headers, json } = response;
+  let { headers, json } = response;
+  try {
+    json = json.map(x => {
+      x = JSON.stringify(x).replace("_id", "id");
+      return JSON.parse(x);
+    });
+  } catch {
+    json = JSON.parse(JSON.stringify(json).replace("_id", "id"));
+  }
   switch (type) {
     case GET_LIST:
       return {

@@ -60,7 +60,7 @@ class SearchPage extends Component {
       ['place holder:']
     ],
     routes: [
-      'Certificates',
+      'Certificate',
       '/taskview',
       'Member',
       'Partners',
