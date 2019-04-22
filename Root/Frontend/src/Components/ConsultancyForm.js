@@ -9,9 +9,11 @@ class ConsultancyForm extends React.Component {
       name: "",
       email: "",
       phoneNumber: "",
+      password: "",
       city: "",
       area: "",
-      street: ""
+      street: "",
+      valid: null
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -28,7 +30,38 @@ class ConsultancyForm extends React.Component {
   }
 
   handleSubmit(event) {
-    this.success();
+    let mem = {
+      email: this.state.email,
+      name: this.state.name,
+      password: this.state.password,
+      address: {
+        city: this.state.city,
+        area: this.state.area,
+        street: this.state.street
+      },
+      phoneNumber: this.state.phoneNumber,
+      type: "ConsultancyAgencies"
+    };
+    fetch(`/api/user`, {
+      //
+      method: "POST",
+      body: JSON.stringify(mem),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        if (json === "Error") {
+          return alert("you are already registered");
+        } else {
+          alert("success");
+        }
+      })
+      .catch(err => {
+        alert("something went wrong");
+      });
     event.preventDefault();
   }
 
@@ -49,8 +82,12 @@ class ConsultancyForm extends React.Component {
             Name:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="name"
+              minLength="3"
+              maxLength="500"
               required
               value={this.state.name}
               onChange={this.handleChange}
@@ -61,6 +98,8 @@ class ConsultancyForm extends React.Component {
             email:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="email"
               required
@@ -70,9 +109,39 @@ class ConsultancyForm extends React.Component {
           </label>
           <br />
           <label>
+            password:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="password"
+              name="password"
+              required
+              value={this.state.password}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            phone number:
+            <br />
+            <input
+              id="exampleForm2"
+              class="form-control"
+              type="tel"
+              name="phoneNumber"
+              required
+              value={this.state.phoneNumber}
+              onChange={this.handleChange}
+            />
+          </label>
+          <br />
+          <label>
             city:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="city"
               required
@@ -85,6 +154,8 @@ class ConsultancyForm extends React.Component {
             Area:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="area"
               required
@@ -97,12 +168,24 @@ class ConsultancyForm extends React.Component {
             Street:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="street"
               required
               value={this.state.street}
               onChange={this.handleChange}
             />
+          </label>
+          <br />
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="defaultUnchecked"
+            required
+          />
+          <label class="custom-control-label" for="defaultUnchecked">
+            I have read and agreed to the terms and conditions of LirtenHub
           </label>
           <br />
           <br />

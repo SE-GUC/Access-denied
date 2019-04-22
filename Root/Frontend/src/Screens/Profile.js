@@ -8,15 +8,18 @@ import Member from "./Member";
 import Partner from "./Partner";
 import Coworking from "./Coworking";
 import EduOrganization from "./EduOrganization";
+import ConsultancyAgency from "./ConsultancyAgency";
 class Profile extends Component {
   state = {
     token: null,
+    email: null,
     id: null,
     type: null,
     changed: false,
     verified: false,
     redirect: false
   };
+
   checkRedirect() {
     if (this.state.redirect) return <Redirect to="/" />;
   }
@@ -35,25 +38,54 @@ class Profile extends Component {
         .then(data => {
           if (data.valid) {
             this.setState({ verified: true });
-            console.log(this.state);
           } else return <Redirect to="/" />;
         })
         .catch(err => this.setState({ redirect: true }));
     } else if (this.state.changed && this.state.verified) {
       switch (this.state.type) {
         case "Members":
-          return <Member verified={true} id={this.state.id} />;
+          return (
+            <Member
+              verified={true}
+              id={this.state.id}
+              email={this.state.email}
+            />
+          );
         case "ConsultancyAgencies":
-          return <Member verified={true} id={this.state.id} />;
+          return (
+            <ConsultancyAgency
+              verified={true}
+              id={this.state.id}
+              email={this.state.email}
+            />
+          );
 
         case "Partners":
-          return <Partner verified={true} id={this.state.id} />;
+          return (
+            <Partner
+              verified={true}
+              id={this.state.id}
+              email={this.state.email}
+            />
+          );
 
         case "CoworkingSpaces":
-          return <Coworking verified={true} id={this.state.id} />;
+          return (
+            <Coworking
+              verified={true}
+              id={this.state.id}
+              email={this.state.email}
+            />
+          );
 
         case "EducationalOrganisation":
-          return <EduOrganization verified={true} id={this.state.id} />;
+          return (
+            <EduOrganization
+              verified={true}
+              id={this.state.id}
+              email={this.state.email}
+            />
+          );
         default:
           return <Redirect to="/" />;
       }
@@ -63,7 +95,6 @@ class Profile extends Component {
     return (
       <div>
         {this.checkRedirect()}
-        {this.checkValid()}{" "}
         <AppConsumer>
           {context => {
             if (this.state.changed) return;
@@ -75,6 +106,7 @@ class Profile extends Component {
             });
           }}
         </AppConsumer>
+        {this.checkValid()}{" "}
       </div>
     );
   }

@@ -72,6 +72,9 @@ class SignIn extends Component {
           fetch(`/api/login?token=${data}`)
             .then(res => res.json())
             .then(datas => {
+              console.log(JSON.stringify(datas));
+
+              if (datas === "Error") return this.setState({ valid: false });
               this.setState({ valid: true });
               this.state.setToken(data, datas.profile, datas.type);
               this.props.history.push("/profile");
@@ -89,6 +92,7 @@ class SignIn extends Component {
         <AppConsumer>
           {context => {
             if (this.state.changed) return;
+            if (context.token) this.props.history.push("/profile");
             this.setState({
               token: context.token,
               setToken: context.setToken,

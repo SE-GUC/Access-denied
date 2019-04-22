@@ -22,7 +22,37 @@ class PartnerForm extends React.Component {
   }
 
   handleSubmit(event) {
-    alert("submitted");
+    let part = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      field_of_work: this.state.fieldOfWork,
+      Telephone_number: this.state.telephoneNumber,
+      type: "Partners"
+    };
+
+    fetch(`/api/user`, {
+      //
+      method: "POST",
+      body: JSON.stringify(part),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => {
+        console.log(json);
+        if (json === "Error") {
+          alert("you are already registered");
+        } else {
+          alert("success!");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        alert("something went wrong");
+      });
+
     event.preventDefault();
   }
 
@@ -42,8 +72,12 @@ class PartnerForm extends React.Component {
             Name:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="name"
+              minLength="3"
+              maxLength="500"
               placeholder="your Name"
               required
               value={this.state.name}
@@ -55,6 +89,8 @@ class PartnerForm extends React.Component {
             password:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="password"
               name="password"
               placeholder="your password"
@@ -68,6 +104,8 @@ class PartnerForm extends React.Component {
             email:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="email"
               placeholder="your email"
@@ -81,8 +119,12 @@ class PartnerForm extends React.Component {
             telephone number:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="telephoneNumber"
+              minLength="3"
+              maxLength="500"
               placeholder="contact number"
               value={this.state.telephoneNumber}
               onChange={this.handleChange}
@@ -93,12 +135,26 @@ class PartnerForm extends React.Component {
             Field of work:
             <br />
             <input
+              id="exampleForm2"
+              class="form-control"
               type="text"
               name="fieldOfWork"
+              minLength="3"
+              maxLength="500"
               placeholder="your concentration"
               value={this.state.fieldOfWork}
               onChange={this.handleChange}
             />
+          </label>
+          <br />
+          <input
+            type="checkbox"
+            class="custom-control-input"
+            id="defaultUnchecked"
+            required
+          />
+          <label class="custom-control-label" for="defaultUnchecked">
+            I have read and agreed to the terms and conditions of LirtenHub
           </label>
           <br />
           <Button size="lg" type="submit" value="Submit">

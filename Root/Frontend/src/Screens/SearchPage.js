@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import S from "../Components/searchbar";
 import F from "../Components/filterPanel";
 import Results from "../Components/results";
+import { Redirect } from "react-router-dom";
+
 import {
   Jumbotron,
   ListGroup,
@@ -17,11 +19,14 @@ import {
 class SearchPage extends Component {
   constructor(props) {
     super(props);
-
+    this.SetFilters = this.SetFilters.bind(this);
     this.SetResults = this.SetResults.bind(this);
+    this.renderRedirect = this.renderRedirect.bind(this);
   }
   state = {
-    results: [[], [], [], [], [], []],
+    flip: true,
+    results: Array(6).fill([]),
+    newResults: Array(6).fill([]),
     tabs: [
       "Certificates",
       "Tasks",
@@ -53,39 +58,77 @@ class SearchPage extends Component {
       ["place holder:"],
       ["place holder:"],
       ["place holder:"]
-    ]
+    ],
+    routes: [
+      "Certificates",
+      "/taskview",
+      "Member",
+      "Partners",
+      "CoworkingSpace",
+      "EducationalOrganisations"
+    ],
+    redirect: false,
+    goto: null
   };
 
   componentDidMount() {
     this.reset();
   }
   reset() {
-    fetch(`api/task/all`)
+    fetch(`/search?q= `)
       .then(res => res.json())
       .then(res => {
-        this.state.results[1] = res;
+        this.setState({
+          results: res.slice(),
+          newResults: res.slice()
+        });
       })
       .catch(err => {
         console.log(err);
       });
   }
-  SetResults(res) {
-    if (res === -1) {
-      this.reset();
-    } else {
+  renderRedirect = (route, id, b) => {
+    if (b) {
       this.setState({
-        results: res
+        redirect: true,
+        goto: route + "?id=" + id
       });
     }
+  };
+  call() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.goto} />;
+    }
+  }
+  SetResults(res) {
+    this.setState({
+      results: res.slice(),
+      newResults: res.slice()
+    });
 
     console.log(this.state.results);
   }
-
+  SetFilters(i, res) {
+    if (res === -1) {
+      this.setState({
+        newResults: this.state.results
+      });
+    } else {
+      this.state.newResults[i] = res;
+      let t = this.state.newResults.slice();
+      this.setState({
+        newResults: t
+      });
+      // this.forceUpdate()
+    }
+    console.log(this.state.results);
+  }
   render() {
     const tabs = this.state.tabs;
 
     return (
       <div>
+        {this.call()}
         <Jumbotron>
           <h1>ADVANCED SEARCH</h1>
           <p>here you can search for everything we have!</p>
@@ -100,7 +143,7 @@ class SearchPage extends Component {
                 <Row>
                   <Col xs md lg="5">
                     <Nav variant="pills" fill={true} className="flex-column">
-                      {tabs.map(p => {
+                      {tabs.slice(0, 2).map(p => {
                         return (
                           <Nav.Item>
                             <Nav.Link eventKey={p}>{p}</Nav.Link>
@@ -111,12 +154,15 @@ class SearchPage extends Component {
                   </Col>
                   <Col>
                     <Tab.Content>
-                      {tabs.map(p => {
+                      {tabs.slice(0, 2).map(p => {
                         return (
                           <Tab.Pane eventKey={p}>
                             <F
+                              id={tabs.indexOf(p)}
                               keywords={this.state.tags[tabs.indexOf(p)]}
-                              change={this.SetResults}
+                              change={this.SetFilters}
+                              results={this.state.results[tabs.indexOf(p)]}
+                              flip={this.state.flip}
                             />
                           </Tab.Pane>
                         );
@@ -135,7 +181,10 @@ class SearchPage extends Component {
                     return (
                       <Tab eventKey={p} title={p}>
                         <Results
-                          results={this.state.results[tabs.indexOf(p)]}
+                          results={this.state.newResults[tabs.indexOf(p)]}
+                          route={this.state.routes[tabs.indexOf(p)]}
+                          renderRedirect={this.renderRedirect}
+                          redirect={this.state.redirect}
                         />
                       </Tab>
                     );

@@ -2,21 +2,40 @@ import React, { Component } from "react";
 import "../Screens/ApplyOnTask.css";
 import { Redirect } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
+import query from "query-string";
 
 class ApplyMemberTask extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       qualification: "",
+      taskID: props.taskID,
+      tokenchild: props.tokenchild,
       redirect: false
     };
   }
-
   handleChange(event) {
+    console.log(this.state.taskID);
     this.setState({ qualification: event.target.value });
   }
   handleSubmit(event) {
-    alert("submitted: " + this.state.qualification);
+    let info = {
+      applications: {
+        applier: this.state.tokenchild,
+        details: this.state.qualification,
+        applierModel: "Members"
+      }
+    };
+    fetch(`/api/task/memberApplies?id=` + this.state.taskID, {
+      method: "PUT",
+      body: JSON.stringify(info),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
+    event.preventDefault();
     this.setState({ redirect: true });
   }
   renderRedirect = () => {
@@ -24,6 +43,14 @@ class ApplyMemberTask extends React.Component {
       return <Redirect to="/Home" />;
     }
   };
+  enableButton() {
+    let f = this.state.qualification.trim();
+    if (f.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   render() {
     return (
@@ -51,7 +78,7 @@ class ApplyMemberTask extends React.Component {
           <Button
             size="lg"
             onClick={this.handleSubmit.bind(this)}
-            disabled={this.state.qualification.length === 0}
+            disabled={this.enableButton()}
             className="buttonSubmit"
             variant="link"
           >

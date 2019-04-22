@@ -1,50 +1,25 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-
-const styles = {
-  card: {
-    maxWidth: 345
-  },
-  media: {
-    height: 140
-  }
-};
+import { Card, Button } from "react-bootstrap";
 
 function MediaCard(props) {
-  const { classes } = props;
   return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardMedia className={classes.media} />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.title}
-          </Typography>
-          <Typography component="p">{props.content}</Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button size="small" color="primary">
-          Share
+    <Card border="primary">
+      <Card.Body>
+        <Card.Title>{props.title}</Card.Title>
+        <Card.Text>{props.content}</Card.Text>
+        <Button
+          variant="outline-info"
+          size="sm"
+          onClick={() => props.redirect(props.route, props.id, true)}
+        >
+          Go to page
         </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
-      </CardActions>
+        <Card.Footer>
+          <small className="text-muted"> {props.date}</small>
+        </Card.Footer>
+      </Card.Body>
     </Card>
   );
 }
 
-MediaCard.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(MediaCard);
+export default MediaCard;

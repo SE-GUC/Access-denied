@@ -8,15 +8,32 @@ class ApplyConsultancyTask extends React.Component {
     super(props);
     this.state = {
       plan: "",
+      taskID: props.taskID,
+      tokenchild: props.tokenchild,
       redirect: false
     };
   }
-
   handleChange(event) {
     this.setState({ plan: event.target.value });
   }
   handleSubmit(event) {
-    alert("submitted: " + this.state.plan);
+    let info = {
+      applications: {
+        applier: this.state.tokenchild,
+        details: this.state.plan,
+        applierModel: "Consultancy"
+      }
+    };
+    fetch(`/api/task/memberApplies?id=` + this.state.taskID, {
+      method: "PUT",
+      body: JSON.stringify(info),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(json => console.log(json));
+    event.preventDefault();
     this.setState({ redirect: true });
   }
   renderRedirect = () => {
@@ -24,6 +41,15 @@ class ApplyConsultancyTask extends React.Component {
       return <Redirect to="/Home" />;
     }
   };
+  enableButton() {
+    let f = this.state.plan.trim();
+    if (f.length === 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return (
       <Card>
@@ -37,7 +63,6 @@ class ApplyConsultancyTask extends React.Component {
                 Your Plan:
               </label>
               <textarea
-                name="t"
                 class="form-control"
                 rows="5"
                 id="plan"
@@ -51,7 +76,7 @@ class ApplyConsultancyTask extends React.Component {
           <Button
             size="lg"
             onClick={this.handleSubmit.bind(this)}
-            disabled={this.state.plan.length === 0}
+            disabled={this.enableButton()}
             className="buttonSubmit"
             variant="link"
           >

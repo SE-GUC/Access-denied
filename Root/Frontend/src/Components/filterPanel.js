@@ -1,19 +1,27 @@
 import React from "react";
 import S from "./searchbar";
+import { InputGroup, Form, Dropdown } from "react-bootstrap";
+
 class Key extends React.Component {
   render() {
     this.setState = this.props.state;
 
     return (
       <div>
-        <label>{this.props.title}</label>
-        <input
-          type="text"
-          id={this.props.id}
-          name={this.props.title}
-          size="10"
-          onChange={this.props.fu}
-        />
+        <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <InputGroup.Text id="inputGroup-sizing-default">
+              {this.props.title}
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <Form.Control
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+            id={this.props.id}
+            name={this.props.title}
+            onChange={this.props.fu}
+          />
+        </InputGroup>
       </div>
     );
   }
@@ -24,27 +32,48 @@ class filterPanel extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
-
   state = {
+    results: this.props.results,
     keywordsResults: Array(6).fill(null),
-    keywords: this.props.keywords
+    keywords: this.props.keywords,
+    flip: false
   };
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      results: nextProps.results
+    });
+    console.log("wth");
 
+    // let k=this.searcht(this.state.keywordsResults,this.state.results)
+  }
+
+  searcht(tags, alltasks) {
+    let tasks = [];
+    tags.forEach(function(tag) {
+      alltasks.forEach(function(task) {
+        task.Tags.forEach(function(key) {
+          let j = tasks.find(function(ele) {
+            return task == ele;
+          });
+          if (tag == key && j == null) {
+            tasks.push(task);
+          }
+        });
+      });
+    });
+    return tasks;
+  }
   handleChange(event) {
+    console.log("hamhere");
+    console.log(this.state.results);
     if (event.target.value) {
       this.state.keywordsResults[event.target.id] =
         this.state.keywords[event.target.id] + event.target.value;
-      let tags = JSON.stringify(this.state.keywordsResults);
-      console.log(tags);
-      fetch(`/search/filteredbyt?tags=${tags}`)
-        .then(res => res.json())
-        .then(res => {
-          console.log(res);
-          this.props.change(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      let tags = this.state.keywordsResults;
+      let res = this.searcht(tags, this.state.results);
+      this.props.change(this.props.id, res);
+      console.log("new");
+      console.log(this.state.results);
     } else {
       this.props.change(-1);
     }
