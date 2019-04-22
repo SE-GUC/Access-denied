@@ -79,7 +79,7 @@ app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/skills', skillsRoute)
 app.use('/api/search', searchRoute)
-app.use('/api', requestRoute)
+app.use('/api/requests', requestRoute)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))

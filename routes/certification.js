@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const validator = require('../validations/certificationValidations.js')
 const axios = require('axios')
-let baseURL = process.env.BASEURL || 'http://localhost:3000'
+let baseURL = process.env.BASEURL || 'http://localhost:3001'
 
 //TODO:check if its admin or not aka {request.query.token_id}
 //if it's admin it will do its job
@@ -292,4 +292,15 @@ router.post('/apply', (req, res) => {
       res.status(500).json(err)
     })
 })
+//given id of member in query parameter, returns certificates that the member applied to
+router.get('/applied', (req, res) => {
+  if (!req || !req.query.id) {
+    return res.status(400).send('Bad request')
+  }
+
+  certificationModel.find({ membersapplied: req.query.id }).then(doc => {
+    res.json(doc)
+  })
+})
+
 module.exports = router

@@ -140,5 +140,10 @@ router.delete('/', (req, res) => {
       res.status(500).json(err)
     })
 })
+router.get('/cert', (req, res) => {
+  if (!req || !req.query.id) {
+    return res.status(400).send('Bad request')
+  }
+})
 
 module.exports = router

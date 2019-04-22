@@ -29,7 +29,8 @@ module.exports = {
         details: Joi,
         applierModel: Joi
       }),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi
     }
 
     return Joi.validate(request, createSchema)
@@ -63,7 +64,8 @@ module.exports = {
         details: Joi,
         applierModel: Joi
       }),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi
     }
 
     return Joi.validate(request, updateSchema)
