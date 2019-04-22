@@ -1,11 +1,11 @@
-import React from "react";
-import { Admin, Resource, ListGuesser, EditGuesser } from "react-admin";
-import Dataprovider from "../Components/Admin/Dataprovider";
-import { Users, UsersEdit } from "../Components/Admin/Users";
+import React from 'react'
+import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin'
+import Dataprovider from '../Components/Admin/Dataprovider'
+import { Users, UsersEdit } from '../Components/Admin/Users'
 import {
   Certificates,
   CertificatesEdit
-} from "../Components/Admin/Certificates";
+} from '../Components/Admin/Certificates'
 
 const App = () => (
   <Admin dataProvider={Dataprovider}>
@@ -16,6 +16,6 @@ const App = () => (
       edit={CertificatesEdit}
     />
   </Admin>
-);
+)
 
-export default App;
+export default App

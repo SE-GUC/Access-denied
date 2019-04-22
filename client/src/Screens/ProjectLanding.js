@@ -32,12 +32,12 @@ class ProjectLanding extends Component {
 
   componentDidMount() {
     fetch('/api/project/')
-    .then(response => response.json())
-    .then(data => {
-      this.setState({
-        projectList: data
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          projectList: data
+        })
       })
-    })
   }
 
   render() {
@@ -71,7 +71,8 @@ class ProjectLanding extends Component {
                 </Card.Subtitle>
 
                 <Card.Text>
-                  Discover Infinte Potential within the projects that are hosted on Lirten Hub
+                  Discover Infinte Potential within the projects that are hosted
+                  on Lirten Hub
                 </Card.Text>
 
                 <hr
@@ -87,14 +88,18 @@ class ProjectLanding extends Component {
                 {this.state.projectList.map(value => {
                   return (
                     <ListGroup.Item>
-                     <Link to={`/project/${value._id}`} > 
-                     <h3>
-                          <span style={{fontWeight: 'bold', fontStyle: 'italic',}}>
-                          {value.title}
+                      <Link to={`/project/${value._id}`}>
+                        <h3>
+                          <span
+                            style={{ fontWeight: 'bold', fontStyle: 'italic' }}
+                          >
+                            {value.title}
                           </span>
-                      </h3>
+                        </h3>
                       </Link>
-                      <h5 style={{marginBottom: '20px'}}>Owner: {value.owner.name}</h5>
+                      <h5 style={{ marginBottom: '20px' }}>
+                        Owner: {value.owner.name}
+                      </h5>
                       <br />
                       <p>About The Project: {value.description}</p>
                       <br />

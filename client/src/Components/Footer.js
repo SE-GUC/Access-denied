@@ -25,9 +25,9 @@ class Footer extends Component {
                 <div className="row">
                   <div className="col-md-6 align-self-center">
                     <div className="logo-part">
-                      <h2 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
+                      <h1 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
                         Lirten Hub
-                      </h2>
+                      </h1>
                     </div>
                   </div>
                   <div className="col-md-6 px-4">
