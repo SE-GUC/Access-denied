@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react'
 // import { connect } from 'react-redux';
-import PropTypes from "prop-types";
-import { InputGroup, Button, Form } from "react-bootstrap";
+import PropTypes from 'prop-types'
+import { InputGroup, Button, Form } from 'react-bootstrap'
 class Searchbar extends React.Component {
   constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
+    super(props)
+    this.handleChange = this.handleChange.bind(this)
   }
 
   render() {
@@ -17,8 +17,8 @@ class Searchbar extends React.Component {
           aria-label="Recipient's username"
           aria-describedby="basic-addon2"
           onKeyPress={event => {
-            if (event.key === "Enter") {
-              this.handleChange(event.target);
+            if (event.key === 'Enter') {
+              this.handleChange(event.target)
             }
           }}
         />
@@ -26,14 +26,14 @@ class Searchbar extends React.Component {
           <Button
             variant="outline-secondary"
             onClick={() =>
-              this.handleChange(document.getElementById("searchtext"))
+              this.handleChange(document.getElementById('searchtext'))
             }
           >
             Search
           </Button>
         </InputGroup.Append>
       </InputGroup>
-    );
+    )
   }
   // getBooks = (res) => dispatch => {
   //   dispatch({
@@ -44,17 +44,17 @@ class Searchbar extends React.Component {
   // };
   handleChange(event) {
     //to do search function
-    let y = event.value;
-    console.log(y);
-    fetch(`search?q=` + y)
+    let y = event.value
+    console.log(y)
+    fetch(`/api/search?q=` + y)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
-        this.props.change(res);
+        console.log(res)
+        this.props.change(res)
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
 }
 // Searchbar.propTypes = {
@@ -63,4 +63,4 @@ class Searchbar extends React.Component {
 // const mapStateToProps = state => ({
 // 	results: state.books.books
 // });connect(mapStateToProps,{ getBooks})
-export default Searchbar;
+export default Searchbar

@@ -8,81 +8,19 @@
 
 const express = require('express')
 const router = express.Router()
-let recombee = require('recombee-api-client');
+
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require('axios')
-const recommendation = require('../recommendation ')
+
 const mongoose = require('mongoose')
 const fetch = require('node-fetch')
-const rqs = recombee.requests;
-const _ = require('lodash')
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('usefindandmodify', false)
 
 const baseURL = process.env.BASEURL || 'http://localhost:3001'
-router.post('/test', (request, response) => {
-  if (!request.body) {
-    return response.status(400).send('400: Bad Request')
-  }
-  
-  // const isValidated = validator.createValidation(request.body)
 
-  // if (isValidated.error) {
-  //   return response.status(400).send({
-  //     error: isValidated.error.details[0].message
-  //   })
-  // }
-
-  Task.create(request.body)
-    .then(document => {
-      if (!document || document.length === 0) {
-        return response.status(500).json(document)
-      }
-      // recommendation.send(new rqs.AddItem(document._id))
-      // recommendation.send(new rqs.AddItemProperty('name', 'string'))
-      // recommendation.send(new rqs.AddItemProperty('owner', 'string'))
-      // recommendation.send(new rqs.AddItemProperty('isComplete', 'boolean'))
-      // recommendation.send(new rqs.AddItemProperty('date', 'timestamp'))
-      // recommendation.send(new rqs.AddItemProperty('effortLevel', 'int'))
-      // recommendation.send(new rqs.AddItemProperty('commitmentLevel', 'int'))
-      // recommendation.send(new rqs.AddItemProperty('experienceLevel', 'int'))
-      // recommendation.send(new rqs.AddItemProperty('timeRequired', 'int'))
-      // recommendation.send(new rqs.AddItemProperty('monetaryComp', 'int'))
-      // recommendation.send(new rqs.AddItemProperty('skills', 'set'))
-      recommendation.send(new rqs.SetItemValues(document._id,_.pick(
-        document,
-        ['name','owner','isComplete','effortLevel','experienceLevel','timeRequired','monetaryComp']
-      ), { //optional parameters:
-        'cascadeCreate': true
-      }));
-
-      recommendation.send(new rqs.SetItemValues(document._id,_.pick(
-        document,
-        ['name','owner','isComplete','effortLevel','experienceLevel','timeRequired','monetaryComp']
-      ), { //optional parameters:
-        'cascadeCreate': true
-      }));
-      // recommendation.send(new rqs.ListItemProperties())
-      recommendation.send(new rqs.ListItems())
-      .then(s=>{
-        
-        console.log(s)
-      })
-      recommendation.send(new rqs.GetItemValues(document._id))
-      .then(s=>{
-        
-        console.log(s)
-      })
-
-      response.status(201).json(document)
-    })
-    .catch(error => {
-      console.log(error)
-      response.status(500).json(error)
-    })
-})
 /*
     POST/CREATE route for Task Entity
 */
@@ -132,7 +70,7 @@ router.post('/', (request, response) => {
       if (!document || document.length === 0) {
         return response.status(500).json(document)
       }
-      
+
       response.status(201).json(document)
     })
     .catch(error => {
@@ -162,7 +100,6 @@ router.get('/', (request, response) => {
 
   Task.findOne(key)
     .populate('owner')
-    .populate('skills')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -176,10 +113,13 @@ router.get('/', (request, response) => {
 
 router.get('/all', (request, response) => {
   let key = {}
-
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.name, 'i')
+    key.name = { $in: searchKey }
+  }
   Task.find(key)
-     .populate('owner')
-     .populate('skills')
+    // .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
@@ -305,6 +245,7 @@ router.put('/', (request, response) => {
   const isValidated = validator.updateValidation(request.body)
 
   if (isValidated.error) {
+    console.log(isValidated.error.details[0].message)
     return response.status(400).send({
       error: isValidated.error.details[0].message
     })
@@ -507,6 +448,64 @@ router.put('/memberApplies', (req, res) => {
     })
 })
 
+router.put('/chooseConsultancy', (req, res) => {
+  if (!req.query.id) {
+    return res.status(400).send('Task id is missing.')
+  }
+  const isValidated = validator.updateValidation(req.body)
+  if (isValidated.error) {
+    return res.send()
+  }
+  let key = {
+    _id: req.query.id
+  }
+  Task.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        console.log('error1')
+        return res.send()
+      }
+      let s = document[0].applications
+      let result = s.find(function(element) {
+        console.log(element.details)
+        return element.consultancy == req.body.consultancy
+      })
+      if (result != null) {
+        Task.findOneAndUpdate(
+          {
+            _id: req.query.id
+          },
+          req.body,
+          {
+            new: true
+          }
+        )
+          .then(doc => {
+            axios.post(
+              `${baseURL}/api/message/notify?id=${req.body.assignee}`,
+              {
+                message: `Congratulations, you have been accepted for ${
+                  doc.name
+                } task!`
+              }
+            )
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            console.log('err')
+            res.send()
+          })
+      } else {
+        console.log('notfound')
+        res.send()
+      }
+    })
+    .catch(err => {
+      console.log('errfinal')
+      res.send()
+    })
+})
+
 router.put('/chooseAssignee', (req, res) => {
   if (!req.query.id) {
     return res.status(400).send('Task id is missing.')
@@ -540,6 +539,14 @@ router.put('/chooseAssignee', (req, res) => {
           }
         )
           .then(doc => {
+            axios.post(
+              `${baseURL}/api/message/notify?id=${req.body.assignee}`,
+              {
+                message: `Congratulations, you have been accepted for ${
+                  doc.name
+                } task, Expect a message soon from the Task owners for the orientation details!`
+              }
+            )
             res.status(201).send(doc)
           })
           .catch(err => {
@@ -570,32 +577,28 @@ router.post('/browse', (req, res) => {
     .catch(err => res.status(500).send(err))
 })
 router.get('/mytasks', (req, res) => {
-  var token = req.get('token');
-  if (!token)
-    return res.status(400).send('Body is Missing')
+  var token = req.get('token')
+  if (!token) return res.status(400).send('Body is Missing')
 
   let verify = req.app.get('verifyToken')
   let data = verify(token)
-  console.log("DATA "+data)
-  if (!data) 
-    return res.status(500).send('Error')
-  
+  console.log('DATA ' + data)
+  if (!data) return res.status(500).send('Error')
+
   if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
     return res.status(400).send('Not Allowed to view tasks')
 
-  if (data.type == 'Members')
-  {
-  Task.find({ phase:'Awaiting approval'} && {assignee: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
+  if (data.type == 'Members') {
+    Task.find({ phase: 'Awaiting approval' } && { assignee: `${data.profile}` })
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
+  } else if (data.type == 'ConsultancyAgencie') {
+    Task.find(
+      { phase: 'Awaiting approval' } && { consultancy: `${data.profile}` }
+    )
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err))
   }
-  else if (data.type == 'ConsultancyAgencie')
-  {
-  Task.find({ phase:'Awaiting approval'} && {consultancy: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
-  }
-
 })
 module.exports = {
   router: router,

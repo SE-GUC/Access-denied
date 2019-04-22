@@ -9,7 +9,7 @@ require('dotenv').config()
 
 // Database Configuration...
 
-const uri = process.env.MONGOURI
+const uri =process.env.MONGOURI
 
 const PORT = process.env.PORT || 3001
 //Require routers

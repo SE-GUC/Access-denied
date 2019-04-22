@@ -64,26 +64,28 @@ let taskSchema = new mongoose.Schema({
       ref: 'Members'
     }
   ],
-  applications:[{
-    applier: {
-      type: mongoose.Schema.Types.ObjectId,
-      refPath: 'applierModel',
-      required: true
-    },
-    date: {
-      type: Date,
-      default: new Date()
-    },
-    details: {
-      type: String,
-      required: true
-    },
-    applierModel: {
-      type: String,
-      required: true,
-      enum: ['Members', 'ConsultancyAgencies']
+  applications: [
+    {
+      applier: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: 'applierModel',
+        required: true
+      },
+      date: {
+        type: Date,
+        default: new Date()
+      },
+      details: {
+        type: String,
+        required: true
+      },
+      applierModel: {
+        type: String,
+        required: true,
+        enum: ['Members', 'ConsultancyAgencies']
+      }
     }
-    }],
+  ],
   phase: {
     type: String,
     enum: [
@@ -100,7 +102,7 @@ let taskSchema = new mongoose.Schema({
     type: String,
 
     enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
-  },
+  }
 })
 let taskModel = mongoose.model('Task', taskSchema)
 taskSchema.set('toObject', { virtuals: true })
@@ -130,6 +132,6 @@ taskSchema.virtual('Tags').get(function get() {
 //delete mongoose.connection.models['Tasks']
 //delete mongoose.connection.models['Task']
 
-// taskModel.collection.drop()
+//taskModel.collection.drop()
 
 module.exports = taskModel

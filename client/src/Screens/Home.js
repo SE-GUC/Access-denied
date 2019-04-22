@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import bg from "../Images/bg.jpg";
-import { Link } from "react-router-dom";
-import { AppConsumer } from "../Containers/AppProvider";
+import React, { Component } from 'react'
+import bg from '../Images/bg.jpg'
+import { Link } from 'react-router-dom'
+import { AppConsumer } from '../Containers/AppProvider'
 import {
   Hero,
   CallToAction,
   ScrollDownIndicator,
   Checklist,
   Section
-} from "react-landing-page";
+} from 'react-landing-page'
 
 const featherCheckmark = (
   <svg
@@ -25,18 +25,18 @@ const featherCheckmark = (
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
     <polyline points="22 4 12 14.01 9 11.01" />
   </svg>
-);
+)
 class Home extends Component {
   scroll() {
-    setTimeout(() => window.scrollTo(0, 50), 200);
+    setTimeout(() => window.scrollTo(0, 50), 200)
   }
   render() {
-    this.scroll();
+    this.scroll()
     return (
       <>
         <AppConsumer>
           {context => {
-            if (context.token) this.props.history.push("/profile");
+            if (context.token) this.props.history.push('/profile')
           }}
         </AppConsumer>
         <Hero color="white" bg="black" backgroundImage={bg}>
@@ -61,17 +61,17 @@ class Home extends Component {
         >
           <Checklist
             children={[
-              "Get Certified",
-              "Do projects for multinational companies",
-              "Get mentored by Senior Developers\n",
-              "Find certified freelancers for your projects"
+              'Get Certified',
+              'Do projects for multinational companies',
+              'Get mentored by Senior Developers\n',
+              'Find certified freelancers for your projects'
             ]}
             checkmark={featherCheckmark}
           />
         </Section>
       </>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home

@@ -2,6 +2,8 @@ const educationalorganisations = require('../models/educationalOrganisation.mode
 const express = require('express')
 const router = express.Router()
 const validator = require('../validations/EducationalOrganisationValidations.js')
+const axios = require('axios')
+const baseURL = process.env.BASEURL || 'http://localhost:3001'
 
 //TODO:check if its admin or not aka {request.query.token_id}
 //if it's admin it will do its job
@@ -138,6 +140,26 @@ router.delete('/', (req, res) => {
     })
     .catch(err => {
       res.status(500).json(err)
+    })
+})
+router.put('/chooseApplicant', (req, res) => {
+  let certificationID = req.query.id
+  if (!certificationID) {
+    return res.send('No certification provided')
+  }
+  console.log('sending')
+  axios
+    .put(`${baseURL}/api/certification/chooseApplicant?id=${certificationID}`, {
+      membersapplied: req.body.membersapplied
+    })
+    .then(doc => {
+      if (!doc || doc.data.length === 0) {
+        return res.send(doc)
+      }
+      res.status(201).json(doc.data)
+    })
+    .catch(err => {
+      res.send('err')
     })
 })
 

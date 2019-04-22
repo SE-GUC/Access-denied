@@ -1,12 +1,12 @@
-import DropdownButton from "react-bootstrap/DropdownButton";
-import React, { Component } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import { Button } from "react-bootstrap";
+import DropdownButton from 'react-bootstrap/DropdownButton'
+import React, { Component } from 'react'
+import Dropdown from 'react-bootstrap/Dropdown'
+import { Button } from 'react-bootstrap'
 
 //so that the partner can choose the payment method for the task
 class PaymentMethodList extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       cash: false,
       visa: false,
@@ -14,13 +14,13 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: false,
       CIBTransfer: false
-    };
-    this.Cash = this.Cash.bind(this);
-    this.CreditCard = this.CreditCard.bind(this);
-    this.Fawry = this.Fawry.bind(this);
-    this.Visa = this.Visa.bind(this);
-    this.Transfer = this.Transfer.bind(this);
-    this.paypal = this.paypal.bind(this);
+    }
+    this.Cash = this.Cash.bind(this)
+    this.CreditCard = this.CreditCard.bind(this)
+    this.Fawry = this.Fawry.bind(this)
+    this.Visa = this.Visa.bind(this)
+    this.Transfer = this.Transfer.bind(this)
+    this.paypal = this.paypal.bind(this)
   }
 
   Cash() {
@@ -31,7 +31,7 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: false,
       CIBTransfer: false
-    });
+    })
   }
 
   Visa() {
@@ -43,7 +43,7 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: false,
       CIBTransfer: false
-    });
+    })
   }
 
   Fawry() {
@@ -55,7 +55,7 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: false,
       CIBTransfer: false
-    });
+    })
   }
 
   CreditCard() {
@@ -66,7 +66,7 @@ class PaymentMethodList extends Component {
       creditCard: true,
       PayPal: false,
       CIBTransfer: false
-    });
+    })
   }
 
   paypal() {
@@ -77,7 +77,7 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: true,
       CIBTransfer: false
-    });
+    })
   }
 
   Transfer() {
@@ -88,7 +88,7 @@ class PaymentMethodList extends Component {
       creditCard: false,
       PayPal: true,
       CIBTransfer: true
-    });
+    })
   }
 
   render() {
@@ -120,8 +120,8 @@ class PaymentMethodList extends Component {
           </Dropdown.Item>
         </DropdownButton>
       </div>
-    );
+    )
   }
 }
 
-export default PaymentMethodList;
+export default PaymentMethodList
