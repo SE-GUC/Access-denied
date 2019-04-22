@@ -30,7 +30,8 @@ module.exports = {
       ),
       paymentMethod: Joi,
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
     return Joi.validate(request, createSchema)
@@ -65,7 +66,8 @@ module.exports = {
           applierModel: Joi
         })
       ),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
     return Joi.validate(request, updateSchema, { stripUnknown: true })
