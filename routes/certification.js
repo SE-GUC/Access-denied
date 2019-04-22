@@ -275,6 +275,7 @@ router.post('/apply', (req, res) => {
   let ver = verify(req.body.token)
   if (!ver) return res.status(500).send('Error')
   let id = ver.profile
+
   certificationModel
     .findOneAndUpdate(
       { _id: req.query.id },
