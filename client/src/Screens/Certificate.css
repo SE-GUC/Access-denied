@@ -1,0 +1,25 @@
+.bg {
+  width: 130%;
+  height: 600px;
+}
+
+.bgtext {
+  color: white;
+  margin-left: 11%;
+  margin-top: 15%;
+  font-size: 40px;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8), 2px 2px 3px rgba(0, 0, 0, 1);
+}
+
+.bold {
+  font-weight: 700;
+}
+.textafter {
+  font-size: 30px;
+  margin-left: 15%;
+  margin-top: 17%;
+}
+.textaftersmall {
+  font-size: 16px;
+  margin-left: 15%;
+}
