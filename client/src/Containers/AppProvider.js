@@ -25,7 +25,7 @@ class AppProvider extends Component {
   render() {
     return (
       <AppContext.Provider value={this.state}>
-        {this.props.children};
+        {this.props.children}
       </AppContext.Provider>
     )
   }
