@@ -68,6 +68,26 @@ let taskSchema = new mongoose.Schema({
       ref: 'Members'
     }
   ],
+  applications:[{
+    applier: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'applierModel',
+      required: true
+    },
+    date: {
+      type: Date,
+      default: new Date()
+    },
+    details: {
+      type: String,
+      required: true
+    },
+    applierModel: {
+      type: String,
+      required: true,
+      enum: ['Members', 'ConsultancyAgencies']
+    }
+    }],
   phase: {
     type: String,
     enum: [
@@ -85,7 +105,7 @@ let taskSchema = new mongoose.Schema({
     type: String,
 
     enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
-  }
+  },
 })
 
 taskSchema.set('toObject', { virtuals: true })

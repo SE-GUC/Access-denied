@@ -20,15 +20,14 @@ module.exports = {
       experienceLevel: Joi.string(),
       timeRequired: Joi,
       monetaryComp: Joi.number(),
-
-      paymentMethod: Joi,
-      skills: Joi,
       applications: Joi.object({
         applier: Joi,
         date: Joi.date(),
         details: Joi,
         applierModel: Joi
       }),
+      paymentMethod: Joi,
+      skills: Joi.array().items(Joi.string()),
       Keywords: Joi,
       phase: Joi.string()
     }
@@ -49,7 +48,6 @@ module.exports = {
         .min(3)
         .max(500),
       isComplete: Joi.boolean(),
-
       paymentMethod: Joi,
       date: Joi.date(),
       effortLevel: Joi.number().max(10),
