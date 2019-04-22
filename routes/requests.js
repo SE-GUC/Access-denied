@@ -51,16 +51,6 @@ router.post('/', (request, response) => {
     })
 })
 
-/*
-    GET/READ route for Task Entity
-    Either Get all the documents related to the Task Entity, or can be specified to fetch a certain document using 
-*/
-
-/**
- * @description Get Document in Database
- * @returns Success/Error JSON
- * @requires _id
- */
 
 router.get('/', (request, response) => {
   let documentID = request.query.id

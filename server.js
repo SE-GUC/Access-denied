@@ -9,7 +9,7 @@ require('dotenv').config()
 
 // Database Configuration...
 
-const uri = 'mongodb+srv://test:test@test-f4evh.mongodb.net/test?retryWrites=true'
+const uri = process.env.MONGOURI
 
 const PORT = process.env.PORT || 3001
 //Require routers

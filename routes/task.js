@@ -8,19 +8,81 @@
 
 const express = require('express')
 const router = express.Router()
-
+let recombee = require('recombee-api-client');
 const Task = require('../models/task.model')
 const validator = require('../validations/taskValidations')
 const axios = require('axios')
-
+const recommendation = require('../recommendation ')
 const mongoose = require('mongoose')
 const fetch = require('node-fetch')
+const rqs = recombee.requests;
+const _ = require('lodash')
 
 mongoose.set('useCreateIndex', true)
 mongoose.set('usefindandmodify', false)
 
 const baseURL = process.env.BASEURL || 'http://localhost:3001'
+router.post('/test', (request, response) => {
+  if (!request.body) {
+    return response.status(400).send('400: Bad Request')
+  }
+  
+  // const isValidated = validator.createValidation(request.body)
 
+  // if (isValidated.error) {
+  //   return response.status(400).send({
+  //     error: isValidated.error.details[0].message
+  //   })
+  // }
+
+  Task.create(request.body)
+    .then(document => {
+      if (!document || document.length === 0) {
+        return response.status(500).json(document)
+      }
+      // recommendation.send(new rqs.AddItem(document._id))
+      // recommendation.send(new rqs.AddItemProperty('name', 'string'))
+      // recommendation.send(new rqs.AddItemProperty('owner', 'string'))
+      // recommendation.send(new rqs.AddItemProperty('isComplete', 'boolean'))
+      // recommendation.send(new rqs.AddItemProperty('date', 'timestamp'))
+      // recommendation.send(new rqs.AddItemProperty('effortLevel', 'int'))
+      // recommendation.send(new rqs.AddItemProperty('commitmentLevel', 'int'))
+      // recommendation.send(new rqs.AddItemProperty('experienceLevel', 'int'))
+      // recommendation.send(new rqs.AddItemProperty('timeRequired', 'int'))
+      // recommendation.send(new rqs.AddItemProperty('monetaryComp', 'int'))
+      // recommendation.send(new rqs.AddItemProperty('skills', 'set'))
+      recommendation.send(new rqs.SetItemValues(document._id,_.pick(
+        document,
+        ['name','owner','isComplete','effortLevel','experienceLevel','timeRequired','monetaryComp']
+      ), { //optional parameters:
+        'cascadeCreate': true
+      }));
+
+      recommendation.send(new rqs.SetItemValues(document._id,_.pick(
+        document,
+        ['name','owner','isComplete','effortLevel','experienceLevel','timeRequired','monetaryComp']
+      ), { //optional parameters:
+        'cascadeCreate': true
+      }));
+      // recommendation.send(new rqs.ListItemProperties())
+      recommendation.send(new rqs.ListItems())
+      .then(s=>{
+        
+        console.log(s)
+      })
+      recommendation.send(new rqs.GetItemValues(document._id))
+      .then(s=>{
+        
+        console.log(s)
+      })
+
+      response.status(201).json(document)
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(500).json(error)
+    })
+})
 /*
     POST/CREATE route for Task Entity
 */
@@ -70,7 +132,7 @@ router.post('/', (request, response) => {
       if (!document || document.length === 0) {
         return response.status(500).json(document)
       }
-
+      
       response.status(201).json(document)
     })
     .catch(error => {

@@ -48,14 +48,10 @@ let taskSchema = new mongoose.Schema({
     type: Number
   },
   experienceLevel: {
-    type: String,
-
-    enum: ['Low', 'Medium', 'High']
+    type: Number
   },
   timeRequired: {
-    unit: {type: String, enum:["years","months","hours","days"]},
-    amount:Number
-
+    type: Number
   },
   monetaryComp: {
     type: Number
@@ -93,8 +89,7 @@ let taskSchema = new mongoose.Schema({
     enum: [
       'Awaiting approval',
       'Looking for ConsultancyAgencies',
-      'Negotiation with consultancy',
-      "reviewing the task",
+      'Consultancy hired',
       'Looking for Members',
       'Ongoing',
       'Completed'
@@ -107,18 +102,26 @@ let taskSchema = new mongoose.Schema({
     enum: ['Cash', 'fawry', 'visa', 'creditCard', 'PayPal', 'CIBTransfer']
   },
 })
-
+let taskModel = mongoose.model('Task', taskSchema)
 taskSchema.set('toObject', { virtuals: true })
 taskSchema.set('toJSON', { virtuals: true })
 taskSchema.virtual('Tags').get(function get() {
   let s = []
+  let k=[]
   if (this.owner) s.push('OwnerName:' + this.owner.name)
   if (this.effortLevel) s.push('effortLevel:' + this.effortLevel)
   if (this.commitmentLevel) s.push('commitmentLevel:' + this.commitmentLevel)
-  if (this.experienceLevel) s.push('experienceLevel:' + this.experienceLevel)
+  if (this.experienceLevel) s.push('experienceLevel;' + this.experienceLevel)
   if (this.timeRequired) s.push('timeRequired:' + this.timeRequired)
   if (this.monetaryComp) s.push('monetaryComp:' + this.monetaryComp)
-  if (this.skills.length > 0) s.push('skills:' + this.skills)
+  if (this.skills.length > 0 && this.skills[0].name) {
+    this.skills.map(m=>{
+      k.push(m.name)
+    })
+    k.map(j=>{
+      s.push('skills:' + j)
+    })
+    }
   if (this.keywords.length > 0) s.push('others:' + this.keywords)
 
   return s
@@ -126,7 +129,6 @@ taskSchema.virtual('Tags').get(function get() {
 
 //delete mongoose.connection.models['Tasks']
 //delete mongoose.connection.models['Task']
-let taskModel = mongoose.model('Task', taskSchema)
 
 // taskModel.collection.drop()
 

@@ -1,6 +1,6 @@
 import React from "react";
 import S from "./searchbar";
-import { InputGroup, Form, Dropdown } from "react-bootstrap";
+import { InputGroup, Form, Button } from "react-bootstrap";
 
 class Key extends React.Component {
   render() {
@@ -82,7 +82,7 @@ class filterPanel extends React.Component {
   render() {
     const Tags = this.props.keywords;
     return (
-      <form>
+      <Form>
         {Tags.map(p => {
           return <Key id={Tags.indexOf(p)} title={p} fu={this.handleChange} />;
         })}
@@ -90,7 +90,10 @@ class filterPanel extends React.Component {
           {" "}
           {/* <S Tags={this.state.keywordsResults} fu={this.props.change} /> */}
         </div>
-      </form>
+        <Button variant="primary" type='button' onClick={this.handleChange}>
+    APPLY Filters
+  </Button>
+      </Form>
     );
   }
 }
