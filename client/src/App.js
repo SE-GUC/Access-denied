@@ -30,7 +30,8 @@ import taskview from './Screens/taskview'
 import TaskForm from './Screens/TaskForm'
 import ProjectLanding from './Screens/ProjectLanding'
 import Footer from './Components/Footer'
-
+import allcertificate from'./Screens/Allcertificate'
+import allcert from './Screens/Allcertificate';
 class App extends Component {
   constructor(props) {
     super(props)
@@ -98,12 +99,14 @@ class App extends Component {
               <Route path="/newtask/" component={TaskForm} />
               <Route path="/logout/" component={Logout} />
               <Route exact path="/Project" component={ProjectLanding} />
+              <Route path="/allcertificates/"  component={allcert}/>
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
-          <Footer />
+          <Footer/>
         </Router>
       </AppProvider>
+      
     )
   }
 }
