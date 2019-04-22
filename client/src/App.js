@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Certificate from "./Screens/Certificate";
@@ -29,22 +30,25 @@ import Profile from "./Screens/Profile";
 import taskview from "./Screens/taskview";
 import TaskForm from "./Screens/TaskForm";
 import Admin from "./Screens/Admin";
+import CertAccept from "./Screens/CertAccept";
 import ProjectLanding from "./Screens/ProjectLanding";
+import Project from "./Screens/Project"
 import Footer from "./Components/Footer";
+import allcert from './Screens/Allcertificate';
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       notify: false
-    };
-    this.handleNotification = this.handleNotification.bind(this);
+    }
+    this.handleNotification = this.handleNotification.bind(this)
   }
   handleNotification(add) {
-    if (add) this.setState({ notify: true });
+    if (add) this.setState({ notify: true })
     else {
-      this.setState({ notify: false });
-      document.getElementById("chatsbtn").click();
+      this.setState({ notify: false })
+      document.getElementById('chatsbtn').click()
     }
   }
   render() {
@@ -61,7 +65,7 @@ class App extends Component {
             />
           </div>
           {/* ) : null} */}
-          <div style={{ marginTop: "50px" }}>
+          <div style={{ marginTop: '50px' }}>
             <Switch>
               <Route path="/" exact component={Home} />
               <Route path="/certificate/" component={Certificate} />
@@ -82,6 +86,7 @@ class App extends Component {
                 component={props => <Coworking {...props} />}
               />
               <Route path="/login/" component={Login} />
+              <Route path="/CertAccept/" component={CertAccept} />
               <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
@@ -100,14 +105,17 @@ class App extends Component {
               <Route path="/logout/" component={Logout} />
               <Route path="/admin/" component={Admin} />
               <Route exact path="/Project" component={ProjectLanding} />
+              <Route exact path="/Project/:id" component={Project} />
+              <Route path="/allcertificates/"  component={allcert}/>
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
-          <Footer />
+          <Footer/>
         </Router>
       </AppProvider>
-    );
+      
+    )
   }
 }
 
-export default App;
+export default App

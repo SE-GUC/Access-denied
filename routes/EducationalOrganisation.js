@@ -147,7 +147,7 @@ router.put('/chooseApplicant', (req, res) => {
   if (!certificationID) {
     return res.send('No certification provided')
   }
-  console.log("sending")
+  console.log('sending')
   axios
     .put(`${baseURL}/api/certification/chooseApplicant?id=${certificationID}`, {
       membersapplied: req.body.membersapplied

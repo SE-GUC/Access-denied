@@ -27,11 +27,11 @@ let requestSchema = new mongoose.Schema({
   }
 })
 
-// delete mongoose.connection.models['requests']
-// delete mongoose.connection.models['request']
+//delete mongoose.connection.models['requests']
+//delete mongoose.connection.models['request']
 
 let requestModel = mongoose.model('request', requestSchema)
 
-// requestModel.collection.drop()
+//requestModel.collection.drop()
 
 module.exports = requestModel

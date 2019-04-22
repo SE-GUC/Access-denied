@@ -7,9 +7,9 @@ import {
   CertificatesEdit
 } from '../Components/Admin/Certificates'
 import { Tasks, TasksEdit } from '../Components/Admin/Tasks'
-import Notify from '../Components/Admin/Notify'
+
 const App = () => (
-  <Admin dashboard={Notify} dataProvider={Dataprovider}>
+  <Admin dataProvider={Dataprovider}>
     <Resource name="user" list={Users} edit={UsersEdit} />
     <Resource
       name="certification"
