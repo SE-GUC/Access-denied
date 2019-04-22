@@ -13,7 +13,9 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "query-string": "^6.4.2",
+    "ra-data-json-server": "^2.8.5",
     "react": "^16.8.6",
+    "react-admin": "^2.8.5",
     "react-big-calendar": "^0.20.4",
     "react-bootstrap": "^1.0.0-beta.6",
     "react-chat-window": "^1.2.1",
@@ -26,6 +28,7 @@
     "react-scripts": "^2.1.8",
     "react-star-rating-component": "^1.4.1",
     "rebass": "^3.1.0",
+    "redux-form": "^8.2.0",
     "socket.io-client": "^2.2.0",
     "styled-components": "^4.2.0"
   },
