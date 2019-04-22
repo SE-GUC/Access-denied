@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import { NavigateNext } from "@material-ui/icons";
-import { BrowserRouter, Route, Switch, Link } from "react-router-dom";
-import { red } from "@material-ui/core/colors";
-import EducationalForm from "./EducationalForm";
-import ConsultancyForm from "./ConsultancyForm";
-import { Redirect } from "react-router";
-import { CallToAction } from "react-landing-page";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import Divider from '@material-ui/core/Divider'
+import { NavigateNext } from '@material-ui/icons'
+import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { red } from '@material-ui/core/colors'
+import EducationalForm from './EducationalForm'
+import ConsultancyForm from './ConsultancyForm'
+import { Redirect } from 'react-router'
+import { CallToAction } from 'react-landing-page'
 
 const styles = theme => ({
   root: {
-    width: "100%",
-    maxWidth: "410px",
+    width: '100%',
+    maxWidth: '410px',
     backgroundColor: theme.palette.background.paper
   }
-});
+})
 
 /*function ListDividers(props) {
   const { classes } = props;
@@ -76,7 +76,7 @@ const styles = theme => ({
 
 class ListDivider extends Component {
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <List component="nav" className={classes.root}>
@@ -135,12 +135,12 @@ class ListDivider extends Component {
           </ListItem>
         </Link>
       </List>
-    );
+    )
   }
 }
 ListDivider.propTypes = {
   classes: PropTypes.object.isRequired
-};
+}
 
-export default withStyles(styles)(ListDivider);
+export default withStyles(styles)(ListDivider)
 //export default ListDivider;
