@@ -47,7 +47,8 @@ class Member extends Component {
       newData: null,
       city: null,
       area: null,
-      street: null
+      street: null,
+      pending: null
     }
   }
   handleClickOpen = name => event => {
@@ -263,6 +264,20 @@ class Member extends Component {
         ))
         currentState.loaded = true
         this.setState(currentState)
+        return fetch(`/api/certification/applied?id=${id}`)
+      })
+      .then(res => res.json())
+      .then(res => {
+        let currentstate = this.state
+
+        currentstate.pending = res.map(cert => (
+          <li className="list-group-item">
+            {' '}
+            <Link to={`/certificate?id=${cert._id}`}>{cert.name}</Link>
+          </li>
+          // <li className="list-group-item"> {cert.name}</li>
+        ))
+        this.setState(currentstate)
       })
       .catch(err => {
         console.log(err)
@@ -462,6 +477,16 @@ class Member extends Component {
             >
               Events
             </li>
+            <li
+              className={
+                this.state.activeId === '7'
+                  ? 'list-group-item list-group-item-action list-group-item-dark'
+                  : 'list-group-item list-group-item-action'
+              }
+              id="7"
+            >
+              Pending applications
+            </li>
           </ul>
           {(function(state) {
             switch (state.activeId) {
@@ -567,6 +592,31 @@ class Member extends Component {
                     />
                   </div>
                 )
+              case '7':
+                if (!state.loaded)
+                  return (
+                    <div
+                      className="spinner-border"
+                      role="status"
+                      style={{ marginLeft: '35%', marginTop: '15%' }}
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  )
+                if (!state.pending || state.pending.length === 0)
+                  return (
+                    <h4 className="text-muted">
+                      No Pending applications Yet..
+                    </h4>
+                  )
+                return (
+                  <ul
+                    className="list-group d-flex flex-wrap flex-row"
+                    style={{ width: '100%' }}
+                  >
+                    {state.pending}
+                  </ul>
+                )
               case '6':
                 if (!state.loaded)
                   return (
@@ -580,6 +630,7 @@ class Member extends Component {
                   )
                 if (!state.events)
                   return <h4 className="text-muted"> No Events yet</h4>
+
                 break
               default:
                 break
