@@ -1,7 +1,7 @@
-import React from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import StarRatingComponent from "react-star-rating-component";
+import React from 'react'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import StarRatingComponent from 'react-star-rating-component'
 
 function RatingForm(props) {
   return (
@@ -14,7 +14,7 @@ function RatingForm(props) {
           <div style={{ fontSize: 35 }}>
             <StarRatingComponent
               name="rate"
-              emptyStarColor={"grey"}
+              emptyStarColor={'grey'}
               starCount={5}
               value={props.value}
               onStarClick={props.onStarClick}
@@ -23,7 +23,7 @@ function RatingForm(props) {
         </Grid>
       </Grid>
     </React.Fragment>
-  );
+  )
 }
 
-export default RatingForm;
+export default RatingForm

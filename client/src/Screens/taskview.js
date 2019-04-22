@@ -12,6 +12,16 @@ import indigo from "@material-ui/core/colors/indigo";
 import { styled } from "@material-ui/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Applyontask from "./ApplyOnTask";
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/Inbox';
+import DraftsIcon from '@material-ui/icons/Drafts';
+
+
 const axios = require("axios");
 
 const Typographyhead = styled(Typography)({
@@ -22,12 +32,20 @@ const Typographypara = styled(Typography)({
   marginLeft: "1.5%"
 });
 
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+});
 class taskview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       task: null,
       name: null,
+      chosenmember:"",
       redirect: false
     };
     this.onClick = this.onClick.bind(this);
@@ -41,6 +59,7 @@ class taskview extends Component {
     axios.get(`/api/task/?id=` + taskid).then(q => {
       const consid = q.data.consultancy == undefined ? " " : q.data.consultancy;
       console.log(q.data);
+      console.log(q.data.Tags);
       console.log(consid + "this");
       axios.get(`/api/consultancy/?id=` + consid).then(qq => {
         console.log(qq.data);
@@ -60,16 +79,35 @@ class taskview extends Component {
         experiencelevel: q.data.experienceLevel,
         timerequired: q.data.timeRequired,
         monetrarycomp: q.data.monetaryComp,
-        skills: q.data.skills
+        skills: q.data.skills,
+        appliedmembers:q.data.applications,
       });
     });
   }
+
+    handleListItemClick(event) {
+      // this.setState({ selectedIndex: index });
+      let info={
+        assignee:event.currentTarget.textContent}
+      let taskid = query.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+      fetch(`/api/partner/chooseAssignee?id=` + taskid, {
+        method: "PUT",
+        body: JSON.stringify(info),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(json => console.log(json));
+    };
   onClick() {
     this.setState({ redirect: true });
   }
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to={"/applyOnTask?taskid=" + this.state.task._id} />;
+      return <Redirect to={"/applyOnTask?id=" + this.state.task._id} />;
     }
   };
   render() {
@@ -81,6 +119,7 @@ class taskview extends Component {
         </paper>
       );
     }
+    const members=this.state.appliedmembers;
 
     return (
       <div>
@@ -198,6 +237,25 @@ class taskview extends Component {
               ? "No data Avaliable"
               : this.state.skills}
           </Typographypara>
+          <Divider variant="middle" style={{ marginTop: "3%" }} />
+          <Typographyhead variant="h5" component="h4">
+            Applied Members
+          </Typographyhead>
+       
+             <div >
+        <List component="nav">
+        {this.state.appliedmembers.map(p=>{
+          return(
+          <ListItem
+            button
+            onClick={this.handleListItemClick.bind(this)}
+          >
+         <ListItemText primary={p.applier} />
+          </ListItem>
+         ) })}
+        </List>
+        <Divider />
+      </div>
         </Card>
         <Button
           size="lg"
@@ -211,5 +269,9 @@ class taskview extends Component {
     );
   }
 }
+taskview.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+export default withStyles(styles)(taskview) ; 
 
-export default taskview;
+

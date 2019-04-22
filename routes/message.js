@@ -85,4 +85,23 @@ router.post('/', (req, res) => {
     })
 })
 
+router.post('/notify', (req, res) => {
+  if (!req.body || !req.query.id) {
+    return res.status(400).send('Missing body')
+  }
+  let id = req.query.id
+  req.body.to = id
+  req.body.from = '5cb3aa2c8c59a7001722ae42'
+  let model = new messageModel(req.body)
+  model
+    .save()
+    .then(doc => {
+      console.log(doc)
+      req.app.get('io').emit(req.body.to, req.body)
+      return res.json(doc)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+})
 module.exports = router

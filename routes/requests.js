@@ -51,16 +51,6 @@ router.post('/', (request, response) => {
     })
 })
 
-/*
-    GET/READ route for Task Entity
-    Either Get all the documents related to the Task Entity, or can be specified to fetch a certain document using 
-*/
-
-/**
- * @description Get Document in Database
- * @returns Success/Error JSON
- * @requires _id
- */
 
 router.get('/', (request, response) => {
   let documentID = request.query.id
@@ -201,6 +191,47 @@ router.get('/Approve', (request, response) => {
     })
     .catch(error => {
       response.status(500).json(error)
+    })
+})
+router.get('/partnerTasks', (req, res) => {
+  let id = req.query.id
+
+  let key = {
+    requester: id,
+    route: '/api/task',
+    type: 'POST'
+  }
+  Request.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return res.status(500).json(document)
+      }
+
+      res.json(document)
+    })
+    .catch(error => {
+      res.status(500).json(error)
+    })
+})
+
+router.get('/educationalCert', (req, res) => {
+  let id = req.query.id
+
+  let key = {
+    requester: id,
+    route: '/api/certification',
+    type: 'POST'
+  }
+  Request.find(key)
+    .then(document => {
+      if (!document || document.length == 0) {
+        return res.status(500).json(document)
+      }
+
+      res.json(document)
+    })
+    .catch(error => {
+      res.status(500).json(error)
     })
 })
 module.exports = router

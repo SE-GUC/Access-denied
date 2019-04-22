@@ -1,27 +1,27 @@
-import React, { Component } from "react";
-import AlertGreen from "./AlertGreen";
-import { Form, Button, Jumbotron, Container } from "react-bootstrap";
-import "./Form.css";
+import React, { Component } from 'react'
+import AlertGreen from './AlertGreen'
+import { Form, Button, Jumbotron, Container } from 'react-bootstrap'
+import './Form.css'
 //const fetch = require("node-fetch");
 
 class MemberForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      birthDate: "",
+      name: '',
+      email: '',
+      password: '',
+      birthDate: '',
       submitted: false,
-      error: ""
-    };
+      error: ''
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
@@ -30,32 +30,32 @@ class MemberForm extends React.Component {
       name: this.state.name,
       password: this.state.password,
       birthDate: this.state.birthDate,
-      type: "Members"
-    };
+      type: 'Members'
+    }
     fetch(`/api/user`, {
       //
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(mem),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
-      credentials: "same-origin"
+      credentials: 'same-origin'
     })
       .then(res => res.json())
       .then(json => {
-        console.log("json");
-        if (json === "Error") {
-          return alert("you are already registered");
+        console.log('json')
+        if (json === 'Error') {
+          return alert('you are already registered')
         }
-        this.setState({ submitted: true });
-        alert("success");
+        this.setState({ submitted: true })
+        alert('success')
       })
       .catch(err => {
-        this.setState({ error: err.stringify });
-        alert("something went wrong");
-      });
+        this.setState({ error: err.stringify })
+        alert('something went wrong')
+      })
 
-    event.preventDefault();
+    event.preventDefault()
   }
 
   render() {
@@ -68,7 +68,6 @@ class MemberForm extends React.Component {
               <p>Welcome to LirtenHub!</p>
             </Container>
           </Jumbotron>
-          ;
         </div>
         <Form className="theform" onSubmit={this.handleSubmit}>
           <link
@@ -158,8 +157,8 @@ class MemberForm extends React.Component {
           </Button>
         </Form>
       </div>
-    );
+    )
   }
 }
 
-export default MemberForm;
+export default MemberForm

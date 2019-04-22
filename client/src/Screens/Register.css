@@ -24,7 +24,7 @@
 }
 
 #sign {
-  background: url("../Images/bluewall.jpg");
+  background: url('../Images/bluewall.jpg');
   text-align: center;
   font: 2em Helvetica;
   height: 200px;

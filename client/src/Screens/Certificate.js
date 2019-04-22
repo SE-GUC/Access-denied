@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import bg from "../Images/bloom-wfh-1630_1-2.jpg";
-import awardrate from "../Images/awardrate.jpg";
-import "./Certificate.css";
-import "bootstrap/dist/css/bootstrap.css";
-import { AppConsumer } from "../Containers/AppProvider";
+import React, { Component } from 'react'
+import bg from '../Images/bloom-wfh-1630_1-2.jpg'
+import awardrate from '../Images/awardrate.jpg'
+import './Certificate.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import { AppConsumer } from '../Containers/AppProvider'
 import {
   /*eslint-disable */
   Hero,
@@ -12,10 +12,10 @@ import {
   Checklist,
   Section
   /*eslint-enable */
-} from "react-landing-page";
-import Snackbar from "../Components/snackbar";
-import qs from "query-string";
-import { Redirect } from "react-router";
+} from 'react-landing-page'
+import Snackbar from '../Components/snackbar'
+import qs from 'query-string'
+import { Redirect } from 'react-router'
 
 const featherCheckmark = (
   <svg
@@ -32,37 +32,37 @@ const featherCheckmark = (
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
     <polyline points="22 4 12 14.01 9 11.01" />
   </svg>
-);
+)
 
 class Certificate extends Component {
   state = {
     certificate: {},
-    button: { btnclass: "btn btn-info btn-lg", text: "Apply Now" },
+    button: { btnclass: 'btn btn-info btn-lg', text: 'Apply Now' },
     applied: false,
     loaded: false,
     snackbar: {
       open: false,
-      text: "",
-      type: ""
+      text: '',
+      type: ''
     },
     token: null,
     id: null,
     type: null,
     changed: false
-  };
+  }
   componentDidMount() {
-    this.checkapplied();
+    this.checkapplied()
     let id = qs.parse(this.props.location.search, { ignoreQueryPrefix: true })
-      .id;
+      .id
     fetch(`/api/certification?id=${id}`)
       .then(response => response.json())
       .then(data => {
-        this.setState({ certificate: data });
-        this.setState({ loaded: true });
+        this.setState({ certificate: data })
+        this.setState({ loaded: true })
       })
       .catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
   handleClick() {
     if (
@@ -73,14 +73,14 @@ class Certificate extends Component {
         snackbar: {
           open: true,
           text: `You already applied to ${this.state.certificate.name}`,
-          type: "warning"
+          type: 'warning'
         }
-      });
+      })
     } else {
       fetch(`/api/certification/apply?id=${this.state.certificate.id}`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           token: this.state.token
@@ -88,27 +88,27 @@ class Certificate extends Component {
       })
         .then(res => res.json())
         .then(data => console.log(data))
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
       this.setState({
         applied: true,
         snackbar: {
           open: true,
           text: `Succesfully Applied to ${this.state.certificate.name}`,
-          type: "success"
+          type: 'success'
         },
         button: {
-          btnclass: "btn btn-success btn-lg",
-          text: "Applied"
+          btnclass: 'btn btn-success btn-lg',
+          text: 'Applied'
         }
-      });
+      })
     }
   }
   skillscap() {
-    let skills = [];
+    let skills = []
     this.state.certificate.skills.map(skill =>
       skills.push(skill.charAt(0).toUpperCase() + skill.slice(1))
-    );
-    return skills;
+    )
+    return skills
   }
 
   checkapplied() {
@@ -118,21 +118,21 @@ class Certificate extends Component {
           this.setState({
             applied: true,
             button: {
-              btnclass: "btn btn-success btn-lg",
-              text: "Applied"
+              btnclass: 'btn btn-success btn-lg',
+              text: 'Applied'
             }
-          });
+          })
         }
       }
     }
   }
   render() {
-    this.checkapplied();
+    this.checkapplied()
     return !this.state.loaded ? (
       <div className="d-flex justify-content-center">
         <div
           className="spinner-border text-success"
-          style={{ width: "10rem", height: "10rem", "margin-top": "17%" }}
+          style={{ width: '10rem', height: '10rem', 'margin-top': '17%' }}
           role="status"
         >
           <span className="sr-only">Loading...</span>
@@ -144,13 +144,13 @@ class Certificate extends Component {
       <div>
         <AppConsumer>
           {context => {
-            if (this.state.changed) return;
+            if (this.state.changed) return
             this.setState({
               token: context.token,
               id: context.id,
               type: context.type,
               changed: true
-            });
+            })
           }}
         </AppConsumer>
         <Snackbar
@@ -186,41 +186,43 @@ class Certificate extends Component {
             </div>
           </div>
         </div>
-        <div style={{ width: "30%", "margin-left": "33%" }}>
+        <div style={{ width: '30%', 'margin-left': '33%' }}>
           <p className="textafter bold">Show Employers you got these skills:</p>
-          <ul className="list-unstyled" style={{ "margin-left": "11%" }}>
+          <ul className="list-unstyled" style={{ 'margin-left': '11%' }}>
             <Checklist
               children={this.skillscap()}
               checkmark={featherCheckmark}
             />
           </ul>
         </div>
-        <hr style={{ "margin-top": "5%" }} />
+        <hr style={{ 'margin-top': '5%' }} />
         <span>
-          <div style={{ width: "30%", "margin-left": "15%", float: "left" }}>
-            <p className="textafter bold">Increase your win-rate by 25%</p>
-            <p className="textaftersmall">
-              Freelancers who get certified are 25% more likely to win a project
-              compared to freelancers who don't.
-            </p>
-            <p className="textaftersmall">
-              Certificates in your profile show employers that you're serious
-              about delivering quality work.
-            </p>
-            <p className="textaftersmall">Show them that you're capable.</p>
-          </div>
-          <div style={{ "margin-right": "15%", float: "right" }}>
-            <img
-              src={awardrate}
-              className="img-fluid"
-              style={{ "margin-top": "17%" }}
-              alt="award rate"
-            />
+          <div className="d-flex flex-row justify-content-center">
+            <div style={{ width: '30%', 'margin-left': '15%' }}>
+              <p className="textafter bold">Increase your win-rate by 25%</p>
+              <p className="textaftersmall">
+                Freelancers who get certified are 25% more likely to win a
+                project compared to freelancers who don't.
+              </p>
+              <p className="textaftersmall">
+                Certificates in your profile show employers that you're serious
+                about delivering quality work.
+              </p>
+              <p className="textaftersmall">Show them that you're capable.</p>
+            </div>
+            <div style={{ 'margin-right': '15%' }}>
+              <img
+                src={awardrate}
+                className="img-fluid"
+                style={{ 'margin-top': '17%' }}
+                alt="award rate"
+              />
+            </div>
           </div>
         </span>
       </div>
-    );
+    )
   }
 }
 
-export default Certificate;
+export default Certificate

@@ -42,10 +42,10 @@ certificationSchema.virtual('Tags').get(function get() {
 
   return s
 })
-// delete mongoose.connection.models['Certification']
-// delete mongoose.connection.collections['Certification']
+//delete mongoose.connection.models['Certification']
+//delete mongoose.connection.collections['Certification']
 
 const myModel = mongoose.model('Certification', certificationSchema)
-// myModel.collection.drop()
+//myModel.collection.drop()
 
 module.exports = myModel
