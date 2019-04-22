@@ -29,6 +29,7 @@ import Profile from "./Screens/Profile";
 import taskview from "./Screens/taskview";
 import TaskForm from "./Screens/TaskForm";
 import Admin from "./Screens/Admin";
+import CertAccept from "./Screens/CertAccept";
 import ProjectLanding from "./Screens/ProjectLanding";
 import Footer from "./Components/Footer";
 
@@ -82,6 +83,7 @@ class App extends Component {
                 component={props => <Coworking {...props} />}
               />
               <Route path="/login/" component={Login} />
+              <Route path="/CertAccept/" component={CertAccept} />
               <Route path="/profile/" component={Profile} />
               <Route path="/About/" component={About} />
               <Route path="/taskStatus/" component={TaskStatus} />
