@@ -19,7 +19,7 @@ class ApplyOnTask extends Component {
   gettaskID() {
     let taskid = query.parse(this.props.location.search, {
       ignoreQueryPrefix: true
-    }).taskid
+    }).id
     console.log(taskid)
     return taskid
   }
