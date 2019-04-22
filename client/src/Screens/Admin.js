@@ -7,6 +7,7 @@ import {
   CertificatesEdit
 } from '../Components/Admin/Certificates'
 import { Tasks, TasksEdit } from '../Components/Admin/Tasks'
+import { Requests, RequestsEdit } from '../Components/Admin/Requests'
 
 const App = () => (
   <Admin dataProvider={Dataprovider}>
@@ -17,6 +18,7 @@ const App = () => (
       edit={CertificatesEdit}
     />
     <Resource name="task" list={Tasks} edit={TasksEdit} />
+    <Resource name="request" list={Requests} edit={RequestsEdit} />
   </Admin>
 )
 
