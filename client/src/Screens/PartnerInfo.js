@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 function PartnerInfo() {
   return (
@@ -62,7 +62,7 @@ function PartnerInfo() {
         <button>save</button>
       </form>
     </div>
-  );
+  )
 }
 
-export default PartnerInfo;
+export default PartnerInfo

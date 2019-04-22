@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 function MemberInfo() {
   return (
@@ -27,7 +27,7 @@ function MemberInfo() {
         <button>save</button>
       </form>
     </div>
-  );
+  )
 }
 
-export default MemberInfo;
+export default MemberInfo

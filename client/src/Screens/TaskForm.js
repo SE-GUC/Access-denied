@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react'
+import PropTypes from 'prop-types'
 
-import { withStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-import NavigationIcon from "@material-ui/icons/Navigation";
-import Fab from "@material-ui/core/Fab";
-import { AppConsumer } from "../Containers/AppProvider";
-const axios = require("axios");
+import { withStyles } from '@material-ui/core/styles'
+import MenuItem from '@material-ui/core/MenuItem'
+import TextField from '@material-ui/core/TextField'
+import NavigationIcon from '@material-ui/icons/Navigation'
+import Fab from '@material-ui/core/Fab'
+import { AppConsumer } from '../Containers/AppProvider'
+const axios = require('axios')
 
 const styles = theme => ({
   container: {
-    display: "flex",
-    flexWrap: "wrap"
+    display: 'flex',
+    flexWrap: 'wrap'
   },
   textField: {
     marginLeft: theme.spacing.unit,
@@ -29,10 +29,10 @@ const styles = theme => ({
     margin: theme.spacing.unit
   },
   input: {
-    display: "none"
+    display: 'none'
   },
   root: {
-    display: "flex"
+    display: 'flex'
   },
   formControl: {
     margin: theme.spacing.unit * 3
@@ -46,74 +46,74 @@ const styles = theme => ({
   extendedIcon: {
     marginRight: theme.spacing.unit
   }
-});
+})
 
 const level = [
   {
-    value: "1",
-    label: "1"
+    value: '1',
+    label: '1'
   },
   {
-    value: "2",
-    label: "2"
+    value: '2',
+    label: '2'
   },
   {
-    value: "3",
-    label: "3"
+    value: '3',
+    label: '3'
   },
   {
-    value: "4",
-    label: "4"
+    value: '4',
+    label: '4'
   },
   {
-    value: "5",
-    label: "5"
+    value: '5',
+    label: '5'
   },
   {
-    value: "6",
-    label: "6"
+    value: '6',
+    label: '6'
   },
   {
-    value: "7",
-    label: "7"
+    value: '7',
+    label: '7'
   },
   {
-    value: "8",
-    label: "8"
+    value: '8',
+    label: '8'
   },
   {
-    value: "9",
-    label: "9"
+    value: '9',
+    label: '9'
   },
   {
-    value: "10",
-    label: "10"
+    value: '10',
+    label: '10'
   }
-];
+]
 const currencies = [
   {
-    value: "USD",
-    label: "$"
+    value: 'USD',
+    label: '$'
   },
   {
-    value: "EUR",
-    label: "€"
+    value: 'EUR',
+    label: '€'
   },
   {
-    value: "BTC",
-    label: "฿"
+    value: 'BTC',
+    label: '฿'
   },
   {
-    value: "JPY",
-    label: "¥"
+    value: 'JPY',
+    label: '¥'
   }
-];
+]
 
 class TaskForm extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {};
-    this.handleClick = this.handleClick.bind(this);
+    super(props)
+    this.state = {}
+    this.handleClick = this.handleClick.bind(this)
   }
   handleClick() {
     const data = {
@@ -126,49 +126,49 @@ class TaskForm extends React.Component {
       experienceLevel: this.state.experienceLevel,
       timeRequired: this.state.timeRequired,
       monetaryComp: this.state.monetaryComp
-    };
-    axios.post("/api/task/", data);
-    console.log(this.state);
+    }
+    axios.post('/api/task/', data)
+    console.log(this.state)
   }
   state = {
-    name: "",
-    multiline: "",
-    extraNotes: "",
-    Description: "",
-    effortlevel: "",
-    commitmentLevel: "",
-    experienceLevel: "",
-    currency: "",
-    monetaryComp: "",
-    timeRequired: "",
+    name: '',
+    multiline: '',
+    extraNotes: '',
+    Description: '',
+    effortlevel: '',
+    commitmentLevel: '',
+    experienceLevel: '',
+    currency: '',
+    monetaryComp: '',
+    timeRequired: '',
     token: null,
     id: null,
     type: null,
     changed: false
-  };
+  }
 
   handleChange = name => event => {
     this.setState({
       [name]: event.target.value
-    });
+    })
 
-    console.log(this.state.name);
-  };
+    console.log(this.state.name)
+  }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div>
         <AppConsumer>
           {context => {
-            if (this.state.changed) return;
+            if (this.state.changed) return
             this.setState({
               token: context.token,
               id: context.id,
               type: context.type,
               changed: true
-            });
+            })
           }}
         </AppConsumer>
 
@@ -179,7 +179,7 @@ class TaskForm extends React.Component {
             label="Title"
             className={classes.textField}
             value={this.state.name}
-            onChange={this.handleChange("name")}
+            onChange={this.handleChange('name')}
             margin="normal"
             variant="outlined"
           />
@@ -191,7 +191,7 @@ class TaskForm extends React.Component {
             multiline
             rows="20"
             value={this.state.Description}
-            onChange={this.handleChange("Description")}
+            onChange={this.handleChange('Description')}
             defaultValue={this.state.Description}
             className={classes.textField}
             margin="normal"
@@ -205,7 +205,7 @@ class TaskForm extends React.Component {
             rowsMax="4"
             className={classes.textField}
             value={this.state.extraNotes}
-            onChange={this.handleChange("extraNotes")}
+            onChange={this.handleChange('extraNotes')}
             margin="normal"
             variant="outlined"
           />
@@ -217,7 +217,7 @@ class TaskForm extends React.Component {
             label="Effort Level"
             className={classes.textField}
             value={this.state.effortlevel}
-            onChange={this.handleChange("effortlevel")}
+            onChange={this.handleChange('effortlevel')}
             SelectProps={{
               MenuProps: {
                 className: classes.menu
@@ -239,7 +239,7 @@ class TaskForm extends React.Component {
             label="commitment Level"
             className={classes.textField}
             value={this.state.commitmentLevel}
-            onChange={this.handleChange("commitmentLevel")}
+            onChange={this.handleChange('commitmentLevel')}
             SelectProps={{
               MenuProps: {
                 className: classes.menu
@@ -260,7 +260,7 @@ class TaskForm extends React.Component {
             label="experience Level"
             className={classes.textField}
             value={this.state.experienceLevel}
-            onChange={this.handleChange("experienceLevel")}
+            onChange={this.handleChange('experienceLevel')}
             margin="normal"
             variant="outlined"
           />
@@ -270,7 +270,7 @@ class TaskForm extends React.Component {
             label="time Required"
             className={classes.textField}
             value={this.state.timeRequired}
-            onChange={this.handleChange("timeRequired")}
+            onChange={this.handleChange('timeRequired')}
             margin="normal"
             variant="outlined"
           />
@@ -281,7 +281,7 @@ class TaskForm extends React.Component {
             label="Select"
             className={classes.textField}
             value={this.state.currency}
-            onChange={this.handleChange("currency")}
+            onChange={this.handleChange('currency')}
             SelectProps={{
               MenuProps: {
                 className: classes.menu
@@ -302,7 +302,7 @@ class TaskForm extends React.Component {
             label="monetaryComp"
             className={classes.textField}
             value={this.state.monetaryComp}
-            onChange={this.handleChange("monetaryComp")}
+            onChange={this.handleChange('monetaryComp')}
             margin="normal"
             variant="outlined"
           />
@@ -324,12 +324,12 @@ class TaskForm extends React.Component {
         </Alert> */}
         </form>
       </div>
-    );
+    )
   }
 }
 
 TaskForm.propTypes = {
   classes: PropTypes.object.isRequired
-};
+}
 
-export default withStyles(styles)(TaskForm);
+export default withStyles(styles)(TaskForm)

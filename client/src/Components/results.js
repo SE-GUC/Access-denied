@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import C from "./Card";
+import React, { Component } from 'react'
+import C from './Card'
 import {
   Jumbotron,
   ListGroup,
@@ -10,24 +10,24 @@ import {
   CardColumns,
   Tabs,
   Nav
-} from "react-bootstrap";
+} from 'react-bootstrap'
 class results extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       route: this.props.route,
       redirect: this.props.redirect
-    };
+    }
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
       route: nextProps.route
-    });
-    console.log("route");
+    })
+    console.log('route')
   }
 
   render() {
-    const cards = this.props.results;
+    const cards = this.props.results
     return (
       <CardColumns>
         {cards.map(p => {
@@ -41,11 +41,11 @@ class results extends Component {
               route={this.props.route}
               redirect={this.props.renderRedirect}
             />
-          );
-        })}{" "}
+          )
+        })}{' '}
       </CardColumns>
-    );
+    )
   }
 }
 
-export default results;
+export default results
