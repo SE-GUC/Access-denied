@@ -1,29 +1,34 @@
-const mongoose = require("mongoose");
-
+const mongoose = require('mongoose')
 const MemberSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
+
+  birthDate: Date,
+  address: {
+    city: String,
+    area: String,
+    street: String
   },
-  password: {
-    type: String,
-    required: true,
-    unique: false // TODO: Change it to non unique
-  },
+  payRate: Number,
   certification: [
     {
       name_of_certification: String,
       skills: [String],
-      name_of_certification_id: {
+      ref_of_certification: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Certification"
+        ref: 'Certification'
       }
     }
-  ]
-});
-module.exports = mongoose.model("Members", MemberSchema);
+  ],
+  calendar: [{ Date: Date, Event: String }],
+  memberSince: { type: Date, default: Date.now },
+  expiryDate: Date
+})
+// delete mongoose.connection.models['Members']
+// delete mongoose.connection.models['Member']
+let MemberModel = mongoose.model('Members', MemberSchema)
+
+// MemberModel.collection.drop()
+module.exports = MemberModel

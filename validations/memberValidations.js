@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -7,17 +7,16 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-      email: Joi.string()
-        .email()
-        .required(),
-      password: Joi.string()
-        .min(6)
-        .max(30)
-        .required(),
-      certification: Joi
-    };
 
-    return Joi.validate(request, createSchema);
+      certification: Joi,
+      calendar: Joi.array(),
+      birthDate: Joi.date().required(),
+      address: Joi,
+      payRate: Joi.number(),
+      expiryDate: Joi.date()
+    }
+
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -25,13 +24,15 @@ module.exports = {
       name: Joi.string()
         .min(3)
         .max(500),
-      email: Joi.string().email(),
-      password: Joi.string()
-        .min(6)
-        .max(30),
-      certification: Joi
-    };
 
-    return Joi.validate(request, updateSchema);
+      certification: Joi,
+      calendar: Joi.array(),
+      birthDate: Joi.date(),
+      address: Joi,
+      payRate: Joi.number(),
+      expiryDate: Joi.date()
+    }
+
+    return Joi.validate(request, updateSchema)
   }
-};
+}

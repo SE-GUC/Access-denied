@@ -1,30 +1,25 @@
-
-
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const consultancySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
+
   phoneNumber: {
     type: String,
     required: true,
     unique: true
   },
   address: {
-    type: String,
-    required: true
+    city: { type: String, required: true },
+    area: { type: String, required: true },
+    street: { type: String, required: true }
   },
   partners: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: "Partners"
+      ref: 'Partners'
     }
   ],
   boardMembers: [
@@ -48,6 +43,10 @@ const consultancySchema = new mongoose.Schema({
       date: Date
     }
   ]
-});
+})
+//delete mongoose.connection.models['ConsultancyAgencies']
+//delete mongoose.connection.models['ConsultancyAgency']
+let consultancyModel = mongoose.model('ConsultancyAgencies', consultancySchema)
 
-module.exports = mongoose.model("ConsultancyAgencies", consultancySchema);
+//consultancyModel.collection.drop()
+module.exports = consultancyModel
