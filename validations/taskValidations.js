@@ -1,4 +1,4 @@
-const Joi = require('joi')
+const Joi = require("joi");
 
 module.exports = {
   createValidation: request => {
@@ -20,18 +20,20 @@ module.exports = {
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
-      applications: Joi.object({
-        applier: Joi,
-        date: Joi.date(),
-        details: Joi,
-        applierModel: Joi
-      }),
+      applications: Joi.array().items(
+        Joi.object({
+          applier: Joi,
+          date: Joi.date(),
+          details: Joi,
+          applierModel: Joi
+        })
+      ),
       paymentMethod: Joi,
       skills: Joi.array().items(Joi.string()),
       Keywords: Joi
-    }
+    };
 
-    return Joi.validate(request, createSchema)
+    return Joi.validate(request, createSchema);
   },
 
   updateValidation: request => {
@@ -55,15 +57,17 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
-      applications: Joi.object({
-        applier: Joi,
-        date: Joi.date(),
-        details: Joi,
-        applierModel: Joi
-      }),
+      applications: Joi.array().items(
+        Joi.object({
+          applier: Joi,
+          date: Joi.date(),
+          details: Joi,
+          applierModel: Joi
+        })
+      ),
       Keywords: Joi
-    }
+    };
 
-    return Joi.validate(request, updateSchema)
+    return Joi.validate(request, updateSchema, { stripUnknown: true });
   }
-}
+};
