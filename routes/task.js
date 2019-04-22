@@ -4,22 +4,22 @@
  * @description: This file handles all CRUD operations related to the Task Entity, it uses a simplfied schema (Non-Final) to project action to a cloud based MongoDB using the Mongoose ODM. The file exports a router for all the action to a default route '/', but all the CRUD route are actually posted to '/api/task/' route
  */
 
-'use strict'
+"use strict";
 
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const Task = require('../models/task.model')
-const validator = require('../validations/taskValidations')
-const axios = require('axios')
+const Task = require("../models/task.model");
+const validator = require("../validations/taskValidations");
+const axios = require("axios");
 
-const mongoose = require('mongoose')
-const fetch = require('node-fetch')
+const mongoose = require("mongoose");
+const fetch = require("node-fetch");
 
-mongoose.set('useCreateIndex', true)
-mongoose.set('usefindandmodify', false)
+mongoose.set("useCreateIndex", true);
+mongoose.set("usefindandmodify", false);
 
-const baseURL = process.env.BASEURL || 'http://localhost:3001'
+const baseURL = process.env.BASEURL || "http://localhost:3001";
 
 /*
     POST/CREATE route for Task Entity
@@ -52,32 +52,32 @@ const baseURL = process.env.BASEURL || 'http://localhost:3001'
 // })
 // ) else "the rest of the code"
 
-router.post('/', (request, response) => {
+router.post("/", (request, response) => {
   if (!request.body) {
-    return response.status(400).send('400: Bad Request')
+    return response.status(400).send("400: Bad Request");
   }
 
-  const isValidated = validator.createValidation(request.body)
+  const isValidated = validator.createValidation(request.body);
 
   if (isValidated.error) {
     return response.status(400).send({
       error: isValidated.error.details[0].message
-    })
+    });
   }
 
   Task.create(request.body)
     .then(document => {
       if (!document || document.length === 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
 
-      response.status(201).json(document)
+      response.status(201).json(document);
     })
     .catch(error => {
-      console.log(error)
-      response.status(500).json(error)
-    })
-})
+      console.log(error);
+      response.status(500).json(error);
+    });
+});
 
 /**
  * @description Get Document in Database
@@ -85,118 +85,122 @@ router.post('/', (request, response) => {
  * @requires _id
  */
 
-router.get('/', (request, response) => {
-  let documentID = request.query.id
+router.get("/", (request, response) => {
+  let documentID = request.query.id;
 
   if (!documentID) {
     return response
       .status(400)
-      .status('400: Bad Request, no document ID is supplied')
+      .status("400: Bad Request, no document ID is supplied");
   }
 
   let key = {
     _id: documentID
-  }
+  };
 
   Task.findOne(key)
-    .populate('owner')
+    .populate("owner")
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.status(500).json(error)
-    })
-})
+      response.status(500).json(error);
+    });
+});
 
-router.get('/all', (request, response) => {
-  let key = {}
-
+router.get("/all", (request, response) => {
+  let key = {};
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter);
+    var searchKey = new RegExp(key.name, "i");
+    key.name = { $in: searchKey };
+  }
   Task.find(key)
     // .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
 
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.status(500).json(error)
-    })
-})
+      response.status(500).json(error);
+    });
+});
 
-router.get('/member', (req, res) => {
-  if (!req.query.id) return res.status(400).send('Member id is Missing')
+router.get("/member", (req, res) => {
+  if (!req.query.id) return res.status(400).send("Member id is Missing");
   Task.find({ assignee: req.query.id })
-    .populate('owner', 'name')
+    .populate("owner", "name")
     .then(document => {
       if (!document || document.length == 0) {
-        return res.status(500).json(document)
+        return res.status(500).json(document);
       }
 
-      res.json(document)
+      res.json(document);
     })
     .catch(error => {
-      res.status(500).json(error)
-    })
-})
+      res.status(500).json(error);
+    });
+});
 
-router.get('/partner', (req, res) => {
-  if (!req.query.id) return res.status(400).send('Member id is Missing')
+router.get("/partner", (req, res) => {
+  if (!req.query.id) return res.status(400).send("Member id is Missing");
   Task.find({ owner: req.query.id })
-    .populate('assignee', 'name')
+    .populate("assignee", "name")
     .then(document => {
       if (!document || document.length == 0) {
-        return res.status(500).json(document)
+        return res.status(500).json(document);
       }
 
-      res.json(document)
+      res.json(document);
     })
     .catch(error => {
-      res.status(500).json(error)
-    })
-})
-router.get('/consultancy', (req, res) => {
-  if (!req.query.id) return res.status(400).send('consultancy id is Missing')
+      res.status(500).json(error);
+    });
+});
+router.get("/consultancy", (req, res) => {
+  if (!req.query.id) return res.status(400).send("consultancy id is Missing");
   Task.find({ consultancy: req.query.id })
-    .populate('assignee', 'name')
+    .populate("assignee", "name")
     .then(document => {
       if (!document || document.length == 0) {
-        return res.status(500).json(document)
+        return res.status(500).json(document);
       }
 
-      res.json(document)
+      res.json(document);
     })
     .catch(error => {
-      res.status(500).json(error)
-    })
-})
+      res.status(500).json(error);
+    });
+});
 
-router.get('/isTaskDone', (request, response) => {
-  let reqowner = request.query.owner
-  let reqassignee = request.query.assignee
-  let reqid = request.query.taskID
+router.get("/isTaskDone", (request, response) => {
+  let reqowner = request.query.owner;
+  let reqassignee = request.query.assignee;
+  let reqid = request.query.taskID;
   if (!reqowner || !reqassignee || !reqid) {
-    return response.send()
+    return response.send();
   }
   let key = {
     owner: reqowner,
     assignee: reqassignee,
     _id: mongoose.Types.ObjectId(reqid),
     isComplete: true
-  }
+  };
   Task.findOne(key)
-    .populate('owner')
+    .populate("owner")
     .then(document => {
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.send()
-    })
-})
+      response.send();
+    });
+});
 
 /*
     PUT/UPDATE route for Task Entity
@@ -229,43 +233,44 @@ router.get('/isTaskDone', (request, response) => {
 // })
 // ) else "the rest of the code"
 
-router.put('/', (request, response) => {
-  let documentID = request.query.id
+router.put("/", (request, response) => {
+  let documentID = request.query.id;
 
   if (!documentID) {
     return response
       .status(400)
-      .status('400: Bad Request, no document ID is supplied')
+      .status("400: Bad Request, no document ID is supplied");
   }
 
-  const isValidated = validator.updateValidation(request.body)
+  const isValidated = validator.updateValidation(request.body);
 
   if (isValidated.error) {
+    console.log(isValidated.error.details[0].message);
     return response.status(400).send({
       error: isValidated.error.details[0].message
-    })
+    });
   }
 
   let key = {
     _id: documentID
-  }
+  };
 
-  let updatedDocument = request.body
+  let updatedDocument = request.body;
 
   Task.findOneAndUpdate(key, updatedDocument, {
     new: true
   })
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
 
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.status(500).json(error)
-    })
-})
+      response.status(500).json(error);
+    });
+});
 
 /**
  * @description Delete a document from Database
@@ -273,71 +278,71 @@ router.put('/', (request, response) => {
  * @returns Success/Error JSON
  */
 
-router.delete('/', (request, response) => {
-  let documentID = request.query.id
+router.delete("/", (request, response) => {
+  let documentID = request.query.id;
 
   if (!documentID) {
     return response
       .status(400)
-      .status('400: Bad Request, no document ID is supplied')
+      .status("400: Bad Request, no document ID is supplied");
   }
 
   let key = {
     _id: documentID
-  }
+  };
 
   Task.findOneAndDelete(key)
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
 
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.status(500).json(error)
-    })
-})
+      response.status(500).json(error);
+    });
+});
 
 const search = function search(skills, alltasks) {
-  let tasks = []
+  let tasks = [];
   skills.forEach(function(element) {
     alltasks.data.forEach(function(element2) {
       element2.skills.forEach(function(skill) {
         let j = tasks.find(function(ele) {
-          return element2 == ele
-        })
+          return element2 == ele;
+        });
         if (element == skill && j == null && element2.isComplete == false) {
-          tasks.push(element2)
+          tasks.push(element2);
         }
-      })
-    })
-  })
-  return tasks
-}
+      });
+    });
+  });
+  return tasks;
+};
 /**
  * @description Filter Tasks
  * @requires skills
  * @returns Filtered Document
  */
-router.get('/filterTasks', (request, response) => {
-  let skills = request.query.skills
-  let q = JSON.parse(skills)
+router.get("/filterTasks", (request, response) => {
+  let skills = request.query.skills;
+  let q = JSON.parse(skills);
   if (!q) {
-    return response.status(400).status('400: Bad Request')
+    return response.status(400).status("400: Bad Request");
   }
-  let splitted = q.skills.split(',')
+  let splitted = q.skills.split(",");
 
-  Task.find({ phase: 'Looking for Members' })
+  Task.find({ phase: "Looking for Members" })
 
     .then(alltasks => {
-      let result = search(splitted, alltasks)
-      return response.json(result)
+      let result = search(splitted, alltasks);
+      return response.json(result);
     })
     .catch(error => {
-      return response.send(error.response.data)
-    })
-})
+      return response.send(error.response.data);
+    });
+});
 
 /**
  * @description Update Task Status to be done
@@ -345,18 +350,18 @@ router.get('/filterTasks', (request, response) => {
  * @returns Updated Document
  */
 
-router.put('/:id/done', (request, response) => {
-  let documentID = request.params.id
+router.put("/:id/done", (request, response) => {
+  let documentID = request.params.id;
 
   if (!documentID) {
     return response
       .status(400)
-      .status('400: Bad Request, no document ID is supplied')
+      .status("400: Bad Request, no document ID is supplied");
   }
 
   let key = {
     _id: documentID
-  }
+  };
 
   Task.findOneAndUpdate(
     key,
@@ -369,19 +374,19 @@ router.put('/:id/done', (request, response) => {
   )
     .then(document => {
       if (!document || document.length == 0) {
-        return response.status(500).json(document)
+        return response.status(500).json(document);
       }
 
-      response.json(document)
+      response.json(document);
     })
     .catch(error => {
-      response.status(500).json(error)
-    })
-})
+      response.status(500).json(error);
+    });
+});
 //additional tasks
-router.put('/phase', (req, res) => {
+router.put("/phase", (req, res) => {
   if (!req.query.id || !req.body.phase) {
-    res.status(400).send('Body is Missing')
+    res.status(400).send("Body is Missing");
   }
   Task.findByIdAndUpdate(
     req.query.id,
@@ -391,35 +396,35 @@ router.put('/phase', (req, res) => {
     }
   )
     .then(doc => {
-      if (!doc || doc.length === 0) return res.status(500).send(doc)
-      res.json(doc)
+      if (!doc || doc.length === 0) return res.status(500).send(doc);
+      res.json(doc);
     })
-    .catch(err => res.status(500).send(err))
-})
-router.put('/memberApplies', (req, res) => {
+    .catch(err => res.status(500).send(err));
+});
+router.put("/memberApplies", (req, res) => {
   if (!req.query.id) {
-    return res.status(400).send('Error')
+    return res.status(400).send("Error");
   }
-  const isValidated = validator.updateValidation(req.body)
+  const isValidated = validator.updateValidation(req.body);
   if (isValidated.error) {
-    console.log('err')
+    console.log("err");
     return res.status(400).send({
       error: isValidated.error.details[0].message
-    })
+    });
   }
 
-  let verify = req.app.get('verifyToken')
-  let ver = verify(req.body.applications.applier)
+  let verify = req.app.get("verifyToken");
+  let ver = verify(req.body.applications.applier);
 
-  if (!ver) return res.status(500).send('Error')
+  if (!ver) return res.status(500).send("Error");
 
   Task.findOneAndUpdate(
     {
       _id: req.query.id,
-      phase: 'Looking for Members'
+      phase: "Looking for Members"
     },
     Task.update(
-      { _id: 'req.query.id' },
+      { _id: "req.query.id" },
       {
         $push: {
           applications: {
@@ -435,36 +440,36 @@ router.put('/memberApplies', (req, res) => {
     }
   )
     .then(doc => {
-      res.status(200).json(doc)
+      res.status(200).json(doc);
     })
     .catch(err => {
-      console.log(err)
-      res.status(500).json(err)
-    })
-})
+      console.log(err);
+      res.status(500).json(err);
+    });
+});
 
-router.put('/chooseAssignee', (req, res) => {
+router.put("/chooseAssignee", (req, res) => {
   if (!req.query.id) {
-    return res.status(400).send('Task id is missing.')
+    return res.status(400).send("Task id is missing.");
   }
-  const isValidated = validator.updateValidation(req.body)
+  const isValidated = validator.updateValidation(req.body);
   if (isValidated.error) {
-    return res.send()
+    return res.send();
   }
   let key = {
     _id: req.query.id
-  }
+  };
   Task.find(key)
     .then(document => {
       if (!document || document.length == 0) {
-        console.log('error1')
-        return res.send()
+        console.log("error1");
+        return res.send();
       }
-      let s = document[0].applications
+      let s = document[0].applications;
       let result = s.find(function(element) {
-        console.log(element.details)
-        return element.applier == req.body.assignee
-      })
+        console.log(element.details);
+        return element.applier == req.body.assignee;
+      });
       if (result != null) {
         Task.findOneAndUpdate(
           {
@@ -476,64 +481,60 @@ router.put('/chooseAssignee', (req, res) => {
           }
         )
           .then(doc => {
-            res.status(201).send(doc)
+            res.status(201).send(doc);
           })
           .catch(err => {
-            console.log('err')
-            res.send()
-          })
+            console.log("err");
+            res.send();
+          });
       } else {
-        console.log('notfound')
-        res.send()
+        console.log("notfound");
+        res.send();
       }
     })
     .catch(err => {
-      console.log('errfinal')
-      res.send()
-    })
-})
+      console.log("errfinal");
+      res.send();
+    });
+});
 
-router.post('/browse', (req, res) => {
-  if (!req.body.token) return res.status(400).send('Body is Missing')
-  let verify = req.app.get('verifyToken')
-  let data = verify(req.body.token)
-  if (!data) return res.status(500).send('Error')
-  let tasks = ''
-  if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
-    return res.status(400).send('Not Allowed to Browse')
+router.post("/browse", (req, res) => {
+  if (!req.body.token) return res.status(400).send("Body is Missing");
+  let verify = req.app.get("verifyToken");
+  let data = verify(req.body.token);
+  if (!data) return res.status(500).send("Error");
+  let tasks = "";
+  if (data.type !== "Members" && data.type !== "ConsultancyAgencies")
+    return res.status(400).send("Not Allowed to Browse");
   Task.find({ phase: `Looking for ${data.type}` })
     .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
-})
-router.get('/mytasks', (req, res) => {
-  var token = req.get('token');
-  if (!token)
-    return res.status(400).send('Body is Missing')
+    .catch(err => res.status(500).send(err));
+});
+router.get("/mytasks", (req, res) => {
+  var token = req.get("token");
+  if (!token) return res.status(400).send("Body is Missing");
 
-  let verify = req.app.get('verifyToken')
-  let data = verify(token)
-  console.log("DATA "+data)
-  if (!data) 
-    return res.status(500).send('Error')
-  
-  if (data.type !== 'Members' && data.type !== 'ConsultancyAgencies')
-    return res.status(400).send('Not Allowed to view tasks')
+  let verify = req.app.get("verifyToken");
+  let data = verify(token);
+  console.log("DATA " + data);
+  if (!data) return res.status(500).send("Error");
 
-  if (data.type == 'Members')
-  {
-  Task.find({ phase:'Awaiting approval'} && {assignee: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
+  if (data.type !== "Members" && data.type !== "ConsultancyAgencies")
+    return res.status(400).send("Not Allowed to view tasks");
+
+  if (data.type == "Members") {
+    Task.find({ phase: "Awaiting approval" } && { assignee: `${data.profile}` })
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err));
+  } else if (data.type == "ConsultancyAgencie") {
+    Task.find(
+      { phase: "Awaiting approval" } && { consultancy: `${data.profile}` }
+    )
+      .then(doc => res.json(doc))
+      .catch(err => res.status(500).send(err));
   }
-  else if (data.type == 'ConsultancyAgencie')
-  {
-  Task.find({ phase:'Awaiting approval'} && {consultancy: `${data.profile}` })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(500).send(err))
-  }
-
-})
+});
 module.exports = {
   router: router,
   searchTasksBySkills: search
-}
+};
