@@ -51,6 +51,16 @@ router.post('/', (request, response) => {
     })
 })
 
+/*
+    GET/READ route for Task Entity
+    Either Get all the documents related to the Task Entity, or can be specified to fetch a certain document using 
+*/
+
+/**
+ * @description Get Document in Database
+ * @returns Success/Error JSON
+ * @requires _id
+ */
 
 router.get('/', (request, response) => {
   let documentID = request.query.id
@@ -79,13 +89,14 @@ router.get('/', (request, response) => {
 
 router.get('/all', (request, response) => {
   let key = {}
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.route, 'i')
+    key.route = { $in: searchKey }
+  }
 
   Request.find(key)
     .then(document => {
-      if (!document || document.length == 0) {
-        return response.status(500).json(document)
-      }
-
       response.json(document)
     })
     .catch(error => {
@@ -110,25 +121,23 @@ router.put('/', (request, response) => {
     })
   }
 
-  let key = {
-    _id: documentID
-  }
-
   let updatedDocument = request.body
-
-  Request.findOneAndUpdate(key, updatedDocument, {
-    new: true
-  })
-    .then(document => {
-      if (!document || document.length == 0) {
-        return response.status(500).json(document)
-      }
-
-      response.json(document)
-    })
-    .catch(error => {
-      response.status(500).json(error)
-    })
+  switch (updatedDocument.type) {
+    case 'PUT':
+      axios.put(baseURL + updatedDocument.route, updatedDocument.body)
+      break
+    case 'POST':
+      axios.post(baseURL + updatedDocument.route, updatedDocument.body)
+      break
+    case 'DELETE':
+      axios.delete(baseURL + updatedDocument.route, updatedDocument.body)
+      break
+    default:
+      response.status(400).send('Bad Request')
+  }
+  Request.findByIdAndDelete(documentID)
+    .then(doc => response.json('Done'))
+    .catch(err => response.status(500).send('error'))
 })
 
 router.delete('/', (request, response) => {
