@@ -5,12 +5,14 @@ import "../App.css";
 import profile from "../Images/profile.png";
 import profileBG from "../Images/profile-header.png";
 import Button from "@material-ui/core/Button";
-import { Redirect } from "react-router-dom";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import TextField from "@material-ui/core/TextField";
+import NewCertification from "../Components/newCertificate"
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
 const axios = require("axios");
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && !isNaN(n - 0);
@@ -36,13 +38,20 @@ class Edu extends Component {
       newData: null,
       city: null,
       area: null,
-      street: null
+      street: null,
+      createCertificate:false
     };
   }
   handleClickOpen = name => event => {
     this.setState({
       open: true,
       dialogText: name
+    });
+  };
+  createCertificate = () => {
+    this.setState({
+      createCertificate: true,
+      activeId: "6"
     });
   };
 
@@ -449,7 +458,7 @@ class Edu extends Component {
               Training Programs
             </li>
           </ul>
-          {(function(state) {
+          {(function(state,thisCopy) {
             switch (state.activeId) {
               case "1":
                 if (!state.loaded)
@@ -499,9 +508,23 @@ class Edu extends Component {
                 if (!state.certificates || state.certificates.length === 0)
                   return <h4 className="text-muted">No Certificates Yet..</h4>;
                 return (
+                  <div>
+                  <Fab
+                    color="primary"
+                    aria-label="Add"
+                    onClick={thisCopy.createCertificate}
+                    style={{
+                      position: 'absolute',
+                      bottom:400,
+                      left:1420,
+                    }}
+                  >
+                    <AddIcon />
+                  </Fab>
                   <ul className="list-group" style={{ width: "100%" }}>
                     {state.certificates}
                   </ul>
+                </div>
                 );
               case "4":
                 if (!state.loaded)
@@ -544,10 +567,14 @@ class Edu extends Component {
                     {state.trainingPrograms}
                   </ul>
                 );
+                case "6":
+                if (state.createCertificate) return <NewCertification />;
+
+                break;
               default:
                 break;
             }
-          })(this.state)}
+          })(this.state,this)}
         </div>
       </div>
     );
