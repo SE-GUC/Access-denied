@@ -5,18 +5,19 @@ import {
   Col,
   Jumbotron,
   Card,
-  ListGroup,
-  ListGroupItem
+  ListGroup
 } from 'react-bootstrap'
 
 import { Link } from 'react-router-dom'
+
+import axios from 'axios'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '../App.css'
 
 const listStyle = {
   height: 'auto',
-  maxHeight: '200px',
+  maxHeight: '350px',
   overflowX: 'hidden'
 }
 
@@ -24,10 +25,20 @@ class ProjectLanding extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      projectList: []
+    }
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    fetch('/api/project/')
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        projectList: data
+      })
+    })
+  }
 
   render() {
     return (
@@ -60,8 +71,7 @@ class ProjectLanding extends Component {
                 </Card.Subtitle>
 
                 <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
+                  Discover Infinte Potential within the projects that are hosted on Lirten Hub
                 </Card.Text>
 
                 <hr
@@ -74,25 +84,24 @@ class ProjectLanding extends Component {
               </Card.Body>
 
               <ListGroup className="list-group-flush" style={listStyle}>
-                <ListGroupItem>
-                  Eu Lorem velit laborum proident culpa aliqua non. Est commodo
-                  non eu cillum occaecat. Consequat ad elit exercitation cillum
-                  amet ex aliqua magna enim cupidatat ut magna in. Anim veniam
-                  do pariatur amet ex. Lorem fugiat in ut eiusmod. Irure
-                  adipisicing irure amet velit est in duis. Cupidatat dolor
-                  exercitation consequat eu ut qui sunt est fugiat magna veniam
-                  officia sint.
-                </ListGroupItem>
-                <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
-                <ListGroupItem>Vestibulum at eros</ListGroupItem>
+                {this.state.projectList.map(value => {
+                  return (
+                    <ListGroup.Item>
+                     <Link to={`/project/${value._id}`} > 
+                     <h3>
+                          <span style={{fontWeight: 'bold', fontStyle: 'italic',}}>
+                          {value.title}
+                          </span>
+                      </h3>
+                      </Link>
+                      <h5 style={{marginBottom: '20px'}}>Owner: {value.owner.name}</h5>
+                      <br />
+                      <p>About The Project: {value.description}</p>
+                      <br />
+                      <br />
+                    </ListGroup.Item>
+                  )
+                })}
               </ListGroup>
             </Card>
           </Row>

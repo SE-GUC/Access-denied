@@ -81,7 +81,7 @@ class Footer extends Component {
                     <form className="form-footer my-3">
                       <input
                         type="text"
-                        placeholder="search here...."
+                        placeholder="Enter Your Email"
                         name="search"
                         disabled
                       />
