@@ -1,3 +1,4 @@
+
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Certificate from "./Screens/Certificate";
@@ -33,6 +34,7 @@ import CertAccept from "./Screens/CertAccept";
 import ProjectLanding from "./Screens/ProjectLanding";
 import Project from "./Screens/Project"
 import Footer from "./Components/Footer";
+import allcert from './Screens/Allcertificate';
 
 class App extends Component {
   constructor(props) {
@@ -104,12 +106,14 @@ class App extends Component {
               <Route path="/admin/" component={Admin} />
               <Route exact path="/Project" component={ProjectLanding} />
               <Route exact path="/Project/:id" component={Project} />
+              <Route path="/allcertificates/"  component={allcert}/>
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
-          <Footer />
+          <Footer/>
         </Router>
       </AppProvider>
+      
     )
   }
 }
