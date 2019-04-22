@@ -506,11 +506,12 @@ router.post('/browse', (req, res) => {
     .catch(err => res.status(500).send(err))
 })
 router.get('/mytasks', (req, res) => {
-  if (!req.body.token) 
+  var token = req.get('token');
+  if (!token)
     return res.status(400).send('Body is Missing')
 
   let verify = req.app.get('verifyToken')
-  let data = verify(req.body.token)
+  let data = verify(token)
   console.log("DATA "+data)
   if (!data) 
     return res.status(500).send('Error')
