@@ -3,11 +3,11 @@ const Joi = require('joi')
 module.exports = {
   createValidation: request => {
     const createSchema = {
-      name: Joi.string()
+      name : Joi.string()
         .min(3)
         .max(500)
         .required(),
-
+    
       Evaluation_procedure: Joi.string().required(),
       skills: Joi,
       Fees: Joi.number(),
@@ -22,7 +22,7 @@ module.exports = {
 
   updateValidation: request => {
     const updateSchema = {
-      name: Joi.string()
+      name : Joi.string()
         .min(3)
         .max(500),
       Evaluation_procedure: Joi.string(),
