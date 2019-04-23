@@ -114,15 +114,17 @@ class Certificate extends Component {
   checkapplied() {
     if (this.state.certificate) {
       if (this.state.certificate.membersapplied && !this.state.applied) {
-        if (this.state.certificate.membersapplied.indexOf(this.state.id) >= 0) {
-          this.setState({
-            applied: true,
-            button: {
-              btnclass: 'btn btn-success btn-lg',
-              text: 'Applied'
-            }
-          })
-        }
+        this.state.certificate.membersapplied.forEach(applicant => {
+          if (applicant._id === this.state.id) {
+            this.setState({
+              applied: true,
+              button: {
+                btnclass: 'btn btn-success btn-lg',
+                text: 'Applied'
+              }
+            })
+          }
+        })
       }
     }
   }
