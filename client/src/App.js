@@ -36,6 +36,7 @@ import Footer from './Components/Footer'
 import allcert from './Screens/Allcertificate'
 import ConsultancyAgency from './Screens/ConsultancyAgency'
 import TaskLanding from './Screens/TaskLanding'
+import NewCert from './Components/NewCert'
 
 class App extends Component {
   constructor(props) {
@@ -113,6 +114,7 @@ class App extends Component {
               <Route exact path="/Project/:id" component={Project} />
               <Route path="/allcertificates/" component={allcert} />
               <Route exact path="/task/" component={TaskLanding} />
+              <Route path="/newcert" component={NewCert} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
