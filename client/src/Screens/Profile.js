@@ -63,6 +63,7 @@ class Profile extends Component {
         case 'Partners':
           return (
             <Partner
+              {...this.props}
               verified={true}
               id={this.state.id}
               email={this.state.email}
@@ -81,6 +82,7 @@ class Profile extends Component {
         case 'EducationalOrganisation':
           return (
             <EduOrganization
+              {...this.props}
               verified={true}
               id={this.state.id}
               email={this.state.email}
