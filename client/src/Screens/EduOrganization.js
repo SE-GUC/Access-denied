@@ -385,6 +385,24 @@ class Edu extends Component {
               </div>
             </div>
           </div>
+          <div>
+            <Button
+              style={{
+                position: 'absolute',
+                top: '25%',
+                right: '7%',
+                backgroundColor: '#232c5d',
+                color: 'white'
+              }}
+              className="float-right"
+              variant="outlined"
+              size="small"
+              hidden={!this.state.verified}
+              onClick={() => this.props.history.push('/newcert')}
+            >
+              Create New Certificate
+            </Button>
+          </div>
           <div
             className="p-2 flex-grow-1 d-flex flex-row"
             style={{
