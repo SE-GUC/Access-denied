@@ -71,7 +71,7 @@ class ProjectLanding extends Component {
                 </Card.Subtitle>
 
                 <Card.Text>
-                  Discover Infinte Potential within the projects that are hosted
+                  Discover Infinite Potential within the projects that are hosted
                   on Lirten Hub
                 </Card.Text>
 

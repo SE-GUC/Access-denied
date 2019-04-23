@@ -34,7 +34,11 @@ import ProjectLanding from './Screens/ProjectLanding'
 import Project from './Screens/Project'
 import Footer from './Components/Footer'
 import allcert from './Screens/Allcertificate'
+<<<<<<< HEAD
 import ConsultancyAgency from './Screens/ConsultancyAgency'
+=======
+import TaskLanding from './Screens/TaskLanding'
+>>>>>>> 015464d11d2fc330841bdb346ccab2739c7d1de3
 
 class App extends Component {
   constructor(props) {
@@ -111,6 +115,7 @@ class App extends Component {
               <Route exact path="/Project" component={ProjectLanding} />
               <Route exact path="/Project/:id" component={Project} />
               <Route path="/allcertificates/" component={allcert} />
+              <Route exact path="/task/" component={TaskLanding} />
             </Switch>
             <Chat handleNotification={this.handleNotification} />
           </div>
