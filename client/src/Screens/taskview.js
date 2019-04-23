@@ -67,6 +67,7 @@ class taskview extends Component {
       });
       // console.log(this.state.consu)
       //   console.log(this.state.name)
+      
       this.setState({
         task: q.data,
         name: q.data.name,
@@ -119,7 +120,7 @@ class taskview extends Component {
         </paper>
       );
     }
-    const members=this.state.appliedmembers;
+
 
     return (
       <div>

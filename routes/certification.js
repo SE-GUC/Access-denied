@@ -147,12 +147,14 @@ router.get("/", (req, res) => {
     .findById(req.query.id)
     .populate("schedule")
     .populate("eduorganization")
+    .populate("membersapplied","name")
     .then(doc => {
       res.json(doc);
     })
     .catch(err => {
       res.status(500).json(err);
     });
+  
 });
 
 router.post("/offlineEvaluation/", (req, res) => {
@@ -315,6 +317,7 @@ router.put("/chooseApplicant", (req, res) => {
   let key = {
     _id: req.query.id
   };
+
   certificationModel
     .find(key)
     .then(document => {

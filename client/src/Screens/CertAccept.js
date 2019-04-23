@@ -75,7 +75,7 @@ class CertAccept extends Component {
 
     handleListItemClick(event) {
       let info={
-        membersapplied:event.currentTarget.textContent}
+        membersapplied:event.currentTarget.id}
       let certificateId = query.parse(this.props.location.search, {
         ignoreQueryPrefix: true
       }).id;
@@ -175,9 +175,9 @@ class CertAccept extends Component {
           return(
           <ListItem
             button
-            onClick={this.handleListItemClick.bind(this)}
+            id={m._id} onClick={this.handleListItemClick.bind(this)}
           >
-         <ListItemText primary={m} />
+         <ListItemText primary={m.name} />
           </ListItem>
          ) })}
         </List>
