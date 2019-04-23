@@ -71,24 +71,26 @@ class CertAccept extends Component {
     }
   }
 
-  handleListItemClick(event) {
-    let info = {
-      membersapplied: event.currentTarget.textContent
-    }
-    let certificateId = query.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).id
-    fetch(`/api/EducationalOrganisation/chooseApplicant?id=` + certificateId, {
-      method: 'PUT',
-      body: JSON.stringify(info),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(json => console.log(json))
-    this.setState({ redirect: true })
-  }
+
+    handleListItemClick(event) {
+      let info={
+        membersapplied:event.currentTarget.id}
+      let certificateId = query.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).id;
+      fetch(`/api/EducationalOrganisation/chooseApplicant?id=` + certificateId, {
+        method: "PUT",
+        body: JSON.stringify(info),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => res.json())
+        .then(json => console.log(json));
+        this.setState({ redirect: true })
+    };
+
+
 
   render() {
     while (this.state.certificate == null) {
@@ -164,21 +166,22 @@ class CertAccept extends Component {
             Applied Members
           </Typographyhead>
 
-          <div>
-            <List component="nav">
-              {members.map(m => {
-                return (
-                  <ListItem
-                    button
-                    onClick={this.handleListItemClick.bind(this)}
-                  >
-                    <ListItemText primary={m} />
-                  </ListItem>
-                )
-              })}
-            </List>
-            <Divider />
-          </div>
+       
+             <div >
+        <List component="nav">
+        {members.map(m=>{
+          return(
+          <ListItem
+            button
+            id={m._id} onClick={this.handleListItemClick.bind(this)}
+          >
+         <ListItemText primary={m.name} />
+          </ListItem>
+         ) })}
+        </List>
+        <Divider />
+      </div>
+
         </Card>
       </div>
     )
