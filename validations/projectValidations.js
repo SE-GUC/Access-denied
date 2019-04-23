@@ -3,11 +3,8 @@ const Joi = require('joi')
 module.exports = {
   createValidation: request => {
     const createSchema = {
-      title: Joi
-        .string()
-        .required(),
-      description: Joi
-        .string()
+      title: Joi.string().required(),
+      description: Joi.string()
         .required()
         .min(20),
       owner: Joi.required(),
@@ -19,11 +16,8 @@ module.exports = {
 
   updateInformationValidation: request => {
     const updateInfoSchema = {
-      title: Joi
-        .string(),
-      description: Joi
-        .string()
-        .min(20),
+      title: Joi.string(),
+      description: Joi.string().min(20),
       owner: Joi,
       date: Joi.date()
     }

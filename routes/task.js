@@ -119,7 +119,7 @@ router.get('/all', (request, response) => {
     key.name = { $in: searchKey }
   }
   Task.find(key)
-    // .populate('owner')
+    .populate('owner')
     .then(document => {
       if (!document || document.length == 0) {
         return response.status(500).json(document)
