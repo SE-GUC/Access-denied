@@ -180,6 +180,7 @@ class NavBar extends Component {
     this.setState({ open: false })
   }
   handleDrawerClick = event => {
+    console.log(event.currentTarget.dataset.id)
     let currentState = this.state
     currentState.anchorEl = event.currentTarget
     if (event.currentTarget.dataset.id === '1') {
@@ -198,7 +199,7 @@ class NavBar extends Component {
       currentState.redirectTarget = '/signup'
       currentState.anchorEl = null
       currentState.open = false
-    } else if (event.currentTarget.dataset.id === '5') {
+    } else if (event.currentTarget.dataset.id === '7') {
       currentState.redirect = true
       currentState.redirectTarget = '/logout'
       currentState.anchorEl = null
@@ -208,13 +209,30 @@ class NavBar extends Component {
       currentState.redirectTarget = '/About'
       currentState.anchorEl = null
       currentState.open = false
+    } else if (event.currentTarget.dataset.id === '5') {
+      currentState.redirect = true
+      currentState.redirectTarget = '/allcertificates'
+      currentState.anchorEl = null
+      currentState.open = false
+    } else if (event.currentTarget.dataset.id === '6') {
+      currentState.redirect = true
+      currentState.redirectTarget = '/project'
+      currentState.anchorEl = null
+      currentState.open = false
     }
     this.setState(currentState)
   }
   render() {
     const { classes, theme } = this.props
     const { anchorEl } = this.state
-    const drawerList = ['Profile', 'Login', 'Register', 'About Us']
+    const drawerList = [
+      'Profile',
+      'Login',
+      'Register',
+      'About Us',
+      'Certificates',
+      'Projects'
+    ]
     return (
       <div className={classes.root}>
         {this.renderRedirect()}

@@ -8,9 +8,14 @@ import {
 } from '../Components/Admin/Certificates'
 import { Tasks, TasksEdit } from '../Components/Admin/Tasks'
 import { Requests, RequestsEdit } from '../Components/Admin/Requests'
-
+import Notify from '../Components/Admin/Notify'
+import AuthProvider from '../Components/Admin/AuthProvider'
 const App = () => (
-  <Admin dataProvider={Dataprovider}>
+  <Admin
+    dashboard={Notify}
+    authProvider={AuthProvider}
+    dataProvider={Dataprovider}
+  >
     <Resource name="user" list={Users} edit={UsersEdit} />
     <Resource
       name="certification"

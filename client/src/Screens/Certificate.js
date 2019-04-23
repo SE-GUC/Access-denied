@@ -138,8 +138,8 @@ class Certificate extends Component {
           <span className="sr-only">Loading...</span>
         </div>
       </div>
-    ) : !this.state.certificate ? (
-      <Redirect to="/" />
+    ) : !this.state.certificate || !localStorage.getItem('token') ? (
+      <Redirect to="/login" />
     ) : (
       <div>
         <AppConsumer>
