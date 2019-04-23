@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -12,16 +12,16 @@ module.exports = {
         .required(),
       type: Joi.string()
         .valid(
-          "Members",
-          "ConsultancyAgencies",
-          "Partners",
-          "CoworkingSpaces",
-          "EducationalOrganisation"
+          'Members',
+          'ConsultancyAgencies',
+          'Partners',
+          'CoworkingSpaces',
+          'EducationalOrganisation'
         )
         .required()
-    };
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -31,14 +31,14 @@ module.exports = {
         .min(6)
         .max(30),
       type: Joi.string().valid(
-        "Members",
-        "ConsultancyAgencies",
-        "Partners",
-        "CoworkingSpaces",
-        "EducationalOrganisation"
+        'Members',
+        'ConsultancyAgencies',
+        'Partners',
+        'CoworkingSpaces',
+        'EducationalOrganisation'
       )
-    };
+    }
 
-    return Joi.validate(request, updateSchema, { stripUnknown: true });
+    return Joi.validate(request, updateSchema, { stripUnknown: true })
   }
-};
+}

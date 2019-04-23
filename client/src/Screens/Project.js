@@ -139,7 +139,7 @@ class Project extends Component {
 
             <br />
 
-            <Row style={{width: '100%'}}>{renderTasks}</Row>
+            <Row style={{ width: '100%' }}>{renderTasks}</Row>
           </Col>
         </Row>
       </Container>

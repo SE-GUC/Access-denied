@@ -336,12 +336,11 @@ router.put('/chooseApplicant', (req, res) => {
               {
                 $push: {
                   membersaccepted: memberID
+                },
+                $pull: {
+                  membersapplied: memberID
                 }
-              ,
-              $pull:{
-                membersapplied: memberID
               }
-            }
             ),
             {
               new: true
