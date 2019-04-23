@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import { Form, Button, Jumbotron, Container } from "react-bootstrap";
-import "./Form.css";
+import React, { Component } from 'react'
+import { Form, Button, Jumbotron, Container } from 'react-bootstrap'
+import './Form.css'
 
 class PartnerForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      telephoneNumber: "",
-      fieldOfWork: ""
-    };
+      name: '',
+      email: '',
+      password: '',
+      telephoneNumber: '',
+      fieldOfWork: ''
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
@@ -28,32 +28,32 @@ class PartnerForm extends React.Component {
       password: this.state.password,
       field_of_work: this.state.fieldOfWork,
       Telephone_number: this.state.telephoneNumber,
-      type: "Partners"
-    };
+      type: 'Partners'
+    }
 
     fetch(`/api/user`, {
       //
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(part),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
-        if (json === "Error") {
-          alert("you are already registered");
+        console.log(json)
+        if (json === 'Error') {
+          alert('you are already registered')
         } else {
-          alert("success!");
+          alert('success!')
         }
       })
       .catch(err => {
-        console.log(err);
-        alert("something went wrong");
-      });
+        console.log(err)
+        alert('something went wrong')
+      })
 
-    event.preventDefault();
+    event.preventDefault()
   }
 
   render() {
@@ -162,8 +162,8 @@ class PartnerForm extends React.Component {
           </Button>
         </form>
       </div>
-    );
+    )
   }
 }
 
-export default PartnerForm;
+export default PartnerForm

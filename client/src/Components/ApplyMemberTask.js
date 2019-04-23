@@ -1,54 +1,54 @@
-import React, { Component } from "react";
-import "../Screens/ApplyOnTask.css";
-import { Redirect } from "react-router-dom";
-import { Card, Button } from "react-bootstrap";
-import query from "query-string";
+import React, { Component } from 'react'
+import '../Screens/ApplyOnTask.css'
+import { Redirect } from 'react-router-dom'
+import { Card, Button } from 'react-bootstrap'
+import query from 'query-string'
 
 class ApplyMemberTask extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      qualification: "",
+      qualification: '',
       taskID: props.taskID,
       tokenchild: props.tokenchild,
       redirect: false
-    };
+    }
   }
   handleChange(event) {
-    console.log(this.state.taskID);
-    this.setState({ qualification: event.target.value });
+    console.log(this.state.taskID)
+    this.setState({ qualification: event.target.value })
   }
   handleSubmit(event) {
     let info = {
       applications: {
         applier: this.state.tokenchild,
         details: this.state.qualification,
-        applierModel: "Members"
+        applierModel: 'Members'
       }
-    };
+    }
     fetch(`/api/task/memberApplies?id=` + this.state.taskID, {
-      method: "PUT",
+      method: 'PUT',
       body: JSON.stringify(info),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
-      .then(json => console.log(json));
-    event.preventDefault();
-    this.setState({ redirect: true });
+      .then(json => console.log(json))
+    event.preventDefault()
+    this.setState({ redirect: true })
   }
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to="/Home" />;
+      return <Redirect to="/Home" />
     }
-  };
+  }
   enableButton() {
-    let f = this.state.qualification.trim();
+    let f = this.state.qualification.trim()
     if (f.length === 0) {
-      return true;
+      return true
     } else {
-      return false;
+      return false
     }
   }
 
@@ -70,7 +70,7 @@ class ApplyMemberTask extends React.Component {
                 id="plan"
                 onChange={this.handleChange.bind(this)}
               >
-                {" "}
+                {' '}
               </textarea>
             </div>
           </form>
@@ -82,11 +82,11 @@ class ApplyMemberTask extends React.Component {
             className="buttonSubmit"
             variant="link"
           >
-            Apply{" "}
+            Apply{' '}
           </Button>
         </Card.Body>
       </Card>
-    );
+    )
   }
 }
-export default ApplyMemberTask;
+export default ApplyMemberTask

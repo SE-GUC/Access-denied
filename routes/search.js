@@ -26,13 +26,23 @@ const searchNames = list => {
   models.push(mongoose.models.EducationalOrganisation)
   regex = list.map(e => new RegExp(e, 'i'))
   return Promise.all(
-    models.map(model =>
-      model.find({
-        name: {
-          $in: regex
-        }
-      })
-    )
+    models.map(model => {
+      if (models.indexOf(model) === 1) {
+        return model
+          .find({
+            name: {
+              $in: regex
+            }
+          })
+          .populate('skills')
+      } else {
+        return model.find({
+          name: {
+            $in: regex
+          }
+        })
+      }
+    })
   )
 }
 

@@ -156,10 +156,14 @@ router.get('/all', (_request, response) => {
     .find(key)
     .select('-password')
     .then(document => {
+      document = document.map(doc => {
+        doc = JSON.stringify(doc).replace('_id', 'id')
+        return JSON.parse(doc)
+      })
       if (!document || document.length == 0) {
         return response.status(500).json(document)
       }
-
+      response.setHeader('X-Total-Count', '2')
       response.json(document)
     })
     .catch(error => {

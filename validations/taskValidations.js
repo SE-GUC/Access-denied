@@ -20,16 +20,18 @@ module.exports = {
       experienceLevel: Joi.number(),
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
-
+      applications: Joi.array().items(
+        Joi.object({
+          applier: Joi,
+          date: Joi.date(),
+          details: Joi,
+          applierModel: Joi
+        })
+      ),
       paymentMethod: Joi,
       skills: Joi.array().items(Joi.string()),
-      applications: Joi.object({
-        applier: Joi,
-        date: Joi.date(),
-        details: Joi,
-        applierModel: Joi
-      }),
-      Keywords: Joi
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
     return Joi.validate(request, createSchema)
@@ -48,7 +50,6 @@ module.exports = {
         .min(3)
         .max(500),
       isComplete: Joi.boolean(),
-
       paymentMethod: Joi,
       date: Joi.date(),
       effortLevel: Joi.number().max(10),
@@ -57,15 +58,18 @@ module.exports = {
       timeRequired: Joi.number(),
       monetaryComp: Joi.number(),
       skills: Joi.array().items(Joi.string()),
-      applications: Joi.object({
-        applier: Joi,
-        date: Joi.date(),
-        details: Joi,
-        applierModel: Joi
-      }),
-      Keywords: Joi
+      applications: Joi.array().items(
+        Joi.object({
+          applier: Joi,
+          date: Joi.date(),
+          details: Joi,
+          applierModel: Joi
+        })
+      ),
+      Keywords: Joi,
+      phase: Joi.string()
     }
 
-    return Joi.validate(request, updateSchema)
+    return Joi.validate(request, updateSchema, { stripUnknown: true })
   }
 }

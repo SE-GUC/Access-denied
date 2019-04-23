@@ -39,6 +39,6 @@ module.exports = {
       )
     }
 
-    return Joi.validate(request, updateSchema)
+    return Joi.validate(request, updateSchema, { stripUnknown: true })
   }
 }

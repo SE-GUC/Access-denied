@@ -6,7 +6,8 @@ module.exports = {
       name: Joi.string()
         .min(3)
         .max(500)
-        .required()
+        .required(),
+      icon: Joi.string()
     }
 
     return Joi.validate(request, createSchema)
@@ -17,7 +18,8 @@ module.exports = {
       name: Joi.string()
         .min(3)
         .max(500)
-        .required()
+        .required(),
+      icon: Joi.string()
     }
 
     return Joi.validate(request, updateSchema)

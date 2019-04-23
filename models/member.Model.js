@@ -25,6 +25,7 @@ const MemberSchema = new mongoose.Schema({
   calendar: [{ Date: Date, Event: String }],
   memberSince: { type: Date, default: Date.now },
   expiryDate: Date
+  // ,skills: [{type: mongoose.Schema.Types.ObjectId, ref:"Skills"}]
 })
 // delete mongoose.connection.models['Members']
 // delete mongoose.connection.models['Member']

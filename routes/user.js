@@ -6,6 +6,32 @@ const axios = require('axios')
 const _ = require('lodash')
 const baseURL = process.env.BASEURL || 'http://localhost:3000'
 var util = require('util')
+
+router.get('/all', (request, response) => {
+  let key = {}
+  if (request.query.filter) {
+    key = JSON.parse(request.query.filter)
+    var searchKey = new RegExp(key.email, 'i')
+    key.email = { $in: searchKey }
+  }
+  User.find(key)
+    .select('-password')
+    .then(document => {
+      document = document.map(doc => {
+        doc = JSON.stringify(doc).replace('_id', 'id')
+        return JSON.parse(doc)
+      })
+      if (!document || document.length == 0) {
+        return response.status(500).json(document)
+      }
+      response.setHeader('X-Total-Count', '2')
+      response.json(document)
+    })
+    .catch(error => {
+      response.status(500).json(error)
+    })
+})
+
 router.post('/', (req, res) => {
   const isValidated = validator.createValidation(
     _.pick(req.body, ['email', 'password', 'type', 'profile'])
@@ -201,6 +227,22 @@ router.post('/', (req, res) => {
 })
 router.get('/', (req, res) => {
   // Only admins should be able to get user info
+  if (req.query.id) {
+    User.findOne({
+      _id: req.query.id
+    })
+      .select('-password')
+      .then(doc => {
+        doc = JSON.stringify(doc).replace('_id', 'id')
+        doc = JSON.parse(doc)
+        res.setHeader('X-Total-Count', '2')
+        res.json(doc)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+    return
+  }
   if (!req.query.email) {
     return res.status(400).send('Email is missing.')
   }
@@ -234,15 +276,15 @@ router.get('/email', (req, res) => {
 })
 
 router.put('/', (req, res) => {
-  if (!req.query.email) {
-    return res.status(400).send('Email is missing.')
+  if (!req.query.id) {
+    return res.status(400).send('id is missing.')
   }
   const isValidated = validator.updateValidation(req.body)
   if (isValidated.error)
     return res.status(400).send({ error: isValidated.error.details[0].message })
   User.findOneAndUpdate(
     {
-      email: req.query.email
+      _id: req.query.id
     },
     req.body,
     {
@@ -250,6 +292,9 @@ router.put('/', (req, res) => {
     }
   )
     .then(doc => {
+      doc = JSON.stringify(doc).replace('_id', 'id')
+      doc = JSON.parse(doc)
+      res.setHeader('X-Total-Count', '2')
       res.json(doc)
     })
     .catch(err => {
@@ -258,6 +303,21 @@ router.put('/', (req, res) => {
 })
 
 router.delete('/', (req, res) => {
+  if (req.query.id) {
+    User.findOneAndDelete({
+      _id: req.query.id
+    })
+      .then(doc => {
+        doc = JSON.stringify(doc).replace('_id', 'id')
+        doc = JSON.parse(doc)
+        res.setHeader('X-Total-Count', '2')
+        res.json(doc)
+      })
+      .catch(err => {
+        res.status(500).json(err)
+      })
+    return
+  }
   if (!req.query.email) {
     return res.status(400).send('Email is mising.')
   }

@@ -30,6 +30,7 @@ const searchRoute = require('./routes/search')
 const userRoute = require('./routes/user')
 const loginRoute = require('./routes/login')
 const requestRoute = require('./routes/requests')
+const projectRoute = require('./routes/projects')
 
 //Setup Parser, Note: extended option is diabled to allow for array encoding
 app.use(express.json())
@@ -62,7 +63,9 @@ const verifyToken = token => {
 // app.use(express.static('./public'))
 //Setup routing directories/paths
 app.set('io', io)
+
 app.set('verifyToken', verifyToken)
+
 app.use('/api/task', taskRoute.router) // Tested - Passed - changed file name to match file naming agreement
 app.use('/api/consultancy', consultancyRoute) // Tested - Passed
 app.use('/api/partner', partnerRoute) // Tested - Passed - router had extra paths, EX : /api/partner/update (solved by removal)
@@ -79,7 +82,8 @@ app.use('/api/user', userRoute)
 app.use('/api/login', loginRoute)
 app.use('/api/skills', skillsRoute)
 app.use('/api/search', searchRoute)
-app.use('/api', requestRoute)
+app.use('/api/request', requestRoute)
+app.use('/api/project', projectRoute)
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'))

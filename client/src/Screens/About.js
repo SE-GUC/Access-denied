@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import Media from "react-bootstrap/Media";
-import bg from "../Images/bg.jpg";
-import p from "../Images/as.jpeg";
-import p2 from "../Images/downloads.png";
-import p3 from "../Images/istockphoto-880302878-612x612.jpg";
-import p4 from "../Images/image.jpg";
-import p5 from "../Images/hmbdyilo_Freelance-Tips-for-Elearning-Designers.png";
-import p6 from "../Images/download.png";
-import "./About.css";
-import { Hero } from "react-landing-page";
+import React, { Component } from 'react'
+import Media from 'react-bootstrap/Media'
+import bg from '../Images/bg.jpg'
+import p from '../Images/as.jpeg'
+import p2 from '../Images/downloads.png'
+import p3 from '../Images/istockphoto-880302878-612x612.jpg'
+import p4 from '../Images/image.jpg'
+import p5 from '../Images/hmbdyilo_Freelance-Tips-for-Elearning-Designers.png'
+import p6 from '../Images/download.png'
+import './About.css'
+import { Hero } from 'react-landing-page'
 
 class About extends Component {
   render() {
@@ -230,8 +230,8 @@ class About extends Component {
           />
         </Media>
       </Hero>
-    );
+    )
   }
 }
 
-export default About;
+export default About

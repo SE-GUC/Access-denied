@@ -66,6 +66,44 @@ router.post('/newPost', (req, res) => {
       return res.status(500).send('incorrect Data')
     })
 })
+router.post('/newPostPartner', (req, res) => {
+  const isValidated = validator.createValidation(req.body)
+  if (isValidated.error) {
+    return res.send()
+  }
+  let requestAssigner = req.body.reviewer
+  let requestAssignee = req.body.reviewee
+  let id = req.body.task
+  console.log(requestAssigner, requestAssignee, id)
+  axios
+    .get(`${baseURL}/api/task/isTaskDone`, {
+      params: {
+        owner: requestAssigner,
+        assignee: requestAssignee,
+        taskID: id
+      }
+    })
+    .then(doc => {
+      var checker = doc.data.length === 0
+      if (checker) {
+        return res.send()
+      } else {
+        const model = new reviewModel(req.body)
+        model
+          .save()
+          .then(doc => {
+            res.status(201).send(doc)
+          })
+          .catch(err => {
+            return res.send()
+          })
+      }
+    })
+    .catch(err => {
+      return res.send()
+    })
+})
+
 router.get('/', (req, res) => {
   if (!req.query.reviewee) {
     return res.status(400).send('Reviewee ID is missing.')

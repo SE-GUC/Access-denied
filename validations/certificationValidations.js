@@ -34,6 +34,6 @@ module.exports = {
       eduorganization: Joi.string()
     }
 
-    return Joi.validate(request, updateSchema)
+    return Joi.validate(request, updateSchema, { stripUnknown: true })
   }
 }

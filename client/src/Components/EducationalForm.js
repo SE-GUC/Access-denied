@@ -1,27 +1,27 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
-import { Form, Button, Jumbotron, Container } from "react-bootstrap";
-import "./EducationalForm.css";
+import { Form, Button, Jumbotron, Container } from 'react-bootstrap'
+import './EducationalForm.css'
 //const fetch = require("node-fetch");
 
 class EducationalForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      city: "",
-      area: "",
-      street: ""
-    };
+      name: '',
+      email: '',
+      password: '',
+      city: '',
+      area: '',
+      street: ''
+    }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleSubmit(event) {
@@ -29,38 +29,38 @@ class EducationalForm extends React.Component {
       city: this.state.city,
       area: this.state.area,
       street: this.state.street
-    };
+    }
     let mem = {
       email: this.state.email,
       name: this.state.name,
       password: this.state.password,
       address,
-      type: "EducationalOrganisation"
-    };
+      type: 'EducationalOrganisation'
+    }
 
     fetch(`/api/user`, {
       //
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(mem),
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       }
     })
       .then(res => res.json())
       .then(json => {
-        console.log(json);
-        if (json === "Error") {
-          alert("you are have already registered to LirtenHub");
+        console.log(json)
+        if (json === 'Error') {
+          alert('you are have already registered to LirtenHub')
         } else {
-          alert("success");
+          alert('success')
         }
       })
       .catch(err => {
-        console.log(err);
-        alert("something went wrong");
-      });
+        console.log(err)
+        alert('something went wrong')
+      })
 
-    event.preventDefault();
+    event.preventDefault()
   }
 
   render() {
@@ -73,7 +73,6 @@ class EducationalForm extends React.Component {
               <p>Welcome to LirtenHub!</p>
             </Container>
           </Jumbotron>
-          ;
         </div>
         <div className="theform">
           <Form id="MyForm" onSubmit={this.handleSubmit}>
@@ -193,8 +192,8 @@ class EducationalForm extends React.Component {
           </Form>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default EducationalForm;
+export default EducationalForm
