@@ -2,6 +2,7 @@ const educationalorganisations = require('../models/educationalOrganisation.mode
 const express = require('express')
 const router = express.Router()
 const validator = require('../validations/EducationalOrganisationValidations.js')
+const _ = require('lodash');
 const axios = require('axios')
 const baseURL = process.env.BASEURL || 'http://localhost:3001'
 
@@ -147,7 +148,7 @@ router.put('/chooseApplicant', (req, res) => {
   if (!certificationID) {
     return res.send('No certification provided')
   }
-  console.log("sending")
+  console.log('sending')
   axios
     .put(`${baseURL}/api/certification/chooseApplicant?id=${certificationID}`, {
       membersapplied: req.body.membersapplied
@@ -163,4 +164,39 @@ router.put('/chooseApplicant', (req, res) => {
     })
 })
 
+router.put('/newCertification',async(req, res) => {
+  try{
+  if(!req.body.token)
+    return res.status(400).send('body is missing')
+  const verify = req.app.get('verifyToken')
+  const data = verify(req.body.token)
+  console.log("153")
+  console.log(data)
+  console.log("155")
+  let url = ''
+  if(!data)
+    return res.status(500).send('there was no data from token')
+  if(data.type !== 'EducationalOrganisation')
+    return res.status(400).send('not allowed to create a new certification')
+  let  certificationBody = _.pick(req.body, [
+      'name',
+      'skills',
+      'Fees',
+      'Method_of_payment',
+      'keywords'
+    ])   
+       
+  const newCertification = await x.create(certificationBody) 
+  const certificateId = newCertification._id
+  const eduOrg = await educationalorganisations.findById(data.profile)
+  const eduOrgCertificate = eduOrg.certificate
+  eduOrgCertificate.push(certificateId)
+  await educationalorganisations.findByIdAndUpdate(data.profile,{certificate:eduOrgCertificate},{new:true})
+  return res.send(eduOrg)
+      
+    } catch(error){
+      return res.status(500).send(error.message)
+    }
+})
+const x= require('../models/certification.model')
 module.exports = router

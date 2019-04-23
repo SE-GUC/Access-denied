@@ -108,6 +108,14 @@ const currencies = [
     label: '¥'
   }
 ]
+const paymentway = [
+  { value: 'Cash', label: 'Cash' },
+  { value: 'fawry', label: 'Fawry' },
+  { value: 'PayPal', label: 'PayPal' },
+  { value: 'CIBTransfer', label: 'CIB Transfer' },
+  { value: 'visa', label: 'Visa' },
+  { value: 'creditCard', label: 'credit card' }
+]
 
 class TaskForm extends React.Component {
   constructor(props) {
@@ -125,11 +133,13 @@ class TaskForm extends React.Component {
       commitmentLevel: this.state.commitmentLevel,
       experienceLevel: this.state.experienceLevel,
       timeRequired: this.state.timeRequired,
-      monetaryComp: this.state.monetaryComp
+      monetaryComp: this.state.monetaryComp,
+      paymentMethod: this.state.paymentMethod
     }
     axios.post('/api/task/', data)
     console.log(this.state)
   }
+
   state = {
     name: '',
     multiline: '',
@@ -144,7 +154,8 @@ class TaskForm extends React.Component {
     token: null,
     id: null,
     type: null,
-    changed: false
+    changed: false,
+    paymentMethod: ''
   }
 
   handleChange = name => event => {
@@ -307,6 +318,29 @@ class TaskForm extends React.Component {
             variant="outlined"
           />
 
+          <br />
+          <TextField
+            id="filled-select-paymentMethod"
+            select
+            label="Payment Method"
+            className={classes.textField}
+            value={this.state.paymentMethod}
+            onChange={this.handleChange('paymentMethod')}
+            SelectProps={{
+              MenuProps: {
+                className: classes.menu
+              }
+            }}
+            helperText="Please select your preferred method of payment"
+            margin="normal"
+            variant="filled"
+          >
+            {paymentway.map(option => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </TextField>
           <br />
 
           <Fab

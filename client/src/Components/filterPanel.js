@@ -1,6 +1,6 @@
-import React from 'react'
-import S from './searchbar'
-import { InputGroup, Form, Dropdown } from 'react-bootstrap'
+import React from "react";
+import S from "./searchbar";
+import { InputGroup, Form, Button } from "react-bootstrap";
 
 class Key extends React.Component {
   render() {
@@ -61,28 +61,34 @@ class filterPanel extends React.Component {
         })
       })
     })
+
+    this.props.change(this.props.id, tasks)
     return tasks
   }
   handleChange(event) {
     console.log('hamhere')
-    console.log(this.state.results)
+    console.log(this.state.keywordsResults)
     if (event.target.value) {
       this.state.keywordsResults[event.target.id] =
         this.state.keywords[event.target.id] + event.target.value
       let tags = this.state.keywordsResults
       let res = this.searcht(tags, this.state.results)
-      this.props.change(this.props.id, res)
+      // this.props.change(this.props.id, res)
       console.log('new')
-      console.log(this.state.results)
+      console.log(res)
     } else {
       this.props.change(-1)
+      this.state.keywordsResults[event.target.id] =null
+      // this.props.change(this.props.id, this.state.results)
+      console.log('new')
+      console.log(this.state.results)
     }
   }
 
   render() {
     const Tags = this.props.keywords
     return (
-      <form>
+      <Form>
         {Tags.map(p => {
           return <Key id={Tags.indexOf(p)} title={p} fu={this.handleChange} />
         })}
@@ -90,8 +96,11 @@ class filterPanel extends React.Component {
           {' '}
           {/* <S Tags={this.state.keywordsResults} fu={this.props.change} /> */}
         </div>
-      </form>
-    )
+        <Button variant="primary" type='button' onClick={()=>this.searcht(this.state.keywordsResults,this.state.results)}>
+    APPLY Filters
+  </Button>
+      </Form>
+    );
   }
 }
 

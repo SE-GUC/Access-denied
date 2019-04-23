@@ -1,4 +1,4 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 module.exports = {
   createValidation: request => {
@@ -30,10 +30,11 @@ module.exports = {
       ),
       paymentMethod: Joi,
       skills: Joi.array().items(Joi.string()),
-      Keywords: Joi
-    };
+      Keywords: Joi,
+      phase: Joi.string()
+    }
 
-    return Joi.validate(request, createSchema);
+    return Joi.validate(request, createSchema)
   },
 
   updateValidation: request => {
@@ -65,9 +66,10 @@ module.exports = {
           applierModel: Joi
         })
       ),
-      Keywords: Joi
-    };
+      Keywords: Joi,
+      phase: Joi.string()
+    }
 
-    return Joi.validate(request, updateSchema, { stripUnknown: true });
+    return Joi.validate(request, updateSchema, { stripUnknown: true })
   }
-};
+}

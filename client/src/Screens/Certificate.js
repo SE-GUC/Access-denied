@@ -197,25 +197,27 @@ class Certificate extends Component {
         </div>
         <hr style={{ 'margin-top': '5%' }} />
         <span>
-          <div style={{ width: '30%', 'margin-left': '15%', float: 'left' }}>
-            <p className="textafter bold">Increase your win-rate by 25%</p>
-            <p className="textaftersmall">
-              Freelancers who get certified are 25% more likely to win a project
-              compared to freelancers who don't.
-            </p>
-            <p className="textaftersmall">
-              Certificates in your profile show employers that you're serious
-              about delivering quality work.
-            </p>
-            <p className="textaftersmall">Show them that you're capable.</p>
-          </div>
-          <div style={{ 'margin-right': '15%', float: 'right' }}>
-            <img
-              src={awardrate}
-              className="img-fluid"
-              style={{ 'margin-top': '17%' }}
-              alt="award rate"
-            />
+          <div className="d-flex flex-row justify-content-center">
+            <div style={{ width: '30%', 'margin-left': '15%' }}>
+              <p className="textafter bold">Increase your win-rate by 25%</p>
+              <p className="textaftersmall">
+                Freelancers who get certified are 25% more likely to win a
+                project compared to freelancers who don't.
+              </p>
+              <p className="textaftersmall">
+                Certificates in your profile show employers that you're serious
+                about delivering quality work.
+              </p>
+              <p className="textaftersmall">Show them that you're capable.</p>
+            </div>
+            <div style={{ 'margin-right': '15%' }}>
+              <img
+                src={awardrate}
+                className="img-fluid"
+                style={{ 'margin-top': '17%' }}
+                alt="award rate"
+              />
+            </div>
           </div>
         </span>
       </div>

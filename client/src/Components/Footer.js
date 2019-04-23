@@ -17,7 +17,7 @@ class Footer extends Component {
 
   render() {
     return (
-      <Row style={{ marginTop: '20px' }}>
+      <Row style={{ marginTop: '60px' }}>
         <footer className="container-fluid bg-grey py-5">
           <div className="container">
             <div className="row">
@@ -25,9 +25,9 @@ class Footer extends Component {
                 <div className="row">
                   <div className="col-md-6 align-self-center">
                     <div className="logo-part">
-                      <h2 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
+                      <h1 style={{ fontFamily: 'Audiowide', cursive: 'true' }}>
                         Lirten Hub
-                      </h2>
+                      </h1>
                     </div>
                   </div>
                   <div className="col-md-6 px-4">
@@ -64,6 +64,21 @@ class Footer extends Component {
                             {' '}
                             <Link to="/Search/"> Search</Link>{' '}
                           </li>
+                          <li>
+                            {' '}
+                            <Link to="/Project/"> Projects</Link>{' '}
+                          </li>
+                          <li>
+                            {' '}
+                            <Link to="/Task/"> Tasks</Link>{' '}
+                          </li>
+                          <li>
+                            {' '}
+                            <Link to="/allcertificates/">
+                              {' '}
+                              Certificates
+                            </Link>{' '}
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -81,7 +96,7 @@ class Footer extends Component {
                     <form className="form-footer my-3">
                       <input
                         type="text"
-                        placeholder="search here...."
+                        placeholder="Enter Your Email"
                         name="search"
                         disabled
                       />
