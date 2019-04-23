@@ -34,6 +34,7 @@ import ProjectLanding from './Screens/ProjectLanding'
 import Project from './Screens/Project'
 import Footer from './Components/Footer'
 import allcert from './Screens/Allcertificate'
+import ConsultancyAgency from './Screens/ConsultancyAgency'
 import TaskLanding from './Screens/TaskLanding'
 
 class App extends Component {
@@ -84,6 +85,10 @@ class App extends Component {
               <Route
                 path="/coworking/"
                 component={props => <Coworking {...props} />}
+              />
+              <Route
+                path="/consultancy/"
+                component={props => <ConsultancyAgency {...props} />}
               />
               <Route path="/login/" component={Login} />
               <Route path="/CertAccept/" component={CertAccept} />

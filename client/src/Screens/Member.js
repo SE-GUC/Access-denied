@@ -290,6 +290,26 @@ class Member extends Component {
       this.setState(currentState)
     }
   }
+  handleClickMessage(event) {
+    fetch(`/api/message/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'This is the start of your conversation',
+        from: JSON.parse(localStorage.getItem('token')),
+        to: qs.parse(this.props.location.search, {
+          ignoreQueryPrefix: true
+        }).id
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        window.location = this.props.location.search
+      })
+      .catch(err => console.log(err))
+  }
   render() {
     console.log(this.state)
     return (
@@ -370,6 +390,24 @@ class Member extends Component {
               </DialogActions>
             </Dialog>
           )}
+        </div>
+        <div>
+          <Button
+            style={{
+              position: 'absolute',
+              top: '25%',
+              right: '7%',
+              backgroundColor: '#232c5d',
+              color: 'white'
+            }}
+            className="float-right"
+            variant="outlined"
+            size="small"
+            hidden={this.state.verified}
+            onClick={() => this.handleClickMessage()}
+          >
+            Send a message
+          </Button>
         </div>
         <div className="d-flex flex-row">
           <div className="card" style={{ width: '30%' }}>

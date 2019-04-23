@@ -4,7 +4,7 @@ import S from '../Components/searchbar'
 import F from '../Components/filterPanel'
 import Results from '../Components/results'
 import { Redirect } from 'react-router-dom'
-import query from "query-string";
+import query from 'query-string'
 import {
   Jumbotron,
   ListGroup,
@@ -24,7 +24,7 @@ class SearchPage extends Component {
     this.renderRedirect = this.renderRedirect.bind(this)
   }
   state = {
-    w:"",
+    w: '',
     flip: true,
     results: Array(6).fill([]),
     newResults: Array(6).fill([]),
@@ -76,11 +76,13 @@ class SearchPage extends Component {
     this.reset()
   }
   reset() {
-    this.setState({ w: query.parse(this.props.location.search, {
-      ignoreQueryPrefix: true
-    }).q});
-    
-    fetch(`/api/search?q=`+this.state.w)
+    this.setState({
+      w: query.parse(this.props.location.search, {
+        ignoreQueryPrefix: true
+      }).q
+    })
+
+    fetch(`/api/search?q=` + this.state.w)
       .then(res => res.json())
       .then(res => {
         this.setState({

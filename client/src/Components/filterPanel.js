@@ -1,6 +1,6 @@
-import React from "react";
-import S from "./searchbar";
-import { InputGroup, Form, Button } from "react-bootstrap";
+import React from 'react'
+import S from './searchbar'
+import { InputGroup, Form, Button } from 'react-bootstrap'
 
 class Key extends React.Component {
   render() {
@@ -78,7 +78,7 @@ class filterPanel extends React.Component {
       console.log(res)
     } else {
       this.props.change(-1)
-      this.state.keywordsResults[event.target.id] =null
+      this.state.keywordsResults[event.target.id] = null
       // this.props.change(this.props.id, this.state.results)
       console.log('new')
       console.log(this.state.results)
@@ -96,11 +96,17 @@ class filterPanel extends React.Component {
           {' '}
           {/* <S Tags={this.state.keywordsResults} fu={this.props.change} /> */}
         </div>
-        <Button variant="primary" type='button' onClick={()=>this.searcht(this.state.keywordsResults,this.state.results)}>
-    APPLY Filters
-  </Button>
+        <Button
+          variant="primary"
+          type="button"
+          onClick={() =>
+            this.searcht(this.state.keywordsResults, this.state.results)
+          }
+        >
+          APPLY Filters
+        </Button>
       </Form>
-    );
+    )
   }
 }
 

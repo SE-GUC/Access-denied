@@ -23,15 +23,22 @@ export default () => {
       .then(data => {})
       .catch(err => console.log(err))
   }
+
   let users = 0
+  let requests = 0
   const handleStats = e => {
     fetch(`/api/user/all`)
       .then(res => res.json())
       .then(data => {
         users = data.length
+        return fetch(`/api/request/all`)
+      })
+      .then(res => res.json())
+      .then(data => {
+        requests = data.length
         document.getElementById(
           'statsfill'
-        ).innerText = `There are currently ${users} users on the site`
+        ).innerText = `There are currently ${users} users on the site\nand ${requests} requests waiting for your decisions.`
       })
       .catch(err => console.log(err))
   }
