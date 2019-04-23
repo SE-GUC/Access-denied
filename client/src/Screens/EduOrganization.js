@@ -36,7 +36,8 @@ class Edu extends Component {
       newData: null,
       city: null,
       area: null,
-      street: null
+      street: null,
+      pending: null
     }
   }
   handleClickOpen = name => event => {
@@ -272,6 +273,7 @@ class Edu extends Component {
         currentState.trainingPrograms = res.trainingProgram.map(prog => (
           <li className="list-group-item"> {prog}</li>
         ))
+
         currentState.loaded = true
         this.setState(currentState)
         id = res._id

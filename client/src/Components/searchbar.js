@@ -46,7 +46,7 @@ class Searchbar extends React.Component {
     //to do search function
     let y = event.value
     console.log(y)
-    fetch(`search?q=` + y)
+    fetch(`/api/search?q=` + y)
       .then(res => res.json())
       .then(res => {
         console.log(res)

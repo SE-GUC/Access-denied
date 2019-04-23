@@ -5,7 +5,8 @@ const SkillsSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  icon:String
 })
 
 module.exports = mongoose.model('Skills', SkillsSchema)

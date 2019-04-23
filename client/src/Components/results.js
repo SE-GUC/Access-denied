@@ -23,7 +23,7 @@ class results extends Component {
     this.setState({
       route: nextProps.route
     })
-    console.log('route')
+    console.log(this.state.route)
   }
 
   render() {
