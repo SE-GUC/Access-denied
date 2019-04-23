@@ -7,7 +7,7 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-        icon:Joi.string()
+      icon: Joi.string()
     }
 
     return Joi.validate(request, createSchema)
@@ -19,7 +19,7 @@ module.exports = {
         .min(3)
         .max(500)
         .required(),
-        icon:Joi.string()
+      icon: Joi.string()
     }
 
     return Joi.validate(request, updateSchema)

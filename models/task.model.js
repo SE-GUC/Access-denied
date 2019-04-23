@@ -109,7 +109,7 @@ taskSchema.set('toObject', { virtuals: true })
 taskSchema.set('toJSON', { virtuals: true })
 taskSchema.virtual('Tags').get(function get() {
   let s = []
-  let k=[]
+  let k = []
   if (this.owner) s.push('OwnerName:' + this.owner.name)
   if (this.effortLevel) s.push('effortLevel:' + this.effortLevel)
   if (this.commitmentLevel) s.push('commitmentLevel:' + this.commitmentLevel)
@@ -117,13 +117,13 @@ taskSchema.virtual('Tags').get(function get() {
   if (this.timeRequired) s.push('timeRequired:' + this.timeRequired)
   if (this.monetaryComp) s.push('monetaryComp:' + this.monetaryComp)
   if (this.skills.length > 0 && this.skills[0].name) {
-    this.skills.map(m=>{
+    this.skills.map(m => {
       k.push(m.name)
     })
-    k.map(j=>{
+    k.map(j => {
       s.push('skills:' + j)
     })
-    }
+  }
   if (this.keywords.length > 0) s.push('others:' + this.keywords)
 
   return s

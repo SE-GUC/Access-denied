@@ -61,89 +61,84 @@ module.exports = {
   updateTest,
   deleteTest
 }
-    
-    ////////////////////////////////////////////////////////
-    // const axios = require('axios')
-    // const _ = require('lodash')
-    // //const evaluation = require('../routes/Evaluation')
-    
-    // const c = {
-    //   createCertification: async (data) => {
-    //     return axios.post("http://localhost:3000/api/certification/", data)
-    //   },
-    //   readCertification: async (name) => {
-    //     return axios.get(`http://localhost:3000/api/certification?name=${name}`)
-    //   },
-    //   createEvaluation: async (data) => {
-    //     return axios.post("http://localhost:3000/api/Evaluation/", data)
-    //   },
-    //   deleteCertification: async (name) => {
-    //     return axios.delete(`http://localhost:3000/api/certification?name=${name}`)
-    //   }
-    // }
-    
-    
-    // var baseURL = process.env.BASEURL || 'http://localhost:3000'
-    // const checkpost =test('create-an-certification exists', async () => {
-    //   expect.assertions(1)
-     
-    //   return expect(typeof (c.createCertification)).toBe('function')
-    // })
-    
-    // const checkGet =test('get-an-certification exists', async () => {
-    //   expect.assertions(1)
-     
-    //   return expect(typeof (c.readCertification)).toBe('function')
-    // })
-    
-    
-    // const createTest = test('Creates a new certification', async () => {
-    //   const data = {
-    //     styleOfEvaluation:"mcq1",
-    //     link:"test12"
-        
-    //   }
-    //   const created = await c.createEvaluation(data)
-    
-    //   const createdData = created.data
-    //   const evaluationid = createdData['_id']
-      
-    //   const body = {
-    //     name: "testname",
-    //     Evaluation_procedure: evaluationid,
-    //   }
-    //   const createdCertification=await c.createCertification(body)
-    //   const certificationcreatedData = createdCertification.data
-    //   expect.assertions(1)
-    //   expect(certificationcreatedData).toMatchObject(body)
-    
-    
-    //   await c.deleteCertification('testname')
-    // })
-    
-    // const readTest = test('Reads a new certification', async () => {
-    //   const data = {
-    //     styleOfEvaluation:"mcq1",
-    //     link:"test12"
-        
-    //   }
-    //   const created = await c.createEvaluation(data)
-    
-    //   const createdData = created.data
-    //   const evaluationid = createdData['_id']
-    //   const body = {
-    //     name: 'testname',
-    //     Evaluation_procedure: evaluationid,
-    //   }
-    //   const createdCertification=await c.createCertification(body)
-    //   const certificationcreatedData = createdCertification.data
-    //   const certificationName = certificationcreatedData['name']
-    //   const readedCertification=await c.readCertification(certificationName)
-    //   const readCertificationdata=readedCertification.data[0]
-    //   expect.assertions(1)
-    //   expect(readCertificationdata).toMatchObject(certificationcreatedData)
-    //   await c.deleteCertification('testname')
-    
-    
-     
-    ///////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+// const axios = require('axios')
+// const _ = require('lodash')
+// //const evaluation = require('../routes/Evaluation')
+
+// const c = {
+//   createCertification: async (data) => {
+//     return axios.post("http://localhost:3000/api/certification/", data)
+//   },
+//   readCertification: async (name) => {
+//     return axios.get(`http://localhost:3000/api/certification?name=${name}`)
+//   },
+//   createEvaluation: async (data) => {
+//     return axios.post("http://localhost:3000/api/Evaluation/", data)
+//   },
+//   deleteCertification: async (name) => {
+//     return axios.delete(`http://localhost:3000/api/certification?name=${name}`)
+//   }
+// }
+
+// var baseURL = process.env.BASEURL || 'http://localhost:3000'
+// const checkpost =test('create-an-certification exists', async () => {
+//   expect.assertions(1)
+
+//   return expect(typeof (c.createCertification)).toBe('function')
+// })
+
+// const checkGet =test('get-an-certification exists', async () => {
+//   expect.assertions(1)
+
+//   return expect(typeof (c.readCertification)).toBe('function')
+// })
+
+// const createTest = test('Creates a new certification', async () => {
+//   const data = {
+//     styleOfEvaluation:"mcq1",
+//     link:"test12"
+
+//   }
+//   const created = await c.createEvaluation(data)
+
+//   const createdData = created.data
+//   const evaluationid = createdData['_id']
+
+//   const body = {
+//     name: "testname",
+//     Evaluation_procedure: evaluationid,
+//   }
+//   const createdCertification=await c.createCertification(body)
+//   const certificationcreatedData = createdCertification.data
+//   expect.assertions(1)
+//   expect(certificationcreatedData).toMatchObject(body)
+
+//   await c.deleteCertification('testname')
+// })
+
+// const readTest = test('Reads a new certification', async () => {
+//   const data = {
+//     styleOfEvaluation:"mcq1",
+//     link:"test12"
+
+//   }
+//   const created = await c.createEvaluation(data)
+
+//   const createdData = created.data
+//   const evaluationid = createdData['_id']
+//   const body = {
+//     name: 'testname',
+//     Evaluation_procedure: evaluationid,
+//   }
+//   const createdCertification=await c.createCertification(body)
+//   const certificationcreatedData = createdCertification.data
+//   const certificationName = certificationcreatedData['name']
+//   const readedCertification=await c.readCertification(certificationName)
+//   const readCertificationdata=readedCertification.data[0]
+//   expect.assertions(1)
+//   expect(readCertificationdata).toMatchObject(certificationcreatedData)
+//   await c.deleteCertification('testname')
+
+///////////////////////////////////////////////////////////

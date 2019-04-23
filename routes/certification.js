@@ -142,20 +142,17 @@ router.get('/', (req, res) => {
   certificationModel
     .findById(req.query.id)
 
-    .populate("schedule")
-    .populate("eduorganization")
-    .populate("membersapplied","name")
+    .populate('schedule')
+    .populate('eduorganization')
+    .populate('membersapplied', 'name')
 
     .then(doc => {
       res.json(doc)
     })
     .catch(err => {
-
-      res.status(500).json(err);
-    });
-  
-});
-
+      res.status(500).json(err)
+    })
+})
 
 router.post('/offlineEvaluation/', (req, res) => {
   if (!req || !req.body) {
@@ -314,9 +311,7 @@ router.put('/chooseApplicant', (req, res) => {
 
   let key = {
     _id: req.query.id
-
-  };
-
+  }
 
   certificationModel
     .find(key)

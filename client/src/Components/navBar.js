@@ -199,7 +199,7 @@ class NavBar extends Component {
       currentState.redirectTarget = '/signup'
       currentState.anchorEl = null
       currentState.open = false
-    } else if (event.currentTarget.dataset.id === '7') {
+    } else if (event.currentTarget.dataset.id === '8') {
       currentState.redirect = true
       currentState.redirectTarget = '/logout'
       currentState.anchorEl = null
@@ -219,6 +219,11 @@ class NavBar extends Component {
       currentState.redirectTarget = '/project'
       currentState.anchorEl = null
       currentState.open = false
+    } else if (event.currentTarget.dataset.id === '7') {
+      currentState.redirect = true
+      currentState.redirectTarget = '/task'
+      currentState.anchorEl = null
+      currentState.open = false
     }
     this.setState(currentState)
   }
@@ -231,7 +236,8 @@ class NavBar extends Component {
       'Register',
       'About Us',
       'Certificates',
-      'Projects'
+      'Projects',
+      'Tasks'
     ]
     return (
       <div className={classes.root}>

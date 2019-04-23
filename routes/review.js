@@ -74,7 +74,7 @@ router.post('/newPostPartner', (req, res) => {
   let requestAssigner = req.body.reviewer
   let requestAssignee = req.body.reviewee
   let id = req.body.task
-  console.log(requestAssigner,requestAssignee,id)
+  console.log(requestAssigner, requestAssignee, id)
   axios
     .get(`${baseURL}/api/task/isTaskDone`, {
       params: {

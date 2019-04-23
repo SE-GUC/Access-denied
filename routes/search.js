@@ -27,22 +27,23 @@ const searchNames = list => {
   regex = list.map(e => new RegExp(e, 'i'))
   return Promise.all(
     models.map(model => {
-      if(models.indexOf(model)===1){
-        return model.find({
-        name: {
-          $in: regex
-        }
-      })
-      .populate('skills')
+      if (models.indexOf(model) === 1) {
+        return model
+          .find({
+            name: {
+              $in: regex
+            }
+          })
+          .populate('skills')
       } else {
-       return model.find({
-        name: {
-          $in: regex
-        }
-      })
-      
-    }}
-  ))
+        return model.find({
+          name: {
+            $in: regex
+          }
+        })
+      }
+    })
+  )
 }
 
 function searcht(tags, alltasks) {
